@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Copyright 2021 OpenSynergy Indonesia
 # Copyright 2021 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.safe_eval import safe_eval as eval
+from odoo.tools.safe_eval import safe_eval
 
 
 class ApprovalApproval(models.Model):
@@ -114,7 +113,7 @@ class ApprovalApproval(models.Model):
     )
 
     @api.multi
-    def _get_object(self):
+    def _get_record(self):
         document_id = self.res_id
         document_model = self.model
 
@@ -124,7 +123,7 @@ class ApprovalApproval(models.Model):
     @api.multi
     def _get_localdict(self):
         return {
-            "rec": self._get_object(),
+            "rec": self._get_record(),
             "env": self.env,
         }
 
@@ -133,7 +132,9 @@ class ApprovalApproval(models.Model):
         localdict = self._get_localdict()
         result = False
         try:
-            eval(python_condition, globals_dict=localdict, mode="exec", nocopy=True)
+            safe_eval(
+                python_condition, globals_dict=localdict, mode="exec", nocopy=True
+            )
             result = localdict
         except Exception:
             msg_err = "Error when execute python code"
