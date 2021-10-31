@@ -30,6 +30,7 @@ class ApprovalTemplateDetail(models.Model):
         selection=[
             ("use_user", "Users"),
             ("use_group", "Groups"),
+            ("use_both", "Both specific user and group."),
             ("use_python", "Python Code"),
         ],
         default="use_user",

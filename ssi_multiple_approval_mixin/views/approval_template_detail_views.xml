@@ -43,12 +43,18 @@
                                 <field
                                     name="approver_user_ids"
                                     colspan="4"
-                                    attrs="{'invisible': [('approver_selection_method', '&lt;&gt;', 'use_user')]}"
+                                    attrs="{
+                                         'invisible': [('approver_selection_method', '!=', 'use_user'), ('approver_selection_method', '!=', 'use_both')],
+                                         'required': ['|', ('approver_selection_method', '=', 'use_user'), ('approver_selection_method', '=', 'use_both')]}"
+                                    widget="many2many_tags"
                                 />
                                 <field
                                     name="approver_group_ids"
                                     colspan="4"
-                                    attrs="{'invisible': [('approver_selection_method', '&lt;&gt;', 'use_group')]}"
+                                    attrs="{
+                                         'invisible': [('approver_selection_method', '!=', 'use_group'), ('approver_selection_method', '!=', 'use_both')],
+                                         'required': ['|', ('approver_selection_method', '=', 'use_group'), ('approver_selection_method', '=', 'use_both')]}"
+                                    widget="many2many_tags"
                                 />
                                 <field
                                     name="python_code"

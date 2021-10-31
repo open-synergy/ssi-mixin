@@ -9,7 +9,7 @@
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
-    "license": "AGPL-3",
+    "license": "LGPL-3",
     "installable": True,
     "depends": [
         "base",

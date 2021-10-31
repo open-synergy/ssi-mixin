@@ -5,7 +5,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.safe_eval import safe_eval as eval
+from odoo.tools.safe_eval import safe_eval
 
 
 class MixinMultipleApproval(models.AbstractModel):
@@ -17,8 +17,9 @@ class MixinMultipleApproval(models.AbstractModel):
     _approval_state_to = ["confirmed"]
     _approval_cancel_state = "cancel"
     _approval_reject_state = "reject"
+    _approval_state = "confirm"
 
-    template_id = fields.Many2one(
+    approval_template_id = fields.Many2one(
         string="# Template",
         comodel_name="approval.template",
     )
@@ -37,7 +38,6 @@ class MixinMultipleApproval(models.AbstractModel):
     rejected = fields.Boolean(
         string="Rejected",
         compute="_compute_approved_rejected",
-        search="_search_rejected",
     )
     need_validation = fields.Boolean(
         string="Need Validation",
@@ -90,12 +90,12 @@ class MixinMultipleApproval(models.AbstractModel):
     @api.multi
     @api.depends(
         "approval_ids",
-        "template_id",
-        "template_id.validate_sequence",
+        "approval_template_id",
+        "approval_template_id.validate_sequence",
     )
     def _compute_active_approver_partner_ids(self):
         for rec in self:
-            if rec.template_id.validate_sequence:
+            if rec.approval_template_id.validate_sequence:
                 rec.active_approver_partner_ids = (
                     rec._get_approver_partner_ids_by_sequence()
                 )
@@ -137,7 +137,10 @@ class MixinMultipleApproval(models.AbstractModel):
     def _compute_approved_rejected(self):
         for rec in self:
             rec.approved = self._get_approvals_approved(rec.approval_ids)
-            rec.rejected = self._get_approvals_rejected(rec.approval_ids)
+            if rec.state == self._approval_reject_state:
+                rec.rejected = True
+            else:
+                rec.rejected = False
 
     @api.model
     def _get_approvals_approved(self, approvals):
@@ -167,7 +170,7 @@ class MixinMultipleApproval(models.AbstractModel):
         for rec in self:
             domain = self._prepare_domain_need_validation()
             template_ids = obj_approval_template.search(domain)
-            valid = any([rec.evaluate_tier(template) for template in template_ids])
+            valid = any([rec._evaluate_approval(template) for template in template_ids])
             rec.need_validation = (
                 not rec.approval_ids
                 and valid
@@ -184,7 +187,10 @@ class MixinMultipleApproval(models.AbstractModel):
             rec.next_approval_ids = rec.approval_ids.filtered(
                 lambda r: r.status == "draft"
             )
-            if rec.template_id.validate_sequence and len(rec.next_approval_ids) > 0:
+            if (
+                rec.approval_template_id.validate_sequence
+                and len(rec.next_approval_ids) > 0
+            ):
                 rec.next_approval_ids = rec.next_approval_ids[0]
 
     @api.multi
@@ -225,13 +231,38 @@ class MixinMultipleApproval(models.AbstractModel):
         return [("id", "in", rec.ids)]
 
     @api.multi
-    def evaluate_tier(self, template):
+    def _evaluate_approval(self, template):
+        self.ensure_one()
+        if not template:
+            return False
         try:
-            res = eval(template.python_code, globals_dict={"rec": self})
+            method_name = "_evaluate_approval_" + template.computation_method
+            result = getattr(self, method_name)(template)
+        except Exception as error:
+            msg_err = _("Error evaluating approval conditions.\n %s") % error
+            raise UserError(msg_err)
+        return result
+
+    @api.multi
+    def _evaluate_approval_use_python(self, template):
+        self.ensure_one()
+        try:
+            res = safe_eval(template.python_code, globals_dict={"rec": self})
         except Exception as error:
             msg_err = _("Error evaluating approval conditions.\n %s") % error
             raise UserError(msg_err)
         return res
+
+    @api.multi
+    def _evaluate_approval_use_domain(self, template):
+        self.ensure_one()
+        result = False
+        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
+
+        count_result = self.search_count(domain)
+        if count_result > 0:
+            result = True
+        return result
 
     @api.model
     def _get_under_approval_exceptions(self):
@@ -252,9 +283,9 @@ class MixinMultipleApproval(models.AbstractModel):
     @api.multi
     def set_active(self, approver):
         self.ensure_one()
-        if approver and self.template_id:
+        if approver and self.approval_template_id:
             approver_ids = approver.filtered(lambda r: r.status == "draft")
-            if self.template_id.validate_sequence and len(approver_ids) > 0:
+            if self.approval_template_id.validate_sequence and len(approver_ids) > 0:
                 approver_ids = approver_ids[0]
             approver_ids.write({"status": "pending"})
 
@@ -275,6 +306,8 @@ class MixinMultipleApproval(models.AbstractModel):
             )
             if state == "approved":
                 self.set_active(self.next_approval_ids)
+            elif state == "rejected":
+                self.write({"state": "reject"})
 
     @api.multi
     def action_approve_approval(self):
@@ -290,11 +323,13 @@ class MixinMultipleApproval(models.AbstractModel):
     def write(self, vals):
         for rec in self:
             if (
-                getattr(rec, self._approval_state_field) in self._approval_state_from
-                and vals.get(self._approval_state_field) in self._approval_state_to
+                # getattr(rec, self._approval_state_field) in self._approval_state_from
+                # and
+                vals.get(self._approval_state_field)
+                in self._approval_state_to
             ):
                 if rec.need_validation:
-                    reviews = rec.request_validation()
+                    reviews = rec.action_request_approval()
                     if not self._get_approvals_approved(reviews):
                         raise ValidationError(
                             _(
@@ -314,14 +349,17 @@ class MixinMultipleApproval(models.AbstractModel):
                 and getattr(rec, self._approval_state_field)
                 in self._approval_state_from
                 and not vals.get(self._approval_state_field)
-                in (self._approval_state_to + [self._approval_cancel_state])
+                in (
+                    self._approval_state_to
+                    + [self._approval_cancel_state, self._approval_reject_state]
+                )
                 and not self._check_allow_write_under_approval(vals)
             ):
                 raise ValidationError(_("The operation is under approval process."))
         if vals.get(self._approval_state_field) in self._approval_state_from:
             self.mapped("approval_ids").unlink()
             self.mapped("active_approver_partner_ids").unlink()
-            self.template_id = False
+            self.approval_template_id = False
         return super(MixinMultipleApproval, self).write(vals)
 
     @api.multi
@@ -330,12 +368,12 @@ class MixinMultipleApproval(models.AbstractModel):
         approver_ids = False
         for rec in self:
             if getattr(rec, self._approval_state_field) in self._approval_state_from:
-                if rec.template_id:
-                    if self.evaluate_tier(rec.template_id):
-                        rec.write({"template_id": rec.template_id.id})
+                if rec.approval_template_id:
+                    if self._evaluate_approval(rec.approval_template_id):
+                        rec.write({"approval_template_id": rec.approval_template_id.id})
                     else:
-                        rec.write({"template_id": False})
-                if not rec.template_id:
+                        rec.write({"approval_template_id": False})
+                if not rec.approval_template_id:
                     criteria_definition = [
                         ("model", "=", self._name),
                     ]
@@ -345,8 +383,8 @@ class MixinMultipleApproval(models.AbstractModel):
                     )
                     if template_ids:
                         for template in template_ids:
-                            if self.evaluate_tier(template):
-                                rec.write({"template_id": template.id})
+                            if self._evaluate_approval(template):
+                                rec.write({"approval_template_id": template.id})
                                 break
                 approver_ids = rec.create_approver()
                 rec.set_active(approver_ids)
@@ -359,7 +397,7 @@ class MixinMultipleApproval(models.AbstractModel):
         obj_approval_approval = created_trs = self.env["approval.approval"]
         sequence = 0
 
-        criteria_approval = [("template_id", "=", self.template_id.id)]
+        criteria_approval = [("template_id", "=", self.approval_template_id.id)]
         approver_ids = obj_approval_template_detail.search(
             criteria_approval, order="sequence"
         )
@@ -370,7 +408,7 @@ class MixinMultipleApproval(models.AbstractModel):
                     {
                         "model": self._name,
                         "res_id": self.id,
-                        "template_id": self.template_id.id,
+                        "template_id": self.approval_template_id.id,
                         "template_detail_id": approver.id,
                         "sequence": sequence,
                     }
@@ -380,8 +418,9 @@ class MixinMultipleApproval(models.AbstractModel):
     @api.multi
     def action_restart_approval(self):
         for rec in self:
-            if getattr(rec, self._approval_state_field) in self._approval_state_from:
+            if getattr(rec, self._approval_state_field) == self._approval_reject_state:
                 rec.mapped("approval_ids").unlink()
+                rec.write({"state": self._approval_state})
 
     @api.multi
     def unlink(self):

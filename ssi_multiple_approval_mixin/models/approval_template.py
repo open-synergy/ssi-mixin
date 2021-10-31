@@ -12,11 +12,6 @@ class ApprovalTemplate(models.Model):
     _order = "sequence"
 
     @api.model
-    def _get_multiple_approval_model_names(self):
-        res = []
-        return res
-
-    @api.model
     def _default_company_id(self):
         return self.env["res.company"]._company_default_get("approval.template")
 
@@ -50,8 +45,8 @@ class ApprovalTemplate(models.Model):
         string="Note",
     )
     validate_sequence = fields.Boolean(
-        string="Validate by Sequence",
-        help="Validation by reviewer must be done by sequence.",
+        string="Approval by Sequence",
+        help="Approval by reviewer must be done by sequence.",
     )
     detail_ids = fields.One2many(
         string="Details",
@@ -74,11 +69,3 @@ class ApprovalTemplate(models.Model):
         string="Python Code",
         default="""# Available locals:\n#  - rec: current record""",
     )
-
-    @api.onchange("model_id")
-    def onchange_model_id(self):
-        return {
-            "domain": {
-                "model_id": [("model", "in", self._get_multiple_approval_model_names())]
-            }
-        }
