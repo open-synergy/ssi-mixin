@@ -1,10 +1,10 @@
 # Copyright 2021 OpenSynergy Indonesia
 # Copyright 2021 PT. Simetri Sinergi Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import Warning as UserError
-from odoo.tools.safe_eval import safe_eval as eval
+from odoo.tools.safe_eval import safe_eval
 
 
 class MixinPolicy(models.AbstractModel):
@@ -43,7 +43,7 @@ class MixinPolicy(models.AbstractModel):
         res = False
         localdict = self._get_localdict()
         try:
-            eval(template.python_code, localdict, mode="exec", nocopy=True)
+            safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             res = localdict["result"]
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)
@@ -53,7 +53,7 @@ class MixinPolicy(models.AbstractModel):
     def _evaluate_policy_use_domain(self, template):
         self.ensure_one()
         result = False
-        domain = [("id", "=", self.id)] + eval(template.domain, {})
+        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
 
         count_result = self.search_count(domain)
         if count_result > 0:
