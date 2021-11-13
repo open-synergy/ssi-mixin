@@ -1,10 +1,10 @@
 # Copyright 2021 OpenSynergy Indonesia
 # Copyright 2021 PT. Simetri Sinergi Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import SUPERUSER_ID, _, api, fields, models
 from odoo.exceptions import Warning as UserError
-from odoo.tools.safe_eval import safe_eval as eval
+from odoo.tools.safe_eval import safe_eval
 
 
 class PolicyTemplateDetail(models.Model):
@@ -28,12 +28,24 @@ class PolicyTemplateDetail(models.Model):
     active = fields.Boolean(
         default=True,
     )
+    restrict_state = fields.Boolean(
+        string="Restriction Based on State",
+        default=True,
+    )
+    states = fields.Char(
+        string="States",
+        required=True,
+    )
+    restrict_user = fields.Boolean(
+        string="Restriction Based on User",
+        default=True,
+    )
     computation_method = fields.Selection(
-        string="Approval Method",
+        string="User Evaluation Method",
         selection=[
-            ("use_user", "Specific User + State"),
-            ("use_group", "Any User In Specific Groups + State"),
-            ("use_both", "Both Specific User And Group + State"),
+            ("use_user", "Specific User"),
+            ("use_group", "Any User In Specific Groups"),
+            ("use_both", "Both Specific User And Group"),
             ("use_python", "Python Expression"),
         ],
         default="use_user",
@@ -53,13 +65,17 @@ class PolicyTemplateDetail(models.Model):
         column1="detail_id",
         column2="group_id",
     )
-    states = fields.Char(
-        string="States",
-        required=True,
-    )
     python_code = fields.Text(
         string="Python Code",
         default="""# Available locals:\n#  - rec: current record\n result = []""",
+    )
+    restrict_additional = fields.Boolean(
+        string="Restriction Based on Additional Python Code",
+        default=False,
+    )
+    additional_python_code = fields.Text(
+        string="Additional Python Code",
+        default="""# Available locals:\n#  - rec: current record\n result = True""",
     )
 
     @api.multi
@@ -74,7 +90,11 @@ class PolicyTemplateDetail(models.Model):
     def _get_policy(self, document):
         self.ensure_one()
         result = False
-        if self._evaluate_states(document):
+        if self.restrict_state:
+            if self._evaluate_states(document):
+                result = True
+
+        if self.restrict_user:
             if self.env.user.id == SUPERUSER_ID:
                 result = True
             else:
@@ -84,6 +104,16 @@ class PolicyTemplateDetail(models.Model):
                 except Exception as error:
                     msg_err = _("Error evaluating conditions.\n %s") % error
                     raise UserError(msg_err)
+
+        if self.restrict_additional:
+            localdict = self._get_localdict(document)
+            try:
+                safe_eval(
+                    self.additional_python_code, localdict, mode="exec", nocopy=True
+                )
+            except Exception as error:
+                msg_err = _("Error evaluating conditions.\n %s") % error
+                raise UserError(msg_err)
         return result
 
     @api.multi
@@ -127,7 +157,7 @@ class PolicyTemplateDetail(models.Model):
         result = False
         localdict = self._get_localdict(document)
         try:
-            eval(self.python_code, localdict, mode="exec", nocopy=True)
+            safe_eval(self.python_code, localdict, mode="exec", nocopy=True)
             result = localdict["result"]
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)

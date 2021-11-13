@@ -1,6 +1,6 @@
 # Copyright 2021 OpenSynergy Indonesia
 # Copyright 2021 PT. Simetri Sinergi Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import api, fields, models
 
@@ -17,12 +17,14 @@ class PolicyTemplate(models.Model):
     name = fields.Char(
         string="Name",
         required=True,
+        copy=True,
     )
     model_id = fields.Many2one(
         string="Referenced Model",
         comodel_name="ir.model",
         index=True,
         required=True,
+        copy=True,
     )
     model = fields.Char(
         related="model_id.model",
@@ -33,25 +35,32 @@ class PolicyTemplate(models.Model):
         string="State Field",
         comodel_name="ir.model.fields",
         domain="[('ttype', '=', 'selection'), ('model_id', '=', model_id)]",
+        copy=True,
     )
     company_id = fields.Many2one(
         string="Company",
         comodel_name="res.company",
         default=lambda self: self._default_company_id(),
+        copy=True,
     )
     sequence = fields.Integer(
-        default=1,
+        default=5,
+        required=True,
+        copy=True,
     )
     active = fields.Boolean(
         default=True,
+        copy=True,
     )
     note = fields.Text(
         string="Note",
+        copy=True,
     )
     detail_ids = fields.One2many(
         string="Details",
         comodel_name="policy.template_detail",
         inverse_name="template_id",
+        copy=True,
     )
     computation_method = fields.Selection(
         string="Computation Method",
@@ -61,11 +70,14 @@ class PolicyTemplate(models.Model):
         ],
         default="use_python",
         required=True,
+        copy=True,
     )
     domain = fields.Char(
         string="Domain",
+        copy=True,
     )
     python_code = fields.Text(
         string="Python Code",
         default="""# Available locals:\n#  - rec: current record""",
+        copy=True,
     )
