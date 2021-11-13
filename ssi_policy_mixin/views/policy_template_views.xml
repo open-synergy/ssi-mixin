@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 OpenSynergy Indonesia
      Copyright 2021 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <odoo>
     <record id="policy_template_view_search" model="ir.ui.view">
         <field name="name">policy.template.search</field>
@@ -49,6 +49,7 @@
         <field name="model">policy.template</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="model_id" />
             </tree>
@@ -114,7 +115,7 @@
     </record>
 
     <record id="policy_template_action" model="ir.actions.act_window">
-        <field name="name">Workflow Policy Template</field>
+        <field name="name">Policy Template</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">policy.template</field>
         <field name="view_type">form</field>
@@ -123,7 +124,7 @@
 
     <menuitem
         id="policy_template_menu"
-        name="Policy Template"
+        name="Policy Templates"
         parent="root_policy_template_menu"
         action="policy_template_action"
         sequence="1"
