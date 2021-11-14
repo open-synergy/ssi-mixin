@@ -165,24 +165,11 @@ class MixinMultipleApproval(models.AbstractModel):
 
     @api.multi
     def _compute_need_validation(self):
-        obj_approval_template = self.env["approval.template"]
         for rec in self:
-            domain = self._prepare_domain_need_validation()
-            template_ids = obj_approval_template.search(domain)
-            valid = any([rec._evaluate_approval(template) for template in template_ids])
-            rec.need_validation = (
-                not rec.approval_ids
-                and valid
-                and getattr(rec, self._approval_state_field)
-                == self._approval_from_state
-            )
-            # TODO: Hapus
-            # rec.need_validation = (
-            #     not rec.approval_ids
-            #     and valid
-            #     and getattr(rec, self._approval_state_field)
-            #     in self._approval_state_from
-            # )
+            result = False
+            if rec.state == self._approval_state and not rec.approval_template_id:
+                result = True
+            rec.need_validation = result
 
     @api.multi
     @api.depends(
@@ -361,27 +348,26 @@ class MixinMultipleApproval(models.AbstractModel):
         obj_approval_template = self.env["approval.template"]
         approver_ids = False
         for rec in self:
-            if getattr(rec, self._approval_state_field) == self._approval_from_state:
-                if rec.approval_template_id:
-                    if self._evaluate_approval(rec.approval_template_id):
-                        rec.write({"approval_template_id": rec.approval_template_id.id})
-                    else:
-                        rec.write({"approval_template_id": False})
-                if not rec.approval_template_id:
-                    criteria_definition = [
-                        ("model", "=", self._name),
-                    ]
-                    template_ids = obj_approval_template.search(
-                        criteria_definition,
-                        order="sequence desc",
-                    )
-                    if template_ids:
-                        for template in template_ids:
-                            if self._evaluate_approval(template):
-                                rec.write({"approval_template_id": template.id})
-                                break
-                approver_ids = rec.create_approver()
-                rec.set_active(approver_ids)
+            if rec.approval_template_id:
+                if self._evaluate_approval(rec.approval_template_id):
+                    rec.write({"approval_template_id": rec.approval_template_id.id})
+                else:
+                    rec.write({"approval_template_id": False})
+            if not rec.approval_template_id:
+                criteria_definition = [
+                    ("model", "=", self._name),
+                ]
+                template_ids = obj_approval_template.search(
+                    criteria_definition,
+                    order="sequence desc",
+                )
+                if template_ids:
+                    for template in template_ids:
+                        if self._evaluate_approval(template):
+                            rec.write({"approval_template_id": template.id})
+                            break
+            approver_ids = rec.create_approver()
+            rec.set_active(approver_ids)
         return approver_ids
 
     @api.multi
