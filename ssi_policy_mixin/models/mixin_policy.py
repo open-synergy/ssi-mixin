@@ -85,8 +85,9 @@ class MixinPolicy(models.AbstractModel):
             if document.policy_template_id:
                 for policy in document.policy_template_id.detail_ids:
                     result = policy.get_policy(document)
-                    setattr(
-                        document,
-                        policy.field_id.name,
-                        result,
-                    )
+                    if policy.field_id:
+                        setattr(
+                            document,
+                            policy.field_id.name,
+                            result,
+                        )
