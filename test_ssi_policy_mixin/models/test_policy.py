@@ -2,7 +2,8 @@
 # Copyright 2021 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class TestPolicy(models.Model):
@@ -75,6 +76,14 @@ class TestPolicy(models.Model):
         string="Can Restart",
         compute="_compute_policy",
     )
+    print_ok = fields.Boolean(
+        string="Can Print",
+        compute="_compute_policy",
+    )
+    smart_ok = fields.Boolean(
+        string="Can Open Smart Button",
+        compute="_compute_policy",
+    )
 
     # Log Fields
     confirm_date = fields.Datetime(
@@ -139,6 +148,7 @@ class TestPolicy(models.Model):
             "confirm_user_id": self.env.user.id,
         }
 
+    @api.multi
     def action_confirm(self):
         for document in self:
             document.write(document._prepare_confirm_data())
@@ -152,6 +162,7 @@ class TestPolicy(models.Model):
             "open_user_id": self.env.user.id,
         }
 
+    @api.multi
     def action_open(self):
         for document in self:
             document.write(document._prepare_open_data())
@@ -165,6 +176,7 @@ class TestPolicy(models.Model):
             "done_user_id": self.env.user.id,
         }
 
+    @api.multi
     def action_done(self):
         for document in self:
             document.write(document._prepare_done_data())
@@ -178,6 +190,7 @@ class TestPolicy(models.Model):
             "cancel_user_id": self.env.user.id,
         }
 
+    @api.multi
     def action_cancel(self):
         for document in self:
             document.write(document._prepare_cancel_data())
@@ -197,6 +210,19 @@ class TestPolicy(models.Model):
             "cancel_user_id": False,
         }
 
+    @api.multi
     def action_restart(self):
         for document in self:
             document.write(document._prepare_restart_data())
+
+    @api.multi
+    def action_print(self):
+        for document in self:
+            msg = _("Print status for %s: OK!") % document.name
+            raise UserError(msg)
+
+    @api.multi
+    def action_open_smart_button(self):
+        for document in self:
+            msg = _("Open Smart Button status for %s: OK!") % document.name
+            raise UserError(msg)
