@@ -34,7 +34,6 @@ class PolicyTemplateDetail(models.Model):
     )
     states = fields.Char(
         string="States",
-        required=True,
     )
     restrict_user = fields.Boolean(
         string="Restriction Based on User",
@@ -89,18 +88,21 @@ class PolicyTemplateDetail(models.Model):
     @api.multi
     def _get_policy(self, document):
         self.ensure_one()
-        result = False
+        result_state = True
+        result_user = True
+        result_additional = True
+
         if self.restrict_state:
-            if self._evaluate_states(document):
-                result = True
+            if not self._evaluate_states(document):
+                result_state = False
 
         if self.restrict_user:
             if self.env.user.id == SUPERUSER_ID:
-                result = True
+                result_user = True
             else:
                 try:
                     method_name = "_get_policy_" + self.computation_method
-                    result = getattr(self, method_name)(document)
+                    result_user = getattr(self, method_name)(document)
                 except Exception as error:
                     msg_err = _("Error evaluating conditions.\n %s") % error
                     raise UserError(msg_err)
@@ -111,10 +113,12 @@ class PolicyTemplateDetail(models.Model):
                 safe_eval(
                     self.additional_python_code, localdict, mode="exec", nocopy=True
                 )
+                result_additional = localdict["result"]
             except Exception as error:
                 msg_err = _("Error evaluating conditions.\n %s") % error
                 raise UserError(msg_err)
-        return result
+
+        return result_state and result_user and result_additional
 
     @api.multi
     def _get_policy_use_user(self, document):
