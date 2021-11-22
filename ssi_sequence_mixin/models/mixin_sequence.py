@@ -13,7 +13,7 @@ class MixingSequence(models.AbstractModel):
     _fallback_sequence_field = "name"
 
     @api.multi
-    def _get_localdict(self):
+    def _get_sequence_localdict(self):
         self.ensure_one()
         return {
             "env": self.env,
@@ -21,12 +21,12 @@ class MixingSequence(models.AbstractModel):
         }
 
     @api.multi
-    def _evaluate_policy(self, template):
+    def _evaluate_sequence(self, template):
         self.ensure_one()
         if not template:
             return False
         try:
-            method_name = "_evaluate_policy_" + template.computation_method
+            method_name = "_evaluate_sequence" + template.computation_method
             result = getattr(self, method_name)(template)
         except Exception as error:
             msg_err = _("Error evaluating conditions.\n %s") % error
@@ -34,10 +34,10 @@ class MixingSequence(models.AbstractModel):
         return result
 
     @api.multi
-    def _evaluate_policy_use_python(self, template):
+    def _evaluate_sequence_use_python(self, template):
         self.ensure_one()
         res = False
-        localdict = self._get_localdict()
+        localdict = self._get_sequence_localdict()
         try:
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             res = localdict["result"]
@@ -46,7 +46,7 @@ class MixingSequence(models.AbstractModel):
         return res
 
     @api.multi
-    def _evaluate_policy_use_domain(self, template):
+    def _evaluate_sequence_use_domain(self, template):
         self.ensure_one()
         result = False
         domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
@@ -57,7 +57,7 @@ class MixingSequence(models.AbstractModel):
         return result
 
     @api.multi
-    def _get_template(self):
+    def _get_template_sequence(self):
         result = False
         obj_sequence_template = self.env["sequence.template"]
         criteria = [
@@ -68,7 +68,7 @@ class MixingSequence(models.AbstractModel):
             order="sequence desc",
         )
         for template in templates:
-            if self._evaluate_policy(template):
+            if self._evaluate_sequence(template):
                 result = template
                 break
         return result
@@ -76,7 +76,7 @@ class MixingSequence(models.AbstractModel):
     @api.multi
     def _create_sequence(self):
         self.ensure_one()
-        template = self._get_template()
+        template = self._get_template_sequence()
         if template:
             result = template.initial_string
             if getattr(self, template.sequence_field_id.name) == result:
