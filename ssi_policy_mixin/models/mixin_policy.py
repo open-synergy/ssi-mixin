@@ -17,7 +17,7 @@ class MixinPolicy(models.AbstractModel):
     )
 
     @api.multi
-    def _get_localdict(self):
+    def _get_policy_localdict(self):
         self.ensure_one()
         return {
             "env": self.env,
@@ -41,7 +41,7 @@ class MixinPolicy(models.AbstractModel):
     def _evaluate_policy_use_python(self, template):
         self.ensure_one()
         res = False
-        localdict = self._get_localdict()
+        localdict = self._get_policy_localdict()
         try:
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             res = localdict["result"]
@@ -61,7 +61,7 @@ class MixinPolicy(models.AbstractModel):
         return result
 
     @api.multi
-    def _get_template_id(self):
+    def _get_template_policy(self):
         result = False
         obj_policy_template = self.env["policy.template"]
         criteria = [
