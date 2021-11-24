@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 OpenSynergy Indonesia
+     Copyright 2021 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="status_check_template_detail_view_tree" model="ir.ui.view">
+        <field name="name">status.check.template.detail.tree</field>
+        <field name="model">status.check.template_detail</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle" />
+                <field name="status_check_item_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="status_check_template_detail_view_form" model="ir.ui.view">
+        <field name="name">status.check.template.detail.form</field>
+        <field name="model">status.check.template_detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <header />
+                <sheet>
+                    <group name="group_1" colspan="4" col="2">
+                        <group name="group_1_1" colspan="1" col="2">
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                            <field name="status_check_item_id" />
+                            <field name="sequence" />
+                        </group>
+                        <group name="group_1_2">
+                            <field name="active" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
