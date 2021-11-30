@@ -7,6 +7,7 @@ from odoo import fields, models
 class StatusCheckTemplateDetail(models.Model):
     _name = "status.check.template_detail"
     _description = "Status Check Template Detail"
+    _order = "sequence, id"
 
     template_id = fields.Many2one(
         string="Status Check Template",
@@ -18,7 +19,8 @@ class StatusCheckTemplateDetail(models.Model):
         store=True,
     )
     sequence = fields.Integer(
-        default=1,
+        default=5,
+        required=True,
     )
     status_check_item_id = fields.Many2one(
         string="Status Check Item",
