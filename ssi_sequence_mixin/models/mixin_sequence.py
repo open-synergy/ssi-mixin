@@ -26,7 +26,7 @@ class MixingSequence(models.AbstractModel):
         if not template:
             return False
         try:
-            method_name = "_evaluate_sequence" + template.computation_method
+            method_name = "_evaluate_sequence_" + template.computation_method
             result = getattr(self, method_name)(template)
         except Exception as error:
             msg_err = _("Error evaluating conditions.\n %s") % error
