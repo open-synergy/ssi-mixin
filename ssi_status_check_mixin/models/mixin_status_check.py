@@ -12,7 +12,7 @@ class MixinStatusCheck(models.AbstractModel):
     _description = "Mixin Object for Status Check"
 
     status_check_template_id = fields.Many2one(
-        string="# Template",
+        string="# Status Check Template",
         comodel_name="status.check.template",
     )
     status_check_ids = fields.One2many(
@@ -24,7 +24,7 @@ class MixinStatusCheck(models.AbstractModel):
     )
 
     @api.multi
-    def _get_policy_localdict(self):
+    def _get_status_check_localdict(self):
         self.ensure_one()
         return {
             "env": self.env,
@@ -48,7 +48,7 @@ class MixinStatusCheck(models.AbstractModel):
     def _evaluate_status_check_use_python(self, template):
         self.ensure_one()
         res = False
-        localdict = self._get_policy_localdict()
+        localdict = self._get_status_check_localdict()
         try:
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             if "result" in localdict:
@@ -88,33 +88,31 @@ class MixinStatusCheck(models.AbstractModel):
         "status_check_template_id",
     )
     def onchange_status_check_ids(self):
-        res = []
-        self.status_check_ids = [(5, 0, 0)]
-        if self.status_check_template_id:
-            res = self.create_status_check_ids()
-        self.status_check_ids = res
+        for document in self:
+            res = []
+            document.status_check_ids = [(5, 0, 0)]
+            if document.status_check_template_id:
+                res = document.create_status_check_ids()
+            document.status_check_ids = res
 
     @api.multi
     def create_status_check_ids(self):
         self.ensure_one()
-        obj_approval_template_detail = self.env["status.check.template_detail"]
-        obj_approval_approval = created_trs = self.env["status.check"]
+        obj_status_check_detail = self.env["status.check.template_detail"]
+        obj_status_check = res = self.env["status.check"]
         sequence = 0
 
-        criteria_approval = [("template_id", "=", self.status_check_template_id.id)]
-        approver_ids = obj_approval_template_detail.search(
-            criteria_approval, order="sequence"
-        )
-        if approver_ids:
-            for approver in approver_ids:
+        criteria = [("template_id", "=", self.status_check_template_id.id)]
+        status_check_ids = obj_status_check_detail.search(criteria, order="sequence")
+        if status_check_ids:
+            for status_check in status_check_ids:
                 sequence += 1
-                created_trs += obj_approval_approval.create(
+                res += obj_status_check.create(
                     {
                         "model": self._name,
                         "res_id": self.id,
                         "template_id": self.status_check_template_id.id,
-                        "template_detail_id": approver.id,
-                        "sequence": sequence,
+                        "template_detail_id": status_check.id,
                     }
                 )
-        return created_trs
+        return res
