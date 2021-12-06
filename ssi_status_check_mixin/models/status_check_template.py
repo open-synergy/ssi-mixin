@@ -65,3 +65,11 @@ class StatusCheckTemplate(models.Model):
         comodel_name="status.check.template_detail",
         inverse_name="template_id",
     )
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for document in self:
+            name = "[{}] {}".format(document.model, document.sudo().name)
+            res.append((document.id, name))
+        return res
