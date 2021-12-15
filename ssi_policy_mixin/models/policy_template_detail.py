@@ -48,7 +48,7 @@ class PolicyTemplateDetail(models.Model):
             ("use_python", "Python Expression"),
         ],
         default="use_user",
-        required=True,
+        required=False,
     )
     user_ids = fields.Many2many(
         string="Users",
@@ -74,7 +74,7 @@ class PolicyTemplateDetail(models.Model):
     )
     additional_python_code = fields.Text(
         string="Additional Python Code",
-        default="""# Available locals:\n#  - rec: current record\n result = True""",
+        default="""# Available locals:\n#  - rec: current record\nresult = True""",
     )
 
     @api.multi
@@ -183,3 +183,10 @@ class PolicyTemplateDetail(models.Model):
         self.ensure_one()
         policy = self._get_policy(document)
         return policy
+
+    @api.onchange(
+        "restrict_user",
+    )
+    def onchange_computation_method(self):
+        if not self.restrict_user:
+            self.computation_method = False
