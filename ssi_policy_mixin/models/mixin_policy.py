@@ -11,6 +11,21 @@ class MixinPolicy(models.AbstractModel):
     _name = "mixin.policy"
     _description = "Mixin Object for Workflow Policy"
 
+    @api.multi
+    def _compute_allowed_policy_template_ids(self):
+        obj_template = self.env["policy.template"]
+        for record in self:
+            criteria = [
+                ("model", "=", self._name),
+            ]
+            record.allowed_policy_template_ids = obj_template.search(criteria).ids
+
+    allowed_policy_template_ids = fields.Many2many(
+        string="Allowed Policy Templates",
+        comodel_name="policy.template",
+        compute="_compute_allowed_policy_template_ids",
+        store=False,
+    )
     policy_template_id = fields.Many2one(
         string="# Template",
         comodel_name="policy.template",
@@ -67,14 +82,24 @@ class MixinPolicy(models.AbstractModel):
         criteria = [
             ("model_id.model", "=", str(self._name)),
         ]
-        policy_template_id = obj_policy_template.search(
+        policy_templates = obj_policy_template.search(
             criteria,
             order="sequence desc",
-            limit=1,
         )
-        if self._evaluate_policy(policy_template_id):
-            result = policy_template_id.id
+        for template in policy_templates:
+            if self._evaluate_policy(template):
+                result = template.id
+                break
         return result
+
+    @api.multi
+    def action_reload_policy_template(self):
+        for record in self:
+            record.write(
+                {
+                    "policy_template_id": self._get_template_policy(),
+                }
+            )
 
     @api.depends(
         "policy_template_id",
