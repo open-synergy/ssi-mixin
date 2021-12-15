@@ -45,7 +45,11 @@
                                 col="2"
                             >
                                 <field name="restrict_state" string="Activate" />
-                                <field name="states" colspan="2" />
+                                <field
+                                    name="states"
+                                    colspan="2"
+                                    attrs="{'invisible': [('restrict_state', '=', False)]}"
+                                />
                             </group>
                             <group
                                 name="group_policy_2"
@@ -56,7 +60,7 @@
                                 <field name="restrict_user" string="Activate" />
                                 <field
                                     name="computation_method"
-                                    attrs="{'invisible': [('restrict_user', '=', False)]}"
+                                    attrs="{'invisible': [('restrict_user', '=', False)],'required': [('restrict_user', '=', True)]}"
                                 />
                                 <field
                                     name="user_ids"
@@ -86,7 +90,11 @@
                                 col="2"
                             >
                                 <field name="restrict_additional" string="Activate" />
-                                <field name="additional_python_code" widget="ace" />
+                                <field
+                                    name="additional_python_code"
+                                    widget="ace"
+                                    attrs="{'invisible': [('restrict_additional', '=', False)]}"
+                                />
                             </group>
                         </page>
                     </notebook>
