@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 OpenSynergy Indonesia
+     Copyright 2021 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="state_change_history_view_tree" model="ir.ui.view">
+        <field name="name">state.change.history.view.tree</field>
+        <field name="model">state.change.history</field>
+        <field name="arch" type="xml">
+            <tree create="false">
+                <field name="user_id" />
+                <field name="state_from" />
+                <field name="state_to" />
+                <field name="date_change" />
+            </tree>
+        </field>
+    </record>
+
+</odoo>
