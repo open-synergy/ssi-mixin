@@ -29,6 +29,7 @@ class MixinPolicy(models.AbstractModel):
     policy_template_id = fields.Many2one(
         string="# Template",
         comodel_name="policy.template",
+        copy=False,
     )
 
     @api.multi
