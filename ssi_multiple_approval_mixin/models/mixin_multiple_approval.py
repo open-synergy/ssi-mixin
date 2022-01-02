@@ -21,6 +21,7 @@ class MixinMultipleApproval(models.AbstractModel):
     approval_template_id = fields.Many2one(
         string="# Template",
         comodel_name="approval.template",
+        copy=False,
     )
     approval_ids = fields.One2many(
         string="Approvals",
