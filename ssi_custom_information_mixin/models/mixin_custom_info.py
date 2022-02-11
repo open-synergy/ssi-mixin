@@ -95,6 +95,8 @@ class MixinCustomInfo(models.AbstractModel):
                         "model": self._name,
                     }
                 )
+        else:
+            self.custom_info_ids.unlink()
 
     @api.multi
     def unlink(self):
