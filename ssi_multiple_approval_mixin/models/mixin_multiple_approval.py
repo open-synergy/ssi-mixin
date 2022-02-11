@@ -372,6 +372,13 @@ class MixinMultipleApproval(models.AbstractModel):
         return approver_ids
 
     @api.multi
+    def action_reload_approval(self):
+        for rec in self:
+            rec.mapped("approval_ids").unlink()
+            rec.mapped("active_approver_partner_ids").unlink()
+            rec.action_request_approval()
+
+    @api.multi
     def create_approver(self):
         self.ensure_one()
         obj_approval_template_detail = self.env["approval.template_detail"]
