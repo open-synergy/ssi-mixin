@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
 <odoo>
     <record id="test_related_attachment_view_tree" model="ir.ui.view">
         <field name="name">test.related.attachment.tree</field>
@@ -118,15 +118,16 @@
     </record>
 
     <record id="test_related_attachment_action" model="ir.actions.act_window">
-        <field name="name">Test Related Attachment</field>
+        <field name="name">Test Related Attachments</field>
         <field name="res_model">test.related_attachment</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem
         id="test_related_attachment_menu"
+        name="Tests"
         parent="ssi_related_attachment_mixin.menu_related_attachment"
         action="test_related_attachment_action"
-        sequence="3"
+        sequence="100"
     />
 </odoo>
