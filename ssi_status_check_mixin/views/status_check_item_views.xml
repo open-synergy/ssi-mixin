@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 OpenSynergy Indonesia
      Copyright 2021 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
 <odoo>
     <record id="status_check_item_search_view" model="ir.ui.view">
         <field name="name">status.check.item.view.search</field>
@@ -80,7 +80,7 @@
     </record>
 
     <record id="status_check_item_action" model="ir.actions.act_window">
-        <field name="name">Status Check Item</field>
+        <field name="name">Status Check Items</field>
         <field name="res_model">status.check.item</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -88,10 +88,10 @@
 
     <menuitem
         id="status_check_item_menu"
-        name="Status Check Item"
+        name="Items"
         parent="menu_status_check"
         action="status_check_item_action"
-        sequence="1"
+        sequence="10"
     />
 
 </odoo>
