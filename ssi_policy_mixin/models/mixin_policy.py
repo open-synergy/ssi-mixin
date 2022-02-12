@@ -30,6 +30,7 @@ class MixinPolicy(models.AbstractModel):
         string="# Template",
         comodel_name="policy.template",
         copy=False,
+        domain=lambda self: [("model", "=", self._name)],
     )
 
     @api.multi
