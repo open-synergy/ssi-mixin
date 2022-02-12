@@ -81,3 +81,11 @@ class PolicyTemplate(models.Model):
         default="""# Available locals:\n#  - rec: current record""",
         copy=True,
     )
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for record in self:
+            name = "[{}] {}".format(record.model, record.name)
+            result.append((record.id, name))
+        return result
