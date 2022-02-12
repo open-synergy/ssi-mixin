@@ -23,6 +23,7 @@ class MixinRelatedAttachment(models.AbstractModel):
         string="Related Attachment Template",
         comodel_name="attachment.related_attachment_template",
         copy=False,
+        domain=lambda self: [("model", "=", self._name)],
     )
     allowed_related_attachment_template_ids = fields.Many2many(
         string="Allowed Related Attachment Template",

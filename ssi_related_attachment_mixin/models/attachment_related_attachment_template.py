@@ -65,3 +65,11 @@ class AttachmentRelatedAttachmentTemplate(models.Model):
         string="Python Code",
         default="""# Available locals:\n#  - rec: current record""",
     )
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for record in self:
+            name = "[{}] {}".format(record.model, record.name)
+            result.append((record.id, name))
+        return result
