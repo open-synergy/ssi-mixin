@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 OpenSynergy Indonesia
      Copyright 2021 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
 <odoo>
     <record id="test_state_change_history_view_tree" model="ir.ui.view">
         <field name="name">test.state.change.history.tree</field>
@@ -105,15 +105,16 @@
     </record>
 
     <record id="test_state_change_history_action" model="ir.actions.act_window">
-        <field name="name">Test State Change History</field>
+        <field name="name">Test State Change Histories</field>
         <field name="res_model">test.state_change_history</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem
         id="test_state_change_history_menu"
+        name="Tests"
         parent="ssi_state_change_history_mixin.menu_state_change_history"
         action="test_state_change_history_action"
-        sequence="2"
+        sequence="100"
     />
 </odoo>
