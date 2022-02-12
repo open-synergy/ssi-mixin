@@ -12,7 +12,7 @@ class MixinStateChangeConstrain(models.AbstractModel):
     _description = "Mixin Object for State Change Constrain"
 
     state_change_constrain_template_id = fields.Many2one(
-        string="# State Change Constrain Template",
+        string="State Change Constrain Template",
         comodel_name="state.change.constrain.template",
         domain=lambda self: [("model", "=", self._name)],
         copy=False,
