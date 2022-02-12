@@ -69,8 +69,8 @@ class StatusCheckTemplate(models.Model):
 
     @api.multi
     def name_get(self):
-        res = []
-        for document in self:
-            name = "[{}] {}".format(document.model, document.sudo().name)
-            res.append((document.id, name))
-        return res
+        result = []
+        for record in self:
+            name = "[{}] {}".format(record.model, record.name)
+            result.append((record.id, name))
+        return result

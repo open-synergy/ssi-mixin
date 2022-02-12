@@ -14,6 +14,7 @@ class MixinStatusCheck(models.AbstractModel):
     status_check_template_id = fields.Many2one(
         string="# Status Check Template",
         comodel_name="status.check.template",
+        domain=lambda self: [("model", "=", self._name)],
     )
     status_check_ids = fields.One2many(
         string="Status Check",
