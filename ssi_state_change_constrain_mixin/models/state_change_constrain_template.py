@@ -97,3 +97,11 @@ class StateChangeConstrainTemplate(models.Model):
         comodel_name="state.change.constrain.template_detail",
         inverse_name="template_id",
     )
+
+    @api.multi
+    def name_get(self):
+        result = []
+        for record in self:
+            name = "[{}] {}".format(record.model, record.name)
+            result.append((record.id, name))
+        return result

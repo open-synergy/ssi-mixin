@@ -14,6 +14,8 @@ class MixinStateChangeConstrain(models.AbstractModel):
     state_change_constrain_template_id = fields.Many2one(
         string="# State Change Constrain Template",
         comodel_name="state.change.constrain.template",
+        domain=lambda self: [("model", "=", self._name)],
+        copy=False,
     )
 
     @api.multi
