@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
 <odoo>
     <record id="attachment_related_attachment_category_view_search" model="ir.ui.view">
         <field name="name">attachment.related.attachment.category.view.search</field>
@@ -59,7 +59,7 @@
         id="attachment_related_attachment_category_action"
         model="ir.actions.act_window"
     >
-        <field name="name">Related Attachment Category</field>
+        <field name="name">Related Attachment Categories</field>
         <field name="res_model">attachment.related_attachment_category</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -67,10 +67,10 @@
 
     <menuitem
         id="attachment_related_attachment_category_menu"
-        name="Category"
+        name="Categories"
         parent="menu_related_attachment"
         action="attachment_related_attachment_category_action"
-        sequence="1"
+        sequence="10"
     />
 
 </odoo>
