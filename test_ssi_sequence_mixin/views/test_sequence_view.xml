@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 OpenSynergy Indonesia
      Copyright 2021 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="test_sequence_view_tree" model="ir.ui.view">
         <field name="name">test.sequence.tree</field>
@@ -112,15 +112,16 @@
     </record>
 
     <record id="test_sequence_action" model="ir.actions.act_window">
-        <field name="name">Test Sequence</field>
+        <field name="name">Test Sequences</field>
         <field name="res_model">test.sequence</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem
         id="test_sequence_menu"
+        name="Tests"
         parent="ssi_sequence_mixin.root_sequence_template_menu"
         action="test_sequence_action"
-        sequence="2"
+        sequence="100"
     />
 </odoo>

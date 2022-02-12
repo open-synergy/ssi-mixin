@@ -3,7 +3,7 @@
    :alt: License: LGPL-3
 
 ===================================
-Test Module - Sequence Policy Mixin
+Test Module: Sequence Mixin
 ===================================
 
 
@@ -16,7 +16,7 @@ To install this module, you need to:
 2.  Add the path to this repository in your configuration (addons-path)
 3.  Update the module list (Must be on developer mode)
 4.  Go to menu *Apps -> Apps*
-5.  Search For *Test Module - Sequence Policy Mixin*
+5.  Search For *Test Module: Sequence Mixin*
 6.  Install the module
 
 Bug Tracker
