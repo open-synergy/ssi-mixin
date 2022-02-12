@@ -19,7 +19,7 @@ class MixinMultipleApproval(models.AbstractModel):
     _approval_state = "confirm"
 
     approval_template_id = fields.Many2one(
-        string="# Template",
+        string="Approval Template",
         comodel_name="approval.template",
         copy=False,
         domain=lambda self: [("model", "=", self._name)],
