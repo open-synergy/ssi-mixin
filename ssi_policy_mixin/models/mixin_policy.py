@@ -27,7 +27,7 @@ class MixinPolicy(models.AbstractModel):
         store=False,
     )
     policy_template_id = fields.Many2one(
-        string="# Template",
+        string="Policy Template",
         comodel_name="policy.template",
         copy=False,
         domain=lambda self: [("model", "=", self._name)],
