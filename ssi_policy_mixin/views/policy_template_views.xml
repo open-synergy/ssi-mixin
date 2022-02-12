@@ -115,7 +115,7 @@
     </record>
 
     <record id="policy_template_action" model="ir.actions.act_window">
-        <field name="name">Policy Template</field>
+        <field name="name">Policy Templates</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">policy.template</field>
         <field name="view_type">form</field>
@@ -124,10 +124,10 @@
 
     <menuitem
         id="policy_template_menu"
-        name="Policy Templates"
+        name="Templates"
         parent="root_policy_template_menu"
         action="policy_template_action"
-        sequence="1"
+        sequence="10"
     />
 
 </odoo>
