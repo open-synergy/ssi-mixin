@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2021 OpenSynergy Indonesia
      Copyright 2021 PT. Simetri Sinergi Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="approval_template_view_search" model="ir.ui.view">
         <field name="name">approval.template.search</field>
@@ -114,7 +114,7 @@
     </record>
 
     <record id="approval_template_action" model="ir.actions.act_window">
-        <field name="name">Approval Template</field>
+        <field name="name">Approval Templates</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">approval.template</field>
         <field name="view_type">form</field>
@@ -123,10 +123,10 @@
 
     <menuitem
         id="approval_template_menu"
-        name="Approval Template"
+        name="Templates"
         parent="menu_multiple_approval"
         action="approval_template_action"
-        sequence="1"
+        sequence="10"
     />
 
 </odoo>
