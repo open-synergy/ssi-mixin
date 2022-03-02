@@ -1,7 +1,7 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
+# pylint: disable=W0622
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
@@ -84,7 +84,6 @@ class ApprovalApproval(models.Model):
         for rec in self:
             rec.approver_group_ids = rec._get_approver_group_ids()
 
-    @api.model
     def _get_approver_group_ids(self):
         self.ensure_one()
         partner_ids = False
@@ -110,7 +109,6 @@ class ApprovalApproval(models.Model):
         readonly=True,
     )
 
-    @api.model
     def _get_record(self):
         document_id = self.res_id
         document_model = self.model
@@ -118,14 +116,12 @@ class ApprovalApproval(models.Model):
         object = self.env[document_model].browse([document_id])[0]
         return object
 
-    @api.model
     def _get_localdict(self):
         return {
             "rec": self._get_record(),
             "env": self.env,
         }
 
-    @api.model
     def _evaluate_python_code(self, python_condition):
         localdict = self._get_localdict()
         result = False
@@ -140,7 +136,6 @@ class ApprovalApproval(models.Model):
 
         return result
 
-    @api.model
     def get_context(self):
         self.ensure_one()
         result = {}

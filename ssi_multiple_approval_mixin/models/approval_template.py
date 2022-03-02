@@ -10,6 +10,10 @@ class ApprovalTemplate(models.Model):
     _description = "Approval Template"
     _order = "sequence"
 
+    DEFAULT_PYTHON_CODE = """# Available variables:
+#  - env: Odoo Environment on which the action is triggered.
+#  - document: record on which the action is triggered; may be void."""
+
     @api.model
     def _default_company_id(self):
         return self.env["res.company"]._company_default_get("approval.template")
@@ -67,5 +71,7 @@ class ApprovalTemplate(models.Model):
     )
     python_code = fields.Text(
         string="Python Code",
-        default="""# Available locals:\n#  - rec: current record""",
+        default=DEFAULT_PYTHON_CODE
+        + "\n#  - result: Return result, the value is boolean.",
+        copy=True,
     )

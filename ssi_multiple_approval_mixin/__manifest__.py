@@ -6,7 +6,7 @@
     "name": "Multiple Approval",
     "version": "14.0.1.0.0",
     "category": "Administration",
-    "website": "https://github.com/OCA/vertical-rental",
+    "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "LGPL-3",
     "installable": True,

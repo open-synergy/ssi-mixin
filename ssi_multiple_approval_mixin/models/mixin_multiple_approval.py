@@ -100,7 +100,6 @@ class MixinMultipleApproval(models.AbstractModel):
             else:
                 rec.active_approver_partner_ids = rec._get_approver_partner_ids()
 
-    @api.model
     def _get_approver_partner_ids(self):
         self.ensure_one()
         partner = False
@@ -114,7 +113,6 @@ class MixinMultipleApproval(models.AbstractModel):
                 )
         return partner
 
-    @api.model
     def _get_approver_partner_ids_by_sequence(self):
         self.ensure_one()
         partner = False
@@ -131,7 +129,6 @@ class MixinMultipleApproval(models.AbstractModel):
                 )
         return partner
 
-    @api.model
     def _compute_approved_rejected(self):
         for rec in self:
             rec.approved = self._get_approvals_approved(rec.approval_ids)
@@ -154,7 +151,6 @@ class MixinMultipleApproval(models.AbstractModel):
             if rec.status == "rejected":
                 return True
 
-    @api.model
     def _prepare_domain_need_validation(self):
         self.ensure_one()
         domain = [
@@ -162,7 +158,6 @@ class MixinMultipleApproval(models.AbstractModel):
         ]
         return domain
 
-    @api.model
     def _compute_need_validation(self):
         for rec in self:
             result = False
@@ -220,7 +215,13 @@ class MixinMultipleApproval(models.AbstractModel):
             rec = rec.filtered(lambda r: r.approval_ids and r.need_validation != value)
         return [("id", "in", rec.ids)]
 
-    @api.model
+    def _get_approval_localdict(self):
+        self.ensure_one()
+        return {
+            "env": self.env,
+            "document": self,
+        }
+
     def _evaluate_approval(self, template):
         self.ensure_one()
         if not template:
@@ -233,17 +234,17 @@ class MixinMultipleApproval(models.AbstractModel):
             raise UserError(msg_err)
         return result
 
-    @api.model
     def _evaluate_approval_use_python(self, template):
         self.ensure_one()
+        res = False
+        localdict = self._get_approval_localdict()
         try:
-            res = safe_eval(template.python_code, globals_dict={"rec": self})
+            safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
+            res = localdict["result"]
         except Exception as error:
-            msg_err = _("Error evaluating approval conditions.\n %s") % error
-            raise UserError(msg_err)
+            raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
 
-    @api.model
     def _evaluate_approval_use_domain(self, template):
         self.ensure_one()
         result = False
@@ -262,7 +263,6 @@ class MixinMultipleApproval(models.AbstractModel):
         ]
         return fields
 
-    @api.model
     def _check_allow_write_under_approval(self, vals):
         exceptions = self._get_under_approval_exceptions()
         for val in vals:
@@ -270,7 +270,6 @@ class MixinMultipleApproval(models.AbstractModel):
                 return False
         return True
 
-    @api.model
     def set_active(self, approver):
         self.ensure_one()
         if approver and self.approval_template_id:
@@ -279,7 +278,6 @@ class MixinMultipleApproval(models.AbstractModel):
                 approver_ids = approver_ids[0]
             approver_ids.write({"status": "pending"})
 
-    @api.model
     def _action_approval(self, state):
         self.ensure_one()
         approval_ids = self.active_approval_ids
@@ -299,17 +297,49 @@ class MixinMultipleApproval(models.AbstractModel):
             elif state == "rejected":
                 self.write({"state": "reject"})
 
-    @api.model
     def action_approve_approval(self):
         for rec in self:
             rec._action_approval("approved")
 
-    @api.model
     def action_reject_approval(self):
         for rec in self:
             rec._action_approval("rejected")
 
-    @api.model
+    def action_reload_approval_template(self):
+        for rec in self:
+            rec.mapped("approval_ids").unlink()
+            rec.mapped("active_approver_partner_ids").unlink()
+            rec.action_request_approval()
+
+    def action_reload_approval(self):
+        for rec in self:
+            rec._reload_approval()
+
+    def _reload_approval(self):
+        self.ensure_one()
+        if self.approval_template_id:
+            template = self.approval_template_id
+            allowed_details = template.detail_ids
+            self.approval_ids.filtered(
+                lambda r: r.template_detail_id.id not in allowed_details.ids
+            ).unlink()
+            to_be_added = template.detail_ids - self.approval_ids.mapped(
+                "template_detail_id"
+            )
+            for detail in to_be_added:
+                approver_ids = self.approval_ids.create(
+                    {
+                        "res_id": self.id,
+                        "model": self._name,
+                        "template_id": self.approval_template_id.id,
+                        "template_detail_id": detail.id,
+                        "sequence": detail.sequence,
+                    }
+                )
+                self.set_active(approver_ids)
+        else:
+            self.approval_ids.unlink()
+
     def write(self, vals):
         for rec in self:
             if (
@@ -340,7 +370,6 @@ class MixinMultipleApproval(models.AbstractModel):
             self.approval_template_id = False
         return super(MixinMultipleApproval, self).write(vals)
 
-    @api.model
     def action_request_approval(self):
         obj_approval_template = self.env["approval.template"]
         approver_ids = False
@@ -367,7 +396,6 @@ class MixinMultipleApproval(models.AbstractModel):
             rec.set_active(approver_ids)
         return approver_ids
 
-    @api.model
     def create_approver(self):
         self.ensure_one()
         obj_approval_template_detail = self.env["approval.template_detail"]
@@ -392,7 +420,6 @@ class MixinMultipleApproval(models.AbstractModel):
                 )
         return created_trs
 
-    @api.model
     def unlink(self):
         for rec in self:
             rec.mapped("approval_ids").unlink()
