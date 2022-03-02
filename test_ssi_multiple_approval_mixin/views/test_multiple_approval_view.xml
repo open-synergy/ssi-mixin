@@ -125,12 +125,26 @@
                         <page string="Approvals" name="tier_validation">
                             <group name="tier_validation_1" colspan="4" col="2">
                                 <field name="approval_template_id" />
+                                <button
+                                    name="action_reload_approval_template"
+                                    string="Reload Template"
+                                    class="oe_highlight"
+                                    type="object"
+                                />
+                                <newLine />
                                 <field
                                     name="active_approver_partner_ids"
                                     widget="many2many_tags"
                                 />
                             </group>
                             <group name="tier_validation_2" colspan="4" col="2">
+                                <button
+                                    name="action_reload_approval"
+                                    string="Reload Approval"
+                                    class="oe_highlight"
+                                    type="object"
+                                />
+                                <newLine />
                                 <field
                                     name="approval_ids"
                                     attrs="{'invisible':[('approval_ids', '=', [])]}"
