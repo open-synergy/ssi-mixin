@@ -17,6 +17,10 @@ class CustomInfoTemplate(models.Model):
         ),
     ]
 
+    DEFAULT_PYTHON_CODE = """# Available variables:
+#  - env: Odoo Environment on which the action is triggered.
+#  - document: record on which the action is triggered; may be void."""
+
     name = fields.Char(required=True, translate=True)
     model_id = fields.Many2one(
         string="Referenced Model",
@@ -33,7 +37,7 @@ class CustomInfoTemplate(models.Model):
 
     @api.model
     def _default_company_id(self):
-        return self.env["res.company"]._company_default_get("approval.template")
+        return self.env["res.company"]._company_default_get("custom_info.template")
 
     company_id = fields.Many2one(
         string="Company",
@@ -64,7 +68,9 @@ class CustomInfoTemplate(models.Model):
     )
     python_code = fields.Text(
         string="Python Code",
-        default="""# Available locals:\n#  - rec: current record""",
+        default=DEFAULT_PYTHON_CODE
+        + "\n#  - result: Return result, the value is boolean.",
+        copy=True,
     )
     detail_ids = fields.One2many(
         string="Details",

@@ -121,7 +121,6 @@ class CustomInfoValue(models.Model):
 
     value = fields.Char(
         compute="_compute_value",
-        # search="_search_value",
         help="Value, always converted to/from the typed field.",
     )
     value_str = fields.Char(string="Text value", translate=True, index=True)
