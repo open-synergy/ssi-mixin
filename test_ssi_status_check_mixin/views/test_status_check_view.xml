@@ -102,6 +102,16 @@
                         <page name="page_status_check" string="Check Status">
                             <group name="grp_status_check_1" colspan="4" col="2">
                                 <field name="status_check_template_id" />
+                                <button
+                                    name="action_reload_status_check_template"
+                                    string="Reload Status Check Template"
+                                    type="object"
+                                />
+                                <button
+                                    name="action_reload_status_check"
+                                    string="Reload Status Check Item"
+                                    type="object"
+                                />
                             </group>
                             <field name="status_check_ids" nolabel="1" />
                         </page>
@@ -141,7 +151,7 @@
 
     <menuitem
         id="test_status_check_menu"
-        name="Test Status Check"
+        name="Test"
         parent="ssi_status_check_mixin.menu_status_check"
         action="test_status_check_action"
         sequence="100"
