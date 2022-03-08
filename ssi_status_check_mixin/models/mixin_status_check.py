@@ -80,6 +80,42 @@ class MixinStatusCheck(models.AbstractModel):
             result = template_id.id
         return result
 
+    def action_reload_status_check_template(self):
+        for record in self:
+            record.write(
+                {
+                    "status_check_template_id": self._get_template_status_check(),
+                }
+            )
+            record._reload_status_check()
+
+    def action_reload_status_check(self):
+        for record in self:
+            record._reload_status_check()
+
+    def _reload_status_check(self):
+        self.ensure_one()
+        if self.status_check_template_id:
+            template = self.status_check_template_id
+            allowed_details = template.detail_ids
+            self.status_check_ids.filtered(
+                lambda r: r.template_detail_id.id not in allowed_details.ids
+            ).unlink()
+            to_be_added = template.detail_ids - self.status_check_ids.mapped(
+                "template_detail_id"
+            )
+            for detail in to_be_added:
+                self.status_check_ids.create(
+                    {
+                        "res_id": self.id,
+                        "model": self._name,
+                        "template_id": self.status_check_template_id.id,
+                        "template_detail_id": detail.id,
+                    }
+                )
+        else:
+            self.status_check_ids.unlink()
+
     @api.onchange(
         "status_check_template_id",
     )
