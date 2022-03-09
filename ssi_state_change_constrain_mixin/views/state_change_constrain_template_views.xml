@@ -136,7 +136,7 @@
 
     <menuitem
         id="state_change_constrain_template_menu"
-        name="State Change Constrain Templates"
+        name="Templates"
         parent="menu_state_change_constrain"
         action="state_change_constrain_template_action"
         sequence="10"
