@@ -98,6 +98,16 @@
                         <page name="page_status_check" string="Check Status">
                             <group name="grp_status_check_1">
                                 <field name="status_check_template_id" />
+                                <button
+                                    name="action_reload_status_check_template"
+                                    string="Reload Status Check Template"
+                                    type="object"
+                                />
+                                <button
+                                    name="action_reload_status_check"
+                                    string="Reload Status Check Item"
+                                    type="object"
+                                />
                                 <field name="state_change_constrain_template_id" />
                             </group>
                             <field name="status_check_ids" nolabel="1" force_save="1" />
@@ -131,7 +141,7 @@
     </record>
 
     <record id="test_state_change_action" model="ir.actions.act_window">
-        <field name="name">Test State Change Constrains</field>
+        <field name="name">Test</field>
         <field name="res_model">test.state_change_constrain</field>
         <field name="view_mode">tree,form</field>
     </record>
