@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2021 OpenSynergy Indonesia
-     Copyright 2021 PT. Simetri Sinergi Indonesia
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <odoo>
     <record id="policy_template_view_search" model="ir.ui.view">
@@ -22,7 +22,7 @@
                         domain="[('computation_method','=','use_domain')]"
                     />
                     <separator />
-                    <filter
+                    <!-- <filter
                         name="dom_sequence"
                         string="Serial Approval"
                         domain="[('validate_sequence','=',True)]"
@@ -31,7 +31,7 @@
                         name="dom_sequence"
                         string="Paralel Approval"
                         domain="[('validate_sequence','=',False)]"
-                    />
+                    /> -->
                 </group>
                 <group name="group2">
                     <filter
@@ -118,7 +118,6 @@
         <field name="name">Policy Templates</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">policy.template</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 

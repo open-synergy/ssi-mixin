@@ -1,5 +1,5 @@
-# Copyright 2021 OpenSynergy Indonesia
-# Copyright 2021 PT. Simetri Sinergi Indonesia
+# Copyright 2022 OpenSynergy Indonesia
+# Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import api, fields, models
@@ -9,6 +9,11 @@ class PolicyTemplate(models.Model):
     _name = "policy.template"
     _description = "Policy Template"
     _order = "sequence, id"
+
+    DEFAULT_PYTHON_CODE = """# Available variables:
+#  - env: Odoo Environment on which the action is triggered.
+#  - document: record on which the action is triggered; may be void.
+#  - result: Return result, the value is boolean."""
 
     @api.model
     def _default_company_id(self):
@@ -22,6 +27,7 @@ class PolicyTemplate(models.Model):
     model_id = fields.Many2one(
         string="Referenced Model",
         comodel_name="ir.model",
+        ondelete="cascade",
         index=True,
         required=True,
         copy=True,
@@ -78,11 +84,10 @@ class PolicyTemplate(models.Model):
     )
     python_code = fields.Text(
         string="Python Code",
-        default="""# Available locals:\n#  - rec: current record""",
+        default=DEFAULT_PYTHON_CODE,
         copy=True,
     )
 
-    @api.multi
     def name_get(self):
         result = []
         for record in self:

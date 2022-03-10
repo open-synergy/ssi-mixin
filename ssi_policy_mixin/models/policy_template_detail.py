@@ -1,5 +1,5 @@
-# Copyright 2021 OpenSynergy Indonesia
-# Copyright 2021 PT. Simetri Sinergi Indonesia
+# Copyright 2022 OpenSynergy Indonesia
+# Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import SUPERUSER_ID, _, api, fields, models
@@ -32,8 +32,35 @@ class PolicyTemplateDetail(models.Model):
         string="Restriction Based on State",
         default=True,
     )
-    states = fields.Char(
+
+    @api.depends(
+        "template_id",
+        "template_id.state_field_id",
+    )
+    def _compute_allowed_state_ids(self):
+        obj_fields_selection = self.env["ir.model.fields.selection"]
+
+        for document in self:
+            result = []
+            state_field_id = document.template_id.state_field_id
+            if state_field_id:
+                criteria = [("field_id", "=", state_field_id.id)]
+                selection_ids = obj_fields_selection.search(criteria)
+                result = selection_ids.ids
+            document.allowed_state_ids = result
+
+    allowed_state_ids = fields.Many2many(
+        string="Allowed States",
+        comodel_name="ir.model.fields.selection",
+        compute="_compute_allowed_state_ids",
+        store=False,
+    )
+    state_ids = fields.Many2many(
         string="States",
+        comodel_name="ir.model.fields.selection",
+        relation="rel_policy_template_detail_2_field_selection",
+        column1="detail_id",
+        column2="field_selection_id",
     )
     restrict_user = fields.Boolean(
         string="Restriction Based on User",
@@ -77,7 +104,6 @@ class PolicyTemplateDetail(models.Model):
         default="""# Available locals:\n#  - rec: current record\nresult = True""",
     )
 
-    @api.multi
     def _get_localdict(self, document):
         self.ensure_one()
         return {
@@ -85,7 +111,6 @@ class PolicyTemplateDetail(models.Model):
             "document": document,
         }
 
-    @api.multi
     def _get_policy(self, document):
         self.ensure_one()
         result_state = True
@@ -120,7 +145,6 @@ class PolicyTemplateDetail(models.Model):
 
         return result_state and result_user and result_additional
 
-    @api.multi
     def _get_policy_use_user(self, document):
         self.ensure_one()
         result = False
@@ -130,7 +154,6 @@ class PolicyTemplateDetail(models.Model):
             result = True
         return result
 
-    @api.multi
     def _get_policy_use_group(self, document):
         self.ensure_one()
         result = False
@@ -141,7 +164,6 @@ class PolicyTemplateDetail(models.Model):
             result = True
         return result
 
-    @api.multi
     def _get_policy_use_both(self, document):
         self.ensure_one()
         result = False
@@ -155,7 +177,6 @@ class PolicyTemplateDetail(models.Model):
             result = True
         return result
 
-    @api.multi
     def _get_policy_use_python(self, document):
         self.ensure_one()
         result = False
@@ -167,18 +188,16 @@ class PolicyTemplateDetail(models.Model):
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return result
 
-    @api.multi
     def _evaluate_states(self, document):
         self.ensure_one()
         result = False
         if self.template_id.state_field_id:
             state_field = getattr(document, self.template_id.state_field_id.name)
-            list_states = self.states.split(",")
+            list_states = self.state_ids.mapped("value")
             if state_field in list_states:
                 result = True
         return result
 
-    @api.multi
     def get_policy(self, document):
         self.ensure_one()
         policy = self._get_policy(document)

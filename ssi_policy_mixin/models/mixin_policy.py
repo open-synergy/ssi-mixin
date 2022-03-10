@@ -1,5 +1,5 @@
-# Copyright 2021 OpenSynergy Indonesia
-# Copyright 2021 PT. Simetri Sinergi Indonesia
+# Copyright 2022 OpenSynergy Indonesia
+# Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import _, api, fields, models
@@ -11,7 +11,6 @@ class MixinPolicy(models.AbstractModel):
     _name = "mixin.policy"
     _description = "Mixin Object for Workflow Policy"
 
-    @api.multi
     def _compute_allowed_policy_template_ids(self):
         obj_template = self.env["policy.template"]
         for record in self:
@@ -33,7 +32,6 @@ class MixinPolicy(models.AbstractModel):
         domain=lambda self: [("model", "=", self._name)],
     )
 
-    @api.multi
     def _get_policy_localdict(self):
         self.ensure_one()
         return {
@@ -41,7 +39,6 @@ class MixinPolicy(models.AbstractModel):
             "document": self,
         }
 
-    @api.multi
     def _evaluate_policy(self, template):
         self.ensure_one()
         if not template:
@@ -54,7 +51,6 @@ class MixinPolicy(models.AbstractModel):
             raise UserError(msg_err)
         return result
 
-    @api.multi
     def _evaluate_policy_use_python(self, template):
         self.ensure_one()
         res = False
@@ -66,7 +62,6 @@ class MixinPolicy(models.AbstractModel):
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
 
-    @api.multi
     def _evaluate_policy_use_domain(self, template):
         self.ensure_one()
         result = False
@@ -77,7 +72,6 @@ class MixinPolicy(models.AbstractModel):
             result = True
         return result
 
-    @api.multi
     def _get_template_policy(self):
         result = False
         obj_policy_template = self.env["policy.template"]
@@ -94,7 +88,6 @@ class MixinPolicy(models.AbstractModel):
                 break
         return result
 
-    @api.multi
     def action_reload_policy_template(self):
         for record in self:
             record.write(
@@ -106,7 +99,6 @@ class MixinPolicy(models.AbstractModel):
     @api.depends(
         "policy_template_id",
     )
-    @api.multi
     def _compute_policy(self):
         for document in self:
             if document.policy_template_id:
@@ -118,3 +110,5 @@ class MixinPolicy(models.AbstractModel):
                             policy.field_id.name,
                             result,
                         )
+                    else:
+                        return False
