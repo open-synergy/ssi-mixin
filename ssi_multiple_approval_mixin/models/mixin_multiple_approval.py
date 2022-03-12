@@ -17,6 +17,7 @@ class MixinMultipleApproval(models.AbstractModel):
     _approval_cancel_state = "cancel"
     _approval_reject_state = "reject"
     _approval_state = "confirm"
+    _after_approved_method = False
 
     approval_template_id = fields.Many2one(
         string="# Template",
@@ -300,6 +301,8 @@ class MixinMultipleApproval(models.AbstractModel):
     def action_approve_approval(self):
         for rec in self:
             rec._action_approval("approved")
+            if rec.approved and not self._after_approved_method:
+                getattr(self, self._after_approved_method)()
 
     def action_reject_approval(self):
         for rec in self:
