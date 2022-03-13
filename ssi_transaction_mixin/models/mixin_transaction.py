@@ -12,7 +12,6 @@ class MixinTransaction(models.AbstractModel):
         "mixin.sequence",
         "mail.thread",
         "mixin.policy",
-        "mixin.multiple_approval",
     ]
     _description = "Transaction Mixin"
     _draft_state = "draft"
