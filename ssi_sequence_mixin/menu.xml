@@ -5,7 +5,7 @@
 <odoo>
     <menuitem
         id="root_sequence_template_menu"
-        name="Sequence Policy"
+        name="Sequence"
         parent="base.menu_custom"
     />
 </odoo>
