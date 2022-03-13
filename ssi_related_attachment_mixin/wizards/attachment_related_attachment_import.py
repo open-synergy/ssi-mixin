@@ -73,18 +73,6 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
         else:
             related_attachment.write({"attachment_id": self.attachment_id.id})
 
-    # def _prepare_attachment_data(self, record):
-    #     name = "%s" % (self.filename)
-    #     vals = {
-    #         "name": name,
-    #         "type": "binary",
-    #         "datas": self.file,
-    #         "datas_fname": self.filename,
-    #         "res_model": record._name,
-    #         "res_id": record.id,
-    #     }
-    #     return vals
-    # GANTI
     def _prepare_attachment_data(self, record):
         name = "%s" % (self.filename)
         vals = {
@@ -96,7 +84,6 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
         }
         return vals
 
-    # GANTI
     def _create_attachment(self, record):
         self.ensure_one()
         obj_ir_attachment = self.env["ir.attachment"]
