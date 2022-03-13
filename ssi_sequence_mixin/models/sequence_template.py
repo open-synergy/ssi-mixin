@@ -62,14 +62,14 @@ class SequenceTemplate(models.Model):
         comodel_name="ir.model.fields",
         ondelete="cascade",
         required=True,
-        domain="[('model_id', '=', model_id)]",
+        domain="[('model_id', '=', model_id),('ttype','=','char')]",
     )
     date_field_id = fields.Many2one(
         string="Date Field",
         comodel_name="ir.model.fields",
         ondelete="cascade",
         required=True,
-        domain="[('model_id', '=', model_id)]",
+        domain="[('model_id', '=', model_id),('ttype','in',['date','datetime'])]",
     )
     state = fields.Selection(
         string="States",
@@ -121,7 +121,7 @@ class SequenceTemplate(models.Model):
     )
     add_custom_prefix = fields.Boolean(
         string="Add Custom Prefix",
-        default=True,
+        default=False,
     )
     prefix_python_code = fields.Text(
         string="Python Code",
@@ -131,7 +131,7 @@ class SequenceTemplate(models.Model):
     )
     add_custom_suffix = fields.Boolean(
         string="Add Custom Suffix",
-        default=True,
+        default=False,
     )
     suffix_python_code = fields.Text(
         string="Python Code",
