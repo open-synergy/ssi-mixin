@@ -9,6 +9,7 @@ class MixinTransactionConfirm(models.AbstractModel):
     _name = "mixin.transaction_confirm"
     _inherit = [
         "mixin.transaction",
+        "mixin.multiple_approval",
     ]
     _description = "Transaction Mixin - Waiting for Approval Mixin"
     _confirm_state = "confirm"
