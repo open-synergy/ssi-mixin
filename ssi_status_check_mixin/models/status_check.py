@@ -1,7 +1,7 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
+# pylint: disable=W0622
 from odoo import _, fields, models
 from odoo.exceptions import Warning as UserError
 from odoo.tools.safe_eval import safe_eval
