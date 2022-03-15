@@ -11,6 +11,11 @@ class MixinPolicy(models.AbstractModel):
     _name = "mixin.policy"
     _description = "Mixin Object for Workflow Policy"
 
+    @api.model
+    def _get_policy_field(self):
+        res = []
+        return res
+
     def _compute_allowed_policy_template_ids(self):
         obj_template = self.env["policy.template"]
         for record in self:
@@ -41,18 +46,6 @@ class MixinPolicy(models.AbstractModel):
 
     def _evaluate_policy(self, template):
         self.ensure_one()
-        if not template:
-            return False
-        try:
-            method_name = "_evaluate_policy_" + template.computation_method
-            result = getattr(self, method_name)(template)
-        except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
-        return result
-
-    def _evaluate_policy_use_python(self, template):
-        self.ensure_one()
         res = False
         localdict = self._get_policy_localdict()
         try:
@@ -61,16 +54,6 @@ class MixinPolicy(models.AbstractModel):
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
-
-    def _evaluate_policy_use_domain(self, template):
-        self.ensure_one()
-        result = False
-        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
-
-        count_result = self.search_count(domain)
-        if count_result > 0:
-            result = True
-        return result
 
     def _get_template_policy(self):
         result = False
@@ -96,19 +79,27 @@ class MixinPolicy(models.AbstractModel):
                 }
             )
 
+    def _prepare_policy_field_data(self):
+        data = {}
+        policy_field = self._get_policy_field()
+        if policy_field:
+            for policy in policy_field:
+                data[policy] = False
+        return data
+
     @api.depends(
         "policy_template_id",
     )
     def _compute_policy(self):
         for document in self:
+            data = document._prepare_policy_field_data()
             if document.policy_template_id:
-                for policy in document.policy_template_id.detail_ids:
-                    result = policy.get_policy(document)
-                    if policy.field_id:
-                        setattr(
-                            document,
-                            policy.field_id.name,
-                            result,
-                        )
-                    else:
-                        return False
+                for detail in document.policy_template_id.detail_ids:
+                    result = detail.get_policy(document)
+                    data[detail.field_id.name] = result
+            for key in data:
+                setattr(
+                    document,
+                    key,
+                    data.get(key),
+                )
