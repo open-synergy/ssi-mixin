@@ -13,6 +13,19 @@ class TestPolicy(models.Model):
         "mail.thread",
     ]
 
+    @api.model
+    def _get_policy_field(self):
+        res = super(TestPolicy, self)._get_policy_field()
+        policy_field = [
+            "confirm_ok",
+            "open_ok",
+            "done_ok",
+            "cancel_ok",
+            "restart_ok",
+        ]
+        res += policy_field
+        return res
+
     name = fields.Char(
         string="# Document",
         default="/",
@@ -57,6 +70,7 @@ class TestPolicy(models.Model):
     confirm_ok = fields.Boolean(
         string="Can Confirm",
         compute="_compute_policy",
+        default=False,
     )
     open_ok = fields.Boolean(
         string="Can Open",
@@ -79,9 +93,9 @@ class TestPolicy(models.Model):
         "type_id",
     )
     def onchange_policy_template_id(self):
-        template_id = self._get_template_policy()
-        for document in self:
-            document.policy_template_id = template_id
+        if self.type_id:
+            template_id = self._get_template_policy()
+            self.policy_template_id = template_id
 
     def _prepare_confirm_data(self):
         self.ensure_one()
