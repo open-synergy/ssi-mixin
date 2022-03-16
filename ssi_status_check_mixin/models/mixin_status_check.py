@@ -55,16 +55,6 @@ class MixinStatusCheck(models.AbstractModel):
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
 
-    def _evaluate_status_check_domain(self, template):
-        self.ensure_one()
-        result = False
-        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
-
-        count_result = self.search_count(domain)
-        if count_result > 0:
-            result = True
-        return result
-
     def _get_template_status_check(self):
         result = False
         obj_status_check_template = self.env["status.check.template"]
