@@ -47,18 +47,6 @@ class MixinRelatedAttachment(models.AbstractModel):
 
     def _evaluate_related_attachment(self, template):
         self.ensure_one()
-        if not template:
-            return False
-        try:
-            method_name = "_evaluate_related_attachment_" + template.computation_method
-            result = getattr(self, method_name)(template)
-        except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
-        return result
-
-    def _evaluate_related_attachment_use_python(self, template):
-        self.ensure_one()
         res = False
         localdict = self._get_related_attachment_localdict()
         try:
@@ -68,16 +56,6 @@ class MixinRelatedAttachment(models.AbstractModel):
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
-
-    def _evaluate_related_attachment_domain(self, template):
-        self.ensure_one()
-        result = False
-        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
-
-        count_result = self.search_count(domain)
-        if count_result > 0:
-            result = True
-        return result
 
     def _get_template_related_attachment(self):
         result = False
@@ -94,12 +72,6 @@ class MixinRelatedAttachment(models.AbstractModel):
         if self._evaluate_related_attachment(template_id):
             result = template_id.id
         return result
-
-    @api.onchange()
-    def _onchange_related_attachment_template_id(self):
-        self.related_attachment_template_id = False
-        template_id = self._get_template_related_attachment()
-        self.related_attachment_template_id = template_id
 
     @api.onchange(
         "related_attachment_template_id",
@@ -140,6 +112,42 @@ class MixinRelatedAttachment(models.AbstractModel):
                     }
                 )
         return res
+
+    def action_reload_rel_attachment_template(self):
+        for record in self:
+            record.write(
+                {
+                    "related_attachment_template_id": self._get_template_related_attachment(),
+                }
+            )
+            record._reload_rel_attachment_detail()
+
+    def action_reload_rel_attachment_detail(self):
+        for record in self:
+            record._reload_rel_attachment_detail()
+
+    def _reload_rel_attachment_detail(self):
+        self.ensure_one()
+        if self.related_attachment_template_id:
+            template = self.related_attachment_template_id
+            allowed_details = template.detail_ids
+            self.related_attachment_ids.filtered(
+                lambda r: r.template_detail_id.id not in allowed_details.ids
+            ).unlink()
+            to_be_added = template.detail_ids - self.related_attachment_ids.mapped(
+                "template_detail_id"
+            )
+            for detail in to_be_added:
+                self.related_attachment_ids.create(
+                    {
+                        "model": self._name,
+                        "res_id": self.id,
+                        "template_id": template.id,
+                        "template_detail_id": detail.id,
+                    }
+                )
+        else:
+            self.related_attachment_ids.unlink()
 
     def unlink(self):
         related_attachments = self.mapped("related_attachment_ids")

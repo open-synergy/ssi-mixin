@@ -50,18 +50,6 @@ class AttachmentRelatedAttachmentTemplate(models.Model):
         inverse_name="template_id",
         copy=True,
     )
-    computation_method = fields.Selection(
-        string="Computation Method",
-        selection=[
-            ("use_domain", "Domain"),
-            ("use_python", "Python Code"),
-        ],
-        default="use_python",
-        required=True,
-    )
-    domain = fields.Char(
-        string="Domain",
-    )
     python_code = fields.Text(
         string="Python Code",
         default="""# Available locals:\n#  - rec: current record""",
