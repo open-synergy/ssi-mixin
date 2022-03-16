@@ -70,6 +70,7 @@
                                 />
                             </group>
                         </page>
+
                         <page name="page_description" string="Description">
                             <field name="description" colspan="4" />
                         </page>

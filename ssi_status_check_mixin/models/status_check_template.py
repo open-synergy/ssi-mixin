@@ -59,6 +59,7 @@ class StatusCheckTemplate(models.Model):
         default="use_python",
         required=True,
     )
+
     python_code = fields.Text(
         string="Python Code",
         default=DEFAULT_PYTHON_CODE
