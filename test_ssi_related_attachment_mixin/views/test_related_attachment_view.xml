@@ -104,6 +104,16 @@
                                     string="Template"
                                     domain="[('id','in',allowed_related_attachment_template_ids)]"
                                 />
+                            <button
+                                    name="action_reload_rel_attachment_template"
+                                    string="Reload Template"
+                                    type="object"
+                                />
+                            <button
+                                    name="action_reload_rel_attachment_detail"
+                                    string="Reload Details"
+                                    type="object"
+                                />
                         </group>
                         <field
                                 name="related_attachment_ids"

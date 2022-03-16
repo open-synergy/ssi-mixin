@@ -75,5 +75,8 @@ class TestRelatedAttachment(models.Model):
     @api.onchange(
         "user_id",
     )
-    def onchange_related_attachment_template_id(self):
-        super(TestRelatedAttachment, self)._onchange_related_attachment_template_id()
+    def _onchange_related_attachment_template_id(self):
+        self.related_attachment_template_id = False
+        if self.user_id:
+            template_id = self._get_template_related_attachment()
+            self.related_attachment_template_id = template_id
