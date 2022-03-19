@@ -1,6 +1,6 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -110,12 +110,11 @@ class MixinStatusCheck(models.AbstractModel):
         "status_check_template_id",
     )
     def onchange_status_check_ids(self):
-        for document in self:
-            res = []
-            document.status_check_ids = [(5, 0, 0)]
-            if document.status_check_template_id:
-                res = document.create_status_check_ids()
-            document.status_check_ids = res
+        res = []
+        self.status_check_ids = [(5, 0, 0)]
+        if self.status_check_template_id:
+            res = self.create_status_check_ids()
+        self.status_check_ids = res
 
     def create_status_check_ids(self):
         self.ensure_one()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html). -->
 <odoo>
     <record id="status_check_template_search_view" model="ir.ui.view">
         <field name="name">status.check.template.view.search</field>
@@ -48,6 +48,12 @@
                 <header>
                 </header>
                 <sheet>
+                    <div
+                        class="oe_right oe_button_box"
+                        style="width: 300px;"
+                        name="buttons"
+                    >
+                    </div>
                     <group name="group_1" colspan="4" col="2">
                         <group name="group_1_1" colspan="1" col="2">
                             <field
@@ -60,10 +66,15 @@
                         </group>
                         <group name="group_1_2">
                             <field name="sequence" />
-                            <field name="active" />
+                            <field name="active" widget="boolean_toggle" />
                         </group>
                     </group>
                     <notebook>
+                        <page name="page_note" string="Note">
+                            <group name="group_note_1" colspan="4" col="2">
+                                <field name="note" colspan="4" nolabel="1" />
+                            </group>
+                        </page>
                         <page name="page_detail" string="Details">
                             <group name="group_detail_1" colspan="4" col="2">
                                 <field name="detail_ids" nolabel="1">
@@ -86,11 +97,6 @@
                                     widget="ace"
                                     attrs="{'invisible': [('computation_method', '&lt;&gt;', 'use_python')]}"
                                 />
-                            </group>
-                        </page>
-                        <page name="page_note" string="Note">
-                            <group name="group_note_1" colspan="4" col="2">
-                                <field name="note" colspan="4" nolabel="1" />
                             </group>
                         </page>
                     </notebook>
