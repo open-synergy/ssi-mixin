@@ -1,8 +1,9 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class TestStateChangeConstrain(models.Model):
@@ -13,6 +14,7 @@ class TestStateChangeConstrain(models.Model):
         "mixin.status_check",
         "mail.thread",
     ]
+    _order = "id"
 
     name = fields.Char(
         string="# Document",
@@ -172,14 +174,14 @@ class TestStateChangeConstrain(models.Model):
     def onchange_status_check_template_id(self):
         self.status_check_template_id = False
         if self.user_id:
-            template_id = self._get_template_status_check()
+            template_id = self._get_template_state_change()
             self.status_check_template_id = template_id
 
     @api.model
     def create(self, values):
         _super = super(TestStateChangeConstrain, self)
         result = _super.create(values)
-        status_check_template_id = result._get_template_status_check()
+        status_check_template_id = result._get_template_state_change()
         result.write(
             {
                 "status_check_template_id": status_check_template_id,
@@ -187,4 +189,23 @@ class TestStateChangeConstrain(models.Model):
         )
         result.create_status_check_ids()
         result.onchange_state_change_constrain_template_id()
+        return result
+
+    def unlink(self):
+        strWarning = _("You can only delete data on draft state")
+        force_unlink = self.env.context.get("force_unlink", False)
+        for record in self:
+            if record.state != "draft" and not force_unlink:
+                raise UserError(strWarning)
+        _super = super(TestStateChangeConstrain, self)
+        _super.unlink()
+
+    def name_get(self):
+        result = []
+        for record in self:
+            if record.name == "/":
+                name = "*" + str(record.id)
+            else:
+                name = record.name
+            result.append((record.id, name))
         return result
