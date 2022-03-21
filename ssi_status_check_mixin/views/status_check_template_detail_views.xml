@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html). -->
 <odoo>
     <record id="status_check_template_detail_view_tree" model="ir.ui.view">
         <field name="name">status.check.template.detail.tree</field>
@@ -22,6 +22,12 @@
                 <header>
                 </header>
                 <sheet>
+                    <div
+                        class="oe_right oe_button_box"
+                        style="width: 300px;"
+                        name="buttons"
+                    >
+                    </div>
                     <group name="group_1" colspan="4" col="2">
                         <group name="group_1_1" colspan="1" col="2">
                             <field
@@ -32,7 +38,7 @@
                             <field name="sequence" />
                         </group>
                         <group name="group_1_2">
-                            <field name="active" />
+                            <field name="active" widget="boolean_toggle" />
                         </group>
                     </group>
                 </sheet>

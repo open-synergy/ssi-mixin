@@ -1,6 +1,6 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -24,6 +24,26 @@ class MixinStatusCheck(models.AbstractModel):
         auto_join=True,
     )
 
+    def _prepare_status_check_data(self, template_id, template_detail_id):
+        self.ensure_one()
+        data = {
+            "res_id": self.id,
+            "model": self._name,
+            "template_id": template_id,
+            "template_detail_id": template_detail_id,
+        }
+        return data
+
+    def _prepare_status_check_create(self):
+        self.ensure_one()
+        template = self.status_check_template_id
+        allowed_details = template.detail_ids
+        self.status_check_ids.filtered(
+            lambda r: r.template_detail_id.id not in allowed_details.ids
+        ).unlink()
+        data = template.detail_ids - self.status_check_ids.mapped("template_detail_id")
+        return data
+
     def _get_status_check_localdict(self):
         self.ensure_one()
         return {
@@ -32,18 +52,6 @@ class MixinStatusCheck(models.AbstractModel):
         }
 
     def _evaluate_status_check(self, template):
-        self.ensure_one()
-        if not template:
-            return False
-        try:
-            method_name = "_evaluate_status_check_" + template.computation_method
-            result = getattr(self, method_name)(template)
-        except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
-        return result
-
-    def _evaluate_status_check_use_python(self, template):
         self.ensure_one()
         res = False
         localdict = self._get_status_check_localdict()
@@ -54,16 +62,6 @@ class MixinStatusCheck(models.AbstractModel):
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
-
-    def _evaluate_status_check_domain(self, template):
-        self.ensure_one()
-        result = False
-        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
-
-        count_result = self.search_count(domain)
-        if count_result > 0:
-            result = True
-        return result
 
     def _get_template_status_check(self):
         result = False
@@ -96,23 +94,12 @@ class MixinStatusCheck(models.AbstractModel):
     def _reload_status_check(self):
         self.ensure_one()
         if self.status_check_template_id:
-            template = self.status_check_template_id
-            allowed_details = template.detail_ids
-            self.status_check_ids.filtered(
-                lambda r: r.template_detail_id.id not in allowed_details.ids
-            ).unlink()
-            to_be_added = template.detail_ids - self.status_check_ids.mapped(
-                "template_detail_id"
-            )
+            to_be_added = self._prepare_status_check_create()
             for detail in to_be_added:
-                self.status_check_ids.create(
-                    {
-                        "res_id": self.id,
-                        "model": self._name,
-                        "template_id": self.status_check_template_id.id,
-                        "template_detail_id": detail.id,
-                    }
+                data = self._prepare_status_check_data(
+                    self.status_check_template_id.id, detail.id
                 )
+                self.status_check_ids.create(data)
         else:
             self.status_check_ids.unlink()
 
@@ -120,30 +107,20 @@ class MixinStatusCheck(models.AbstractModel):
         "status_check_template_id",
     )
     def onchange_status_check_ids(self):
-        for document in self:
-            res = []
-            document.status_check_ids = [(5, 0, 0)]
-            if document.status_check_template_id:
-                res = document.create_status_check_ids()
-            document.status_check_ids = res
+        res = []
+        if self.status_check_template_id:
+            res = self.create_status_check_ids()
+        self.status_check_ids = res
 
     def create_status_check_ids(self):
         self.ensure_one()
-        obj_status_check_detail = self.env["status.check.template_detail"]
+        res = []
         obj_status_check = res = self.env["status.check"]
-        sequence = 0
-
-        criteria = [("template_id", "=", self.status_check_template_id.id)]
-        status_check_ids = obj_status_check_detail.search(criteria, order="sequence")
+        status_check_ids = self._prepare_status_check_create()
         if status_check_ids:
             for status_check in status_check_ids:
-                sequence += 1
-                res += obj_status_check.create(
-                    {
-                        "model": self._name,
-                        "res_id": self.id,
-                        "template_id": self.status_check_template_id.id,
-                        "template_detail_id": status_check.id,
-                    }
+                data = self._prepare_status_check_data(
+                    self.status_check_template_id.id, status_check.id
                 )
+                res += obj_status_check.create(data)
         return res

@@ -1,6 +1,6 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import api, fields, models
 
@@ -51,18 +51,6 @@ class StatusCheckTemplate(models.Model):
     note = fields.Text(
         string="Notes",
     )
-    computation_method = fields.Selection(
-        string="Computation Method",
-        selection=[
-            ("use_domain", "Domain"),
-            ("use_python", "Python Code"),
-        ],
-        default="use_python",
-        required=True,
-    )
-    domain = fields.Char(
-        string="Domain",
-    )
     python_code = fields.Text(
         string="Python Code",
         default=DEFAULT_PYTHON_CODE
@@ -77,6 +65,9 @@ class StatusCheckTemplate(models.Model):
     def name_get(self):
         result = []
         for record in self:
-            name = "[{}] {}".format(record.model, record.name)
+            if record.name == "/":
+                name = "*" + str(record.id)
+            else:
+                name = record.name
             result.append((record.id, name))
         return result
