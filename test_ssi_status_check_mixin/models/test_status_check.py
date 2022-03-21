@@ -1,8 +1,9 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class TestStatusCheck(models.Model):
@@ -187,4 +188,23 @@ class TestStatusCheck(models.Model):
                 }
             )
             result.create_status_check_ids()
+        return result
+
+    def unlink(self):
+        strWarning = _("You can only delete data on draft state")
+        force_unlink = self.env.context.get("force_unlink", False)
+        for record in self:
+            if record.state != "draft" and not force_unlink:
+                raise UserError(strWarning)
+        _super = super(TestStatusCheck, self)
+        _super.unlink()
+
+    def name_get(self):
+        result = []
+        for record in self:
+            if record.name == "/":
+                name = "*" + str(record.id)
+            else:
+                name = record.name
+            result.append((record.id, name))
         return result

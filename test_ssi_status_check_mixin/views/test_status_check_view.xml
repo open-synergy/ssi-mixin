@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html). -->
 <odoo>
     <record id="test_status_check_view_tree" model="ir.ui.view">
         <field name="name">test.status.check.tree</field>
@@ -92,15 +92,15 @@
                         </group>
                         <group name="right">
                             <field name="user_id" />
-                            <field name="active" />
+                            <field name="active" widget="boolean_toggle" />
                         </group>
                     </group>
                     <notebook colspan="4">
-                        <page name="page_note" string="Notes">
+                        <page name="notes" string="Notes">
                             <field name="notes" nolabel="1" />
                         </page>
-                        <page name="page_status_check" string="Check Status">
-                            <group name="grp_status_check_1" colspan="4" col="2">
+                        <page name="status_check" string="Check Status">
+                            <group name="status_check_1" colspan="4" col="2">
                                 <field name="status_check_template_id" />
                                 <button
                                     name="action_reload_status_check_template"
@@ -116,8 +116,8 @@
                             <field name="status_check_ids" nolabel="1" />
                         </page>
                         <page name="log" string="Logs">
-                            <group name="group_5" colspan="4" col="3">
-                                <group name="group_log_1" colspan="4" col="3">
+                            <group name="log_1" colspan="4" col="3">
+                                <group name="log_1_1" colspan="4" col="3">
                                     <field name="confirm_date" string="Confirmation" />
                                     <field name="confirm_user_id" nolabel="1" />
                                     <field name="open_date" string="Open" />
