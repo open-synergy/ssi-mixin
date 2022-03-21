@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html). -->
 <odoo>
     <record id="state_change_constrain_template_view_search" model="ir.ui.view">
         <field name="name">state.change.constrain.template.search</field>
@@ -16,11 +16,6 @@
                         name="dom_python"
                         string="Python Based Computation"
                         domain="[('computation_method','=','use_python')]"
-                    />
-                    <filter
-                        name="dom_domain"
-                        string="Domain Based Computation"
-                        domain="[('computation_method','=','use_domain')]"
                     />
                 </group>
                 <group name="group2">
@@ -44,6 +39,7 @@
         <field name="model">state.change.constrain.template</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="model_id" />
             </tree>
@@ -57,6 +53,12 @@
             <form>
                 <header />
                 <sheet>
+                    <div
+                        class="oe_right oe_button_box"
+                        style="width: 300px;"
+                        name="buttons"
+                    >
+                    </div>
                     <group name="group_1" colspan="4" col="2">
                         <group name="group_1_1" colspan="1" col="2">
                             <field
@@ -73,10 +75,15 @@
                                 name="status_check_template_id"
                                 domain="[('model', '=', model)]"
                             />
-                            <field name="active" />
+                            <field name="active" widget="boolean_toggle" />
                         </group>
                     </group>
                     <notebook>
+                        <page name="page_note" string="Note">
+                            <group name="group_note_1" colspan="4" col="2">
+                                <field name="note" colspan="4" nolabel="1" />
+                            </group>
+                        </page>
                         <page name="page_detail" string="Details">
                             <field name="allowed_check_item_ids" invisible="1" />
                             <group name="group_detail_1" colspan="4" col="2">
@@ -102,23 +109,11 @@
                             <group name="group_computation_1" colspan="4" col="2">
                                 <field name="computation_method" colspan="4" />
                                 <field
-                                    name="domain"
-                                    colspan="4"
-                                    attrs="{'invisible': [('computation_method', '=', 'use_python')]}"
-                                    widget="domain"
-                                    options="{'model': 'model', 'in_dialog': True}"
-                                />
-                                <field
                                     name="python_code"
                                     colspan="4"
                                     widget="ace"
-                                    attrs="{'invisible': [('computation_method', '=', 'use_domain')]}"
+                                    attrs="{'invisible': [('computation_method', '&lt;&gt;', 'use_python')]}"
                                 />
-                            </group>
-                        </page>
-                        <page name="page_note" string="Note">
-                            <group name="group_note_1" colspan="4" col="2">
-                                <field name="note" colspan="4" nolabel="1" />
                             </group>
                         </page>
                     </notebook>

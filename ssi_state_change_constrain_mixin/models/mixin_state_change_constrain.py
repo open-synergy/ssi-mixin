@@ -1,6 +1,6 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -79,11 +79,10 @@ class MixinStateChangeConstrain(models.AbstractModel):
         "status_check_template_id",
     )
     def onchange_state_change_constrain_template_id(self):
-        for document in self:
-            document.state_change_constrain_template_id = False
-            if document.status_check_template_id:
-                template_id = document._get_template_state_change()
-                document.state_change_constrain_template_id = template_id
+        self.state_change_constrain_template_id = False
+        if self.status_check_template_id:
+            template_id = self._get_template_state_change()
+            self.state_change_constrain_template_id = template_id
 
     @api.constrains(
         "state",

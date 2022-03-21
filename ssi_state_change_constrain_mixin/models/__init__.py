@@ -1,6 +1,6 @@
-# Copyright 2021 OpenSynergy Indonesia
-# Copyright 2021 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# Copyright 2022 OpenSynergy Indonesia
+# Copyright 2022 PT. Simetri Sinergi Indonesia
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from . import (
     state_change_constrain_template,
