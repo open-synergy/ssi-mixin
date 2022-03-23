@@ -8,8 +8,7 @@
         <field name="model">test.state_change_constrain</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="id" />
-                <field name="display_name" />
+                <field name="name" />
                 <field name="active" />
                 <field name="state" />
             </tree>
@@ -28,7 +27,6 @@
                         string="Confirm"
                         class="oe_highlight"
                         states="draft"
-                        confirm="Confirm Data. Are you sure?"
                     />
                     <button
                         name="action_open"
@@ -36,7 +34,6 @@
                         string="Open"
                         class="oe_highlight"
                         states="confirm"
-                        confirm="Open Data. Are you sure?"
                     />
                     <button
                         name="action_done"
@@ -44,7 +41,6 @@
                         string="Done"
                         class="oe_highlight"
                         states="open"
-                        confirm="Done Data. Are you sure?"
                     />
                     <button
                         name="action_cancel"
@@ -52,7 +48,6 @@
                         string="Cancel"
                         class="oe_highlight"
                         states="confirm,open"
-                        confirm="Cancel Data. Are you sure?"
                     />
                     <button
                         name="action_restart"
@@ -60,7 +55,6 @@
                         string="Restart"
                         class="oe_highlight"
                         states="cancel"
-                        confirm="Restart Data. Are you sure?"
                     />
                     <field
                         name="state"
@@ -75,12 +69,11 @@
                         name="buttons"
                     >
                     </div>
-                    <div name="header" class="oe_left" style="width: 500px;">
-                        <div name="header_1" class="oe_title" style="width: 500px;">
-                            <label for="name" class="oe_edit_only" />
+                    <div class="oe_left" style="width: 500px;">
+                        <div class="oe_title" style="width: 500px;">
+                            <label for="name" />
                             <h1>
-                                <field name="name" class="oe_edit_only" />
-                                <field name="display_name" class="oe_read_only" />
+                                <field name="name" />
                             </h1>
                         </div>
                     </div>
