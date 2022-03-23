@@ -1,6 +1,6 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import api, fields, models
 
@@ -13,6 +13,7 @@ class TestStateChangeConstrain(models.Model):
         "mixin.status_check",
         "mail.thread",
     ]
+    _order = "id"
 
     name = fields.Char(
         string="# Document",

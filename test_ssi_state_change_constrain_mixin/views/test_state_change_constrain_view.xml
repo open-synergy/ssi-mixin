@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2022 OpenSynergy Indonesia
      Copyright 2022 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html). -->
 <odoo>
     <record id="test_state_change_view_tree" model="ir.ui.view">
         <field name="name">test.state.change.constrain.tree</field>
         <field name="model">test.state_change_constrain</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="id" />
-                <field name="display_name" />
+                <field name="name" />
                 <field name="active" />
                 <field name="state" />
             </tree>
@@ -70,12 +69,11 @@
                         name="buttons"
                     >
                     </div>
-                    <div name="header" class="oe_left" style="width: 500px;">
-                        <div name="header_1" class="oe_title" style="width: 500px;">
-                            <label for="name" class="oe_edit_only" />
+                    <div class="oe_left" style="width: 500px;">
+                        <div class="oe_title" style="width: 500px;">
+                            <label for="name" />
                             <h1>
-                                <field name="name" class="oe_edit_only" />
-                                <field name="display_name" class="oe_read_only" />
+                                <field name="name" />
                             </h1>
                         </div>
                     </div>
@@ -85,7 +83,7 @@
                             <field name="date" />
                             <field name="partner_id" />
                             <field name="user_id" />
-                            <field name="active" />
+                            <field name="active" widget="boolean_toggle" />
                         </group>
                         <group name="right">
 
@@ -141,14 +139,14 @@
     </record>
 
     <record id="test_state_change_action" model="ir.actions.act_window">
-        <field name="name">Test</field>
+        <field name="name">Test State Change Constrain</field>
         <field name="res_model">test.state_change_constrain</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem
         id="test_state_change_menu"
-        name="Test State Change Constrains"
+        name="Tests"
         parent="ssi_state_change_constrain_mixin.menu_state_change_constrain"
         action="test_state_change_action"
         sequence="100"

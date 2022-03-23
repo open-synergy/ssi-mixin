@@ -1,6 +1,6 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -27,18 +27,6 @@ class MixinStateChangeConstrain(models.AbstractModel):
 
     def _evaluate_state_change(self, template):
         self.ensure_one()
-        if not template:
-            return False
-        try:
-            method_name = "_evaluate_state_change_" + template.computation_method
-            result = getattr(self, method_name)(template)
-        except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
-        return result
-
-    def _evaluate_state_change_use_python(self, template):
-        self.ensure_one()
         res = False
         localdict = self._get_state_change_localdict()
         try:
@@ -48,16 +36,6 @@ class MixinStateChangeConstrain(models.AbstractModel):
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
-
-    def _evaluate_state_change_domain(self, template):
-        self.ensure_one()
-        result = False
-        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
-
-        count_result = self.search_count(domain)
-        if count_result > 0:
-            result = True
-        return result
 
     def _get_template_state_change(self):
         self.ensure_one()
@@ -79,11 +57,10 @@ class MixinStateChangeConstrain(models.AbstractModel):
         "status_check_template_id",
     )
     def onchange_state_change_constrain_template_id(self):
-        for document in self:
-            document.state_change_constrain_template_id = False
-            if document.status_check_template_id:
-                template_id = document._get_template_state_change()
-                document.state_change_constrain_template_id = template_id
+        self.state_change_constrain_template_id = False
+        if self.status_check_template_id:
+            template_id = self._get_template_state_change()
+            self.state_change_constrain_template_id = template_id
 
     @api.constrains(
         "state",
