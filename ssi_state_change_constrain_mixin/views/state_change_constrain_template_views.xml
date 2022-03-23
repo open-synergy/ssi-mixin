@@ -11,13 +11,6 @@
                 <field name="name" />
                 <field name="model_id" />
                 <field name="status_check_template_id" />
-                <group name="group1">
-                    <filter
-                        name="dom_python"
-                        string="Python Based Computation"
-                        domain="[('computation_method','=','use_python')]"
-                    />
-                </group>
                 <group name="group2">
                     <filter
                         name="grp_model"
@@ -107,13 +100,7 @@
                         </page>
                         <page name="page_computation" string="Computation">
                             <group name="group_computation_1" colspan="4" col="2">
-                                <field name="computation_method" colspan="4" />
-                                <field
-                                    name="python_code"
-                                    colspan="4"
-                                    widget="ace"
-                                    attrs="{'invisible': [('computation_method', '&lt;&gt;', 'use_python')]}"
-                                />
+                                <field name="python_code" colspan="4" widget="ace" />
                             </group>
                         </page>
                     </notebook>

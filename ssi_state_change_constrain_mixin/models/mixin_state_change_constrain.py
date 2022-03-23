@@ -27,18 +27,6 @@ class MixinStateChangeConstrain(models.AbstractModel):
 
     def _evaluate_state_change(self, template):
         self.ensure_one()
-        if not template:
-            return False
-        try:
-            method_name = "_evaluate_state_change_" + template.computation_method
-            result = getattr(self, method_name)(template)
-        except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
-        return result
-
-    def _evaluate_state_change_use_python(self, template):
-        self.ensure_one()
         res = False
         localdict = self._get_state_change_localdict()
         try:
@@ -48,16 +36,6 @@ class MixinStateChangeConstrain(models.AbstractModel):
         except Exception as error:
             raise UserError(_("Error evaluating conditions.\n %s") % error)
         return res
-
-    def _evaluate_state_change_domain(self, template):
-        self.ensure_one()
-        result = False
-        domain = [("id", "=", self.id)] + safe_eval(template.domain, {})
-
-        count_result = self.search_count(domain)
-        if count_result > 0:
-            result = True
-        return result
 
     def _get_template_state_change(self):
         self.ensure_one()

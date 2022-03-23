@@ -81,15 +81,6 @@ class StateChangeConstrainTemplate(models.Model):
     note = fields.Text(
         string="Notes",
     )
-    computation_method = fields.Selection(
-        string="Computation Method",
-        selection=[
-            ("use_python", "Python Code"),
-        ],
-        default="use_python",
-        required=True,
-    )
-
     python_code = fields.Text(
         string="Python Code",
         default=DEFAULT_PYTHON_CODE
