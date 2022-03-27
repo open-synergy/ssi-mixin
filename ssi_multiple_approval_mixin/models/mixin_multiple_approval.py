@@ -20,7 +20,7 @@ class MixinMultipleApproval(models.AbstractModel):
     _after_approved_method = False
 
     approval_template_id = fields.Many2one(
-        string="# Template",
+        string="Approval Template",
         comodel_name="approval.template",
         copy=False,
     )
