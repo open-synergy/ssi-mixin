@@ -8,6 +8,7 @@
     <field name="model">mixin.master_data</field>
     <field name="arch" type="xml">
         <search>
+            <field name="id" />
             <field name="name" />
             <field name="code" />
         </search>
@@ -19,6 +20,7 @@
     <field name="model">mixin.master_data</field>
     <field name="arch" type="xml">
         <tree>
+            <field name="id" optional="hide" />
             <field name="code" />
             <field name="name" />
             <field name="active" widget="boolean_toggle" />
