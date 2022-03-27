@@ -2,13 +2,19 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class MixinMasterData(models.AbstractModel):
     _name = "mixin.master_data"
+    _inherit = [
+        "mail.activity.mixin",
+        "mail.thread",
+    ]
     _description = "Mixin for Master Data"
     _field_name_string = "Name"
+    _show_code_on_display_name = False
 
     @api.model
     def _get_field_name_string(self):
@@ -29,3 +35,34 @@ class MixinMasterData(models.AbstractModel):
     note = fields.Text(
         string="Note",
     )
+
+    @api.returns("self", lambda value: value.id)
+    def copy(self, default=None):
+        self.ensure_one()
+        if default is None:
+            default = {}
+        if "code" not in default:
+            default["code"] = _("%s (copy)", self.code)
+        return super(MixinMasterData, self).copy(default=default)
+
+    @api.constrains("code")
+    def _check_duplicate_code(self):
+        error_msg = _("Duplicate code not allowed")
+        for record in self:
+            criteria = [
+                ("code", "=", record.code),
+                ("id", "!=", record.id),
+            ]
+            count_duplicate = self.search_count(criteria)
+            if count_duplicate > 0:
+                raise UserError(error_msg)
+
+    def name_get(self):
+        result = []
+        for record in self:
+            if self._show_code_on_display_name:
+                name = "[%s] %s" % (record.code, record.name)
+            else:
+                name = record.name
+            result.append((record.id, name))
+        return result
