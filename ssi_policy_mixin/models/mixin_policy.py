@@ -103,3 +103,13 @@ class MixinPolicy(models.AbstractModel):
                     key,
                     data.get(key),
                 )
+
+    @api.model
+    def create(self, values):
+        _super = super(MixinPolicy, self)
+        result = _super.create(values)
+        if not result.policy_template_id:
+            template_id = result._get_template_policy()
+            if template_id:
+                result.write({"policy_template_id": template_id})
+        return result
