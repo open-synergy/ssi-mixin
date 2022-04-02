@@ -155,3 +155,14 @@ class MixinRelatedAttachment(models.AbstractModel):
         if res:
             related_attachments.unlink()
         return res
+
+    @api.model
+    def create(self, values):
+        _super = super(MixinRelatedAttachment, self)
+        result = _super.create(values)
+        if not result.related_attachment_template_id:
+            template_id = result._get_template_related_attachment()
+            if template_id:
+                result.write({"related_attachment_template_id": template_id})
+                result.action_reload_rel_attachment_detail()
+        return result
