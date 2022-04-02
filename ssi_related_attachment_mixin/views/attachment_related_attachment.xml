@@ -13,7 +13,11 @@
                 <field name="datas_fname" invisible="1" />
                 <field name="attachment_data" widget="binary" filename="datas_fname" />
                 <field name="verify_method" invisible="1" />
-                <field name="verify_user_ids" widget="many2many_tags" />
+                <field
+                    name="verify_user_ids"
+                    widget="many2many_tags_avatar"
+                    optional="hide"
+                />
                 <field name="user_id" />
                 <field name="date" />
                 <field name="verify_ok" invisible="1" />
@@ -21,15 +25,14 @@
                 <field name="verified" invisible="1" />
                 <button
                     name="%(ssi_related_attachment_mixin.attachment_related_attachment_import_action)d"
-                    string="Upload/Select Attachment"
+                    title="Upload/Select Attachment"
                     type="action"
                     icon="fa-upload"
-                    confirm="Upload/Select Attachment. Are you sure?"
                     attrs="{'invisible':[('attachment_id','!=', False)]}"
                 />
                 <button
                     name="action_unlink_attachment"
-                    string="Unlink Attachment"
+                    title="Unlink Attachment"
                     type="object"
                     icon="fa-unlink"
                     confirm="Unlink Attachment. Are you sure?"
@@ -37,7 +40,7 @@
                 />
                 <button
                     name="action_delete_attachment"
-                    string="Erase Attachment"
+                    title="Erase Attachment"
                     type="object"
                     icon="fa-eraser"
                     confirm="Erase Attachment. Are you sure?"
@@ -45,7 +48,7 @@
                 />
                 <button
                     name="action_verify_attachment"
-                    string="Verify Attachment"
+                    title="Verify Attachment"
                     type="object"
                     icon="fa-check"
                     confirm="Verify Attachment. Are you sure?"
@@ -53,7 +56,7 @@
                 />
                 <button
                     name="action_unverify_attachment"
-                    string="Unverify Attachment"
+                    title="Unverify Attachment"
                     type="object"
                     icon="fa-times"
                     confirm="Unverify Attachment. Are you sure?"
