@@ -9,8 +9,9 @@ from odoo.exceptions import UserError
 class MixinTransaction(models.AbstractModel):
     _name = "mixin.transaction"
     _inherit = [
-        "mixin.sequence",
+        "mail.activity.mixin",
         "mail.thread",
+        "mixin.sequence",
         "mixin.policy",
     ]
     _description = "Transaction Mixin"
