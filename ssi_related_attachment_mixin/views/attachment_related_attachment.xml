@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html). -->
+<openerp>
+<data>
+    <record id="attachment_related_attachment_view_tree" model="ir.ui.view">
+        <field name="name">attachment.related.attachment.tree</field>
+        <field name="model">attachment.related_attachment</field>
+        <field name="arch" type="xml">
+            <tree
+                    string="Related Attachment"
+                    editable="bottom"
+                    create="0"
+                    edit="0"
+                    delete="0"
+                >
+                <field name="category_id" />
+                <field name="attachment_id" invisible="1" />
+                <field name="datas_fname" invisible="1" />
+                <field name="attachment_data" widget="binary" filename="datas_fname" />
+                <field name="verify_method" invisible="1" />
+                <field name="verify_user_ids" widget="many2many_tags" />
+                <field name="user_id" />
+                <field name="date" />
+                <field name="verify_ok" invisible="1" />
+                <field name="unverify_ok" invisible="1" />
+                <field name="verified" invisible="1" />
+                <button
+                        name="%(ssi_related_attachment_mixin.attachment_related_attachment_import_action)d"
+                        string="Upload/Select Attachment"
+                        type="action"
+                        icon="gtk-execute"
+                        attrs="{'invisible':[('attachment_id','!=', False)]}"
+                    />
+                <button
+                        name="action_unlink_attachment"
+                        string="Unlink Attachment"
+                        type="object"
+                        icon="gtk-cancel"
+                        attrs="{'invisible':['|', ('attachment_id','=', False), ('verified','=', True)]}"
+                    />
+                <button
+                        name="action_delete_attachment"
+                        string="Erase Attachment"
+                        type="object"
+                        icon="gtk-delete"
+                        attrs="{'invisible':['|', ('attachment_id','=', False), ('verified','=', True)]}"
+                    />
+                <button
+                        name="action_verify_attachment"
+                        string="Verify Attachment"
+                        type="object"
+                        icon="gtk-ok"
+                        attrs="{'invisible':['|',('verify_ok','=',False),('attachment_id','=', False)]}"
+                    />
+                <button
+                        name="action_unverify_attachment"
+                        string="Unverify Attachment"
+                        type="object"
+                        icon="gtk-cancel"
+                        attrs="{'invisible':[('unverify_ok','=', False)]}"
+                    />
+            </tree>
+        </field>
+    </record>
+</data>
+
+</openerp>
