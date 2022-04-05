@@ -11,11 +11,14 @@
                 string="Multiple Approval"
                 decoration-danger="status=='rejected'"
                 decoration-success="status=='approved'"
+                create="false"
+                edit="false"
+                delete="false"
             >
                 <field name="sequence" />
                 <field name="approver_selection_method" />
-                <field name="approver_user_ids" widget="many2many_tags" />
-                <field name="user_id" />
+                <field name="approver_user_ids" widget="many2many_tags_avatar" />
+                <field name="user_id" widget="many2one_avatar_user" />
                 <field name="date" />
                 <field name="status" />
             </tree>
