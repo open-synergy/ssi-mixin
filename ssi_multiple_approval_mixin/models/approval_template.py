@@ -75,3 +75,10 @@ class ApprovalTemplate(models.Model):
         + "\n#  - result: Return result, the value is boolean.",
         copy=True,
     )
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = "[{}] {}".format(record.model, record.name)
+            result.append((record.id, name))
+        return result

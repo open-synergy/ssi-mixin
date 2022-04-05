@@ -10,8 +10,8 @@
             <tree>
                 <field name="sequence" widget="handle" />
                 <field name="approver_selection_method" />
-                <field name="approver_user_ids" />
-                <field name="approver_group_ids" />
+                <field name="approver_user_ids" widget="many2many_tags_avatar" />
+                <field name="approver_group_ids" widget="many2many_tags" />
                 <field name="python_code" />
             </tree>
         </field>
@@ -46,7 +46,7 @@
                                     attrs="{
                                          'invisible': [('approver_selection_method', '!=', 'use_user'), ('approver_selection_method', '!=', 'use_both')],
                                          'required': ['|', ('approver_selection_method', '=', 'use_user'), ('approver_selection_method', '=', 'use_both')]}"
-                                    widget="many2many_tags"
+                                    widget="many2many_tags_avatar"
                                 />
                                 <field
                                     name="approver_group_ids"
