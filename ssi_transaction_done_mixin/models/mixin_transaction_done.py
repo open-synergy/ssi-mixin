@@ -25,15 +25,10 @@ class MixinTransactionDone(models.AbstractModel):
     def _prepare_done_data(self):
         self.ensure_one()
         result = {
-            "state": "done",
+            "state": self._done_state,
         }
         if self._create_sequence_state == self._done_state:
-            sequence = self._create_sequence()
-            result.update(
-                {
-                    "name": sequence,
-                }
-            )
+            self._create_sequence()
         return result
 
     def action_done(self):
