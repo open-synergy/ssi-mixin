@@ -165,10 +165,5 @@ class TestSequence(models.Model):
     def create(self, values):
         _super = super(TestSequence, self)
         result = _super.create(values)
-        sequence = result._create_sequence()
-        result.write(
-            {
-                "name": sequence,
-            }
-        )
+        result._create_sequence()
         return result
