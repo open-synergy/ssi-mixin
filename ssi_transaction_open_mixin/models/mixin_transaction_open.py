@@ -25,15 +25,10 @@ class MixinTransactionOpen(models.AbstractModel):
     def _prepare_open_data(self):
         self.ensure_one()
         result = {
-            "state": "open",
+            "state": self._open_state,
         }
         if self._create_sequence_state == self._open_state:
-            sequence = self._create_sequence()
-            result.update(
-                {
-                    "name": sequence,
-                }
-            )
+            self._create_sequence()
         return result
 
     def action_open(self):
