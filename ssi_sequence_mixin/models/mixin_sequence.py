@@ -80,4 +80,8 @@ class MixingSequence(models.AbstractModel):
         else:
             result = getattr(self, self._fallback_sequence_field)
 
-        return result
+        setattr(
+            self,
+            template.sequence_field_id.name,
+            result,
+        )
