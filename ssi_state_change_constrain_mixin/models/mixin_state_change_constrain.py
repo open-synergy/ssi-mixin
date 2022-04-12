@@ -49,8 +49,9 @@ class MixinStateChangeConstrain(models.AbstractModel):
             order="sequence desc",
             limit=1,
         )
-        if self._evaluate_state_change(template_id):
-            result = template_id.id
+        if template_id:
+            if self._evaluate_state_change(template_id):
+                result = template_id.id
         return result
 
     @api.onchange(
@@ -70,7 +71,7 @@ class MixinStateChangeConstrain(models.AbstractModel):
             if document.state_change_constrain_template_id:
                 detail_ids = document.state_change_constrain_template_id.detail_ids
                 check_detail_ids = detail_ids.filtered(
-                    lambda r: r.state == document.state
+                    lambda r: r.state_id.value == document.state
                 )
                 if check_detail_ids:
                     status_check_item_ids = check_detail_ids.status_check_item_ids

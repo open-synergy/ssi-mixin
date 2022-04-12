@@ -36,6 +36,14 @@ class StateChangeConstrainTemplate(models.Model):
         index=True,
         store=True,
     )
+    state_field_id = fields.Many2one(
+        string="State Field",
+        comodel_name="ir.model.fields",
+        required=True,
+        ondelete="cascade",
+        domain="[('ttype', '=', 'selection'), ('model_id', '=', model_id)]",
+        copy=True,
+    )
     company_id = fields.Many2one(
         string="Company",
         comodel_name="res.company",
