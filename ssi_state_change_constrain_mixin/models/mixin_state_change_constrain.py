@@ -44,14 +44,15 @@ class MixinStateChangeConstrain(models.AbstractModel):
         criteria = [
             ("status_check_template_id", "=", self.status_check_template_id.id),
         ]
-        template_id = obj_state_change_template.search(
+        template_ids = obj_state_change_template.search(
             criteria,
             order="sequence desc",
-            limit=1,
         )
-        if template_id:
-            if self._evaluate_state_change(template_id):
-                result = template_id.id
+        if template_ids:
+            for template_id in template_ids:
+                if self._evaluate_state_change(template_id):
+                    result = template_id.id
+                    break
         return result
 
     @api.onchange(
