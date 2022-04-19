@@ -80,6 +80,7 @@ class MixinStatusCheck(models.AbstractModel):
 
     def action_reload_status_check_template(self):
         for record in self:
+            record.status_check_template_id = False
             record.write(
                 {
                     "status_check_template_id": self._get_template_status_check(),
@@ -100,8 +101,6 @@ class MixinStatusCheck(models.AbstractModel):
                     self.status_check_template_id.id, detail.id
                 )
                 self.status_check_ids.create(data)
-        else:
-            self.status_check_ids.unlink()
 
     @api.onchange(
         "status_check_template_id",

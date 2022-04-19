@@ -27,7 +27,7 @@ class StatusCheckItem(models.Model):
         comodel_name="ir.model",
         ondelete="cascade",
         index=True,
-        required=True,
+        required=False,
     )
     model = fields.Char(
         related="model_id.model",

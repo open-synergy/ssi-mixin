@@ -34,7 +34,14 @@
                                 name="company_id"
                                 groups="base.group_multi_company"
                             />
-                            <field name="status_check_item_id" />
+                            <field
+                                name="allowed_status_check_item_ids"
+                                widget="many2many_tags"
+                            />
+                            <field
+                                name="status_check_item_id"
+                                domain="[('id', 'in', allowed_status_check_item_ids)]"
+                            />
                             <field name="sequence" />
                         </group>
                         <group name="group_1_2">
