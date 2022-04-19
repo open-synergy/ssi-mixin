@@ -4,7 +4,7 @@
 
 {
     "name": "Related Attachment Mixin",
-    "version": "14.0.1.1.0",
+    "version": "14.0.1.2.0",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
@@ -16,6 +16,7 @@
     "data": [
         "security/ir.model.access.csv",
         "menu.xml",
+        "templates/related_attachment_templates.xml",
         "wizards/attachment_related_attachment_import.xml",
         "views/attachment_related_attachment_category_views.xml",
         "views/attachment_related_attachment_template_detail_views.xml",
