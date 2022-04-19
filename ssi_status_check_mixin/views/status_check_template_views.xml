@@ -70,15 +70,7 @@
                         </page>
                         <page name="page_detail" string="Details">
                             <group name="group_detail_1" colspan="4" col="2">
-                                <field name="detail_ids" nolabel="1">
-                                    <tree name="Details" editable="bottom">
-                                        <field name="sequence" widget="handle" />
-                                        <field
-                                            name="status_check_item_id"
-                                            domain="[('model', '=', parent.model)]"
-                                        />
-                                    </tree>
-                                </field>
+                                <field name="detail_ids" nolabel="1" />
                             </group>
                         </page>
                         <page name="page_computation" string="Computation">
