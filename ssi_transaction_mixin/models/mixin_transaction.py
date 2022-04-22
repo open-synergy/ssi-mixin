@@ -57,7 +57,7 @@ class MixinTransaction(models.AbstractModel):
     )
 
     def action_restart(self):
-        for record in self:
+        for record in self.sudo():
             record.write(record._prepare_restart_data())
 
     def _prepare_restart_data(self):
