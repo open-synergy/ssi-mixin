@@ -32,5 +32,5 @@ class MixinTransactionDone(models.AbstractModel):
         return result
 
     def action_done(self):
-        for record in self:
+        for record in self.sudo():
             record.write(record._prepare_done_data())
