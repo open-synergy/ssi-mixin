@@ -36,7 +36,7 @@ class MixinTransactionCancel(models.AbstractModel):
         }
 
     def action_cancel(self, cancel_reason=False):
-        for record in self:
+        for record in self.sudo():
             record.write(record._prepare_cancel_data(cancel_reason))
 
     def _prepare_restart_data(self):
