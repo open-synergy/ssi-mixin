@@ -299,23 +299,23 @@ class MixinMultipleApproval(models.AbstractModel):
                 self.write({"state": "reject"})
 
     def action_approve_approval(self):
-        for rec in self:
+        for rec in self.sudo():
             rec._action_approval("approved")
             if rec.approved and self._after_approved_method:
                 getattr(self, self._after_approved_method)()
 
     def action_reject_approval(self):
-        for rec in self:
+        for rec in self.sudo():
             rec._action_approval("rejected")
 
     def action_reload_approval_template(self):
-        for rec in self:
+        for rec in self.sudo():
             rec.mapped("approval_ids").unlink()
             rec.mapped("active_approver_partner_ids").unlink()
             rec.action_request_approval()
 
     def action_reload_approval(self):
-        for rec in self:
+        for rec in self.sudo():
             rec._reload_approval()
 
     def _reload_approval(self):
@@ -370,13 +370,13 @@ class MixinMultipleApproval(models.AbstractModel):
         if vals.get(self._approval_state_field) == self._approval_from_state:
             self.mapped("approval_ids").unlink()
             self.mapped("active_approver_partner_ids").unlink()
-            self.approval_template_id = False
+            self.sudo().approval_template_id = False
         return super(MixinMultipleApproval, self).write(vals)
 
     def action_request_approval(self):
         obj_approval_template = self.env["approval.template"]
         approver_ids = False
-        for rec in self:
+        for rec in self.sudo():
             if rec.approval_template_id:
                 if self._evaluate_approval(rec.approval_template_id):
                     rec.write({"approval_template_id": rec.approval_template_id.id})
