@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 {
     "name": "Transaction Mixin - In Progress State",
-    "version": "14.0.1.0.2",
+    "version": "14.0.1.1.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "LGPL-3",
@@ -11,5 +11,7 @@
     "depends": [
         "ssi_transaction_mixin",
     ],
-    "data": [],
+    "data": [
+        "templates/mixin_transaction_open_templates.xml",
+    ],
 }
