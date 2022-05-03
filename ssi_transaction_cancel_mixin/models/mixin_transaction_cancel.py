@@ -2,7 +2,9 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import fields, models
+from lxml import etree
+
+from odoo import api, fields, models
 
 
 class MixinTransactionCancel(models.AbstractModel):
@@ -12,6 +14,11 @@ class MixinTransactionCancel(models.AbstractModel):
     ]
     _description = "Transaction Mixin - Cancel State Mixin"
     _cancel_state = "cancel"
+    _automatically_insert_cancel_policy_fields = True
+    _automatically_insert_cancel_button = True
+    _automatically_insert_cancel_reason = True
+    _cancel_button_order = 98
+    _cancel_policy_field_order = 97
 
     cancel_reason_id = fields.Many2one(
         string="Cancel Reason",
@@ -49,3 +56,79 @@ class MixinTransactionCancel(models.AbstractModel):
             }
         )
         return result
+
+    @api.model
+    def fields_view_get(
+        self, view_id=None, view_type="form", toolbar=False, submenu=False
+    ):
+        result = super().fields_view_get(
+            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
+        )
+        View = self.env["ir.ui.view"]
+
+        view_arch = etree.XML(result["arch"])
+        view_arch = self._view_add_cancel_policy_field(view_type, view_arch)
+        view_arch = self._view_add_cancel_button(view_type, view_arch)
+        view_arch = self._view_add_cancel_reason(view_type, view_arch)
+        view_arch = self._reorder_header_button(view_arch, view_type)
+        view_arch = self._reorder_policy_field(view_arch, view_type)
+
+        if view_id and result.get("base_model", self._name) != self._name:
+            View = View.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+        result["arch"] = new_arch
+        new_fields.update(result["fields"])
+        result["fields"] = new_fields
+
+        return result
+
+    @api.model
+    def _view_add_cancel_policy_field(self, view_type, view_arch):
+        if (
+            view_type == "form"
+            and self._automatically_insert_view_element
+            and self._automatically_insert_cancel_policy_fields
+        ):
+            policy_element_templates = [
+                "ssi_transaction_cancel_mixin.cancel_policy_field",
+            ]
+            for template in policy_element_templates:
+                view_arch = self._add_view_element(
+                    view_arch,
+                    template,
+                    self._policy_field_xpath,
+                    "before",
+                    self._cancel_policy_field_order,
+                )
+        return view_arch
+
+    @api.model
+    def _view_add_cancel_button(self, view_type, view_arch):
+        if (
+            view_type == "form"
+            and self._automatically_insert_view_element
+            and self._automatically_insert_cancel_button
+        ):
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_cancel_mixin.button_cancel",
+                "/form/header/field[@name='state']",
+                "before",
+                self._cancel_button_order,
+            )
+        return view_arch
+
+    @api.model
+    def _view_add_cancel_reason(self, view_type, view_arch):
+        if (
+            view_type == "form"
+            and self._automatically_insert_view_element
+            and self._automatically_insert_cancel_reason
+        ):
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_cancel_mixin.cancel_reason",
+                "/form/sheet/div[@class='oe_left']/div[@class='oe_title']/h1",
+                "after",
+            )
+        return view_arch
