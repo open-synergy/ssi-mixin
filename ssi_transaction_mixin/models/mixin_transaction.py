@@ -9,6 +9,10 @@ from odoo.exceptions import UserError
 
 
 class MixinTransaction(models.AbstractModel):
+    """
+    Abstract model to transaction object
+    """
+
     _name = "mixin.transaction"
     _inherit = [
         "mail.activity.mixin",
@@ -25,6 +29,10 @@ class MixinTransaction(models.AbstractModel):
         "/form/sheet/notebook/page[@name='policy']"
         "/group[@name='policy_2']/field[@name='restart_ok']"
     )
+
+    # Attributes related to add element on search view automatically
+    _state_filter_xpath = "/search/group[@name='dom_state']/filter[@name='dom_draft']"
+    _state_filter_order = False
 
     name = fields.Char(
         string="# Document",
@@ -118,9 +126,12 @@ class MixinTransaction(models.AbstractModel):
 
         view_arch = etree.XML(result["arch"])
 
-        view_arch = self._reorder_header_button(view_arch, view_type)
-        view_arch = self._reorder_policy_field(view_arch, view_type)
-        view_arch = self._reconfigure_statusbar_visible(view_arch, view_type)
+        if view_type == "form":
+            view_arch = self._reorder_header_button(view_arch, view_type)
+            view_arch = self._reorder_policy_field(view_arch, view_type)
+            view_arch = self._reconfigure_statusbar_visible(view_arch, view_type)
+        elif view_type == "search" and self._automatically_insert_view_element:
+            view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
             View = View.with_context(base_model_name=result["base_model"])
@@ -136,6 +147,8 @@ class MixinTransaction(models.AbstractModel):
         self, view_arch, qweb_template_xml_id, xpath, position="after", order=False
     ):
         additional_element = self.env["ir.qweb"]._render(qweb_template_xml_id)
+        if len(view_arch.xpath(xpath)) == 0:
+            return view_arch
         node_xpath = view_arch.xpath(xpath)[0]
         new_node = etree.fromstring(additional_element)
         if order:
@@ -172,4 +185,21 @@ class MixinTransaction(models.AbstractModel):
         if view_type == "form" and self._automatically_insert_view_element:
             node_xpath = view_arch.xpath("/form/header/field[@name='state']")[0]
             node_xpath.set("statusbar_visible", self._statusbar_visible_label)
+        return view_arch
+
+    @api.model
+    def _reorder_state_filter_on_search_view(self, view_arch):
+        if not self._state_filter_order:
+            return view_arch
+        _xpath = "/search/group[@name='dom_state']"  # TODO: Make it as class attribute
+        if len(view_arch.xpath(_xpath)) == 0:
+            return view_arch
+        node_xpath = view_arch.xpath(_xpath)[0]
+        for node in node_xpath:
+            if node.get("name") in self._state_filter_order:
+                node.set("order", str(self._state_filter_order.index(node.get("name"))))
+        to_sort = (e for e in node_xpath if e.tag == "filter")
+        node_xpath[:] = sorted(
+            to_sort, key=lambda child: int(child.get("order", "100"))
+        )
         return view_arch
