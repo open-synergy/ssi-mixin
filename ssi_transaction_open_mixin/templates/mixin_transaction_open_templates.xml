@@ -13,4 +13,8 @@
             attrs="{'invisible':[('open_ok','!=',True)]}"
         />
 </template>
+
+<template id="open_filter">
+    <filter name="dom_open" string="In Progress" domain="[('state', '=', 'open')]" />
+</template>
 </odoo>
