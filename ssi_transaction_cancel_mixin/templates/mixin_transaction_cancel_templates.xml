@@ -19,4 +19,8 @@
         <field name="cancel_reason_id" class="oe_inline" />
     </h2>
 </template>
+
+<template id="cancel_filter">
+    <filter name="dom_cancel" string="Cancel" domain="[('state', '=', 'cancel')]" />
+</template>
 </odoo>
