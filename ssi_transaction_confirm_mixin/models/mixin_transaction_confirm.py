@@ -15,6 +15,8 @@ class MixinTransactionConfirm(models.AbstractModel):
     ]
     _description = "Transaction Mixin - Waiting for Approval Mixin"
     _confirm_state = "confirm"
+
+    # Attributes related to automatic form view
     _automatically_insert_confirm_policy_fields = True
     _automatically_insert_confirm_button = True
     _automatically_insert_approve_button = True
@@ -23,6 +25,10 @@ class MixinTransactionConfirm(models.AbstractModel):
     _approve_button_order = 20
     _reject_button_order = 30
     _confirm_policy_field_order = 10
+
+    # Attributes related to add element on search view automatically
+    _automatically_insert_confirm_filter = True
+    _automatically_insert_reject_filter = True
 
     def _compute_policy(self):
         _super = super(MixinTransactionConfirm, self)
@@ -66,12 +72,17 @@ class MixinTransactionConfirm(models.AbstractModel):
         View = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
-        view_arch = self._view_add_policy_field(view_type, view_arch)
-        view_arch = self._view_add_confirm_button(view_type, view_arch)
-        view_arch = self._view_add_approve_button(view_type, view_arch)
-        view_arch = self._view_add_reject_button(view_type, view_arch)
-        view_arch = self._reorder_header_button(view_arch, view_type)
-        view_arch = self._reorder_policy_field(view_arch, view_type)
+        if view_type == "form":
+            view_arch = self._view_add_policy_field(view_type, view_arch)
+            view_arch = self._view_add_confirm_button(view_type, view_arch)
+            view_arch = self._view_add_approve_button(view_type, view_arch)
+            view_arch = self._view_add_reject_button(view_type, view_arch)
+            view_arch = self._reorder_header_button(view_arch, view_type)
+            view_arch = self._reorder_policy_field(view_arch, view_type)
+        elif view_type == "search" and self._automatically_insert_view_element:
+            view_arch = self._add_confirm_filter_on_search_view(view_arch)
+            view_arch = self._add_reject_filter_on_search_view(view_arch)
+            view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
             View = View.with_context(base_model_name=result["base_model"])
@@ -81,6 +92,28 @@ class MixinTransactionConfirm(models.AbstractModel):
         result["fields"] = new_fields
 
         return result
+
+    @api.model
+    def _add_confirm_filter_on_search_view(self, view_arch):
+        if self._automatically_insert_confirm_filter:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.confirm_filter",
+                self._state_filter_xpath,
+                "after",
+            )
+        return view_arch
+
+    @api.model
+    def _add_reject_filter_on_search_view(self, view_arch):
+        if self._automatically_insert_reject_filter:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.reject_filter",
+                self._state_filter_xpath,
+                "after",
+            )
+        return view_arch
 
     @api.model
     def _view_add_policy_field(self, view_type, view_arch):

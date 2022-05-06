@@ -16,6 +16,23 @@
     <field name="restart_approval_ok" />
 </template>
 
+<template id="confirm_filter">
+    <filter
+            name="dom_confirm"
+            string="Waiting for Approval"
+            domain="[('state', '=', 'confirm')]"
+        />
+</template>
+
+<template id="reject_filter">
+    <filter
+            name="dom_reject"
+            string="Reject"
+            order="98"
+            domain="[('state', '=', 'reject')]"
+        />
+</template>
+
 <template id="button_confirm">
     <button
             name="action_confirm"
