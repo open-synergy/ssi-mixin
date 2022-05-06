@@ -19,6 +19,9 @@ class MixinTransactionOpen(models.AbstractModel):
     _done_button_order = 60
     _open_policy_field_order = 20
 
+    # Attributes related to add element on search view automatically
+    _automatically_insert_cancel_filter = True
+
     def _compute_policy(self):
         _super = super(MixinTransactionOpen, self)
         _super._compute_policy()
@@ -51,10 +54,14 @@ class MixinTransactionOpen(models.AbstractModel):
         View = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
-        view_arch = self._view_add_open_policy_field(view_type, view_arch)
-        view_arch = self._view_add_open_button(view_type, view_arch)
-        view_arch = self._reorder_header_button(view_arch, view_type)
-        view_arch = self._reorder_policy_field(view_arch, view_type)
+        if view_type == "form":
+            view_arch = self._view_add_open_policy_field(view_type, view_arch)
+            view_arch = self._view_add_open_button(view_type, view_arch)
+            view_arch = self._reorder_header_button(view_arch, view_type)
+            view_arch = self._reorder_policy_field(view_arch, view_type)
+        elif view_type == "search" and self._automatically_insert_view_element:
+            view_arch = self._add_open_filter_on_search_view(view_arch)
+            view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
             View = View.with_context(base_model_name=result["base_model"])
@@ -98,5 +105,16 @@ class MixinTransactionOpen(models.AbstractModel):
                 "/form/header/field[@name='state']",
                 "before",
                 self._done_button_order,
+            )
+        return view_arch
+
+    @api.model
+    def _add_open_filter_on_search_view(self, view_arch):
+        if self._automatically_insert_open_filter:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_open_mixin.open_filter",
+                self._state_filter_xpath,
+                "after",
             )
         return view_arch
