@@ -10,8 +10,47 @@
         <search>
             <field name="id" />
             <field name="name" />
-            <field name="company_id" />
+            <field name="company_id" groups="base.group_multi_company" />
             <field name="state" />
+            <!-- Filter -->
+            <group name="dom_state">
+                <filter
+                        name="dom_draft"
+                        string="Draft"
+                        domain="[('state','=','draft')]"
+                    />
+            </group>
+            <separator name="activity" />
+            <filter
+                    string="Late Activities"
+                    name="activities_overdue"
+                    domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today"
+                />
+            <filter
+                    string="Today Activities"
+                    name="activities_today"
+                    domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"
+                />
+            <filter
+                    string="Future Activities"
+                    name="activities_upcoming_all"
+                    domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"
+                />
+            <!-- Group -->
+            <group name="group_by">
+                <filter
+                        name="grp_company"
+                        string="Company"
+                        groups="base.group_multi_company"
+                        context="{'group_by':'company_id'}"
+                    />
+                <filter
+                        name="grp_state"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
+            </group>
         </search>
     </field>
 </record>
