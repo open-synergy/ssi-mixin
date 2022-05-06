@@ -11,6 +11,7 @@
             <field name="id" />
             <field name="name" />
             <field name="company_id" groups="base.group_multi_company" />
+            <field name="user_id" />
             <field name="state" />
             <!-- Filter -->
             <group name="dom_state">
@@ -46,6 +47,11 @@
                         context="{'group_by':'company_id'}"
                     />
                 <filter
+                        name="grp_responsible"
+                        string="Responsible"
+                        context="{'group_by':'user_id'}"
+                    />
+                <filter
                         name="grp_state"
                         string="State"
                         context="{'group_by': 'state'}"
@@ -62,6 +68,12 @@
         <tree>
             <field name="id" optional="hide" />
             <field name="display_name" string="# Document" />
+            <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="hide"
+                />
+            <field name="user_id" optional="show" />
             <field name="activity_ids" widget="list_activity" optional="show" />
             <field name="state" widget="badge" decoration-info="state == 'draft'" />
         </tree>
@@ -107,7 +119,8 @@
                 </div>
                 <group name="header" colspan="4" col="2">
                     <group name="header_left" colspan="1" col="2">
-                        <field name="company_id" />
+                        <field name="company_id" groups="base.group_multi_company" />
+                        <field name="user_id" />
                     </group>
                     <group name="header_right" colspan="1" col="2" />
                 </group>
