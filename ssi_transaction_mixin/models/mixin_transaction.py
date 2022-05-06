@@ -54,6 +54,21 @@ class MixinTransaction(models.AbstractModel):
         default=lambda self: self._default_company_id(),
         copy=True,
     )
+
+    @api.model
+    def _default_user_id(self):
+        return self.env.user.id
+
+    user_id = fields.Many2one(
+        string="Responsible",
+        comodel_name="res.users",
+        required=True,
+        default=lambda self: self._default_user_id(),
+        copy=False,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+
     note = fields.Text(
         string="Note",
         copy=True,
