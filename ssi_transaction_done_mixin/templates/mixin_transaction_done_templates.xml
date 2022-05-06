@@ -13,4 +13,8 @@
             attrs="{'invisible':[('done_ok','!=',True)]}"
         />
 </template>
+
+<template id="done_filter">
+    <filter name="dom_done" string="Done" domain="[('state', '=', 'done')]" />
+</template>
 </odoo>
