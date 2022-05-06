@@ -19,6 +19,9 @@ class MixinTransactionDone(models.AbstractModel):
     _done_button_order = 70
     _done_policy_field_order = 30
 
+    # Attributes related to add element on search view automatically
+    _automatically_insert_done_filter = True
+
     def _compute_policy(self):
         _super = super(MixinTransactionDone, self)
         _super._compute_policy()
@@ -51,10 +54,14 @@ class MixinTransactionDone(models.AbstractModel):
         View = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
-        view_arch = self._view_add_done_policy_field(view_type, view_arch)
-        view_arch = self._view_add_done_button(view_type, view_arch)
-        view_arch = self._reorder_header_button(view_arch, view_type)
-        view_arch = self._reorder_policy_field(view_arch, view_type)
+        if view_type == "form" and self._automatically_insert_view_element:
+            view_arch = self._view_add_done_policy_field(view_type, view_arch)
+            view_arch = self._view_add_done_button(view_type, view_arch)
+            view_arch = self._reorder_header_button(view_arch, view_type)
+            view_arch = self._reorder_policy_field(view_arch, view_type)
+        elif view_type == "search" and self._automatically_insert_view_element:
+            view_arch = self._add_done_filter_on_search_view(view_arch)
+            view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
             View = View.with_context(base_model_name=result["base_model"])
@@ -64,6 +71,17 @@ class MixinTransactionDone(models.AbstractModel):
         result["fields"] = new_fields
 
         return result
+
+    @api.model
+    def _add_done_filter_on_search_view(self, view_arch):
+        if self._automatically_insert_done_filter:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_done_mixin.done_filter",
+                self._state_filter_xpath,
+                "after",
+            )
+        return view_arch
 
     @api.model
     def _view_add_done_policy_field(self, view_type, view_arch):
