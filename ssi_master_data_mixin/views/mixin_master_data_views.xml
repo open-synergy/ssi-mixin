@@ -34,8 +34,8 @@
     <field name="model">mixin.master_data</field>
     <field name="arch" type="xml">
         <form>
+            <header />
             <sheet>
-                <header />
                 <div name="div_smart_buttons" class="oe_right oe_button_box" />
                 <group name="group_1" colspan="4" col="2">
                     <field name="name" />
