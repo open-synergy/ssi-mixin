@@ -30,6 +30,10 @@ class MixinTransactionConfirm(models.AbstractModel):
     _automatically_insert_confirm_filter = True
     _automatically_insert_reject_filter = True
 
+    # Attributes related to add element on tree view automatically
+    _automatically_insert_confirm_state_badge_decorator = True
+    _automatically_insert_reject_state_badge_decorator = True
+
     def _compute_policy(self):
         _super = super(MixinTransactionConfirm, self)
         _super._compute_policy()
@@ -79,6 +83,9 @@ class MixinTransactionConfirm(models.AbstractModel):
             view_arch = self._view_add_reject_button(view_type, view_arch)
             view_arch = self._reorder_header_button(view_arch, view_type)
             view_arch = self._reorder_policy_field(view_arch, view_type)
+        elif view_type == "tree" and self._automatically_insert_view_element:
+            view_arch = self._add_confirm_state_badge_decorator(view_arch)
+            view_arch = self._add_reject_state_badge_decorator(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
             view_arch = self._add_confirm_filter_on_search_view(view_arch)
             view_arch = self._add_reject_filter_on_search_view(view_arch)
@@ -92,6 +99,26 @@ class MixinTransactionConfirm(models.AbstractModel):
         result["fields"] = new_fields
 
         return result
+
+    @api.model
+    def _add_confirm_state_badge_decorator(self, view_arch):
+        if self._automatically_insert_confirm_state_badge_decorator:
+            _xpath = "/tree/field[@name='state']"
+            if len(view_arch.xpath(_xpath)) == 0:
+                return view_arch
+            node_xpath = view_arch.xpath(_xpath)[0]
+            node_xpath.set("decoration-warning", "state == 'confirm'")
+        return view_arch
+
+    @api.model
+    def _add_reject_state_badge_decorator(self, view_arch):
+        if self._automatically_insert_reject_state_badge_decorator:
+            _xpath = "/tree/field[@name='state']"
+            if len(view_arch.xpath(_xpath)) == 0:
+                return view_arch
+            node_xpath = view_arch.xpath(_xpath)[0]
+            node_xpath.set("decoration-danger", "state == 'reject'")
+        return view_arch
 
     @api.model
     def _add_confirm_filter_on_search_view(self, view_arch):
