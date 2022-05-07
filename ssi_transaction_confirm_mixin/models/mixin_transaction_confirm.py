@@ -21,10 +21,6 @@ class MixinTransactionConfirm(models.AbstractModel):
     _automatically_insert_confirm_button = True
     _automatically_insert_approve_button = True
     _automatically_insert_reject_button = True
-    _confirm_button_order = 10
-    _approve_button_order = 20
-    _reject_button_order = 30
-    _confirm_policy_field_order = 10
 
     # Attributes related to add element on search view automatically
     _automatically_insert_confirm_filter = True
@@ -76,13 +72,13 @@ class MixinTransactionConfirm(models.AbstractModel):
         View = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
-        if view_type == "form":
-            view_arch = self._view_add_policy_field(view_type, view_arch)
-            view_arch = self._view_add_confirm_button(view_type, view_arch)
-            view_arch = self._view_add_approve_button(view_type, view_arch)
-            view_arch = self._view_add_reject_button(view_type, view_arch)
-            view_arch = self._reorder_header_button(view_arch, view_type)
-            view_arch = self._reorder_policy_field(view_arch, view_type)
+        if view_type == "form" and self._automatically_insert_view_element:
+            view_arch = self._view_add_policy_field(view_arch)
+            view_arch = self._view_add_confirm_button(view_arch)
+            view_arch = self._view_add_approve_button(view_arch)
+            view_arch = self._view_add_reject_button(view_arch)
+            view_arch = self._reorder_header_button(view_arch)
+            view_arch = self._reorder_policy_field(view_arch)
         elif view_type == "tree" and self._automatically_insert_view_element:
             view_arch = self._add_confirm_state_badge_decorator(view_arch)
             view_arch = self._add_reject_state_badge_decorator(view_arch)
@@ -143,12 +139,8 @@ class MixinTransactionConfirm(models.AbstractModel):
         return view_arch
 
     @api.model
-    def _view_add_policy_field(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_confirm_policy_fields
-        ):
+    def _view_add_policy_field(self, view_arch):
+        if self._automatically_insert_confirm_policy_fields:
             policy_element_templates = [
                 "ssi_transaction_confirm_mixin.confirm_policy_field",
                 "ssi_transaction_confirm_mixin.approve_policy_field",
@@ -161,54 +153,38 @@ class MixinTransactionConfirm(models.AbstractModel):
                     template,
                     self._policy_field_xpath,
                     "before",
-                    self._confirm_policy_field_order,
                 )
         return view_arch
 
     @api.model
-    def _view_add_confirm_button(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_confirm_button
-        ):
+    def _view_add_confirm_button(self, view_arch):
+        if self._automatically_insert_confirm_button:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_confirm_mixin.button_confirm",
                 "/form/header/field[@name='state']",
                 "before",
-                self._confirm_button_order,
             )
         return view_arch
 
     @api.model
-    def _view_add_approve_button(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_approve_button
-        ):
+    def _view_add_approve_button(self, view_arch):
+        if self._automatically_insert_approve_button:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_confirm_mixin.button_approve",
                 "/form/header/field[@name='state']",
                 "before",
-                self._approve_button_order,
             )
         return view_arch
 
     @api.model
-    def _view_add_reject_button(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_reject_button
-        ):
+    def _view_add_reject_button(self, view_arch):
+        if self._automatically_insert_reject_button:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_confirm_mixin.button_reject",
                 "/form/header/field[@name='state']",
                 "before",
-                self._reject_button_order,
             )
         return view_arch

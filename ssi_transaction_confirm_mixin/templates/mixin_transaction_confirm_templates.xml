@@ -25,12 +25,7 @@
 </template>
 
 <template id="reject_filter">
-    <filter
-            name="dom_reject"
-            string="Reject"
-            order="98"
-            domain="[('state', '=', 'reject')]"
-        />
+    <filter name="dom_reject" string="Reject" domain="[('state', '=', 'reject')]" />
 </template>
 
 <template id="button_confirm">
