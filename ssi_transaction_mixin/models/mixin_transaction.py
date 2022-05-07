@@ -24,6 +24,11 @@ class MixinTransaction(models.AbstractModel):
     _draft_state = "draft"
     _create_sequence_state = False
     _automatically_insert_view_element = False
+
+    _automatically_reconfigure_statusbar_visible = True
+    _policy_field_order = False
+    _header_button_order = False
+
     _statusbar_visible_label = "draft"
     _policy_field_xpath = (
         "/form/sheet/notebook/page[@name='policy']"
@@ -141,10 +146,10 @@ class MixinTransaction(models.AbstractModel):
 
         view_arch = etree.XML(result["arch"])
 
-        if view_type == "form":
-            view_arch = self._reorder_header_button(view_arch, view_type)
-            view_arch = self._reorder_policy_field(view_arch, view_type)
-            view_arch = self._reconfigure_statusbar_visible(view_arch, view_type)
+        if view_type == "form" and self._automatically_insert_view_element:
+            view_arch = self._reorder_header_button(view_arch)
+            view_arch = self._reorder_policy_field(view_arch)
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
@@ -175,31 +180,51 @@ class MixinTransaction(models.AbstractModel):
         return view_arch
 
     @api.model
-    def _reorder_header_button(self, view_arch, view_type):
-        if view_type == "form" and self._automatically_insert_view_element:
-            node_xpath = view_arch.xpath("/form/header")[0]
-            to_sort = (e for e in node_xpath if e.tag == "button")
-            no_sort = (e for e in node_xpath if e.tag == "field")
-            node_xpath[:] = sorted(
-                to_sort, key=lambda child: child.get("order", 100)
-            ) + list(no_sort)
+    def _reorder_header_button(self, view_arch):
+        if not self._header_button_order:
+            return view_arch
+        _xpath = "/form/header"
+        if len(view_arch.xpath(_xpath)) == 0:
+            return view_arch
+        node_xpath = view_arch.xpath(_xpath)[0]
+        for node in node_xpath:
+            if node.get("name") in self._header_button_order:
+                node.set(
+                    "order", str(self._header_button_order.index(node.get("name")))
+                )
+        to_sort = (e for e in node_xpath if e.tag == "button")
+        no_sort = (e for e in node_xpath if e.tag == "field")
+        node_xpath[:] = sorted(
+            to_sort, key=lambda child: int(child.get("order", "100"))
+        ) + list(no_sort)
         return view_arch
 
     @api.model
-    def _reorder_policy_field(self, view_arch, view_type):
-        if view_type == "form" and self._automatically_insert_view_element:
-            node_xpath = view_arch.xpath(
-                "/form/sheet/notebook/page[@name='policy']/group[@name='policy_2']"
-            )[0]
-            to_sort = (e for e in node_xpath if e.tag == "field")
-            node_xpath[:] = sorted(to_sort, key=lambda child: child.get("order", 100))
+    def _reorder_policy_field(self, view_arch):
+        if not self._policy_field_order:
+            return view_arch
+        _xpath = "/form/sheet/notebook/page[@name='policy']/group[@name='policy_2']"
+        if len(view_arch.xpath(_xpath)) == 0:
+            return view_arch
+        node_xpath = view_arch.xpath(_xpath)[0]
+        for node in node_xpath:
+            if node.get("name") in self._policy_field_order:
+                node.set("order", str(self._policy_field_order.index(node.get("name"))))
+        to_sort = (e for e in node_xpath if e.tag == "field")
+        node_xpath[:] = sorted(
+            to_sort, key=lambda child: int(child.get("order", "100"))
+        )
         return view_arch
 
     @api.model
-    def _reconfigure_statusbar_visible(self, view_arch, view_type):
-        if view_type == "form" and self._automatically_insert_view_element:
-            node_xpath = view_arch.xpath("/form/header/field[@name='state']")[0]
-            node_xpath.set("statusbar_visible", self._statusbar_visible_label)
+    def _reconfigure_statusbar_visible(self, view_arch):
+        if not self._automatically_reconfigure_statusbar_visible:
+            return view_arch
+        _xpath = "/form/header/field[@name='state']"
+        if len(view_arch.xpath(_xpath)) == 0:
+            return view_arch
+        node_xpath = view_arch.xpath(_xpath)[0]
+        node_xpath.set("statusbar_visible", self._statusbar_visible_label)
         return view_arch
 
     @api.model
