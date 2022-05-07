@@ -14,6 +14,12 @@
             <field name="user_id" />
             <field name="state" />
             <!-- Filter -->
+            <filter
+                    name="dom_my_data"
+                    string="My Responsibilities"
+                    domain="[('user_id','=',uid)]"
+                />
+            <separator name="state" />
             <group name="dom_state">
                 <filter
                         name="dom_draft"
@@ -123,6 +129,7 @@
                         <field name="user_id" />
                     </group>
                     <group name="header_right" colspan="1" col="2" />
+                    <group name="header_center" colspan="2" col="2" />
                 </group>
                 <notebook>
                     <page name="note" string="Note">
