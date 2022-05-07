@@ -14,10 +14,10 @@ class MixinTransactionOpen(models.AbstractModel):
     ]
     _description = "Transaction Mixin - In Progress State Mixin"
     _open_state = "open"
+
+    # Attributes related to add element on form view automatically
     _automatically_insert_open_policy_fields = True
     _automatically_insert_open_button = True
-    _done_button_order = 60
-    _open_policy_field_order = 20
 
     # Attributes related to add element on search view automatically
     _automatically_insert_cancel_filter = True
@@ -57,11 +57,11 @@ class MixinTransactionOpen(models.AbstractModel):
         View = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
-        if view_type == "form":
-            view_arch = self._view_add_open_policy_field(view_type, view_arch)
-            view_arch = self._view_add_open_button(view_type, view_arch)
-            view_arch = self._reorder_header_button(view_arch, view_type)
-            view_arch = self._reorder_policy_field(view_arch, view_type)
+        if view_type == "form" and self._automatically_insert_view_element:
+            view_arch = self._view_add_open_policy_field(view_arch)
+            view_arch = self._view_add_open_button(view_arch)
+            view_arch = self._reorder_header_button(view_type)
+            view_arch = self._reorder_policy_field(view_type)
         elif view_type == "tree" and self._automatically_insert_view_element:
             view_arch = self._add_open_state_badge_decorator(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
@@ -88,12 +88,8 @@ class MixinTransactionOpen(models.AbstractModel):
         return view_arch
 
     @api.model
-    def _view_add_open_policy_field(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_open_policy_fields
-        ):
+    def _view_add_open_policy_field(self, view_arch):
+        if self._automatically_insert_open_policy_fields:
             policy_element_templates = [
                 "ssi_transaction_open_mixin.open_policy_field",
             ]
@@ -103,23 +99,17 @@ class MixinTransactionOpen(models.AbstractModel):
                     template,
                     self._policy_field_xpath,
                     "before",
-                    self._open_policy_field_order,
                 )
         return view_arch
 
     @api.model
-    def _view_add_open_button(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_open_button
-        ):
+    def _view_add_open_button(self, view_arch):
+        if self._automatically_insert_open_button:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_open_mixin.button_open",
                 "/form/header/field[@name='state']",
                 "before",
-                self._done_button_order,
             )
         return view_arch
 
