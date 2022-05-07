@@ -22,6 +22,9 @@ class MixinTransactionDone(models.AbstractModel):
     # Attributes related to add element on search view automatically
     _automatically_insert_done_filter = True
 
+    # Attributes related to add element on tree view automatically
+    _automatically_insert_done_state_badge_decorator = True
+
     def _compute_policy(self):
         _super = super(MixinTransactionDone, self)
         _super._compute_policy()
@@ -59,6 +62,8 @@ class MixinTransactionDone(models.AbstractModel):
             view_arch = self._view_add_done_button(view_type, view_arch)
             view_arch = self._reorder_header_button(view_arch, view_type)
             view_arch = self._reorder_policy_field(view_arch, view_type)
+        elif view_type == "tree" and self._automatically_insert_view_element:
+            view_arch = self._add_done_state_badge_decorator(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
             view_arch = self._add_done_filter_on_search_view(view_arch)
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
@@ -71,6 +76,16 @@ class MixinTransactionDone(models.AbstractModel):
         result["fields"] = new_fields
 
         return result
+
+    @api.model
+    def _add_done_state_badge_decorator(self, view_arch):
+        if self._automatically_insert_done_state_badge_decorator:
+            _xpath = "/tree/field[@name='state']"
+            if len(view_arch.xpath(_xpath)) == 0:
+                return view_arch
+            node_xpath = view_arch.xpath(_xpath)[0]
+            node_xpath.set("decoration-success", "state == 'done'")
+        return view_arch
 
     @api.model
     def _add_done_filter_on_search_view(self, view_arch):
