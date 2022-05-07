@@ -14,11 +14,11 @@ class MixinTransactionCancel(models.AbstractModel):
     ]
     _description = "Transaction Mixin - Cancel State Mixin"
     _cancel_state = "cancel"
+
+    # Attributes related to automatic form view
     _automatically_insert_cancel_policy_fields = True
     _automatically_insert_cancel_button = True
     _automatically_insert_cancel_reason = True
-    _cancel_button_order = 98
-    _cancel_policy_field_order = 97
 
     # Attributes related to add element on search view automatically
     _automatically_insert_cancel_filter = True
@@ -74,12 +74,12 @@ class MixinTransactionCancel(models.AbstractModel):
 
         view_arch = etree.XML(result["arch"])
 
-        if view_type == "form":
-            view_arch = self._view_add_cancel_policy_field(view_type, view_arch)
-            view_arch = self._view_add_cancel_button(view_type, view_arch)
-            view_arch = self._view_add_cancel_reason(view_type, view_arch)
-            view_arch = self._reorder_header_button(view_arch, view_type)
-            view_arch = self._reorder_policy_field(view_arch, view_type)
+        if view_type == "form" and self._automatically_insert_view_element:
+            view_arch = self._view_add_cancel_policy_field(view_arch)
+            view_arch = self._view_add_cancel_button(view_arch)
+            view_arch = self._view_add_cancel_reason(view_arch)
+            view_arch = self._reorder_header_button(view_arch)
+            view_arch = self._reorder_policy_field(view_arch)
         elif view_type == "tree" and self._automatically_insert_view_element:
             view_arch = self._add_cancel_state_badge_decorator(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
@@ -117,12 +117,8 @@ class MixinTransactionCancel(models.AbstractModel):
         return view_arch
 
     @api.model
-    def _view_add_cancel_policy_field(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_cancel_policy_fields
-        ):
+    def _view_add_cancel_policy_field(self, view_arch):
+        if self._automatically_insert_cancel_policy_fields:
             policy_element_templates = [
                 "ssi_transaction_cancel_mixin.cancel_policy_field",
             ]
@@ -132,33 +128,23 @@ class MixinTransactionCancel(models.AbstractModel):
                     template,
                     self._policy_field_xpath,
                     "before",
-                    self._cancel_policy_field_order,
                 )
         return view_arch
 
     @api.model
-    def _view_add_cancel_button(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_cancel_button
-        ):
+    def _view_add_cancel_button(self, view_arch):
+        if self._automatically_insert_cancel_button:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_cancel_mixin.button_cancel",
                 "/form/header/field[@name='state']",
                 "before",
-                self._cancel_button_order,
             )
         return view_arch
 
     @api.model
-    def _view_add_cancel_reason(self, view_type, view_arch):
-        if (
-            view_type == "form"
-            and self._automatically_insert_view_element
-            and self._automatically_insert_cancel_reason
-        ):
+    def _view_add_cancel_reason(self, view_arch):
+        if self._automatically_insert_cancel_reason:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_cancel_mixin.cancel_reason",
