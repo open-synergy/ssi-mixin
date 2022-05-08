@@ -146,7 +146,7 @@ class MixinRelatedAttachment(models.AbstractModel):
         return res
 
     def action_reload_rel_attachment_template(self):
-        for record in self:
+        for record in self.sudo():
             record.write(
                 {
                     "related_attachment_template_id": self._get_template_related_attachment(),
@@ -155,7 +155,7 @@ class MixinRelatedAttachment(models.AbstractModel):
             record._reload_rel_attachment_detail()
 
     def action_reload_rel_attachment_detail(self):
-        for record in self:
+        for record in self.sudo():
             record._reload_rel_attachment_detail()
 
     def _reload_rel_attachment_detail(self):
