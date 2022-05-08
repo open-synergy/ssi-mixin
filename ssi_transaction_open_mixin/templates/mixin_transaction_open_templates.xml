@@ -8,7 +8,7 @@
     <button
             name="action_open"
             string="Start"
-            type="action"
+            type="object"
             class="oe_highlight"
             attrs="{'invisible':[('open_ok','!=',True)]}"
         />
