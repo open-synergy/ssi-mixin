@@ -55,7 +55,7 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
         if not res_id:
             res_id = context.get("active_id", False)
         object = self.env[model]
-        record = object.browse(res_id)
+        record = object.browse(res_id).sudo()
         return record
 
     def action_submit(self):
