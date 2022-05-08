@@ -68,7 +68,7 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
         if self.action_type == "upload_file":
             if related_attachment.attachment_id:
                 self._delete_attachment(related_attachment)
-            attachment_id = self._create_attachment(record)
+            attachment_id = self.sudo()._create_attachment(record)
             related_attachment.write({"attachment_id": attachment_id.id})
         else:
             related_attachment.write({"attachment_id": self.attachment_id.id})

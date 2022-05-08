@@ -157,6 +157,11 @@ class AttachmentRelatedAttachment(models.Model):
 
     def action_verify_attachment(self):
         self.ensure_one()
+        for record in self.sudo():
+            record._verify_attachment()
+
+    def _verify_attachment(self):
+        self.ensure_one()
         if self.env.user.id in self.verify_user_ids.ids:
             self.write(
                 {
@@ -167,7 +172,7 @@ class AttachmentRelatedAttachment(models.Model):
             )
 
     def action_unverify_attachment(self):
-        for record in self:
+        for record in self.sudo():
             record._unverify_attachment()
 
     def _unverify_attachment(self):
@@ -182,7 +187,7 @@ class AttachmentRelatedAttachment(models.Model):
             )
 
     def action_unlink_attachment(self):
-        for record in self:
+        for record in self.sudo():
             record._unlink_attachment()
 
     def _unlink_attachment(self):
@@ -190,7 +195,7 @@ class AttachmentRelatedAttachment(models.Model):
         self.write({"attachment_id": False})
 
     def action_delete_attachment(self):
-        for record in self:
+        for record in self.sudo():
             record._delete_attachment()
 
     def _delete_attachment(self):
