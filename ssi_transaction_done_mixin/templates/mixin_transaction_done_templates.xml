@@ -8,7 +8,7 @@
     <button
             name="action_done"
             string="Done"
-            type="action"
+            type="object"
             class="oe_highlight"
             attrs="{'invisible':[('done_ok','!=',True)]}"
         />
