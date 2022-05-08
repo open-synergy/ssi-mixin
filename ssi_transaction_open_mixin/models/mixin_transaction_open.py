@@ -20,7 +20,7 @@ class MixinTransactionOpen(models.AbstractModel):
     _automatically_insert_open_button = True
 
     # Attributes related to add element on search view automatically
-    _automatically_insert_cancel_filter = True
+    _automatically_insert_open_filter = True
 
     # Attributes related to add element on tree view automatically
     _automatically_insert_open_state_badge_decorator = True
@@ -60,8 +60,8 @@ class MixinTransactionOpen(models.AbstractModel):
         if view_type == "form" and self._automatically_insert_view_element:
             view_arch = self._view_add_open_policy_field(view_arch)
             view_arch = self._view_add_open_button(view_arch)
-            view_arch = self._reorder_header_button(view_type)
-            view_arch = self._reorder_policy_field(view_type)
+            view_arch = self._reorder_header_button(view_arch)
+            view_arch = self._reorder_policy_field(view_arch)
         elif view_type == "tree" and self._automatically_insert_view_element:
             view_arch = self._add_open_state_badge_decorator(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
