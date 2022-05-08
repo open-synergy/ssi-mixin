@@ -8,7 +8,7 @@
     <button
             name="action_ready"
             string="Stage"
-            type="action"
+            type="object"
             class="oe_highlight"
             attrs="{'invisible':[('ready_ok','!=',True)]}"
         />
