@@ -33,7 +33,7 @@ class BaseSelectCancelReason(models.TransientModel):
     cancel_reason_ids = fields.Many2many(
         string="Allowed Cancel Reason(s)",
         comodel_name="base.cancel_reason",
-        related="model_id.cancel_reason_ids",
+        related="model_id.all_cancel_reason_ids",
     )
     cancel_reason_id = fields.Many2one(
         string="Reason",

@@ -24,3 +24,7 @@ class BaseCancelReason(models.Model):
     note = fields.Text(
         string="Note",
     )
+    global_use = fields.Boolean(
+        string="Global Use",
+        default=False,
+    )

@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 {
     "name": "Transaction Mixin - Cancel State",
-    "version": "14.0.1.2.2",
+    "version": "14.0.1.3.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "LGPL-3",
@@ -17,5 +17,8 @@
         "templates/mixin_transaction_cancel_templates.xml",
         "views/ir_model_views.xml",
         "views/base_cancel_reason_views.xml",
+    ],
+    "demo": [
+        "demo/base_cancel_reason_demo.xml",
     ],
 }
