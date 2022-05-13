@@ -16,3 +16,21 @@ class IrModel(models.Model):
         column1="model_id",
         column2="cancel_reason_id",
     )
+
+    def _compute_all_cancel_reason_ids(self):
+        obj_reason = self.env["base.cancel_reason"]
+        criteria = [
+            ("global_use", "=", True),
+        ]
+        global_reasons = obj_reason.search(criteria)
+        for record in self:
+            record.all_cancel_reason_ids = (
+                global_reasons + record.cancel_reason_ids
+            ).ids
+
+    all_cancel_reason_ids = fields.Many2many(
+        string="All Cancel Reasons",
+        comodel_name="base.cancel_reason",
+        compute="_compute_all_cancel_reason_ids",
+        store=False,
+    )
