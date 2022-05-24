@@ -20,11 +20,10 @@
     <field name="model">mixin.master_data</field>
     <field name="arch" type="xml">
         <tree>
-            <field name="id" optional="hide" />
+            <field name="id" />
             <field name="code" />
             <field name="name" />
-            <field name="activity_ids" widget="list_activity" optional="show" />
-            <field name="active" widget="boolean_toggle" />
+            <field name="active" />
         </tree>
     </field>
 </record>
@@ -38,9 +37,11 @@
                 <header />
                 <div name="div_smart_buttons" class="oe_right oe_button_box" />
                 <group name="group_1" colspan="4" col="2">
-                    <field name="name" />
-                    <field name="code" />
-                    <field name="active" widget="boolean_toggle" />
+                    <group name="group_1_1">
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="active" widget="boolean_toggle" />
+                    </group>
                 </group>
                 <notebook>
                     <page name="note" string="Note">
@@ -50,7 +51,6 @@
             </sheet>
             <div class="oe_chatter">
                 <field name="message_follower_ids" groups="base.group_user" />
-                <field name="activity_ids" />
                 <field name="message_ids" />
             </div>
         </form>
