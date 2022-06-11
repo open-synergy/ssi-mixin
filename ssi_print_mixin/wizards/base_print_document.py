@@ -50,6 +50,8 @@ class BasePrintDocument(models.TransientModel):
             user_group_ids = user.groups_id.ids
             if set(object.groups_id.ids) & set(user_group_ids):
                 result = True
+        else:
+            result = True
         return result
 
     def _get_object(self):
@@ -58,26 +60,6 @@ class BasePrintDocument(models.TransientModel):
         # TODO: Assert when invalid active_id or active_model
         object = self.env[active_model].browse([active_id])[0]
         return object
-
-    #
-    # @api.multi
-    # def _get_localdict(self):
-    #     return {
-    #         "record": self._get_object()
-    #     }
-    #
-    # @api.multi
-    # def get_print_policy(self, python_condition):
-    #     localdict = self._get_localdict()
-    #
-    #     try:
-    #         eval(python_condition,
-    #              localdict, mode="exec", nocopy=True)
-    #         result = localdict["result"]
-    #     except:
-    #         result = True
-    #
-    #     return result
 
     def action_print(self):
         if self.report_action_id:

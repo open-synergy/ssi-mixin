@@ -24,7 +24,7 @@
                         name="action_print"
                         type="object"
                         class="oe_highlight"
-                        confirm="Are you sure?"
+                        icon="fa-print"
                     />
                 or
                 <button string="Cancel" class="oe_link" special="cancel" />

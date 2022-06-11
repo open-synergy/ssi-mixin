@@ -11,6 +11,7 @@ class MixinPrintDocument(models.AbstractModel):
     _name = "mixin.print_document"
     _description = "Print Document Mixin"
 
+    # Attributes related to automatically insert elemnt on form view
     _automatically_insert_print_button = False
     _print_button_xpath = "/form/header/field[@name='state']"
 
@@ -30,7 +31,7 @@ class MixinPrintDocument(models.AbstractModel):
                 )
                 for node in node_xpath:
                     new_node = etree.fromstring(str_element)
-                    node.addnext(new_node)
+                    node.addprevious(new_node)
 
             View = self.env["ir.ui.view"]
 
