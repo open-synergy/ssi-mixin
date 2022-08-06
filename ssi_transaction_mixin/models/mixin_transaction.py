@@ -23,6 +23,7 @@ class MixinTransaction(models.AbstractModel):
     _description = "Transaction Mixin"
     _draft_state = "draft"
     _create_sequence_state = False
+    _document_number_field = "name"
     _automatically_insert_view_element = False
 
     _automatically_reconfigure_statusbar_visible = True
@@ -116,7 +117,7 @@ class MixinTransaction(models.AbstractModel):
     def name_get(self):
         result = []
         for record in self:
-            if record.name == "/":
+            if getattr(record, self._document_number_field) == "/":
                 name = "*" + str(record.id)
             else:
                 name = record.name
@@ -124,16 +125,81 @@ class MixinTransaction(models.AbstractModel):
         return result
 
     def unlink(self):
-        strWarning1 = _("You can only delete data on draft state")
-        strWarning2 = _("You can only delete data without document number")
         force_unlink = self.env.context.get("force_unlink", False)
         for record in self:
-            if record.state != "draft" and not force_unlink:
-                raise UserError(strWarning1)
-            if record.name != "/" and not force_unlink:
-                raise UserError(strWarning2)
+            if not record._check_state_unlink(force_unlink):
+                error_message = """
+                Context: Delete %s
+                Database ID: %s
+                Problem: Document state is not draft
+                Solution: Cancel and restart document
+                """ % (
+                    self._description.lower(),
+                    record.id,
+                )
+                raise UserError(_(error_message))
+            if not record._check_document_number_unlink(force_unlink):
+                error_message = """
+                Context: Delete %s
+                Database ID: %s
+                Problem: Document number is not equal to /
+                Solution: Change document number into /
+                """ % (
+                    self._description.lower(),
+                    record.id,
+                )
+                raise UserError(_(error_message))
         _super = super(MixinTransaction, self)
         _super.unlink()
+
+    # TODO: Dynamic field name
+    @api.constrains(
+        "name",
+    )
+    def _constrains_duplicate_document_number(self):
+        for record in self.sudo():
+            if not record._check_duplicate_document_number():
+                error_message = """
+                Context: Change %s document number
+                Database ID: %s
+                Problem: Duplicate document number
+                Solution: Change document number into different number
+                """ % (
+                    self._description.lower(),
+                    record.id,
+                )
+                raise UserError(_(error_message))
+
+    def _check_document_number_unlink(self, force_unlink=False):
+        self.ensure_one()
+        result = True
+        if getattr(self, self._document_number_field) != "/" and not force_unlink:
+            result = False
+        return result
+
+    def _check_state_unlink(self, force_unlink=False):
+        self.ensure_one()
+        result = True
+        if self.state != "draft" and not force_unlink:
+            result = False
+        return result
+
+    def _check_duplicate_document_number(self):
+        self.ensure_one()
+        result = True
+        criteria = [
+            (
+                self._document_number_field,
+                "=",
+                getattr(self, self._document_number_field),
+            ),
+            (self._document_number_field, "!=", "/"),
+        ]
+        ObjectMixin = self.env[self._name]
+        count_duplicate = ObjectMixin.search_count(criteria)
+        if count_duplicate > 0:
+            result = False
+        return result
 
     @api.model
     def fields_view_get(
