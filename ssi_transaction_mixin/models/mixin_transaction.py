@@ -194,6 +194,7 @@ class MixinTransaction(models.AbstractModel):
                 getattr(self, self._document_number_field),
             ),
             (self._document_number_field, "!=", "/"),
+            ("id", "!=", self.id),
         ]
         ObjectMixin = self.env[self._name]
         count_duplicate = ObjectMixin.search_count(criteria)
