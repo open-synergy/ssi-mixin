@@ -11,6 +11,7 @@
             type="object"
             class="oe_highlight"
             attrs="{'invisible':[('done_ok','!=',True)]}"
+            confirm="Finish data. Are you sure?"
         />
 </template>
 
