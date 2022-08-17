@@ -15,6 +15,7 @@ class MixinProductLinePrice(models.AbstractModel):
     currency_id = fields.Many2one(
         string="Currency",
         comodel_name="res.currency",
+        required=True,
     )
 
     @api.depends(
