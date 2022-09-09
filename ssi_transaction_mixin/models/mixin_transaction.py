@@ -91,6 +91,7 @@ class MixinTransaction(models.AbstractModel):
         states={"draft": [("readonly", False)]},
     )
 
+    @api.multi
     def _compute_policy(self):
         _super = super(MixinTransaction, self)
         _super._compute_policy()
@@ -104,16 +105,19 @@ class MixinTransaction(models.AbstractModel):
         compute="_compute_policy",
     )
 
+    @api.multi
     def action_restart(self):
         for record in self.sudo():
             record.write(record._prepare_restart_data())
 
+    @api.multi
     def _prepare_restart_data(self):
         self.ensure_one()
         return {
             "state": self._draft_state,
         }
 
+    @api.multi
     def name_get(self):
         result = []
         for record in self:
@@ -124,27 +128,28 @@ class MixinTransaction(models.AbstractModel):
             result.append((record.id, name))
         return result
 
+    @api.multi
     def unlink(self):
         force_unlink = self.env.context.get("force_unlink", False)
         for record in self:
             if not record._check_state_unlink(force_unlink):
                 error_message = """
-                Context: Delete %s
-                Database ID: %s
+                Context: Delete {}
+                Database ID: {}
                 Problem: Document state is not draft
                 Solution: Cancel and restart document
-                """ % (
+                """.format(
                     self._description.lower(),
                     record.id,
                 )
                 raise UserError(_(error_message))
             if not record._check_document_number_unlink(force_unlink):
                 error_message = """
-                Context: Delete %s
-                Database ID: %s
+                Context: Delete {}
+                Database ID: {}
                 Problem: Document number is not equal to /
                 Solution: Change document number into /
-                """ % (
+                """.format(
                     self._description.lower(),
                     record.id,
                 )
@@ -160,16 +165,17 @@ class MixinTransaction(models.AbstractModel):
         for record in self.sudo():
             if not record._check_duplicate_document_number():
                 error_message = """
-                Context: Change %s document number
-                Database ID: %s
+                Context: Change {} document number
+                Database ID: {}
                 Problem: Duplicate document number
                 Solution: Change document number into different number
-                """ % (
+                """.format(
                     self._description.lower(),
                     record.id,
                 )
                 raise UserError(_(error_message))
 
+    @api.multi
     def _check_document_number_unlink(self, force_unlink=False):
         self.ensure_one()
         result = True
@@ -177,6 +183,7 @@ class MixinTransaction(models.AbstractModel):
             result = False
         return result
 
+    @api.multi
     def _check_state_unlink(self, force_unlink=False):
         self.ensure_one()
         result = True
@@ -184,6 +191,7 @@ class MixinTransaction(models.AbstractModel):
             result = False
         return result
 
+    @api.multi
     def _check_duplicate_document_number(self):
         self.ensure_one()
         result = True
@@ -206,13 +214,11 @@ class MixinTransaction(models.AbstractModel):
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
-        result = super().fields_view_get(
+        res = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
-
-        view_arch = etree.XML(result["arch"])
-
+        view_model = self.env["ir.ui.view"]
+        view_arch = etree.XML(res["arch"])
         if view_type == "form" and self._automatically_insert_view_element:
             view_arch = self._reorder_header_button(view_arch)
             view_arch = self._reorder_policy_field(view_arch)
@@ -220,20 +226,21 @@ class MixinTransaction(models.AbstractModel):
         elif view_type == "search" and self._automatically_insert_view_element:
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
-        if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
-        result["arch"] = new_arch
-        new_fields.update(result["fields"])
-        result["fields"] = new_fields
-
-        return result
+        if view_id and res.get("base_model", self._name) != self._name:
+            view_model = view_model.with_context(base_model_name=res["base_model"])
+        new_arch, new_fields = view_model.postprocess_and_fields(
+            self._name, view_arch, res["view_id"]
+        )
+        res["arch"] = new_arch
+        new_fields.update(res["fields"])
+        res["fields"] = new_fields
+        return res
 
     @api.model
     def _add_view_element(
         self, view_arch, qweb_template_xml_id, xpath, position="after", order=False
     ):
-        additional_element = self.env["ir.qweb"]._render(qweb_template_xml_id)
+        additional_element = self.env["ir.qweb"].render(qweb_template_xml_id)
         if len(view_arch.xpath(xpath)) == 0:
             return view_arch
         node_xpath = view_arch.xpath(xpath)[0]
