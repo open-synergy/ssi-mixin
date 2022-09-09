@@ -25,6 +25,7 @@ class MixinTransactionDone(models.AbstractModel):
     # Attributes related to add element on tree view automatically
     _automatically_insert_done_state_badge_decorator = True
 
+    @api.multi
     def _compute_policy(self):
         _super = super(MixinTransactionDone, self)
         _super._compute_policy()
@@ -34,6 +35,7 @@ class MixinTransactionDone(models.AbstractModel):
         compute="_compute_policy",
     )
 
+    @api.multi
     def _prepare_done_data(self):
         self.ensure_one()
         result = {
@@ -43,6 +45,7 @@ class MixinTransactionDone(models.AbstractModel):
             self._create_sequence()
         return result
 
+    @api.multi
     def action_done(self):
         for record in self.sudo():
             record.write(record._prepare_done_data())
@@ -51,12 +54,11 @@ class MixinTransactionDone(models.AbstractModel):
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
-        result = super().fields_view_get(
+        res = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
-
-        view_arch = etree.XML(result["arch"])
+        view_model = self.env["ir.ui.view"]
+        view_arch = etree.XML(res["arch"])
         if view_type == "form" and self._automatically_insert_view_element:
             view_arch = self._view_add_done_policy_field(view_arch)
             view_arch = self._view_add_done_button(view_arch)
@@ -68,14 +70,15 @@ class MixinTransactionDone(models.AbstractModel):
             view_arch = self._add_done_filter_on_search_view(view_arch)
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
-        if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
-        result["arch"] = new_arch
-        new_fields.update(result["fields"])
-        result["fields"] = new_fields
-
-        return result
+        if view_id and res.get("base_model", self._name) != self._name:
+            view_model = view_model.with_context(base_model_name=res["base_model"])
+        new_arch, new_fields = view_model.postprocess_and_fields(
+            self._name, view_arch, res["view_id"]
+        )
+        res["arch"] = new_arch
+        new_fields.update(res["fields"])
+        res["fields"] = new_fields
+        return res
 
     @api.model
     def _add_done_state_badge_decorator(self, view_arch):
