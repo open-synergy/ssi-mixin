@@ -41,10 +41,12 @@ class BaseSelectCancelReason(models.TransientModel):
         required=True,
     )
 
+    @api.multi
     def action_confirm(self):
         for record in self:
             record._confirm_cancel()
 
+    @api.multi
     def _confirm_cancel(self):
         self.ensure_one()
         model_name = self.model_id.model
