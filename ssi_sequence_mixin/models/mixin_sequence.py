@@ -73,7 +73,6 @@ class MixingSequence(models.AbstractModel):
                 break
         return result
 
-    @api.multi
     def _create_sequence(self):
         self.ensure_one()
         template = self._get_template_sequence()
@@ -86,4 +85,8 @@ class MixingSequence(models.AbstractModel):
         else:
             result = getattr(self, self._fallback_sequence_field)
 
-        return result
+        setattr(
+            self,
+            template.sequence_field_id.name,
+            result,
+        )
