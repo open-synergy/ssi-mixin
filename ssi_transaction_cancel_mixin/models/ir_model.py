@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class IrModel(models.Model):
@@ -17,6 +17,7 @@ class IrModel(models.Model):
         column2="cancel_reason_id",
     )
 
+    @api.multi
     def _compute_all_cancel_reason_ids(self):
         obj_reason = self.env["base.cancel_reason"]
         criteria = [

@@ -32,6 +32,7 @@ class MixinTransactionCancel(models.AbstractModel):
         readonly=True,
     )
 
+    @api.multi
     def _compute_policy(self):
         _super = super(MixinTransactionCancel, self)
         _super._compute_policy()
@@ -41,6 +42,7 @@ class MixinTransactionCancel(models.AbstractModel):
         compute="_compute_policy",
     )
 
+    @api.multi
     def _prepare_cancel_data(self, cancel_reason=False):
         self.ensure_one()
         return {
@@ -48,10 +50,12 @@ class MixinTransactionCancel(models.AbstractModel):
             "cancel_reason_id": cancel_reason and cancel_reason.id or False,
         }
 
+    @api.multi
     def action_cancel(self, cancel_reason=False):
         for record in self.sudo():
             record.write(record._prepare_cancel_data(cancel_reason))
 
+    @api.multi
     def _prepare_restart_data(self):
         self.ensure_one()
         _super = super(MixinTransactionCancel, self)
@@ -67,13 +71,11 @@ class MixinTransactionCancel(models.AbstractModel):
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
-        result = super().fields_view_get(
+        res = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
-
-        view_arch = etree.XML(result["arch"])
-
+        view_model = self.env["ir.ui.view"]
+        view_arch = etree.XML(res["arch"])
         if view_type == "form" and self._automatically_insert_view_element:
             view_arch = self._view_add_cancel_policy_field(view_arch)
             view_arch = self._view_add_cancel_button(view_arch)
@@ -86,14 +88,15 @@ class MixinTransactionCancel(models.AbstractModel):
             view_arch = self._add_cancel_filter_on_search_view(view_arch)
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
-        if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
-        result["arch"] = new_arch
-        new_fields.update(result["fields"])
-        result["fields"] = new_fields
-
-        return result
+        if view_id and res.get("base_model", self._name) != self._name:
+            view_model = view_model.with_context(base_model_name=res["base_model"])
+        new_arch, new_fields = view_model.postprocess_and_fields(
+            self._name, view_arch, res["view_id"]
+        )
+        res["arch"] = new_arch
+        new_fields.update(res["fields"])
+        res["fields"] = new_fields
+        return res
 
     @api.model
     def _add_cancel_state_badge_decorator(self, view_arch):
