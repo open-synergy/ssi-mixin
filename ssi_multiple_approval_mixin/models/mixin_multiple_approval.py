@@ -1,6 +1,7 @@
 # Copyright 2021 OpenSynergy Indonesia
 # Copyright 2021 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+from lxml import etree
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -17,6 +18,9 @@ class MixinMultipleApproval(models.AbstractModel):
     _approval_cancel_state = "cancel"
     _approval_reject_state = "reject"
     _approval_state = "confirm"
+    _after_approved_method = False
+    _automatically_insert_multiple_approval_page = False
+    _multiple_approval_xpath_reference = "//page[last()]"
 
     approval_template_id = fields.Many2one(
         string="Approval Template",
@@ -304,10 +308,11 @@ class MixinMultipleApproval(models.AbstractModel):
             elif state == "rejected":
                 self.write({"state": "reject"})
 
-    @api.multi
     def action_approve_approval(self):
-        for rec in self:
+        for rec in self.sudo():
             rec._action_approval("approved")
+            if rec.approved and self._after_approved_method:
+                getattr(rec, self._after_approved_method)()
 
     @api.multi
     def action_reject_approval(self):
@@ -402,3 +407,32 @@ class MixinMultipleApproval(models.AbstractModel):
         for rec in self:
             rec.mapped("approval_ids").unlink()
         return super(MixinMultipleApproval, self).unlink()
+
+    @api.model
+    def fields_view_get(
+        self, view_id=None, view_type="form", toolbar=False, submenu=False
+    ):
+        res = super().fields_view_get(
+            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
+        )
+        if view_type == "form" and self._automatically_insert_multiple_approval_page:
+            doc = etree.XML(res["arch"])
+            node_xpath = doc.xpath(self._multiple_approval_xpath_reference)
+            str_element = self.env["ir.qweb"].render(
+                "ssi_multiple_approval_mixin.multiple_approval"
+            )
+            for node in node_xpath:
+                new_node = etree.fromstring(str_element)
+                node.addnext(new_node)
+
+            View = self.env["ir.ui.view"]
+
+            if view_id and res.get("base_model", self._name) != self._name:
+                View = View.with_context(base_model_name=res["base_model"])
+            new_arch, new_fields = View.postprocess_and_fields(
+                self._name, doc, res["view_id"]
+            )
+            res["arch"] = new_arch
+            new_fields.update(res["fields"])
+            res["fields"] = new_fields
+        return res
