@@ -61,7 +61,7 @@ class MixinMasterData(models.AbstractModel):
         result = []
         for record in self:
             if self._show_code_on_display_name:
-                name = "[%s] %s" % (record.code, record.name)
+                name = "[{}] {}".format(record.code, record.name)
             else:
                 name = record.name
             result.append((record.id, name))
