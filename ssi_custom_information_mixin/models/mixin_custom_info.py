@@ -32,8 +32,8 @@ class MixinCustomInfo(models.AbstractModel):
             subfields = getattr(self, x2many_field)._fields.keys()
             for subfield in subfields:
                 field_onchange.setdefault(
-                    u"{}.{}".format(x2many_field, subfield),
-                    u"",
+                    "{}.{}".format(x2many_field, subfield),
+                    "",
                 )
         return super(MixinCustomInfo, self).onchange(
             values,
