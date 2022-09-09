@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 {
     "name": "Transaction Mixin",
-    "version": "14.0.3.6.2",
+    "version": "11.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "LGPL-3",
@@ -14,6 +14,7 @@
         "ssi_sequence_mixin",
     ],
     "data": [
+        "menu.xml",
         "views/mixin_transaction_views.xml",
     ],
 }
