@@ -4,14 +4,13 @@
 
 {
     "name": "Product Line Mixin",
-    "version": "14.0.1.0.0",
+    "version": "11.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "LGPL-3",
     "installable": True,
     "depends": [
         "product",
-        "uom",
     ],
     "data": [
         "menu.xml",
