@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 {
     "name": "Test Module: Transaction Mixin",
-    "version": "11.0.1.1.0",
+    "version": "11.0.1.2.0",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
@@ -15,6 +15,7 @@
         "ssi_transaction_open_mixin",
         "ssi_transaction_done_mixin",
         "ssi_transaction_cancel_mixin",
+        "ssi_transaction_terminate_mixin",
     ],
     "data": [
         "security/ir.model.access.csv",
