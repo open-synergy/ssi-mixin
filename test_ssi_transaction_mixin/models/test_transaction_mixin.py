@@ -10,24 +10,23 @@ class TestTransactionMixin(models.Model):
     _description = "Test Transaction Mixin"
     _inherit = [
         "mixin.transaction_confirm",
+        "mixin.transaction_open",
         "mixin.transaction_done",
         "mixin.transaction_cancel",
     ]
 
     # Multiple Approval Attribute
     _approval_from_state = "draft"
-    _approval_to_state = "done"
+    _approval_to_state = "open"
     _approval_state = "confirm"
-    _after_approved_method = "action_done"
+    _after_approved_method = "action_open"
 
     # Attributes related to add element on view automatically
     _automatically_insert_view_element = True
-    _automatically_insert_done_button = False
-    _automatically_insert_done_policy_fields = False
 
     # Attributes related to add element on form view automatically
     _automatically_insert_multiple_approval_page = True
-    _statusbar_visible_label = "draft,confirm,done,reject"
+    _statusbar_visible_label = "draft,confirm,open,done"
     _policy_field_order = [
         "confirm_ok",
         "approve_ok",
@@ -35,12 +34,15 @@ class TestTransactionMixin(models.Model):
         "restart_approval_ok",
         "cancel_ok",
         "restart_ok",
+        "open_ok",
+        "done_ok",
         "manual_number_ok",
     ]
     _header_button_order = [
         "action_confirm",
         "action_approve_approval",
         "action_reject_approval",
+        "action_done",
         "%(ssi_transaction_cancel_mixin.base_select_cancel_reason_action)d",
         "action_restart",
     ]
@@ -65,6 +67,7 @@ class TestTransactionMixin(models.Model):
             "confirm_ok",
             "approve_ok",
             "done_ok",
+            "open_ok",
             "cancel_ok",
             "reject_ok",
             "restart_ok",
@@ -86,6 +89,7 @@ class TestTransactionMixin(models.Model):
         selection=[
             ("draft", "Draft"),
             ("confirm", "Waiting for Approval"),
+            ("open", "In Progress"),
             ("done", "Done"),
             ("cancel", "Cancelled"),
             ("reject", "Rejected"),
