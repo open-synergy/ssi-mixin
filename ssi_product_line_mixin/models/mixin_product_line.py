@@ -22,6 +22,7 @@ class MixinProductLine(models.AbstractModel):
     uom_quantity = fields.Float(
         string="UoM Quantity",
         required=True,
+        default=1.0,
     )
 
     @api.depends("product_id")
