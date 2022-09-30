@@ -89,6 +89,18 @@ class TestTransactionMixin(models.Model):
         copy=False,
     )
 
+    detail_ids = fields.One2many(
+        string="Details",
+        comodel_name="test.transaction_detail_mixin",
+        inverse_name="test_transaction_id",
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
+
     state = fields.Selection(
         string="State",
         selection=[
