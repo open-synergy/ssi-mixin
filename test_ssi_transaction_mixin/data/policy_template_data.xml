@@ -35,6 +35,20 @@
             <field name="restrict_additional" eval="0" />
         </record>
 
+        <record id="policy_template_done" model="policy.template_detail">
+            <field name="template_id" ref="policy_template_test_transaction" />
+            <field
+                name="field_id"
+                search="[('model_id.model','=','test.transaction_mixin'),('name','=','done_ok')]"
+            />
+            <field name="restrict_state" eval="1" />
+            <field name="states">open</field>
+            <field name="restrict_user" eval="1" />
+            <field name="computation_method">use_user</field>
+            <field name="user_ids" eval="[(6,0,[ref('base.user_root')])]" />
+            <field name="restrict_additional" eval="0" />
+        </record>
+
         <record
             id="policy_template_test_transaction_approve"
             model="policy.template_detail"
