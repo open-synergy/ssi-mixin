@@ -26,25 +26,25 @@ class MixinProductLine(models.AbstractModel):
 
     @api.depends("product_id")
     def _compute_allowed_uom_ids(self):
-        UoM = self.env["uom.uom"]
+        obj_product_uom = self.env["product.uom"]
         for record in self:
             result = []
             if record.product_id:
                 criteria = [
                     ("category_id", "=", record.product_id.uom_id.id),
                 ]
-                result = UoM.search(criteria).ids
+                result = obj_product_uom.search(criteria).ids
             record.allowed_uom_ids = result
 
     allowed_uom_ids = fields.Many2many(
         string="Allowed UoMs",
-        comodel_name="uom.uom",
+        comodel_name="product.uom",
         compute="_compute_allowed_uom_ids",
         compute_sudo=True,
     )
     uom_id = fields.Many2one(
         string="UoM",
-        comodel_name="uom.uom",
+        comodel_name="product.uom",
     )
 
     @api.depends(

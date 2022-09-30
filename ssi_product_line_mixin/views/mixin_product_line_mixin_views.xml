@@ -20,7 +20,7 @@
     <field name="model">mixin.product_line</field>
     <field name="arch" type="xml">
         <tree>
-            <field name="id" optional="hide" />
+            <field name="id" />
             <field name="product_id" />
             <field name="name" />
             <field name="uom_quantity" />
