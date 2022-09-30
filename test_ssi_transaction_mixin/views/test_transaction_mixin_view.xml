@@ -36,6 +36,14 @@
             <xpath expr="//group[@name='header_right']" position="inside">
                 <field name="date" />
             </xpath>
+            <xpath expr="//page[1]" position="before">
+                <page name="page_detail" string="Details">
+                    <field
+                            name="detail_ids"
+                            context="{'tree_view_ref':'ssi_product_line_price_mixin.mixin_product_line_price_view_tree_editable'}"
+                        />
+                </page>
+            </xpath>
         </data>
     </field>
 </record>
