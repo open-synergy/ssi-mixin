@@ -4,7 +4,7 @@
 
 {
     "name": "Sequence Mixin",
-    "version": "11.0.1.2.1",
+    "version": "11.0.1.2.2",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
