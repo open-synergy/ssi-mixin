@@ -14,6 +14,7 @@ class TestTransactionMixin(models.Model):
         "mixin.transaction_done",
         "mixin.transaction_cancel",
         "mixin.transaction_terminate",
+        "mixin.company_currency",
     ]
 
     # Multiple Approval Attribute
