@@ -70,7 +70,7 @@ class MixinTransactionTerminate(models.AbstractModel):
         result = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
+        view_model = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
 
@@ -87,8 +87,10 @@ class MixinTransactionTerminate(models.AbstractModel):
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+            view_model = view_model.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = view_model.postprocess_and_fields(
+            self._name, view_arch, result["view_id"]
+        )
         result["arch"] = new_arch
         new_fields.update(result["fields"])
         result["fields"] = new_fields
