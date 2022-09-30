@@ -3,6 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from . import (
+    ir_sequence,
     sequence_template,
     mixin_sequence,
 )
