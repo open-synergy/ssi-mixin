@@ -7,7 +7,7 @@
 <template id="button_terminate">
     <button
             name="%(ssi_transaction_terminate_mixin.base_select_terminate_reason_action)d"
-            string="terminate"
+            string="Terminate"
             type="action"
             attrs="{'invisible':[('terminate_ok','!=',True)]}"
         />
