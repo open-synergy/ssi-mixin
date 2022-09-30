@@ -13,6 +13,7 @@ class TestTransactionMixin(models.Model):
         "mixin.transaction_open",
         "mixin.transaction_done",
         "mixin.transaction_cancel",
+        "mixin.transaction_terminate",
     ]
 
     # Multiple Approval Attribute
@@ -33,6 +34,7 @@ class TestTransactionMixin(models.Model):
         "reject_ok",
         "restart_approval_ok",
         "cancel_ok",
+        "terminate_ok",
         "restart_ok",
         "open_ok",
         "done_ok",
@@ -44,6 +46,7 @@ class TestTransactionMixin(models.Model):
         "action_reject_approval",
         "action_done",
         "%(ssi_transaction_cancel_mixin.base_select_cancel_reason_action)d",
+        "%(ssi_transaction_terminate_mixin.base_select_terminate_reason_action)d",
         "action_restart",
     ]
 
@@ -52,13 +55,14 @@ class TestTransactionMixin(models.Model):
         "dom_draft",
         "dom_confirm",
         "dom_reject",
+        "dom_open",
         "dom_done",
         "dom_cancel",
+        "dom_terminate",
     ]
 
     # Sequence attribute
-    _auto_fill_sequence = True
-    _create_sequence_state = "done"
+    _create_sequence_state = "open"
 
     @api.model
     def _get_policy_field(self):
@@ -69,6 +73,7 @@ class TestTransactionMixin(models.Model):
             "done_ok",
             "open_ok",
             "cancel_ok",
+            "terminate_ok",
             "reject_ok",
             "restart_ok",
             "restart_approval_ok",
@@ -93,6 +98,7 @@ class TestTransactionMixin(models.Model):
             ("done", "Done"),
             ("cancel", "Cancelled"),
             ("reject", "Rejected"),
+            ("terminate", "Terminate"),
         ],
         default="draft",
         copy=False,
