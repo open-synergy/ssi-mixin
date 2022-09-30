@@ -72,7 +72,7 @@ class MixinTransactionWinLost(models.AbstractModel):
         lost_date = real_lost_date or fields.Date.today()
         return {
             "state": "lost",
-            "cancel_reason_id": lost_reason and lost_reason.id or False,
+            "lost_reason_id": lost_reason and lost_reason.id or False,
             "real_lost_date": lost_date,
         }
 
@@ -113,15 +113,14 @@ class MixinTransactionWinLost(models.AbstractModel):
         if view_type == "form" and self._automatically_insert_view_element:
             view_arch = self._view_add_win_policy_field(view_arch)
             view_arch = self._view_add_win_button(view_arch)
-            view_arch = self._view_add_win_reason(view_arch)
             view_arch = self._view_add_lost_policy_field(view_arch)
             view_arch = self._view_add_lost_button(view_arch)
             view_arch = self._view_add_lost_reason(view_arch)
             view_arch = self._reorder_header_button(view_arch)
             view_arch = self._reorder_policy_field(view_arch)
         elif view_type == "tree" and self._automatically_insert_view_element:
-            view_arch = self._add_cancel_win_badge_decorator(view_arch)
-            view_arch = self._add_cancel_lost_badge_decorator(view_arch)
+            view_arch = self._add_win_state_badge_decorator(view_arch)
+            view_arch = self._add_lost_state_badge_decorator(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
             view_arch = self._add_win_filter_on_search_view(view_arch)
             view_arch = self._add_lost_filter_on_search_view(view_arch)
