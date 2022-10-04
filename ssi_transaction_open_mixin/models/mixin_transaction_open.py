@@ -44,7 +44,7 @@ class MixinTransactionOpen(models.AbstractModel):
         return result
 
     def action_open(self):
-        for record in self.sudo():
+        for record in self:
             record.write(record._prepare_open_data())
 
     @api.model
