@@ -49,7 +49,7 @@ class MixinTransactionTerminate(models.AbstractModel):
         }
 
     def action_terminate(self, terminate_reason=False):
-        for record in self.sudo():
+        for record in self:
             record.write(record._prepare_terminate_data(terminate_reason))
 
     def _prepare_restart_data(self):
