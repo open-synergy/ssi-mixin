@@ -52,7 +52,7 @@ class MixinTransactionCancel(models.AbstractModel):
 
     @api.multi
     def action_cancel(self, cancel_reason=False):
-        for record in self.sudo():
+        for record in self:
             record.write(record._prepare_cancel_data(cancel_reason))
 
     @api.multi
