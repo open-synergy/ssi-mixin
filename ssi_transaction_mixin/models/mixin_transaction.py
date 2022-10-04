@@ -107,7 +107,7 @@ class MixinTransaction(models.AbstractModel):
 
     @api.multi
     def action_restart(self):
-        for record in self.sudo():
+        for record in self:
             record.write(record._prepare_restart_data())
 
     @api.multi
@@ -162,7 +162,7 @@ class MixinTransaction(models.AbstractModel):
         "name",
     )
     def _constrains_duplicate_document_number(self):
-        for record in self.sudo():
+        for record in self:
             if not record._check_duplicate_document_number():
                 error_message = """
                 Context: Change {} document number
