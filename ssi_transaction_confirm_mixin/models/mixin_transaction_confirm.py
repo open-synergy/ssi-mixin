@@ -54,7 +54,7 @@ class MixinTransactionConfirm(models.AbstractModel):
 
     @api.multi
     def action_confirm(self):
-        for record in self.sudo():
+        for record in self:
             record.write(record._prepare_confirm_data())
             record.action_request_approval()
 
