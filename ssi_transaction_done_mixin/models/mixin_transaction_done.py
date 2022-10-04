@@ -47,7 +47,7 @@ class MixinTransactionDone(models.AbstractModel):
 
     @api.multi
     def action_done(self):
-        for record in self.sudo():
+        for record in self:
             record.write(record._prepare_done_data())
 
     @api.model
