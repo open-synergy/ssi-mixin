@@ -309,7 +309,7 @@ class MixinMultipleApproval(models.AbstractModel):
                 self.write({"state": "reject"})
 
     def action_approve_approval(self):
-        for rec in self.sudo():
+        for rec in self:
             rec._action_approval("approved")
             if rec.approved and self._after_approved_method:
                 getattr(rec, self._after_approved_method)()
