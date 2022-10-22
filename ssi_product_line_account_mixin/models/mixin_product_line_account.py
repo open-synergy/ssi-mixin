@@ -56,6 +56,11 @@ class MixinProductLineAccount(models.AbstractModel):
         currency_field="currency_id",
         store=True,
     )
+    usage_id = fields.Many2one(
+        string="Usage",
+        comodel_name="product.usage_type",
+        ondelete="restrict",
+    )
     account_id = fields.Many2one(
         string="Account",
         comodel_name="account.account",
@@ -68,3 +73,14 @@ class MixinProductLineAccount(models.AbstractModel):
         required=False,
         ondelete="restrict",
     )
+
+    @api.onchange(
+        "usage_id",
+        "product_id",
+    )
+    def onchange_account_id(self):
+        self.account_id = False
+        if self.product_id and self.usage_id:
+            self.account_id = self.product_id._get_product_account(
+                usage_code=self.usage_id.code
+            )

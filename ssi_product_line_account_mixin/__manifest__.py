@@ -4,7 +4,7 @@
 
 {
     "name": "Product Line Mixin - With Accounting",
-    "version": "14.0.1.0.0",
+    "version": "14.0.2.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "LGPL-3",
@@ -12,6 +12,7 @@
     "depends": [
         "account",
         "ssi_product_line_price_mixin",
+        "ssi_product_usage_account_type",
     ],
     "data": [
         "menu.xml",
