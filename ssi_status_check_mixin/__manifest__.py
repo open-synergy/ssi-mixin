@@ -4,7 +4,7 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Status Check Mixin",
-    "version": "14.0.1.2.0",
+    "version": "14.0.1.3.0",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
@@ -16,6 +16,7 @@
     "data": [
         "security/ir.model.access.csv",
         "menu.xml",
+        "templates/status_check_templates.xml",
         "views/status_check_item_views.xml",
         "views/status_check_template_detail_views.xml",
         "views/status_check_template_views.xml",
