@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="status_check_page">
+        <page name="page_status_check" string="Check Status">
+            <group name="grp_status_check_1">
+                <field name="status_check_template_id" />
+                <button
+                    name="action_reload_status_check_template"
+                    string="Reload Status Check Template"
+                    type="object"
+                />
+                <button
+                    name="action_reload_status_check"
+                    string="Reload Status Check Item"
+                    type="object"
+                />
+            </group>
+            <field name="status_check_ids" nolabel="1" force_save="1" />
+        </page>
+    </template>
+</odoo>
