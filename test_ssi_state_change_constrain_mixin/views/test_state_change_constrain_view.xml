@@ -93,23 +93,6 @@
                         <page name="page_note" string="Notes">
                             <field name="notes" nolabel="1" />
                         </page>
-                        <page name="page_status_check" string="Check Status">
-                            <group name="grp_status_check_1">
-                                <field name="status_check_template_id" />
-                                <button
-                                    name="action_reload_status_check_template"
-                                    string="Reload Status Check Template"
-                                    type="object"
-                                />
-                                <button
-                                    name="action_reload_status_check"
-                                    string="Reload Status Check Item"
-                                    type="object"
-                                />
-                                <field name="state_change_constrain_template_id" />
-                            </group>
-                            <field name="status_check_ids" nolabel="1" force_save="1" />
-                        </page>
                         <page name="log" string="Logs">
                             <group name="group_5" colspan="4" col="3">
                                 <group name="group_log_1" colspan="4" col="3">
