@@ -4,7 +4,7 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "State Change Constrain Mixin",
-    "version": "14.0.1.3.0",
+    "version": "14.0.1.4.0",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
@@ -16,6 +16,7 @@
     "data": [
         "security/ir.model.access.csv",
         "menu.xml",
+        "templates/status_check_templates.xml",
         "views/state_change_constrain_template_views.xml",
     ],
 }

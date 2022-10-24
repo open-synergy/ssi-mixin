@@ -85,3 +85,13 @@ class MixinStateChangeConstrain(models.AbstractModel):
                             item = status_check.status_check_item_id.name
                             msg_error = _("Check Status item: %s") % (item)
                             raise UserError(msg_error)
+
+    @api.model
+    def create(self, values):
+        _super = super(MixinStateChangeConstrain, self)
+        result = _super.create(values)
+        if not result.state_change_constrain_template_id:
+            template_id = result._get_template_state_change()
+            if template_id:
+                result.write({"state_change_constrain_template_id": template_id})
+        return result
