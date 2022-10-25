@@ -1,6 +1,10 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
+import datetime
+import time
+
+import dateutil
 from lxml import etree
 
 from odoo import _, api, fields, models
@@ -80,6 +84,9 @@ class MixinStatusCheck(models.AbstractModel):
         return {
             "env": self.env,
             "document": self,
+            "time": time,
+            "datetime": datetime,
+            "dateutil": dateutil,
         }
 
     def _evaluate_status_check(self, template):
