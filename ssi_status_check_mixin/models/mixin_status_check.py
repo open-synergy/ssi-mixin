@@ -12,7 +12,7 @@ class MixinStatusCheck(models.AbstractModel):
     _name = "mixin.status_check"
     _description = "Mixin Object for Status Check"
 
-    _status_check_create_page = True
+    _status_check_create_page = False
     _status_check_page_xpath = "//page[last()]"
 
     status_check_template_id = fields.Many2one(
