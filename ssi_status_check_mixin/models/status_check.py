@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 # pylint: disable=W0622
-from odoo import _, fields, models
+from odoo import _, fields, models, tools
 from odoo.exceptions import Warning as UserError
 from odoo.tools.safe_eval import safe_eval
 
@@ -59,6 +59,9 @@ class StatusCheck(models.Model):
         return {
             "document": self._get_document(),
             "env": self.env,
+            "time": tools.safe_eval.time,
+            "datetime": tools.safe_eval.datetime,
+            "dateutil": tools.safe_eval.dateutil,
         }
 
     def _evaluate_status_check(self):
