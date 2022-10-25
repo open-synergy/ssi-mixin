@@ -112,8 +112,9 @@ class MixinStatusCheck(models.AbstractModel):
             order="sequence desc",
             limit=1,
         )
-        if self._evaluate_status_check(template_id):
-            result = template_id.id
+        if template_id:
+            if self._evaluate_status_check(template_id):
+                result = template_id.id
         return result
 
     def action_reload_status_check_template(self):
