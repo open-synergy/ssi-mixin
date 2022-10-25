@@ -16,7 +16,7 @@ class MixinStatusCheck(models.AbstractModel):
     _status_check_page_xpath = "//page[last()]"
 
     status_check_template_id = fields.Many2one(
-        string="# Status Check Template",
+        string="Status Check Template",
         comodel_name="status.check.template",
         domain=lambda self: [("model", "=", self._name)],
     )
