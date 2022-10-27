@@ -104,9 +104,53 @@ class MixinTransaction(models.AbstractModel):
         compute="_compute_policy",
     )
 
+    def _run_pre_restart_check(self):
+        self.ensure_one()
+        method_names = [
+            method_name
+            for method_name in dir(self)
+            if method_name.startswith("_pre_restart_check")
+        ]
+        for method_name in method_names:
+            getattr(self, method_name)()
+
+    def _run_pre_restart_action(self):
+        self.ensure_one()
+        method_names = [
+            method_name
+            for method_name in dir(self)
+            if method_name.startswith("_pre_restart_action")
+        ]
+        for method_name in method_names:
+            getattr(self, method_name)()
+
+    def _run_post_restart_action(self):
+        self.ensure_one()
+        method_names = [
+            method_name
+            for method_name in dir(self)
+            if method_name.startswith("_post_restart_action")
+        ]
+        for method_name in method_names:
+            getattr(self, method_name)()
+
+    def _run_post_restart_check(self):
+        self.ensure_one()
+        method_names = [
+            method_name
+            for method_name in dir(self)
+            if method_name.startswith("_post_restart_check")
+        ]
+        for method_name in method_names:
+            getattr(self, method_name)()
+
     def action_restart(self):
         for record in self.sudo():
+            record._run_pre_restart_check()
+            record._run_pre_restart_action()
             record.write(record._prepare_restart_data())
+            record._run_post_restart_check()
+            record._run_post_restart_action()
 
     def _prepare_restart_data(self):
         self.ensure_one()
