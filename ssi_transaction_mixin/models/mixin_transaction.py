@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
 from odoo import _, api, fields, models
@@ -17,6 +19,7 @@ class MixinTransaction(models.AbstractModel):
     _inherit = [
         "mail.activity.mixin",
         "mail.thread",
+        "mixin.decorator",
         "mixin.sequence",
         "mixin.policy",
     ]
@@ -104,9 +107,53 @@ class MixinTransaction(models.AbstractModel):
         compute="_compute_policy",
     )
 
+    def _run_pre_restart_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_restart_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_restart_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_restart_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_restart_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_restart_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_restart_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_restart_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
     def action_restart(self):
         for record in self.sudo():
+            record._run_pre_restart_check()
+            record._run_pre_restart_action()
             record.write(record._prepare_restart_data())
+            record._run_post_restart_check()
+            record._run_post_restart_action()
 
     def _prepare_restart_data(self):
         self.ensure_one()

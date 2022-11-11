@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
 from odoo import api, fields, models
@@ -48,9 +50,53 @@ class MixinTransactionCancel(models.AbstractModel):
             "cancel_reason_id": cancel_reason and cancel_reason.id or False,
         }
 
+    def _run_pre_cancel_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_cancel_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_cancel_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_cancel_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_cancel_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_cancel_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_cancel_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_cancel_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
     def action_cancel(self, cancel_reason=False):
         for record in self.sudo():
+            record._run_pre_cancel_check()
+            record._run_pre_cancel_action()
             record.write(record._prepare_cancel_data(cancel_reason))
+            record._run_post_cancel_check()
+            record._run_post_cancel_action()
 
     def _prepare_restart_data(self):
         self.ensure_one()

@@ -4,7 +4,7 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Multiple Approval",
-    "version": "14.0.1.4.2",
+    "version": "14.0.1.5.0",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
@@ -12,6 +12,7 @@
     "installable": True,
     "depends": [
         "base",
+        "ssi_decorator",
     ],
     "data": [
         "security/ir.model.access.csv",
