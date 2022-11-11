@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
 from odoo import api, fields, models
@@ -43,9 +45,53 @@ class MixinTransactionDone(models.AbstractModel):
             self._create_sequence()
         return result
 
+    def _run_pre_done_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_done_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_done_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_done_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_done_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_done_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_done_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_done_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
     def action_done(self):
         for record in self.sudo():
+            record._run_pre_done_check()
+            record._run_pre_done_action()
             record.write(record._prepare_done_data())
+            record._run_post_done_check()
+            record._run_post_done_action()
 
     @api.model
     def fields_view_get(
