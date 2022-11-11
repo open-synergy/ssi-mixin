@@ -141,3 +141,37 @@ def pre_terminate_action(*args):
 
 def post_terminate_action(*args):
     return attrsetter("_post_terminate_action", args)
+
+
+# WIN
+def pre_win_check(*args):
+    return attrsetter("_pre_win_check", args)
+
+
+def post_win_check(*args):
+    return attrsetter("_post_win_check", args)
+
+
+def pre_win_action(*args):
+    return attrsetter("_pre_win_action", args)
+
+
+def post_win_action(*args):
+    return attrsetter("_post_win_action", args)
+
+
+# LOST
+def pre_lost_check(*args):
+    return attrsetter("_pre_lost_check", args)
+
+
+def post_lost_check(*args):
+    return attrsetter("_post_lost_check", args)
+
+
+def pre_lost_action(*args):
+    return attrsetter("_pre_lost_action", args)
+
+
+def post_lost_action(*args):
+    return attrsetter("_post_lost_action", args)
