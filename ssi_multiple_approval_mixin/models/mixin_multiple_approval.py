@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
 from odoo import _, api, fields, models
@@ -11,6 +13,9 @@ from odoo.tools.safe_eval import safe_eval
 
 class MixinMultipleApproval(models.AbstractModel):
     _name = "mixin.multiple_approval"
+    _inherit = [
+        "mixin.decorator",
+    ]
     _description = "Mixin Object for Multiple Approval"
 
     _approval_state_field = "state"
@@ -312,15 +317,103 @@ class MixinMultipleApproval(models.AbstractModel):
                 break
         return result
 
+    def _run_pre_approve_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_approve_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_approve_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_approve_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_approve_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_approve_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_approve_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_approve_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
     def action_approve_approval(self):
         for rec in self.sudo():
+            rec._run_pre_approve_check()
+            rec._run_pre_approve_action()
             rec._action_approval("approved")
             if rec._check_all_approve() and self._after_approved_method:
                 getattr(rec, self._after_approved_method)()
+            rec._run_post_approve_check()
+            rec._run_post_approve_action()
+
+    def _run_pre_reject_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_reject_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_reject_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_reject_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_reject_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_reject_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_reject_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_reject_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
 
     def action_reject_approval(self):
         for rec in self.sudo():
+            rec._run_pre_reject_check()
+            rec._run_pre_reject_action()
             rec._action_approval("rejected")
+            rec._run_post_reject_check()
+            rec._run_post_reject_action()
 
     def action_reload_approval_template(self):
         for rec in self.sudo():
