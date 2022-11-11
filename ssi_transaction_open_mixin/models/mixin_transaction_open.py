@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
 from odoo import api, fields, models
@@ -43,9 +45,53 @@ class MixinTransactionOpen(models.AbstractModel):
             self._create_sequence()
         return result
 
+    def _run_pre_open_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_open_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_open_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_open_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_open_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_open_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_open_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_open_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
     def action_open(self):
         for record in self.sudo():
+            record._run_pre_open_check()
+            record._run_pre_open_action()
             record.write(record._prepare_open_data())
+            record._run_post_open_check()
+            record._run_post_open_action()
 
     @api.model
     def fields_view_get(
