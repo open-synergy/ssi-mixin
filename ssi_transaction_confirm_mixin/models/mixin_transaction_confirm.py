@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
 from odoo import api, fields, models
@@ -51,9 +53,53 @@ class MixinTransactionConfirm(models.AbstractModel):
         compute="_compute_policy",
     )
 
+    def _run_pre_confirm_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_confirm_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_confirm_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_confirm_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_confirm_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_confirm_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_confirm_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_confirm_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
     def action_confirm(self):
         for record in self.sudo():
+            record._run_pre_confirm_check()
+            record._run_pre_confirm_action()
             record.write(record._prepare_confirm_data())
+            record._run_post_confirm_check()
+            record._run_post_confirm_action()
             record.action_request_approval()
 
     def _prepare_confirm_data(self):
