@@ -22,6 +22,7 @@ addon | summary
 [ssi_partner_mixin](ssi_partner_mixin/) | Menambahkan field partner dan contact partner
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | Menambahkan field salesperson dan sales team
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | Menambahkan field company dan company currency
+[ssi_duration_mixin](ssi_duration_mixin/) | Menambahkan field date start dan date end
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | Base module untuk field date
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | Menambahkan field currency dan pricelist
 [ssi_product_line_mixin](ssi_product_line_mixin/) | Menambahkan product line tanpa pricelist
@@ -29,23 +30,12 @@ addon | summary
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | Menambahkan field-field accounting pada product line
 [ssi_source_document_mixin](ssi_source_document_mixin/)| Menambahkan field source document
 [ssi_master_data_mixin](ssi_master_data_mixin/) | Base module untuk pembuatan objek master data
-[ssi_transaction_mixin](ssi_transaction_mixin/) | Base module untuk pembuatan objek transaksi
-[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | Penambahan proses workflow state cancel pada objek transaksi
-[ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | Penambahan proses workflow state confim pada objek transaksi
-[ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | Penambahan proses workflow state done pada objek transaksi
-[ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | Penambahan proses workflow state open pada objek transaksi
-[ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | Penambahan pricelist pada objek transaksi
-[ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | Penambahan proses workflow state ready pada objek transaksi
-[ssi_transaction_salesperson_mixin](ssi_transaction_salesperson_mixin/) | Penambahan salesperson pada objek transaksi
-[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | Penambahan proses workflow state terminate pada objek transaksi
-[ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | Penambahan proses workflow win/lost pada objek transaksi
 
 Functional Addons
 -----------------
 addon | summary
 --- | ---
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | Menambahkan fungsionalitas untuk custom information
-[ssi_duration_mixin](ssi_duration_mixin/) | Menambahkan fungsionalitas untuk menghitung durasi
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | Menambahkan fungsionalitas untuk multiple approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | Menambahkan fungsionalitas untuk operating unit
 [ssi_policy_mixin](ssi_policy_mixin/) | Menambahkan fungsionalitas untuk workflow policy
@@ -55,6 +45,16 @@ addon | summary
 [ssi_sequence_mixin](ssi_sequence_mixin/) | Menambahkan fungsionalitas untuk sequence
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | Menambahkan fungsionalitas untuk state change constrain
 [ssi_status_check_mixin](ssi_status_check_mixin/) | Menambahkan fungsionalitas untuk status check
+[ssi_transaction_mixin](ssi_transaction_mixin/) | Base module untuk pembuatan objek transaksi
+[ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | Menambahkan proses workflow state confim pada objek transaksi
+[ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | Menambahkan proses workflow state done pada objek transaksi
+[ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | Menambahkan proses workflow state open pada objek transaksi
+[ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | Menambahkan pricelist pada objek transaksi
+[ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | Menambahkan proses workflow state ready pada objek transaksi
+[ssi_transaction_salesperson_mixin](ssi_transaction_salesperson_mixin/) | Menambahkan salesperson pada objek transaksi
+[ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | Menambahkan proses workflow win/lost pada objek transaksi
+[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | Menambahkan proses workflow state cancel pada objek transaksi
+[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | Menambahkan proses workflow state terminate pada objek transaksi
 
 Test Addons
 -----------
