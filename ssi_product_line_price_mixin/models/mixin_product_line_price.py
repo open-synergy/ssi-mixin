@@ -12,10 +12,15 @@ class MixinProductLinePrice(models.AbstractModel):
         "mixin.product_line",
     ]
 
+    @api.model
+    def _default_currency_id(self):
+        return self.env.company.currency_id.id
+
     currency_id = fields.Many2one(
         string="Currency",
         comodel_name="res.currency",
         required=True,
+        default=lambda self: self._default_currency_id(),
     )
 
     @api.depends(
@@ -44,6 +49,7 @@ class MixinProductLinePrice(models.AbstractModel):
         string="Price Unit",
         currency_field="currency_id",
         required=True,
+        default=0.0,
     )
 
     @api.depends(
@@ -62,10 +68,13 @@ class MixinProductLinePrice(models.AbstractModel):
     )
 
     @api.onchange(
+        "allowed_pricelist_ids",
         "currency_id",
     )
     def onchange_pricelist_id(self):
         self.pricelist_id = False
+        if self.allowed_pricelist_ids:
+            self.pricelist_id = self.allowed_pricelist_ids[0]._origin.id
 
     def _get_pricelist_domain(self):
         self.ensure_one()
