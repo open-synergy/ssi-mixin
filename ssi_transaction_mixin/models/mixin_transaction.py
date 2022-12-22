@@ -195,6 +195,10 @@ class MixinTransaction(models.AbstractModel):
     def _check_duplicate_document_number(self):
         self.ensure_one()
         result = True
+        bypass_duplicate = self.env.context.get("bypass_duplicate", False)
+        if bypass_duplicate:
+            return True
+
         criteria = [
             (
                 self._document_number_field,
