@@ -126,7 +126,7 @@
                 <group name="header" colspan="4" col="2">
                     <group name="header_left" colspan="1" col="2">
                         <field name="company_id" groups="base.group_multi_company" />
-                        <field name="user_id" />
+                        <field name="user_id" widget="many2one_avatar" />
                     </group>
                     <group name="header_right" colspan="1" col="2" />
                     <group name="header_center" colspan="2" col="2" />
