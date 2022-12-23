@@ -79,7 +79,7 @@
                     groups="base.group_multi_company"
                     optional="hide"
                 />
-            <field name="user_id" optional="show" />
+            <field name="user_id" optional="show" widget="many2one_avatar" />
             <field name="activity_ids" widget="list_activity" optional="show" />
             <field name="state" widget="badge" decoration-info="state == 'draft'" />
         </tree>
