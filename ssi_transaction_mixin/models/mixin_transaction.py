@@ -41,7 +41,7 @@ class MixinTransaction(models.AbstractModel):
     _state_filter_order = False
 
     # Attributes related to constrains
-    _check_duplicate_document_number = True
+    _restrict_duplicate_document_number = True
 
     name = fields.Char(
         string="# Document",
@@ -166,7 +166,7 @@ class MixinTransaction(models.AbstractModel):
     )
     def _constrains_duplicate_document_number(self):
         for record in self:
-            if not record._check_duplicate_document_number:
+            if not record._check_duplicate_document_number():
                 error_message = """
                 Context: Change {} document number
                 Database ID: {}
@@ -199,7 +199,7 @@ class MixinTransaction(models.AbstractModel):
         self.ensure_one()
         result = True
 
-        if not self._check_duplicate_document_number:
+        if not self._restrict_duplicate_document_number:
             return result
 
         criteria = [
