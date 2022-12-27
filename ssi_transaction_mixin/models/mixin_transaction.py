@@ -166,7 +166,7 @@ class MixinTransaction(models.AbstractModel):
     )
     def _constrains_duplicate_document_number(self):
         for record in self:
-            if not record._check_duplicate_document_number():
+            if not record._check_duplicate_document_number:
                 error_message = """
                 Context: Change {} document number
                 Database ID: {}
