@@ -40,6 +40,9 @@ class MixinTransaction(models.AbstractModel):
     _state_filter_xpath = "/search/group[@name='dom_state']/filter[@name='dom_draft']"
     _state_filter_order = False
 
+    # Attributes related to constrains
+    _check_duplicate_document_number = True
+
     name = fields.Char(
         string="# Document",
         default="/",
@@ -195,6 +198,10 @@ class MixinTransaction(models.AbstractModel):
     def _check_duplicate_document_number(self):
         self.ensure_one()
         result = True
+
+        if not self._check_duplicate_document_number:
+            return result
+
         criteria = [
             (
                 self._document_number_field,
