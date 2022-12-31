@@ -84,3 +84,14 @@ class MixinProductLineAccount(models.AbstractModel):
             self.account_id = self.product_id._get_product_account(
                 usage_code=self.usage_id.code
             )
+
+    @api.onchange(
+        "usage_id",
+        "product_id",
+    )
+    def onchange_tax_ids(self):
+        self.tax_ids = False
+        if self.product_id and self.usage_id:
+            self.tax_ids = [
+                (6, 0, self.product_id._get_product_tax(usage_code=self.usage_id.code))
+            ]
