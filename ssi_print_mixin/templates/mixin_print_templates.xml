@@ -8,6 +8,7 @@
             name="%(ssi_print_mixin.base_print_document_action)d"
             string="Print"
             type="action"
+            icon="fa-print"
         />
     </template>
 </odoo>

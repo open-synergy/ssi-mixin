@@ -14,6 +14,7 @@ class MixinPrintDocument(models.AbstractModel):
     # Attributes related to automatically insert elemnt on form view
     _automatically_insert_print_button = False
     _print_button_xpath = "/form/header/field[@name='state']"
+    _print_button_position = "previous"
 
     @api.model
     def fields_view_get(
@@ -31,7 +32,12 @@ class MixinPrintDocument(models.AbstractModel):
                 )
                 for node in node_xpath:
                     new_node = etree.fromstring(str_element)
-                    node.addprevious(new_node)
+                    if self._print_button_position == "after":
+                        node.addnext(new_node)
+                    elif self._print_button_position == "before":
+                        node.addprevious(new_node)
+                    elif self._print_button_position == "inside":
+                        node.append(new_node)
 
             View = self.env["ir.ui.view"]
 
