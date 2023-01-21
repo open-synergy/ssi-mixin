@@ -11,7 +11,7 @@
                 <field name="lost_reason_ids" widget="many2many_tags" invisible="1" />
                 <field
                         name="lost_reason_id"
-                        widget="selection"
+                        widget="radio"
                         domain="[('id','in',lost_reason_ids)]"
                     />
             </group>
