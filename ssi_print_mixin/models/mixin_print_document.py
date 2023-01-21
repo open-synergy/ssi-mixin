@@ -14,7 +14,7 @@ class MixinPrintDocument(models.AbstractModel):
     # Attributes related to automatically insert elemnt on form view
     _automatically_insert_print_button = False
     _print_button_xpath = "/form/header/field[@name='state']"
-    _print_button_position = "previous"
+    _print_button_position = "before"
 
     @api.model
     def fields_view_get(
