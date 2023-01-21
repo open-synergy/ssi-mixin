@@ -11,10 +11,14 @@ class MixinMasterData(models.AbstractModel):
     _inherit = [
         "mail.activity.mixin",
         "mail.thread",
+        "mixin.print_document",
     ]
     _description = "Mixin for Master Data"
     _field_name_string = "Name"
     _show_code_on_display_name = False
+    _automatically_insert_print_button = True
+    _print_button_xpath = "/form/header"
+    _print_button_position = "inside"
 
     @api.model
     def _get_field_name_string(self):
