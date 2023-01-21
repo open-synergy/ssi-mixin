@@ -22,12 +22,14 @@ class MixinTransaction(models.AbstractModel):
         "mixin.decorator",
         "mixin.sequence",
         "mixin.policy",
+        "mixin.print_document",
     ]
     _description = "Transaction Mixin"
     _draft_state = "draft"
     _create_sequence_state = False
     _document_number_field = "name"
     _automatically_insert_view_element = False
+    _automatically_insert_print_button = True
 
     _automatically_reconfigure_statusbar_visible = True
     _policy_field_order = False
