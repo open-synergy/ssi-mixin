@@ -15,7 +15,7 @@
                     />
                 <field
                         name="terminate_reason_id"
-                        widget="selection"
+                        widget="radio"
                         domain="[('id','in',terminate_reason_ids)]"
                     />
             </group>
