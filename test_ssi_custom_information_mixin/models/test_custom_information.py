@@ -12,6 +12,8 @@ class TestCustomInformation(models.Model):
         "mixin.custom_info",
     ]
 
+    _custom_info_create_page = True
+
     name = fields.Char(
         string="# Document",
         default="/",
@@ -24,4 +26,7 @@ class TestCustomInformation(models.Model):
     date = fields.Date(
         string="Date",
         default=fields.Date.context_today,
+    )
+    notes = fields.Text(
+        string="Notes",
     )
