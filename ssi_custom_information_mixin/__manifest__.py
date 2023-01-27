@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Custom Information Mixin",
-    "version": "14.0.1.0.0",
+    "version": "14.0.2.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "category": "Tools",
@@ -15,6 +15,7 @@
     "data": [
         "security/ir.model.access.csv",
         "menu.xml",
+        "templates/custom_information_templates.xml",
         "views/custom_info_category_views.xml",
         "views/custom_info_template_views.xml",
         "views/custom_info_option_views.xml",
