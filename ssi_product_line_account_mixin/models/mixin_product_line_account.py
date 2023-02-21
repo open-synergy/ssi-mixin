@@ -56,6 +56,25 @@ class MixinProductLineAccount(models.AbstractModel):
         currency_field="currency_id",
         store=True,
     )
+
+    @api.depends(
+        "product_id",
+    )
+    def _compute_allowed_usage_ids(self):
+        Usage = self.env["product.usage_type"]
+        for record in self:
+            result = []
+            if record.product_id:
+                criteria = record._get_usage_domain()
+                result = Usage.search(criteria).ids
+            record.allowed_usage_ids = result
+
+    allowed_usage_ids = fields.Many2many(
+        string="Allowed Usages",
+        comodel_name="product.usage_type",
+        compute="_compute_allowed_usage_ids",
+        compute_sudo=True,
+    )
     usage_id = fields.Many2one(
         string="Usage",
         comodel_name="product.usage_type",
@@ -73,6 +92,10 @@ class MixinProductLineAccount(models.AbstractModel):
         required=False,
         ondelete="restrict",
     )
+
+    def _get_usage_domain(self):
+        self.ensure_one()
+        return []
 
     @api.onchange(
         "usage_id",
