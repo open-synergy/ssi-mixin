@@ -23,7 +23,7 @@
 <template id="terminate_filter">
     <filter
             name="dom_terminate"
-            string="terminate"
+            string="Terminate"
             domain="[('state', '=', 'terminate')]"
         />
 </template>
