@@ -1,4 +1,5 @@
 # See https://github.com/OCA/odoo-community.org/blob/master/website/Contribution/CONTRIBUTING.rst#oca_dependencies-txt
 
 oca-operating-unit https://github.com/open-synergy/operating-unit.git 14.0
+oca-currency https://github.com/open-synergy/currency.git 14.0
 ssi-product-attribute https://github.com/open-synergy/ssi-product-attribute.git 14.0
