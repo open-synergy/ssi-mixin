@@ -37,6 +37,7 @@ class MixinCurrency(models.AbstractModel):
         string="Transaction Rate",
         required=True,
         default=1.0,
+        digits=0,
     )
 
     @api.onchange(
@@ -55,10 +56,15 @@ class MixinCurrency(models.AbstractModel):
         self.rate = 1.0
         date_exchange = getattr(self, self._exchange_date_field)
         if self.currency_id and self.company_id and date_exchange:
-            ResCurrency = self.env["res.currency"]
-            self.rate = ResCurrency._get_conversion_rate(
-                from_currency=self.company_currency_id,
-                to_currency=self.currency_id,
+            rates = self.currency_id._get_rates(
                 company=self.company_id,
                 date=date_exchange,
             )
+            self.rate = rates.get(self.company_id.id)
+
+    def _convert_amount_to_company_currency(self, amount):
+        if self.rate_inverted:
+            result = amount * self.rate
+        else:
+            result = amount / self.rate
+        return result
