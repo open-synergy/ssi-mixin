@@ -103,10 +103,12 @@ class MixinTransaction(models.AbstractModel):
     restart_ok = fields.Boolean(
         string="Can Restart",
         compute="_compute_policy",
+        compute_sudo=True,
     )
     manual_number_ok = fields.Boolean(
         string="Can Input Manual Document Number",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _run_pre_restart_check(self):
