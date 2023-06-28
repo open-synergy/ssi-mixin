@@ -34,6 +34,7 @@ class MixinTransactionOpen(models.AbstractModel):
     open_ok = fields.Boolean(
         string="Can Start",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _prepare_open_data(self):
