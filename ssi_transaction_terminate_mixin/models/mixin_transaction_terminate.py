@@ -41,6 +41,7 @@ class MixinTransactionTerminate(models.AbstractModel):
     terminate_ok = fields.Boolean(
         string="Can Terminate",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _prepare_terminate_data(self, terminate_reason=False):
