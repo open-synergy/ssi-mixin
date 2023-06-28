@@ -34,6 +34,7 @@ class MixinTransactionDone(models.AbstractModel):
     done_ok = fields.Boolean(
         string="Can Finished",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _prepare_done_data(self):
