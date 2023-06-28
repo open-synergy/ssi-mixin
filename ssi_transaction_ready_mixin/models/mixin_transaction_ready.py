@@ -32,6 +32,7 @@ class MixinTransactionReady(models.AbstractModel):
     ready_ok = fields.Boolean(
         string="Can Stagged",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _prepare_ready_data(self):
