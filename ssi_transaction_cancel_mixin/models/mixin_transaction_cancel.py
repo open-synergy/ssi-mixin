@@ -41,6 +41,7 @@ class MixinTransactionCancel(models.AbstractModel):
     cancel_ok = fields.Boolean(
         string="Can Cancel",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _prepare_cancel_data(self, cancel_reason=False):
