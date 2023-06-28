@@ -39,18 +39,22 @@ class MixinTransactionConfirm(models.AbstractModel):
     confirm_ok = fields.Boolean(
         string="Can Confirm",
         compute="_compute_policy",
+        compute_sudo=True,
     )
     approve_ok = fields.Boolean(
         string="Can Approve",
         compute="_compute_policy",
+        compute_sudo=True,
     )
     reject_ok = fields.Boolean(
         string="Can Reject",
         compute="_compute_policy",
+        compute_sudo=True,
     )
     restart_approval_ok = fields.Boolean(
         string="Can Restart Approval",
         compute="_compute_policy",
+        compute_sudo=True,
     )
 
     def _run_pre_confirm_check(self):
