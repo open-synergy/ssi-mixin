@@ -19,7 +19,6 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
     _amount_currency_field_name = "amount"
     _company_id_field_name = "company_id"
     _date_field_name = "date"
-    _date_due_field_name = "date_due"
 
     _need_date_due = False
 
