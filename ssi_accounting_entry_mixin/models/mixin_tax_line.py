@@ -12,19 +12,9 @@ class MixinTaxLine(models.AbstractModel):
         "mixin.account_move_single_line",
     ]
 
-    _move_id_field_name = "move_id"
-    _account_id_field_name = "account_id"
-    _partner_id_field_name = False
     _analytic_account_id_field_name = "analytic_account_id"
     _label_field_name = "name"
-    _currency_id_field_name = "currency_id"
-    _company_currency_id_field_name = "company_currency_id"
     _amount_currency_field_name = "tax_amount"
-    _company_id_field_name = "company_id"
-    _date_field_name = "date"
-    _need_date_due = False
-
-    _normal_amount = "debit"
 
     name = fields.Char(
         string="Description",

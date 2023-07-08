@@ -21,6 +21,7 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
     _date_field_name = "date"
 
     _need_date_due = False
+    _date_due_field_name = "date_due"
 
     _normal_amount = "debit"
 

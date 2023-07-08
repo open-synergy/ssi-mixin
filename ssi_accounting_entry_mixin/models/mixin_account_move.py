@@ -10,7 +10,7 @@ class MixinAccountMove(models.AbstractModel):
     _description = "Accounting Entry Header Mixin"
     _journal_id_field_name = "journal_id"
     _move_id_field_name = "move_id"
-    _accounting_date_field_name = "data"
+    _accounting_date_field_name = "date"
     _currency_id_field_name = "currency_id"
     _company_currency_id_field_name = "company_currency_id"
 
