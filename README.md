@@ -14,64 +14,56 @@ ssi-mixin
 
 [//]: # (addons)
 
-Technical Addons
+Available addons
 ----------------
-addon | summary
---- | ---
-[ssi_decorator](ssi_decorator/) | Menambahkan decorator pre/post check atau action untuk setiap workflow state
-[ssi_partner_mixin](ssi_partner_mixin/) | Menambahkan field partner dan contact partner
-[ssi_salesperson_mixin](ssi_salesperson_mixin/) | Menambahkan field salesperson dan sales team
-[ssi_company_currency_mixin](ssi_company_currency_mixin/) | Menambahkan field company dan company currency
-[ssi_duration_mixin](ssi_duration_mixin/) | Menambahkan field date start dan date end
-[ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | Base module untuk field date
-[ssi_pricelist_mixin](ssi_pricelist_mixin/) | Menambahkan field currency dan pricelist
-[ssi_product_line_mixin](ssi_product_line_mixin/) | Menambahkan product line tanpa pricelist
-[ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | Menambahkan product line dengan pricelist
-[ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | Menambahkan field-field accounting pada product line
-[ssi_source_document_mixin](ssi_source_document_mixin/)| Menambahkan field source document
-[ssi_master_data_mixin](ssi_master_data_mixin/) | Base module untuk pembuatan objek master data
-
-Functional Addons
------------------
-addon | summary
---- | ---
-[ssi_custom_information_mixin](ssi_custom_information_mixin/) | Menambahkan fungsionalitas untuk custom information
-[ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | Menambahkan fungsionalitas untuk multiple approval
-[ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | Menambahkan fungsionalitas untuk operating unit
-[ssi_policy_mixin](ssi_policy_mixin/) | Menambahkan fungsionalitas untuk workflow policy
-[ssi_print_mixin](ssi_print_mixin/) | Menambahkan fungsionalitas untuk proses percetakan dokument
-[ssi_qr_code_mixin](ssi_qr_code_mixin/) | Menambahkan fungsionalitas untuk QR Code
-[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | Menambahkan fungsionalitas untuk related attachment
-[ssi_sequence_mixin](ssi_sequence_mixin/) | Menambahkan fungsionalitas untuk sequence
-[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | Menambahkan fungsionalitas untuk state change constrain
-[ssi_status_check_mixin](ssi_status_check_mixin/) | Menambahkan fungsionalitas untuk status check
-[ssi_transaction_mixin](ssi_transaction_mixin/) | Base module untuk pembuatan objek transaksi
-[ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | Menambahkan proses workflow state confim pada objek transaksi
-[ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | Menambahkan proses workflow state done pada objek transaksi
-[ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | Menambahkan proses workflow state open pada objek transaksi
-[ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | Menambahkan pricelist pada objek transaksi
-[ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | Menambahkan proses workflow state ready pada objek transaksi
-[ssi_transaction_salesperson_mixin](ssi_transaction_salesperson_mixin/) | Menambahkan salesperson pada objek transaksi
-[ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | Menambahkan proses workflow win/lost pada objek transaksi
-[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | Menambahkan proses workflow state cancel pada objek transaksi
-[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | Menambahkan proses workflow state terminate pada objek transaksi
-
-Test Addons
------------
-addon | summary
---- | ---
-[test_ssi_custom_information_mixin](test_ssi_custom_information_mixin/) | Modul test untuk custom information
-[test_ssi_duration_mixin](test_ssi_duration_mixin/) | Modul test untuk duration
-[test_ssi_multiple_approval_mixin](test_ssi_multiple_approval_mixin/) | Modul test untuk multiple approval
-[test_ssi_policy_mixin](test_ssi_policy_mixin/) | Modul test untuk workflow policy
-[test_ssi_product_line_account_mixin](test_ssi_product_line_account_mixin/) | Modul test untuk product line account
-[test_ssi_product_line_mixin](test_ssi_product_line_mixin/) | Modul test untuk product line
-[test_ssi_product_line_price_mixin](test_ssi_product_line_price_mixin/) | Modul test untuk product line price
-[test_ssi_related_attachment_mixin](test_ssi_related_attachment_mixin/) | Modul test untuk related attachment
-[test_ssi_sequence_mixin](test_ssi_sequence_mixin/) | Modul test untuk sequence policy
-[test_ssi_state_change_constrain_mixin](test_ssi_state_change_constrain_mixin/) | Modul test untuk state change constrains
-[test_ssi_status_check_mixin](test_ssi_status_check_mixin/) | Modul test untuk status check
-[test_ssi_transaction_mixin](test_ssi_transaction_mixin/) | Modul test untuk objek transaction dan master data
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.1.0 |  | Accounting Entry Mixin
+[ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.0.0 |  | Company Currency Mixin
+[ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.0 |  | Currency Mixin
+[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.2.0.0 |  | Custom Information Mixin
+[ssi_decorator](ssi_decorator/) | 14.0.1.1.0 |  | SSI - Decorator
+[ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
+[ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.0.0 |  | Custom Date Field With Callable Attribute
+[ssi_master_data_mixin](ssi_master_data_mixin/) | 14.0.3.0.0 |  | Master Data Mixin
+[ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 14.0.1.5.0 |  | Multiple Approval
+[ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.0.0 |  | Operating Unit Mixin
+[ssi_partner_mixin](ssi_partner_mixin/) | 14.0.1.0.0 |  | Partner Mixin
+[ssi_policy_mixin](ssi_policy_mixin/) | 14.0.1.2.1 |  | Policy Mixin
+[ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.0.0 |  | Pricelist Mixin
+[ssi_print_mixin](ssi_print_mixin/) | 14.0.1.1.1 |  | Print Policy Mixin
+[ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.2.0 |  | Product Line Mixin - With Accounting
+[ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.0.1 |  | Product Line Mixin
+[ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.2.0 |  | Product Line Mixin - With Price
+[ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.1.0.0 |  | QR Code Mixin
+[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.1.3.1 |  | Related Attachment Mixin
+[ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.0.0 |  | Salesperson Mixin
+[ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.1.1.1 |  | Sequence Mixin
+[ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.0.0 |  | Source Document Mixin
+[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.5.0 |  | State Change Constrain Mixin
+[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.1.4.0 |  | Status Check Mixin
+[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.6.0 |  | Transaction Mixin - Cancel State
+[ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 14.0.2.3.1 |  | Transaction Mixin - Waiting for Approval State
+[ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | 14.0.1.6.0 |  | Transaction Mixin - Done State
+[ssi_transaction_mixin](ssi_transaction_mixin/) | 14.0.4.1.0 |  | Transaction Mixin
+[ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | 14.0.1.5.0 |  | Transaction Mixin - In Progress State
+[ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | 14.0.1.0.0 |  | Transaction + Pricelist Mixin
+[ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | 14.0.1.4.0 |  | Transaction Mixin - Ready to Process State
+[ssi_transaction_salesperson_mixin](ssi_transaction_salesperson_mixin/) | 14.0.1.0.0 |  | Transaction + Salesperson Mixin
+[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | 14.0.1.5.0 |  | Transaction Mixin - Terminate State
+[ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | 14.0.1.2.0 |  | Transaction Mixin - Win & Lost State
+[test_ssi_custom_information_mixin](test_ssi_custom_information_mixin/) | 14.0.1.1.0 |  | Test Module: Custom Information Mixin
+[test_ssi_duration_mixin](test_ssi_duration_mixin/) | 14.0.1.0.0 |  | Test Module: Duration Mixin
+[test_ssi_multiple_approval_mixin](test_ssi_multiple_approval_mixin/) | 14.0.1.0.0 |  | Test Module: Multiple Approval Mixin
+[test_ssi_policy_mixin](test_ssi_policy_mixin/) | 14.0.1.1.0 |  | Test Module: Policy Mixin
+[test_ssi_product_line_account_mixin](test_ssi_product_line_account_mixin/) | 14.0.1.0.0 |  | Test Module: Product Line With Accounting Mixin
+[test_ssi_product_line_mixin](test_ssi_product_line_mixin/) | 14.0.1.0.0 |  | Test Module: Product Line Mixin
+[test_ssi_product_line_price_mixin](test_ssi_product_line_price_mixin/) | 14.0.1.0.0 |  | Test Module: Product Line With Price Mixin
+[test_ssi_related_attachment_mixin](test_ssi_related_attachment_mixin/) | 14.0.1.0.0 |  | Test Module: Related Attachment Mixin
+[test_ssi_sequence_mixin](test_ssi_sequence_mixin/) | 14.0.1.0.1 |  | Test Module - Sequence Policy Mixin
+[test_ssi_state_change_constrain_mixin](test_ssi_state_change_constrain_mixin/) | 14.0.1.2.0 |  | Test Module: State Change Constrain Mixin
+[test_ssi_status_check_mixin](test_ssi_status_check_mixin/) | 14.0.1.1.0 |  | Test Module: Status Check Mixin
+[test_ssi_transaction_mixin](test_ssi_transaction_mixin/) | 14.0.1.0.0 |  | Test Module: Transaction Mixin
 
 [//]: # (end addons)
 
