@@ -20,7 +20,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.1.0 |  | Accounting Entry Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.0.0 |  | Company Currency Mixin
-[ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.0 |  | Currency Mixin
+[ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.1 |  | Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.2.0.0 |  | Custom Information Mixin
 [ssi_decorator](ssi_decorator/) | 14.0.1.1.0 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
