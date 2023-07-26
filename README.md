@@ -25,7 +25,7 @@ addon | version | maintainers | summary
 [ssi_decorator](ssi_decorator/) | 14.0.1.1.0 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.0.0 |  | Custom Date Field With Callable Attribute
-[ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 14.0.1.0.0 |  | Many2one Configurator Mixin
+[ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 14.0.2.0.0 |  | Many2one Configurator Mixin
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 14.0.3.0.0 |  | Master Data Mixin
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 14.0.1.5.0 |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.0.0 |  | Operating Unit Mixin
@@ -53,7 +53,7 @@ addon | version | maintainers | summary
 [ssi_transaction_salesperson_mixin](ssi_transaction_salesperson_mixin/) | 14.0.1.0.0 |  | Transaction + Salesperson Mixin
 [ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | 14.0.1.5.0 |  | Transaction Mixin - Terminate State
 [ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | 14.0.1.2.0 |  | Transaction Mixin - Win & Lost State
-[test_ssi_accounting_entry_mixin](test_ssi_accounting_entry_mixin/) | 14.0.1.1.0 |  | Test Module: Accounting Entry Mixin
+[test_ssi_accounting_entry_mixin](test_ssi_accounting_entry_mixin/) | 14.0.2.0.0 |  | Test Module: Accounting Entry Mixin
 [test_ssi_custom_information_mixin](test_ssi_custom_information_mixin/) | 14.0.1.1.0 |  | Test Module: Custom Information Mixin
 [test_ssi_duration_mixin](test_ssi_duration_mixin/) | 14.0.1.0.0 |  | Test Module: Duration Mixin
 [test_ssi_multiple_approval_mixin](test_ssi_multiple_approval_mixin/) | 14.0.1.0.0 |  | Test Module: Multiple Approval Mixin
