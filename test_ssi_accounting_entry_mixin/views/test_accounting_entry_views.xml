@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+<record id="test_account_move_one_mixin_view_tree" model="ir.ui.view">
+    <field name="name">test.account_move_one_mixin tree</field>
+    <field name="model">test.account_move_one_mixin</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" />
+        </tree>
+    </field>
+</record>
+
+<record id="test_account_move_one_mixin_view_form" model="ir.ui.view">
+    <field name="name">test.account_move_one_mixin form</field>
+    <field name="model">test.account_move_one_mixin</field>
+    <field name="arch" type="xml">
+        <form>
+            <header>
+                <button
+                        name="action_create_accounting_entry"
+                        string="Create"
+                        type="object"
+                    />
+                <button
+                        name="action_delete_accounting_entry"
+                        string="Delete"
+                        type="object"
+                    />
+                <button name="action_compute_tax" string="Compute Tax" type="object" />
+            </header>
+            <sheet>
+            <div class="oe_button_box" name="button_box" />
+            <div class="oe_left" style="width: 500px;">
+                <div class="oe_title" style="width: 500px;">
+                    <label for="name" />
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                </div>
+            </div>
+
+            <group>
+                <group name="left">
+                    <field name="partner_id" />
+                    <field name="company_id" />
+                    <field name="company_currency_id" />
+                    <field name="currency_id" />
+                </group>
+                <group name="right">
+                    <field name="date" />
+                    <field name="date_due" />
+                    <field name="journal_id" />
+                    <field name="account_id" />
+                    <field name="move_id" />
+                    <field name="amount_untaxed" />
+                    <field name="amount_tax" />
+                    <field name="amount_total" />
+                </group>
+            </group>
+            <notebook>
+                <page name="detail" string="Details">
+                    <field name="detail_ids">
+                        <tree editable="top">
+                            <field name="name" />
+                            <field name="account_id" />
+                            <field name="analytic_account_id" />
+                            <field name="company_id" />
+                            <field name="company_currency_id" />
+                            <field name="currency_id" />
+                            <field name="amount" />
+                            <field name="tax_ids" widget="many2many_tags" />
+                        </tree>
+                    </field>
+                </page>
+                <page name="tax" string="Taxes">
+                    <field name="tax_ids">
+                        <tree editable="top">
+                            <field name="name" />
+                            <field name="tax_id" />
+                            <field name="account_id" />
+                            <field name="manual" />
+                            <field name="base_amount" />
+                            <field name="tax_amount" />
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="test_account_move_one_mixin_action" model="ir.actions.act_window">
+    <field name="name">Test Single Accounting Entry</field>
+    <field name="res_model">test.account_move_one_mixin</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem
+        id="test_account_move_one_mixin_menu"
+        name="Test Single Accounting Entry"
+        parent="menu_accounting_entry_mixin"
+        action="test_account_move_one_mixin_action"
+        sequence="100"
+    />
+</odoo>
