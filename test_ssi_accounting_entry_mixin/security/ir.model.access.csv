@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_test_account_move_one_mixin_all,test.account_move_one_mixin - All,model_test_account_move_one_mixin,,1,1,1,1
+access_test_account_move_line_one_mixin_all,test.account_move_line_one_mixin - All,model_test_account_move_line_one_mixin,,1,1,1,1
+access_test_tax_line_one_mixin_all,test.tax_line_one_mixin - All,model_test_tax_line_one_mixin,,1,1,1,1
