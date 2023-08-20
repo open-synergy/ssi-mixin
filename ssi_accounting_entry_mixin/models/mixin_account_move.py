@@ -48,16 +48,6 @@ class MixinAccountMove(models.AbstractModel):
 
     def _delete_standard_move(self):
         self.ensure_one()
-        Move = self.env["account.move"]
-        move = Move.with_context(check_move_validity=False).create(
-            self._prepare_standard_move()
-        )
-        self.write(
-            {
-                self._move_id_field_name: move.id,
-            }
-        )
-
         move = getattr(self, self._move_id_field_name)
 
         if not move:
@@ -68,8 +58,8 @@ class MixinAccountMove(models.AbstractModel):
                 self._move_id_field_name: False,
             }
         )
-
-        move.unlink()
+        move.button_cancel()
+        move.with_context(force_delete=True).unlink()
 
     def _get_standard_tax_lines(self):
         self.ensure_one()

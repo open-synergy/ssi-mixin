@@ -14,6 +14,10 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
     _partner_id_field_name = False
     _analytic_account_id_field_name = False
     _label_field_name = False
+    _product_id_field_name = False
+    _uom_id_field_name = False
+    _quantity_field_name = False
+    _price_unit_field_name = False
     _currency_id_field_name = "currency_id"
     _company_currency_id_field_name = "company_currency_id"
     _amount_currency_field_name = "amount"
@@ -41,8 +45,16 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
         move = self._get_standard_move()
         label = self._get_standard_label()
         date_due = self._get_standard_date_due()
+        product = self._get_standard_product()
+        uom = self._get_standard_uom()
+        quantity = self._get_standard_quantity()
+        price_unit = self._get_standard_price_unit()
         return {
             "move_id": move.id,
+            "product_id": product and product.id or False,
+            "product_uom_id": uom and uom.id or False,
+            "quantity": quantity,
+            "price_unit": price_unit,
             "name": label,
             "account_id": getattr(self, self._account_id_field_name).id,
             "debit": debit,
@@ -59,11 +71,39 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
         move = getattr(self, self._move_id_field_name)
         return move
 
+    def _get_standard_product(self):
+        self.ensure_one()
+        result = False
+        if self._product_id_field_name and hasattr(self, self._product_id_field_name):
+            result = getattr(self, self._product_id_field_name)
+        return result
+
     def _get_standard_partner(self):
         self.ensure_one()
         result = False
         if self._partner_id_field_name and hasattr(self, self._partner_id_field_name):
             result = getattr(self, self._partner_id_field_name)
+        return result
+
+    def _get_standard_uom(self):
+        self.ensure_one()
+        result = False
+        if self._uom_id_field_name and hasattr(self, self._uom_id_field_name):
+            result = getattr(self, self._uom_id_field_name)
+        return result
+
+    def _get_standard_quantity(self):
+        self.ensure_one()
+        result = 0.0
+        if self._quantity_field_name and hasattr(self, self._quantity_field_name):
+            result = getattr(self, self._quantity_field_name)
+        return result
+
+    def _get_standard_price_unit(self):
+        self.ensure_one()
+        result = 0.0
+        if self._price_unit_field_name and hasattr(self, self._price_unit_field_name):
+            result = getattr(self, self._price_unit_field_name)
         return result
 
     def _get_standard_label(self):
