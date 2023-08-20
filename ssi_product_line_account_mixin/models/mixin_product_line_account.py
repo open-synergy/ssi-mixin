@@ -26,16 +26,18 @@ class MixinProductLineAccount(models.AbstractModel):
     def _compute_total(self):
         for record in self:
             subtotal = tax = total = 0.0
-            taxes = record.tax_ids.compute_all(
-                record.price_unit,
-                record.currency_id,
-                record.quantity,
-                product=record.product_id,
-                partner=False,
-            )
-            tax = sum(t.get("amount", 0.0) for t in taxes.get("taxes", []))
-            total = taxes["total_included"]
-            subtotal = taxes["total_excluded"]
+            subtotal = total = record.price_unit * record.uom_quantity
+            if record.tax_ids:
+                taxes = record.tax_ids.compute_all(
+                    record.price_unit,
+                    record.currency_id,
+                    record.quantity,
+                    product=record.product_id,
+                    partner=False,
+                )
+                tax = sum(t.get("amount", 0.0) for t in taxes.get("taxes", []))
+                total = taxes["total_included"]
+                subtotal = taxes["total_excluded"]
             record.price_subtotal = subtotal
             record.price_tax = tax
             record.price_total = total
