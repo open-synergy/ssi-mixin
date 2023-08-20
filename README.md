@@ -18,7 +18,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.1.0 |  | Accounting Entry Mixin
+[ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.2.0 |  | Accounting Entry Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.0.0 |  | Company Currency Mixin
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.1 |  | Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.2.0.0 |  | Custom Information Mixin
@@ -33,7 +33,7 @@ addon | version | maintainers | summary
 [ssi_policy_mixin](ssi_policy_mixin/) | 14.0.1.2.1 |  | Policy Mixin
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.0.0 |  | Pricelist Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 14.0.1.1.1 |  | Print Policy Mixin
-[ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.2.0 |  | Product Line Mixin - With Accounting
+[ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.3.0 |  | Product Line Mixin - With Accounting
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.0.1 |  | Product Line Mixin
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.2.0 |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.1.0.0 |  | QR Code Mixin
