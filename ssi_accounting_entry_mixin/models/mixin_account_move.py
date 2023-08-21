@@ -13,6 +13,7 @@ class MixinAccountMove(models.AbstractModel):
     _accounting_date_field_name = "date"
     _currency_id_field_name = "currency_id"
     _company_currency_id_field_name = "company_currency_id"
+    _number_field_name = "name"
 
     # Tax computation
     _tax_lines_field_name = False
@@ -41,10 +42,16 @@ class MixinAccountMove(models.AbstractModel):
     def _prepare_standard_move(self):
         self.ensure_one()
         return {
-            "name": self.name,
+            "name": self._get_standard_accounting_entry_number(),
             "journal_id": getattr(self, self._journal_id_field_name).id,
             "date": getattr(self, self._accounting_date_field_name),
         }
+
+    def _get_standard_accounting_entry_number(self):
+        result = "/"
+        if self._number_field_name and hasattr(self, self._number_field_name):
+            result = getattr(self, self._number_field_name)
+        return result
 
     def _delete_standard_move(self):
         self.ensure_one()
