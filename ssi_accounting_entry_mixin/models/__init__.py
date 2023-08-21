@@ -5,5 +5,6 @@
 from . import (
     mixin_account_move,
     mixin_account_move_single_line,
+    mixin_account_move_double_line,
     mixin_tax_line,
 )
