@@ -25,6 +25,7 @@ addon | version | maintainers | summary
 [ssi_decorator](ssi_decorator/) | 14.0.1.1.0 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.0.0 |  | Custom Date Field With Callable Attribute
+[ssi_localdict_mixin](ssi_localdict_mixin/) | 14.0.1.0.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 14.0.2.0.0 |  | Many2one Configurator Mixin
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 14.0.3.0.0 |  | Master Data Mixin
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 14.0.1.5.0 |  | Multiple Approval
