@@ -15,6 +15,7 @@ setuptools.setup(
         'odoo14-addon-ssi_decorator',
         'odoo14-addon-ssi_duration_mixin',
         'odoo14-addon-ssi_field_date_callable_attribute',
+        'odoo14-addon-ssi_localdict_mixin',
         'odoo14-addon-ssi_m2o_configurator_mixin',
         'odoo14-addon-ssi_master_data_mixin',
         'odoo14-addon-ssi_multiple_approval_mixin',
