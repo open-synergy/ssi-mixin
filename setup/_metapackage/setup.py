@@ -12,6 +12,7 @@ setuptools.setup(
         'odoo14-addon-ssi_company_currency_mixin',
         'odoo14-addon-ssi_currency_mixin',
         'odoo14-addon-ssi_custom_information_mixin',
+        'odoo14-addon-ssi_data_requirement_mixin',
         'odoo14-addon-ssi_decorator',
         'odoo14-addon-ssi_duration_mixin',
         'odoo14-addon-ssi_field_date_callable_attribute',
