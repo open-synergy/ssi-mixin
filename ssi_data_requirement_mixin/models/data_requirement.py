@@ -12,6 +12,7 @@ class DataRequirement(models.Model):
         "mixin.transaction_done",
         "mixin.transaction_cancel",
         "mixin.localdict",
+        "mixin.partner",
     ]
     _description = "Data Requirement"
 
@@ -28,6 +29,11 @@ class DataRequirement(models.Model):
     _automatically_insert_multiple_approval_page = True
     _automatically_insert_done_policy_fields = False
     _automatically_insert_done_button = False
+
+    # mixin.partner configuration
+    _mixin_partner_insert_form = True
+    _mixin_partner_insert_tree = True
+    _mixin_partner_insert_search = True
 
     _statusbar_visible_label = "draft,confirm,done"
     _policy_field_order = [
@@ -64,24 +70,6 @@ class DataRequirement(models.Model):
         required=True,
         readonly=True,
         states={"draft": [("readonly", False)]},
-    )
-    partner_id = fields.Many2one(
-        string="Partner",
-        comodel_name="res.partner",
-        required=True,
-        readonly=True,
-        domain=[
-            "|",
-            "&",
-            ("parent_id", "=", False),
-            ("is_company", "=", False),
-            ("is_company", "=", True),
-        ],
-        states={
-            "draft": [
-                ("readonly", False),
-            ],
-        },
     )
     type_id = fields.Many2one(
         string="Type",

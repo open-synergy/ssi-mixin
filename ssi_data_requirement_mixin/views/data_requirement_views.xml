@@ -25,7 +25,6 @@
     <field name="arch" type="xml">
         <data>
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="partner_id" />
                 <field name="type_id" />
                 <field name="date" />
                 <field name="mode" />
@@ -41,9 +40,6 @@
     <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_form" />
     <field name="arch" type="xml">
         <data>
-            <xpath expr="//field[@name='user_id']" position="after">
-                <field name="partner_id" />
-            </xpath>
             <xpath expr="//group[@name='header_right']" position="inside">
                 <field name="date" />
                 <field name="type_id" />

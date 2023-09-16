@@ -17,6 +17,7 @@
         "ssi_transaction_done_mixin",
         "ssi_transaction_cancel_mixin",
         "ssi_localdict_mixin",
+        "ssi_partner_mixin",
     ],
     "data": [
         "security/ir_module_category_data.xml",
