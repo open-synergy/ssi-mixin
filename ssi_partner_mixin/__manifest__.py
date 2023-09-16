@@ -11,5 +11,7 @@
     "depends": [
         "base",
     ],
-    "data": [],
+    "data": [
+        "templates/mixin_partner_templates.xml",
+    ],
 }
