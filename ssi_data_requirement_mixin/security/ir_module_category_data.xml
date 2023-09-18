@@ -48,4 +48,24 @@
             ref="ssi_data_requirement_mixin.data_data_ownership_module_category"
         />
 </record>
+
+<!-- Data Requirement Package-->
+<record id="data_requirement_package_module_category" model="ir.module.category">
+    <field name="name">Data Requirement Package</field>
+    <field
+            name="parent_id"
+            ref="ssi_data_requirement_mixin.data_workflow_module_category"
+        />
+</record>
+
+<record
+        id="data_requirement_package_data_ownership_module_category"
+        model="ir.module.category"
+    >
+    <field name="name">Data Requirement Package</field>
+    <field
+            name="parent_id"
+            ref="ssi_data_requirement_mixin.data_data_ownership_module_category"
+        />
+</record>
 </odoo>
