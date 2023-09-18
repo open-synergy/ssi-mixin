@@ -22,7 +22,7 @@ addon | version | maintainers | summary
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.0.0 |  | Company Currency Mixin
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.1 |  | Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.2.0.0 |  | Custom Information Mixin
-[ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.2.0.0 |  | Data Requirement Mixin
+[ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.2.1.0 |  | Data Requirement Mixin
 [ssi_decorator](ssi_decorator/) | 14.0.1.1.0 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.0.0 |  | Custom Date Field With Callable Attribute
@@ -31,7 +31,7 @@ addon | version | maintainers | summary
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 14.0.3.0.0 |  | Master Data Mixin
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 14.0.1.5.0 |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.0.0 |  | Operating Unit Mixin
-[ssi_partner_mixin](ssi_partner_mixin/) | 14.0.1.1.0 |  | Partner Mixin
+[ssi_partner_mixin](ssi_partner_mixin/) | 14.0.1.2.0 |  | Partner Mixin
 [ssi_policy_mixin](ssi_policy_mixin/) | 14.0.1.2.1 |  | Policy Mixin
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.0.0 |  | Pricelist Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 14.0.1.1.1 |  | Print Policy Mixin
