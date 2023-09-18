@@ -13,11 +13,13 @@
     "depends": [
         "base",
         "ssi_master_data_mixin",
+        "ssi_transaction_open_mixin",
         "ssi_transaction_confirm_mixin",
         "ssi_transaction_done_mixin",
         "ssi_transaction_cancel_mixin",
         "ssi_localdict_mixin",
         "ssi_partner_mixin",
+        "base_duration",
     ],
     "data": [
         "security/ir_module_category_data.xml",
@@ -31,6 +33,8 @@
         "menu.xml",
         "templates/mixin_data_requirement_templates.xml",
         "views/data_requirement_type_views.xml",
+        "views/data_requirement_package_type_views.xml",
         "views/data_requirement_views.xml",
+        "views/data_requirement_package_views.xml",
     ],
 }

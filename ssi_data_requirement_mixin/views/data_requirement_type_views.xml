@@ -22,7 +22,11 @@
     <field name="inherit_id" ref="ssi_master_data_mixin.mixin_master_data_view_tree" />
     <field name="mode">primary</field>
     <field name="arch" type="xml">
-        <data />
+        <data>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="mode" />
+            </xpath>
+        </data>
     </field>
 </record>
 
@@ -33,6 +37,9 @@
     <field name="mode">primary</field>
     <field name="arch" type="xml">
         <data>
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="mode" />
+            </xpath>
         </data>
     </field>
 </record>

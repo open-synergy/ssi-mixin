@@ -5,20 +5,18 @@
 from odoo import api, fields, models
 
 
-class DataRequirement(models.Model):
-    _name = "data_requirement"
+class DataRequirementPackage(models.Model):
+    _name = "data_requirement_package"
     _inherit = [
-        "mixin.transaction_open",
         "mixin.transaction_confirm",
         "mixin.transaction_done",
         "mixin.transaction_cancel",
-        "mixin.localdict",
         "mixin.partner",
     ]
-    _description = "Data Requirement"
+    _description = "Data Requirement Package"
 
     # Multiple Approval Attribute
-    _approval_from_state = "open"
+    _approval_from_state = "draft"
     _approval_to_state = "done"
     _approval_state = "confirm"
     _after_approved_method = "action_done"
@@ -37,9 +35,8 @@ class DataRequirement(models.Model):
     _mixin_partner_insert_search = True
     _mixin_partner_contact_id_required = True
 
-    _statusbar_visible_label = "draft,open,confirm,done"
+    _statusbar_visible_label = "draft,confirm,done"
     _policy_field_order = [
-        "open_ok",
         "confirm_ok",
         "approve_ok",
         "reject_ok",
@@ -49,7 +46,6 @@ class DataRequirement(models.Model):
         "manual_number_ok",
     ]
     _header_button_order = [
-        "action_open",
         "action_confirm",
         "action_approve_approval",
         "action_reject_approval",
@@ -60,7 +56,6 @@ class DataRequirement(models.Model):
     # Attributes related to add element on search view automatically
     _state_filter_order = [
         "dom_draft",
-        "dom_open",
         "dom_confirm",
         "dom_reject",
         "dom_done",
@@ -70,11 +65,16 @@ class DataRequirement(models.Model):
     # Sequence attribute
     _create_sequence_state = "open"
 
-    package_id = fields.Many2one(
-        string="# Data Requirement Package",
-        comodel_name="data_requirement_package",
+    type_id = fields.Many2one(
+        string="Type",
+        comodel_name="data_requirement_package_type",
+        required=True,
         readonly=True,
-        ondelete="restrict",
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
     )
     date = fields.Date(
         string="Date",
@@ -98,50 +98,10 @@ class DataRequirement(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-    date_submit = fields.Date(
-        string="Submit Date",
-        required=False,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
-    )
-    type_id = fields.Many2one(
-        string="Type",
-        comodel_name="data_requirement_type",
-        required=True,
-        readonly=True,
-        states={
-            "draft": [
-                ("readonly", False),
-            ],
-        },
-    )
-    mode = fields.Selection(
-        string="Mode",
-        selection=[
-            ("url", "URL"),
-            ("attachment", "Attachment"),
-        ],
-        required=True,
-        readonly=True,
-        default="url",
-        states={
-            "draft": [
-                ("readonly", False),
-            ],
-        },
-    )
-    url = fields.Char(
-        string="URL",
-        readonly=True,
-        states={
-            "draft": [
-                ("readonly", False),
-            ],
-        },
-    )
-    attachment_id = fields.Many2one(
-        string="Attachment",
-        comodel_name="ir.attachment",
+    detail_ids = fields.One2many(
+        string="Detail",
+        comodel_name="data_requirement_package.detail",
+        inverse_name="package_id",
         readonly=True,
         states={
             "draft": [
@@ -153,7 +113,6 @@ class DataRequirement(models.Model):
         string="State",
         selection=[
             ("draft", "Draft"),
-            ("open", "In Progress"),
             ("confirm", "Waiting for Approval"),
             ("done", "Done"),
             ("cancel", "Cancelled"),
@@ -165,9 +124,8 @@ class DataRequirement(models.Model):
 
     @api.model
     def _get_policy_field(self):
-        res = super(DataRequirement, self)._get_policy_field()
+        res = super(DataRequirementPackage, self)._get_policy_field()
         policy_field = [
-            "open_ok",
             "confirm_ok",
             "approve_ok",
             "cancel_ok",
@@ -187,3 +145,32 @@ class DataRequirement(models.Model):
         self.date_commitment = False
         if self.duration_id:
             self.date_commitment = self.duration_id.get_duration(self.date)
+
+    def action_reload_detail(self):
+        for record in self.sudo():
+            record._reload_detail()
+
+    def action_create_data_requirement(self):
+        for record in self.sudo():
+            record._create_data_requirement()
+
+    def _reload_detail(self):
+        self.ensure_one()
+        self._cleanup_data_requirement()
+        self.detail_ids.unlink()
+
+        if not self.type_id.detail_ids:
+            return True
+
+        for detail in self.type_id.detail_ids:
+            detail._create_package_detail(self)
+
+    def _create_data_requirement(self):
+        self.ensure_one()
+        for detail in self.detail_ids.filtered(lambda r: not r.data_id):
+            detail._create_data_requirement()
+
+    def _cleanup_data_requirement(self):
+        self.ensure_one()
+        for detail in self.detail_ids:
+            detail._cleanup_data_requirement()
