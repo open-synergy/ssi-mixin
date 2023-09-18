@@ -95,6 +95,9 @@ class MixinPartner(models.AbstractModel):
         compute_sudo=True,
     )
 
+    @api.depends(
+        "name",
+    )
     def _compute_mixin_partner_attribute(self):
         for record in self:
             mixin_partner_partner_id_required = (
