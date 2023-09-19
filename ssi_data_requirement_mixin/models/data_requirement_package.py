@@ -82,6 +82,18 @@ class DataRequirementPackage(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    title = fields.Char(
+        string="Title",
+        default="-",
+        required=True,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    upload_url = fields.Char(
+        string="Upload URL",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
     duration_id = fields.Many2one(
         string="Duration",
         comodel_name="base.duration",

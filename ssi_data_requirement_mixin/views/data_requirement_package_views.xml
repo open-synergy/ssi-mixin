@@ -25,6 +25,7 @@
     <field name="arch" type="xml">
         <data>
             <xpath expr="//field[@name='company_id']" position="after">
+                <field name="title" />
                 <field name="type_id" />
                 <field name="date" />
                 <field name="date_commitment" />
@@ -42,9 +43,13 @@
         <data>
             <xpath expr="//group[@name='header_right']" position="inside">
                 <field name="type_id" />
+                <field name="upload_url" widget="url" />
                 <field name="date" />
                 <field name="duration_id" />
                 <field name="date_commitment" />
+            </xpath>
+            <xpath expr="//group[@name='header_center']" position="inside">
+                <field name="title" />
             </xpath>
             <xpath expr="//page[1]" position="before">
                 <page name="detail" string="Details">
