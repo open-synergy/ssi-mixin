@@ -37,6 +37,7 @@ setuptools.setup(
         'odoo14-addon-ssi_status_check_mixin',
         'odoo14-addon-ssi_transaction_cancel_mixin',
         'odoo14-addon-ssi_transaction_confirm_mixin',
+        'odoo14-addon-ssi_transaction_date_due_mixin',
         'odoo14-addon-ssi_transaction_done_mixin',
         'odoo14-addon-ssi_transaction_mixin',
         'odoo14-addon-ssi_transaction_open_mixin',
