@@ -63,7 +63,7 @@ class DataRequirementPackage(models.Model):
     ]
 
     # Sequence attribute
-    _create_sequence_state = "open"
+    _create_sequence_state = "done"
 
     type_id = fields.Many2one(
         string="Type",
