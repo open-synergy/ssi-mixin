@@ -110,6 +110,21 @@ class DataRequirementPackage(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    data_requirement_ids = fields.One2many(
+        string="Data Requirements",
+        comodel_name="data_requirement",
+        inverse_name="package_id",
+    )
+    data_requirement_status = fields.Selection(
+        string="Data Requirement Status",
+        selection=[
+            ("not_needed", "Not Needed"),
+            ("open", "In Progress"),
+            ("done", "Done"),
+        ],
+        compute="_compute_data_requirement_status",
+        store=True,
+    )
     detail_ids = fields.One2many(
         string="Detail",
         comodel_name="data_requirement_package.detail",
@@ -148,6 +163,31 @@ class DataRequirementPackage(models.Model):
         ]
         res += policy_field
         return res
+
+    @api.depends(
+        "data_requirement_ids",
+        "data_requirement_ids.state",
+    )
+    def _compute_data_requirement_status(self):
+        for record in self:
+            result = "not_needed"
+            num_of_data_requirement = len(record.data_requirement_ids)
+            num_of_done_data_requirement = len(
+                record.data_requirement_ids.filtered(lambda r: r.state == "done")
+            )
+
+            if (
+                num_of_data_requirement != 0
+                and num_of_data_requirement != num_of_done_data_requirement
+            ):
+                result = "open"
+            elif (
+                num_of_data_requirement != 0
+                and num_of_data_requirement == num_of_done_data_requirement
+            ):
+                result = "done"
+
+            record.data_requirement_status = result
 
     @api.onchange(
         "duration_id",

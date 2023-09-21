@@ -149,6 +149,7 @@ class DataRequirement(models.Model):
             ],
         },
     )
+
     state = fields.Selection(
         string="State",
         selection=[

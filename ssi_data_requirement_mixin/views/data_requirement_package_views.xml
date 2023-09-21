@@ -29,6 +29,7 @@
                 <field name="type_id" />
                 <field name="date" />
                 <field name="date_commitment" />
+                <field name="data_requirement_status" />
             </xpath>
         </data>
     </field>
@@ -71,7 +72,9 @@
                             attrs="{'invisible':[('state','!=','draft')]}"
                         />
 
-
+                    <group name="detail_1" colspan="4" col="2">
+                        <field name="data_requirement_status" />
+                    </group>
                     <field name="detail_ids">
                         <tree editable="top">
                             <field name="sequence" widget="handle" />
