@@ -46,6 +46,7 @@ setuptools.setup(
         'odoo14-addon-ssi_transaction_ready_mixin',
         'odoo14-addon-ssi_transaction_salesperson_mixin',
         'odoo14-addon-ssi_transaction_terminate_mixin',
+        'odoo14-addon-ssi_transaction_total_mixin',
         'odoo14-addon-ssi_transaction_win_lost_mixin',
         'odoo14-addon-test_ssi_accounting_entry_mixin',
         'odoo14-addon-test_ssi_custom_information_mixin',
