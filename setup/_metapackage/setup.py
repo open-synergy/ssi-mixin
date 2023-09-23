@@ -41,6 +41,7 @@ setuptools.setup(
         'odoo14-addon-ssi_transaction_done_mixin',
         'odoo14-addon-ssi_transaction_mixin',
         'odoo14-addon-ssi_transaction_open_mixin',
+        'odoo14-addon-ssi_transaction_partner_mixin',
         'odoo14-addon-ssi_transaction_pricelist_mixin',
         'odoo14-addon-ssi_transaction_ready_mixin',
         'odoo14-addon-ssi_transaction_salesperson_mixin',
