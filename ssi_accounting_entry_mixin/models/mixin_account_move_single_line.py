@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models
+from odoo import fields, models
 
 
 class MixinAccountMoveSingleLine(models.AbstractModel):
@@ -162,3 +162,38 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
             amount_currency *= -1
 
         return debit, credit, amount_currency
+
+
+class MixinAccountMoveSingleLineWithField(models.AbstractModel):
+    _name = "mixin.account_move_single_line_with_field"
+    _inherit = [
+        "mixin.account_move_single_line",
+    ]
+
+    source_move_line_id = fields.Many2one(
+        string="Source Journal Item",
+        comodel_name="account.move.line",
+        readonly=True,
+    )
+    source_move_id = fields.Many2one(
+        string="Source Journal Entry",
+        comodel_name="account.move",
+        related="source_move_line_id.move_id",
+        store=True,
+    )
+    source_partner_id = fields.Many2one(
+        string="Source Partner",
+        comodel_name="res.partner",
+        related="source_move_line_id.partner_id",
+        store=True,
+    )
+    source_date = fields.Date(
+        string="Source Date",
+        related="source_move_line_id.date",
+        store=True,
+    )
+    move_line_id = fields.Many2one(
+        string="Journal Item",
+        comodel_name="account.move.line",
+        readonly=True,
+    )
