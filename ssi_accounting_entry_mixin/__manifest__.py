@@ -11,6 +11,7 @@
     "installable": True,
     "depends": [
         "account",
+        "ssi_transaction_mixin",
     ],
     "data": [],
 }

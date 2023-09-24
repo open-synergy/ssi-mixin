@@ -2,12 +2,13 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models
+from odoo import fields, models
 
 
 class MixinAccountMove(models.AbstractModel):
     _name = "mixin.account_move"
     _description = "Accounting Entry Header Mixin"
+
     _journal_id_field_name = "journal_id"
     _move_id_field_name = "move_id"
     _accounting_date_field_name = "date"
@@ -145,3 +146,59 @@ class MixinAccountMove(models.AbstractModel):
             "analytic_account_id": record.analytic_account_id.id,
         }
         return vals
+
+
+class MixinTransactionAccountMoveWithField(models.AbstractModel):
+    _name = "mixin.transaction_account_move_with_field"
+    _description = "Accounting Entry Header Mixin - With Field"
+    _inherit = [
+        "mixin.account_move",
+        "mixin.transaction",
+    ]
+    _journal_id_field_name = "journal_id"
+    _move_id_field_name = "move_id"
+    _currency_id_field_name = "currency_id"
+    _company_currency_id_field_name = "company_currency_id"
+    _number_field_name = "name"
+    _type_id_field_name = "type_id"
+
+    # Accounting
+    currency_id = fields.Many2one(
+        comodel_name="res.currency",
+        string="Currency",
+        required=True,
+        ondelete="restrict",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    journal_id = fields.Many2one(
+        comodel_name="account.journal",
+        string="Journal",
+        required=True,
+        ondelete="restrict",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    analytic_account_id = fields.Many2one(
+        comodel_name="account.analytic.account",
+        string="Analytic Account",
+        required=False,
+        ondelete="restrict",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    account_id = fields.Many2one(
+        comodel_name="account.account",
+        string="Account",
+        required=True,
+        ondelete="restrict",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    move_id = fields.Many2one(comodel_name="account.move", string="Move", readonly=True)
+    move_line_id = fields.Many2one(
+        comodel_name="account.move.line", string="Move Line", readonly=True
+    )
+    realized = fields.Boolean(
+        related="move_line_id.reconciled", string="Realized", store=True
+    )
