@@ -39,6 +39,7 @@ addon | version | maintainers | summary
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.0.1 |  | Product Line Mixin
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.2.0 |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.1.0.0 |  | QR Code Mixin
+[ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.1.0.0 |  | Reference Document Mixin
 [ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.1.3.1 |  | Related Attachment Mixin
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.0.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.1.1.1 |  | Sequence Mixin
