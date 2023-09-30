@@ -12,6 +12,8 @@ class MixinReferenceDocument(models.AbstractModel):
     _description = "Reference Document Mixin"
     _reference_document_create_page = False
     _reference_document_page_xpath = "//page[last()]"
+    _configurator_field_name = "type_id"
+    _reference_document_set_field_name = "reference_document_set_ids"
 
     reference_document_set_ids = fields.Many2many(
         string="Reference Document Sets",

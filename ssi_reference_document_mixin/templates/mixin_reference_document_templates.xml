@@ -5,7 +5,7 @@
         <group>
             <field name="reference_document_set_ids" widget="many2many_tags" />
         </group>
-        <field name="document_reference_ids" />
+        <field name="reference_document_ids" />
     </page>
 </template>
 </odoo>

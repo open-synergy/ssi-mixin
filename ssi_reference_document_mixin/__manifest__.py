@@ -15,6 +15,7 @@
     "data": [
         "security/ir.model.access.csv",
         "menu.xml",
+        "templates/mixin_reference_document_templates.xml",
         "views/reference_document_category_views.xml",
         "views/reference_document_set_views.xml",
         "views/reference_document_views.xml",
