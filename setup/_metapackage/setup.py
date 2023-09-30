@@ -29,6 +29,7 @@ setuptools.setup(
         'odoo14-addon-ssi_product_line_mixin',
         'odoo14-addon-ssi_product_line_price_mixin',
         'odoo14-addon-ssi_qr_code_mixin',
+        'odoo14-addon-ssi_reference_document_mixin',
         'odoo14-addon-ssi_related_attachment_mixin',
         'odoo14-addon-ssi_salesperson_mixin',
         'odoo14-addon-ssi_sequence_mixin',
