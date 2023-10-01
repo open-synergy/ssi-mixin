@@ -198,6 +198,14 @@ class DataRequirementPackage(models.Model):
         if self.duration_id:
             self.date_commitment = self.duration_id.get_duration(self.date)
 
+    @api.onchange(
+        "type_id",
+    )
+    def onchange_title(self):
+        self.title = False
+        if self.type_id:
+            self.title = self.type_id.name
+
     def action_reload_detail(self):
         for record in self.sudo():
             record._reload_detail()
