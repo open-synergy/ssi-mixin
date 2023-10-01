@@ -115,6 +115,18 @@ class DataRequirement(models.Model):
             ],
         },
     )
+    title = fields.Char(
+        string="Title",
+        default="-",
+        required=True,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    category_id = fields.Many2one(
+        string="Category",
+        related="type_id.category_id",
+        store=True,
+    )
     mode = fields.Selection(
         string="Mode",
         selection=[
@@ -188,3 +200,11 @@ class DataRequirement(models.Model):
         self.date_commitment = False
         if self.duration_id:
             self.date_commitment = self.duration_id.get_duration(self.date)
+
+    @api.onchange(
+        "type_id",
+    )
+    def onchange_title(self):
+        self.title = False
+        if self.type_id:
+            self.title = self.type_id.name

@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from . import (
+    data_requirement_type_category,
     data_requirement_type,
     data_requirement,
     data_requirement_package_type,

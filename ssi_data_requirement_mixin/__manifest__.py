@@ -32,6 +32,7 @@
         "data/policy_template_data.xml",
         "menu.xml",
         "templates/mixin_data_requirement_templates.xml",
+        "views/data_requirement_type_category_views.xml",
         "views/data_requirement_type_views.xml",
         "views/data_requirement_package_type_views.xml",
         "views/data_requirement_views.xml",

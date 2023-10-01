@@ -19,3 +19,7 @@ class DataRequirementType(models.Model):
         required=True,
         default="url",
     )
+    category_id = fields.Many2one(
+        string="Category",
+        comodel_name="data_requirement_type_category",
+    )

@@ -27,6 +27,8 @@
             <xpath expr="//field[@name='company_id']" position="after">
                 <field name="package_id" />
                 <field name="type_id" />
+                <field name="title" />
+                <field name="category_id" />
                 <field name="date" />
                 <field name="date_commitment" />
                 <field name="date_submit" />
@@ -48,6 +50,7 @@
             </xpath>
             <xpath expr="//group[@name='header_right']" position="inside">
                 <field name="type_id" />
+                <field name="category_id" />
                 <field name="date" />
                 <field name="duration_id" />
                 <field name="date_commitment" />
@@ -62,6 +65,9 @@
                         name="attachment_id"
                         attrs="{'invisible': [('mode','!=','attchment')]}"
                     />
+            </xpath>
+            <xpath expr="//group[@name='header_center']" position="inside">
+                <field name="title" />
             </xpath>
         </data>
     </field>
