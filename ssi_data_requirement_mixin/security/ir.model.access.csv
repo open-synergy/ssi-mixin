@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_data_requirement_configurator_all,data_requirement_type_configurator - All user ,model_data_requirement_configurator,,1,0,0,0
 access_data_requirement_type_all,data_requirement_type - All user ,model_data_requirement_type,,1,0,0,0
 access_data_requirement_type_configurator,data_requirement_type - Configurator,model_data_requirement_type,data_requirement_type_group,1,1,1,1
 access_data_requirement_type_category_all,data_requirement_type_category - All user ,model_data_requirement_type_category,,1,0,0,0
