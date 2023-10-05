@@ -11,4 +11,6 @@ from . import (
     data_requirement_package,
     data_requirement_package_detail,
     mixin_data_requirement,
+    mixin_data_requirement_configurator,
+    data_requirement_configurator,
 )
