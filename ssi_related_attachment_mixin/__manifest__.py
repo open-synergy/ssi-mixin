@@ -11,7 +11,7 @@
     "license": "LGPL-3",
     "installable": True,
     "depends": [
-        "base",
+        "ssi_decorator",
     ],
     "data": [
         "security/ir.model.access.csv",
