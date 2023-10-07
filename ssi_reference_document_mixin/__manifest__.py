@@ -11,6 +11,7 @@
     "installable": True,
     "depends": [
         "ssi_master_data_mixin",
+        "ssi_decorator",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -10,6 +10,9 @@ from odoo.addons.ssi_decorator import ssi_decorator
 
 class MixinReferenceDocument(models.AbstractModel):
     _name = "mixin.reference_document"
+    _inherit = [
+        "mixin.decorator",
+    ]
     _description = "Reference Document Mixin"
     _reference_document_create_page = False
     _reference_document_page_xpath = "//page[last()]"
