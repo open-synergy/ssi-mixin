@@ -54,10 +54,6 @@ class MixinTransaction(models.AbstractModel):
         states={"draft": [("readonly", False)]},
     )
 
-    @api.model
-    def _default_company_id(self):
-        return self.env.user.company_id.id
-
     company_id = fields.Many2one(
         string="Company",
         comodel_name="res.company",
@@ -65,10 +61,6 @@ class MixinTransaction(models.AbstractModel):
         default=lambda self: self._default_company_id(),
         copy=True,
     )
-
-    @api.model
-    def _default_user_id(self):
-        return self.env.user.id
 
     user_id = fields.Many2one(
         string="Responsible",
@@ -96,10 +88,6 @@ class MixinTransaction(models.AbstractModel):
         states={"draft": [("readonly", False)]},
     )
 
-    def _compute_policy(self):
-        _super = super(MixinTransaction, self)
-        _super._compute_policy()
-
     restart_ok = fields.Boolean(
         string="Can Restart",
         compute="_compute_policy",
@@ -110,6 +98,109 @@ class MixinTransaction(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+
+    @api.model
+    def _default_company_id(self):
+        return self.env.user.company_id.id
+
+    @api.model
+    def _default_user_id(self):
+        return self.env.user.id
+
+    def _compute_policy(self):
+        _super = super(MixinTransaction, self)
+        _super._compute_policy()
+
+    # TODO: Dynamic field name
+    @api.constrains(
+        "name",
+    )
+    def _constrains_duplicate_document_number(self):
+        for record in self.sudo():
+            if not record._check_duplicate_document_number():
+                error_message = """
+                Context: Change %s document number
+                Database ID: %s
+                Problem: Duplicate document number
+                Solution: Change document number into different number
+                """ % (
+                    self._description.lower(),
+                    record.id,
+                )
+                raise UserError(_(error_message))
+
+    def name_get(self):
+        result = []
+        for record in self:
+            if getattr(record, self._document_number_field) == "/":
+                name = "*" + str(record.id)
+            else:
+                name = record.name
+            result.append((record.id, name))
+        return result
+
+    def unlink(self):
+        force_unlink = self.env.context.get("force_unlink", False)
+        for record in self:
+            if not record._check_state_unlink(force_unlink):
+                error_message = """
+                Context: Delete %s
+                Database ID: %s
+                Problem: Document state is not draft
+                Solution: Cancel and restart document
+                """ % (
+                    self._description.lower(),
+                    record.id,
+                )
+                raise UserError(_(error_message))
+            if not record._check_document_number_unlink(force_unlink):
+                error_message = """
+                Context: Delete %s
+                Database ID: %s
+                Problem: Document number is not equal to /
+                Solution: Change document number into /
+                """ % (
+                    self._description.lower(),
+                    record.id,
+                )
+                raise UserError(_(error_message))
+        _super = super(MixinTransaction, self)
+        _super.unlink()
+
+    @api.model
+    def fields_view_get(
+        self, view_id=None, view_type="form", toolbar=False, submenu=False
+    ):
+        result = super().fields_view_get(
+            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
+        )
+        View = self.env["ir.ui.view"]
+
+        view_arch = etree.XML(result["arch"])
+
+        if view_type == "form" and self._automatically_insert_view_element:
+            view_arch = self._reorder_header_button(view_arch)
+            view_arch = self._reorder_policy_field(view_arch)
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        elif view_type == "search" and self._automatically_insert_view_element:
+            view_arch = self._reorder_state_filter_on_search_view(view_arch)
+
+        if view_id and result.get("base_model", self._name) != self._name:
+            View = View.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+        result["arch"] = new_arch
+        new_fields.update(result["fields"])
+        result["fields"] = new_fields
+
+        return result
+
+    def action_restart(self):
+        for record in self.sudo():
+            record._run_pre_restart_check()
+            record._run_pre_restart_action()
+            record.write(record._prepare_restart_data())
+            record._run_post_restart_check()
+            record._run_post_restart_action()
 
     def _run_pre_restart_check(self):
         self.ensure_one()
@@ -151,75 +242,11 @@ class MixinTransaction(models.AbstractModel):
         if methods:
             self.run_decorator_method(methods)
 
-    def action_restart(self):
-        for record in self.sudo():
-            record._run_pre_restart_check()
-            record._run_pre_restart_action()
-            record.write(record._prepare_restart_data())
-            record._run_post_restart_check()
-            record._run_post_restart_action()
-
     def _prepare_restart_data(self):
         self.ensure_one()
         return {
             "state": self._draft_state,
         }
-
-    def name_get(self):
-        result = []
-        for record in self:
-            if getattr(record, self._document_number_field) == "/":
-                name = "*" + str(record.id)
-            else:
-                name = record.name
-            result.append((record.id, name))
-        return result
-
-    def unlink(self):
-        force_unlink = self.env.context.get("force_unlink", False)
-        for record in self:
-            if not record._check_state_unlink(force_unlink):
-                error_message = """
-                Context: Delete %s
-                Database ID: %s
-                Problem: Document state is not draft
-                Solution: Cancel and restart document
-                """ % (
-                    self._description.lower(),
-                    record.id,
-                )
-                raise UserError(_(error_message))
-            if not record._check_document_number_unlink(force_unlink):
-                error_message = """
-                Context: Delete %s
-                Database ID: %s
-                Problem: Document number is not equal to /
-                Solution: Change document number into /
-                """ % (
-                    self._description.lower(),
-                    record.id,
-                )
-                raise UserError(_(error_message))
-        _super = super(MixinTransaction, self)
-        _super.unlink()
-
-    # TODO: Dynamic field name
-    @api.constrains(
-        "name",
-    )
-    def _constrains_duplicate_document_number(self):
-        for record in self.sudo():
-            if not record._check_duplicate_document_number():
-                error_message = """
-                Context: Change %s document number
-                Database ID: %s
-                Problem: Duplicate document number
-                Solution: Change document number into different number
-                """ % (
-                    self._description.lower(),
-                    record.id,
-                )
-                raise UserError(_(error_message))
 
     def _check_document_number_unlink(self, force_unlink=False):
         self.ensure_one()
@@ -252,50 +279,6 @@ class MixinTransaction(models.AbstractModel):
         if count_duplicate > 0:
             result = False
         return result
-
-    @api.model
-    def fields_view_get(
-        self, view_id=None, view_type="form", toolbar=False, submenu=False
-    ):
-        result = super().fields_view_get(
-            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
-        )
-        View = self.env["ir.ui.view"]
-
-        view_arch = etree.XML(result["arch"])
-
-        if view_type == "form" and self._automatically_insert_view_element:
-            view_arch = self._reorder_header_button(view_arch)
-            view_arch = self._reorder_policy_field(view_arch)
-            view_arch = self._reconfigure_statusbar_visible(view_arch)
-        elif view_type == "search" and self._automatically_insert_view_element:
-            view_arch = self._reorder_state_filter_on_search_view(view_arch)
-
-        if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
-        result["arch"] = new_arch
-        new_fields.update(result["fields"])
-        result["fields"] = new_fields
-
-        return result
-
-    @api.model
-    def _add_view_element(
-        self, view_arch, qweb_template_xml_id, xpath, position="after", order=False
-    ):
-        additional_element = self.env["ir.qweb"]._render(qweb_template_xml_id)
-        if len(view_arch.xpath(xpath)) == 0:
-            return view_arch
-        node_xpath = view_arch.xpath(xpath)[0]
-        new_node = etree.fromstring(additional_element)
-        if order:
-            new_node.set("order", str(order))
-        if position == "after":
-            node_xpath.addnext(new_node)
-        elif position == "before":
-            node_xpath.addprevious(new_node)
-        return view_arch
 
     @api.model
     def _reorder_header_button(self, view_arch):

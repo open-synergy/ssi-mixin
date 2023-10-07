@@ -175,3 +175,16 @@ def pre_lost_action(*args):
 
 def post_lost_action(*args):
     return attrsetter("_post_lost_action", args)
+
+
+# fields_view_get
+def insert_on_tree_view(*args):
+    return attrsetter("_insert_on_tree_view", args)
+
+
+def insert_on_form_view(*args):
+    return attrsetter("_insert_on_form_view", args)
+
+
+def insert_on_search_view(*args):
+    return attrsetter("_insert_on_tree_view", args)
