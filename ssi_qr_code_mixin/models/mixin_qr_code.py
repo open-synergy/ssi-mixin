@@ -1,13 +1,13 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import io
 import logging
 from base64 import b64encode
 
-from lxml import etree
+from odoo import fields, models
 
-from odoo import api, fields, models
+from odoo.addons.ssi_decorator import ssi_decorator
 
 _logger = logging.getLogger(__name__)
 
@@ -19,6 +19,9 @@ except (ImportError, IOError) as err:
 
 class MixinQRCode(models.AbstractModel):
     _name = "mixin.qr_code"
+    _inherit = [
+        "mixin.decorator",
+    ]
     _description = "QR Code Mixin"
 
     _qr_code_create_page = False
@@ -42,33 +45,16 @@ class MixinQRCode(models.AbstractModel):
         store=False,
     )
 
-    @api.model
-    def fields_view_get(
-        self, view_id=None, view_type="form", toolbar=False, submenu=False
-    ):
-        res = super().fields_view_get(
-            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
-        )
-        if view_type == "form" and self._qr_code_create_page:
-            doc = etree.XML(res["arch"])
-            node_xpath = doc.xpath(self._qr_code_page_xpath)
-            if node_xpath:
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_qr_code_mixin.qr_code_page"
-                )
-                for node in node_xpath:
-                    new_node = etree.fromstring(str_element)
-                    node.addnext(new_node)
-
-            View = self.env["ir.ui.view"]
-
-            if view_id and res.get("base_model", self._name) != self._name:
-                View = View.with_context(base_model_name=res["base_model"])
-            new_arch, new_fields = View.postprocess_and_fields(doc, self._name)
-            res["arch"] = new_arch
-            new_fields.update(res["fields"])
-            res["fields"] = new_fields
-        return res
+    @ssi_decorator.insert_on_form_view()
+    def _qr_code_insert_form_element(self, view_arch):
+        if self._qr_code_create_page:
+            view_arch = self._add_view_element(
+                view_arch=view_arch,
+                qweb_template_xml_id="ssi_qr_code_mixin.qr_code_page",
+                xpath=self._qr_code_page_xpath,
+                position="after",
+            )
+        return view_arch
 
     def _get_qr_code_content(self):
         self.ensure_one()

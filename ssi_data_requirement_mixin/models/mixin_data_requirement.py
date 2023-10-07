@@ -10,6 +10,9 @@ from odoo.addons.ssi_decorator import ssi_decorator
 
 class MixinDataRequirement(models.AbstractModel):
     _name = "mixin.data_requirement"
+    _inherit = [
+        "mixin.decorator",
+    ]
     _description = "Data Requirement Mixin"
 
     _data_requirement_create_page = False
