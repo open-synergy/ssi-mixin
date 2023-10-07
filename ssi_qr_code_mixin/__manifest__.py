@@ -10,7 +10,7 @@
     "license": "LGPL-3",
     "installable": True,
     "depends": [
-        "base",
+        "ssi_decorator",
     ],
     "external_dependencies": {
         "python": [
