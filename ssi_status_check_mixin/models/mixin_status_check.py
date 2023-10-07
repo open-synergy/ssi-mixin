@@ -1,15 +1,18 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
-from lxml import etree
-
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl-3.0-standalone.html).
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 
+from odoo.addons.ssi_decorator import ssi_decorator
+
 
 class MixinStatusCheck(models.AbstractModel):
     _name = "mixin.status_check"
+    _inherit = [
+        "mixin.decorator",
+    ]
     _description = "Mixin Object for Status Check"
 
     _status_check_create_page = False
@@ -28,32 +31,16 @@ class MixinStatusCheck(models.AbstractModel):
         auto_join=True,
     )
 
-    @api.model
-    def fields_view_get(
-        self, view_id=None, view_type="form", toolbar=False, submenu=False
-    ):
-        res = super().fields_view_get(
-            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
-        )
-        if view_type == "form" and self._status_check_create_page:
-            doc = etree.XML(res["arch"])
-            node_xpath = doc.xpath(self._status_check_page_xpath)
-            str_element = self.env["ir.qweb"]._render(
-                "ssi_status_check_mixin.status_check_page"
+    @ssi_decorator.insert_on_form_view()
+    def _status_check_insert_form_element(self, view_arch):
+        if self._status_check_create_page:
+            view_arch = self._add_view_element(
+                view_arch=view_arch,
+                qweb_template_xml_id="ssi_status_check_mixin.status_check_page",
+                xpath=self._status_check_page_xpath,
+                position="after",
             )
-            for node in node_xpath:
-                new_node = etree.fromstring(str_element)
-                node.addnext(new_node)
-
-            View = self.env["ir.ui.view"]
-
-            if view_id and res.get("base_model", self._name) != self._name:
-                View = View.with_context(base_model_name=res["base_model"])
-            new_arch, new_fields = View.postprocess_and_fields(doc, self._name)
-            res["arch"] = new_arch
-            new_fields.update(res["fields"])
-            res["fields"] = new_fields
-        return res
+        return view_arch
 
     def _prepare_status_check_data(self, template_id, template_detail_id):
         self.ensure_one()
