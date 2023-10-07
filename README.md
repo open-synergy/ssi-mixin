@@ -21,8 +21,8 @@ addon | version | maintainers | summary
 [ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.5.0 |  | Accounting Entry Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.0.0 |  | Company Currency Mixin
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.1 |  | Currency Mixin
-[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.2.0.0 |  | Custom Information Mixin
-[ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.2.6.1 |  | Data Requirement Mixin
+[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.3.0.0 |  | Custom Information Mixin
+[ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.3.0.0 |  | Data Requirement Mixin
 [ssi_decorator](ssi_decorator/) | 14.0.1.1.1 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.0.0 |  | Custom Date Field With Callable Attribute
@@ -38,14 +38,14 @@ addon | version | maintainers | summary
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.3.0 |  | Product Line Mixin - With Accounting
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.0.1 |  | Product Line Mixin
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.2.0 |  | Product Line Mixin - With Price
-[ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.1.0.0 |  | QR Code Mixin
-[ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.1.0.0 |  | Reference Document Mixin
-[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.1.3.1 |  | Related Attachment Mixin
+[ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.0.0 |  | QR Code Mixin
+[ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.2.0.0 |  | Reference Document Mixin
+[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.0.0 |  | Related Attachment Mixin
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.0.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.1.1.1 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.0.0 |  | Source Document Mixin
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.5.0 |  | State Change Constrain Mixin
-[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.1.4.0 |  | Status Check Mixin
+[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.0.0 |  | Status Check Mixin
 [ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.6.0 |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 14.0.2.3.1 |  | Transaction Mixin - Waiting for Approval State
 [ssi_transaction_date_due_mixin](ssi_transaction_date_due_mixin/) | 14.0.1.0.0 |  | Transaction Mixin - Date Due
@@ -60,7 +60,7 @@ addon | version | maintainers | summary
 [ssi_transaction_total_mixin](ssi_transaction_total_mixin/) | 14.0.1.0.0 |  | Transaction Mixin - Total
 [ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | 14.0.1.2.0 |  | Transaction Mixin - Win & Lost State
 [test_ssi_accounting_entry_mixin](test_ssi_accounting_entry_mixin/) | 14.0.2.0.0 |  | Test Module: Accounting Entry Mixin
-[test_ssi_custom_information_mixin](test_ssi_custom_information_mixin/) | 14.0.1.1.0 |  | Test Module: Custom Information Mixin
+[test_ssi_custom_information_mixin](test_ssi_custom_information_mixin/) | 14.0.2.0.0 |  | Test Module: Custom Information Mixin
 [test_ssi_duration_mixin](test_ssi_duration_mixin/) | 14.0.1.0.0 |  | Test Module: Duration Mixin
 [test_ssi_multiple_approval_mixin](test_ssi_multiple_approval_mixin/) | 14.0.1.0.0 |  | Test Module: Multiple Approval Mixin
 [test_ssi_policy_mixin](test_ssi_policy_mixin/) | 14.0.1.1.0 |  | Test Module: Policy Mixin
