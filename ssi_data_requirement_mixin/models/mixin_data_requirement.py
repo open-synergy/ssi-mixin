@@ -36,6 +36,25 @@ class MixinDataRequirement(models.AbstractModel):
         compute="_compute_data_requirement_status",
         store=True,
     )
+    allowed_partner_id = fields.Many2one(
+        string="Allowed Partner",
+        comodel_name="res.partner",
+        compute="_compute_allowed_partner_id",
+        store=False,
+    )
+
+    def _compute_allowed_partner_id(self):
+        for record in self:
+            result = False
+
+            if self._data_requirement_partner_field_name and hasattr(
+                record, self._data_requirement_partner_field_name
+            ):
+                result = getattr(record, self._data_requirement_partner_field_name)
+                if result:
+                    result = result.commercial_partner_id
+
+            record.allowed_partner_id = result
 
     @api.depends(
         "data_requirement_ids",
@@ -76,6 +95,23 @@ class MixinDataRequirement(models.AbstractModel):
     def action_create_data_requirement(self):
         for record in self.sudo():
             record._create_data_requirement()
+
+    def action_open_data_requirement(self):
+        for record in self.sudo():
+            result = record._open_data_requirement()
+        return result
+
+    def _open_data_requirement(self):
+        self.ensure_one()
+        waction = self.env.ref(
+            "ssi_data_requirement_mixin.data_requirement_action"
+        ).read()[0]
+        waction.update(
+            {
+                "domain": [("id", "in", self.data_requirement_ids.ids)],
+            }
+        )
+        return waction
 
     def _data_requirement_get_partner(self):
         self.ensure_one()
