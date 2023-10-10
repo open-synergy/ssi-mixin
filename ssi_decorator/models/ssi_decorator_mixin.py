@@ -4,7 +4,7 @@
 
 from inspect import getmembers
 
-from lxml import etree
+from lxml import etree, html
 
 from odoo import api, models
 
@@ -98,11 +98,11 @@ class MixinDecorator(models.AbstractModel):
         if len(view_arch.xpath(xpath)) == 0:
             return view_arch
         node_xpath = view_arch.xpath(xpath)[0]
-        new_node = etree.fromstring(additional_element)
-        if order:
-            new_node.set("order", str(order))
-        if position == "after":
-            node_xpath.addnext(new_node)
-        elif position == "before":
-            node_xpath.addprevious(new_node)
+        for frag in html.fragments_fromstring(additional_element):
+            if order:
+                frag.set("order", str(order))
+            if position == "after":
+                node_xpath.addnext(frag)
+            elif position == "before":
+                node_xpath.addprevious(frag)
         return view_arch
