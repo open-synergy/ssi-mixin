@@ -23,7 +23,7 @@ addon | version | maintainers | summary
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.1.1 |  | Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.3.0.0 |  | Custom Information Mixin
 [ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.3.1.0 |  | Data Requirement Mixin
-[ssi_decorator](ssi_decorator/) | 14.0.1.1.1 |  | SSI - Decorator
+[ssi_decorator](ssi_decorator/) | 14.0.1.1.2 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.0.1 |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.0.0 |  | Custom Date Field With Callable Attribute
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 14.0.1.0.0 |  | Localdict Mixin
