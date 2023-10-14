@@ -59,11 +59,11 @@
                 <field
                         name="url"
                         widget="url"
-                        attrs="{'invisible': [('mode','!=','url')]}"
+                        attrs="{'invisible': [('mode','!=','url')], 'required': [('state','=','open'),('mode','=','url')]}"
                     />
                 <field
                         name="attachment_id"
-                        attrs="{'invisible': [('mode','!=','attchment')]}"
+                        attrs="{'invisible': [('mode','!=','attachment')], 'required': [('state','=','open'),('mode','=','attachment')]}"
                     />
             </xpath>
             <xpath expr="//group[@name='header_center']" position="inside">

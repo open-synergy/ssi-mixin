@@ -102,7 +102,7 @@ class DataRequirement(models.Model):
         string="Submit Date",
         required=False,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        states={"open": [("readonly", False), ("required", True)]},
     )
     type_id = fields.Many2one(
         string="Type",
@@ -149,6 +149,9 @@ class DataRequirement(models.Model):
             "draft": [
                 ("readonly", False),
             ],
+            "open": [
+                ("readonly", False),
+            ],
         },
     )
     attachment_id = fields.Many2one(
@@ -157,6 +160,9 @@ class DataRequirement(models.Model):
         readonly=True,
         states={
             "draft": [
+                ("readonly", False),
+            ],
+            "open": [
                 ("readonly", False),
             ],
         },
