@@ -166,6 +166,7 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
 
 class MixinAccountMoveSingleLineWithField(models.AbstractModel):
     _name = "mixin.account_move_single_line_with_field"
+    _description = "Accounting Move Single Line With Field Mixin"
     _inherit = [
         "mixin.account_move_single_line",
     ]

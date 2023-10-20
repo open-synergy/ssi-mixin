@@ -37,7 +37,6 @@ class MixinCurrency(models.AbstractModel):
         string="Transaction Rate",
         required=True,
         default=1.0,
-        digits=0,
     )
 
     @api.onchange(
