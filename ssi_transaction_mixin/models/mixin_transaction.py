@@ -181,7 +181,6 @@ class MixinTransaction(models.AbstractModel):
         if view_type == "form" and self._automatically_insert_view_element:
             view_arch = self._reorder_header_button(view_arch)
             view_arch = self._reorder_policy_field(view_arch)
-            view_arch = self._reconfigure_statusbar_visible(view_arch)
         elif view_type == "search" and self._automatically_insert_view_element:
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
