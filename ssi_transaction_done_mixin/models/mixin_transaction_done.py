@@ -36,6 +36,14 @@ class MixinTransactionDone(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("done", "Done"),
+        ],
+        ondelete={
+            "done": "set default",
+        },
+    )
 
     def _prepare_done_data(self):
         self.ensure_one()
