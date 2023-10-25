@@ -34,6 +34,14 @@ class MixinTransactionReady(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("ready", "Ready to Start"),
+        ],
+        ondelete={
+            "ready": "set default",
+        },
+    )
 
     def _prepare_ready_data(self):
         self.ensure_one()

@@ -60,6 +60,16 @@ class MixinTransactionWinLost(models.AbstractModel):
         string="Real Lost Date",
         readonly=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("win", "Win"),
+            ("lost", "Lost"),
+        ],
+        ondelete={
+            "win": "set default",
+            "lost": "set default",
+        },
+    )
 
     def _prepare_win_data(self, real_win_date=False):
         self.ensure_one()

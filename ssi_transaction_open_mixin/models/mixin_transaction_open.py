@@ -36,6 +36,14 @@ class MixinTransactionOpen(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("open", "On Progress"),
+        ],
+        ondelete={
+            "open": "set default",
+        },
+    )
 
     def _prepare_open_data(self):
         self.ensure_one()

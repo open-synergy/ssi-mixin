@@ -43,6 +43,14 @@ class MixinTransactionTerminate(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("terminate", "Terminated"),
+        ],
+        ondelete={
+            "terminate": "set default",
+        },
+    )
 
     def _prepare_terminate_data(self, terminate_reason=False):
         self.ensure_one()

@@ -56,6 +56,16 @@ class MixinTransactionConfirm(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("confirm", "Waiting for Approval"),
+            ("reject", "Rejected"),
+        ],
+        ondelete={
+            "confirm": "set default",
+            "reject": "set default",
+        },
+    )
 
     def _run_pre_confirm_check(self):
         self.ensure_one()

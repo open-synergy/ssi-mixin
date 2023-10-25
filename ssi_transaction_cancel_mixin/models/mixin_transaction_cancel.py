@@ -43,6 +43,12 @@ class MixinTransactionCancel(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    state = fields.Selection(
+        selection_add=[
+            ("cancel", "Cancelled"),
+        ],
+        ondelete={"cancel": "set default"},
+    )
 
     def _prepare_cancel_data(self, cancel_reason=False):
         self.ensure_one()
