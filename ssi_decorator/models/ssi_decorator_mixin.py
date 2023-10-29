@@ -105,4 +105,6 @@ class MixinDecorator(models.AbstractModel):
                 node_xpath.addnext(frag)
             elif position == "before":
                 node_xpath.addprevious(frag)
+            elif position == "inside":
+                node_xpath.insert(0, frag)
         return view_arch
