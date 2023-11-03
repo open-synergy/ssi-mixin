@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="res_partner_bank_m2o_configurator_template">
+        <group name="partner_bank1" col="2" colspan="4" string="Partner Bank">
+            <field name="partner_bank_selection_method" />
+            <field
+                name="partner_bank_ids"
+                attrs="{'invisible':[('partner_bank_selection_method','!=','manual')]}"
+            />
+            <field
+                name="partner_bank_domain"
+                widget="domain"
+                options="{'model': 'res.partner.bank', 'in_dialog': True}"
+                attrs="{'invisible':[('partner_bank_selection_method','!=','domain')]}"
+            />
+            <field
+                name="partner_bank_python_code"
+                widget="ace"
+                attrs="{'invisible':[('partner_bank_selection_method','!=','code')]}"
+            />
+        </group>
+    </template>
+</odoo>

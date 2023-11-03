@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="res_currency_m2o_configurator_template">
+        <group name="currency_1" col="2" colspan="4" string="Currency">
+            <field name="currency_selection_method" />
+            <field
+                name="currency_ids"
+                attrs="{'invisible':[('currency_selection_method','!=','manual')]}"
+            />
+            <field
+                name="currency_domain"
+                widget="domain"
+                options="{'model': 'res.currency', 'in_dialog': True}"
+                attrs="{'invisible':[('currency_selection_method','!=','domain')]}"
+            />
+            <field
+                name="currency_python_code"
+                widget="ace"
+                attrs="{'invisible':[('currency_selection_method','!=','code')]}"
+            />
+        </group>
+    </template>
+</odoo>
