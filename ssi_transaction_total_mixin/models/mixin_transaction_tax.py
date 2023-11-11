@@ -36,7 +36,7 @@ class MixinTransactionTax(models.AbstractModel):
         return result
 
     @api.depends(lambda self: self._get_amount_tax_trigger())
-    def _compute_amount(self):
+    def _compute_amount_tax(self):
         for record in self:
             amount_tax = 0.0
 
