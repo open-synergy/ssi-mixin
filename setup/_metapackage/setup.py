@@ -34,6 +34,7 @@ setuptools.setup(
         'odoo14-addon-ssi_res_currency_m2o_configurator_mixin',
         'odoo14-addon-ssi_res_partner_bank_m2o_configurator_mixin',
         'odoo14-addon-ssi_res_partner_m2o_configurator_mixin',
+        'odoo14-addon-ssi_res_users_m2o_configurator_mixin',
         'odoo14-addon-ssi_salesperson_mixin',
         'odoo14-addon-ssi_sequence_mixin',
         'odoo14-addon-ssi_source_document_mixin',
