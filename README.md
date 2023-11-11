@@ -44,6 +44,7 @@ addon | version | maintainers | summary
 [ssi_res_currency_m2o_configurator_mixin](ssi_res_currency_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.currency Many2one Configurator Mixin
 [ssi_res_partner_bank_m2o_configurator_mixin](ssi_res_partner_bank_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.partner.bank Many2one Configurator Mixin
 [ssi_res_partner_m2o_configurator_mixin](ssi_res_partner_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.partner Many2one Configurator Mixin
+[ssi_res_users_m2o_configurator_mixin](ssi_res_users_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.users Many2one Configurator Mixin
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.0.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.1.1.1 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.0.0 |  | Source Document Mixin
