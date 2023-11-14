@@ -15,6 +15,9 @@ class MixinDataRequirement(models.AbstractModel):
     ]
     _description = "Data Requirement Mixin"
 
+    _data_requirement_create_filter = False
+    _data_requirement_filter_xpath = "//field[last()]"
+
     _data_requirement_create_page = False
     _data_requirement_page_xpath = "//page[last()]"
 
@@ -80,6 +83,17 @@ class MixinDataRequirement(models.AbstractModel):
                 result = "done"
 
             record.data_requirement_status = result
+
+    @ssi_decorator.insert_on_search_view()
+    def _data_requirement_insert_search_element(self, view_arch):
+        if self._data_requirement_create_filter:
+            view_arch = self._add_view_element(
+                view_arch=view_arch,
+                qweb_template_xml_id="ssi_data_requirement_mixin.data_requirement_filter",
+                xpath=self._data_requirement_filter_xpath,
+                position="after",
+            )
+        return view_arch
 
     @ssi_decorator.insert_on_form_view()
     def _data_requirement_insert_form_element(self, view_arch):

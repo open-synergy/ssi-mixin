@@ -27,4 +27,11 @@
             />
     </page>
 </template>
+<template id="data_requirement_filter">
+    <separator/>
+    <filter string="Data Requirement Complete" name="data_requirement_complete" domain="[('data_requirement_status', '=', 'done')]"/>
+    <filter string="Data Requirement In Progress" name="data_requirement_in_progress" domain="[('data_requirement_status', '=', 'open')]"/>
+    <filter string="No Need Data Requirement" name="no_need_data_requirement" domain="[('data_requirement_status', '=', 'not_needed')]"/>
+    <separator/>
+</template>
 </odoo>

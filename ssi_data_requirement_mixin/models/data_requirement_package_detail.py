@@ -30,7 +30,7 @@ class DataRequirementPackageDetail(models.Model):
     data_id = fields.Many2one(
         string="# Data",
         comodel_name="data_requirement",
-        readonly=True,
+        readonly=False,
         ondelete="cascade",
     )
 
