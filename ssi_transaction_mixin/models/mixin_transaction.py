@@ -61,6 +61,11 @@ class MixinTransaction(models.AbstractModel):
         default=lambda self: self._default_company_id(),
         copy=True,
     )
+    company_partner_id = fields.Many2one(
+        string="Company Partner",
+        related="company_id.partner_id",
+        store=False,
+    )
 
     user_id = fields.Many2one(
         string="Responsible",
