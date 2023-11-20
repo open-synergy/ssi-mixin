@@ -187,4 +187,4 @@ def insert_on_form_view(*args):
 
 
 def insert_on_search_view(*args):
-    return attrsetter("_insert_on_tree_view", args)
+    return attrsetter("_insert_on_search_view", args)
