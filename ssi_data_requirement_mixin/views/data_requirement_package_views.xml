@@ -48,8 +48,8 @@
                 <field name="date" />
                 <field name="duration_id" />
                 <field name="date_commitment" />
-                <field name="partner_id" invisible="1"/>
-                <field name="id" invisible="1"/>
+                <field name="partner_id" invisible="1" />
+                <field name="id" invisible="1" />
             </xpath>
             <xpath expr="//group[@name='header_center']" position="inside">
                 <field name="title" />
@@ -81,7 +81,10 @@
                         <tree editable="top">
                             <field name="sequence" widget="handle" />
                             <field name="type_id" />
-                            <field name="data_id" domain="[('partner_id', '=', parent.partner_id), ('type_id', '=', type_id), '|', ('package_id', '=', False), ('package_id', '=', parent.id)]"/>
+                            <field
+                                    name="data_id"
+                                    domain="[('partner_id', '=', parent.partner_id), ('type_id', '=', type_id), ('package_id', '=', False)]"
+                                />
                         </tree>
                     </field>
                 </page>
