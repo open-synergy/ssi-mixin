@@ -2,6 +2,13 @@
 <odoo>
     <template id="related_attachment_page">
         <page name="page_related_attachment" string="Related Attachment">
+            <button
+                name="action_reload_rel_attachment_template"
+                string="Template"
+                type="object"
+                class="oe_highlight"
+                icon="fa-refresh"
+            />
             <group name="grp_related_attachment_1" colspan="4" col="2">
                 <field
                     name="allowed_related_attachment_template_ids"
@@ -9,21 +16,10 @@
                     string="Template"
                     invisible="1"
                 />
-                <label for="related_attachment_template_id" string="Template" />
-                <div>
-                    <field
-                        name="related_attachment_template_id"
-                        domain="[('id','in',allowed_related_attachment_template_ids)]"
-                    />
-                    <br />
-                    <button
-                        name="action_reload_rel_attachment_template"
-                        string="Reload Template"
-                        type="object"
-                        class="oe_highlight"
-                        icon="fa-refresh"
-                    />
-                </div>
+                <field
+                    name="related_attachment_template_id"
+                    domain="[('id','in',allowed_related_attachment_template_ids)]"
+                />
             </group>
             <field
                 name="related_attachment_ids"
@@ -33,7 +29,7 @@
             />
             <button
                 name="action_reload_rel_attachment_detail"
-                string="Reload Details"
+                string="Attachments"
                 type="object"
                 class="oe_highlight"
                 icon="fa-refresh"
