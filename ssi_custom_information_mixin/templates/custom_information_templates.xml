@@ -2,22 +2,25 @@
 <odoo>
     <template id="custom_information_page">
         <page name="custom_information" string="Custom Information">
+            <button
+                name="action_reload_custom_info_template"
+                string="Template"
+                type="object"
+                icon="fa-refresh"
+                class="oe_highlight"
+                style="margin-right:4px"
+            />
+            <button
+                name="action_reload_custom_info"
+                string="Custom Info"
+                type="object"
+                icon="fa-refresh"
+                class="oe_highlight"
+            />
             <group name="custom_info">
-                <field name="custom_info_template_id" />
-                <button
-                    name="action_reload_custom_info_template"
-                    string="Reload Custom Info Template"
-                    type="object"
-                />
-                <button
-                    name="action_reload_custom_info"
-                    string="Reload Custom Info"
-                    type="object"
-                />
+                <field name="custom_info_template_id" string="Template" />
             </group>
-            <group name="detail_info" colspan="4" col="2">
-                <field name="custom_info_ids" colspan="4" nolabel="1" />
-            </group>
+            <field name="custom_info_ids" colspan="4" nolabel="1" />
         </page>
     </template>
 </odoo>
