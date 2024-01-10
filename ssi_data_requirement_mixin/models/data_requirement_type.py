@@ -23,3 +23,7 @@ class DataRequirementType(models.Model):
         string="Category",
         comodel_name="data_requirement_type_category",
     )
+    duration_id = fields.Many2one(
+        string="Duration",
+        comodel_name="base.duration",
+    )

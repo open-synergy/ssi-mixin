@@ -26,6 +26,7 @@
             <xpath expr="//field[@name='name']" position="after">
                 <field name="category_id" />
                 <field name="mode" />
+                <field name="duration_id" />
             </xpath>
         </data>
     </field>
@@ -41,6 +42,7 @@
             <xpath expr="//field[@name='active']" position="after">
                 <field name="mode" />
                 <field name="category_id" />
+                <field name="duration_id" />
             </xpath>
         </data>
     </field>
