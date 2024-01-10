@@ -78,6 +78,7 @@ class DataRequirement(models.Model):
     )
     date = fields.Date(
         string="Date",
+        default=lambda self: self._default_date(),
         required=True,
         readonly=True,
         states={"draft": [("readonly", False)]},
@@ -183,6 +184,10 @@ class DataRequirement(models.Model):
     )
 
     @api.model
+    def _default_date(self):
+        return fields.Date.today()
+
+    @api.model
     def _get_policy_field(self):
         res = super(DataRequirement, self)._get_policy_field()
         policy_field = [
@@ -197,6 +202,14 @@ class DataRequirement(models.Model):
         ]
         res += policy_field
         return res
+
+    @api.onchange(
+        "type_id",
+    )
+    def onchange_duration_id(self):
+        self.duration_id = False
+        if self.type_id:
+            self.duration_id = self.type_id.duration_id
 
     @api.onchange(
         "duration_id",
