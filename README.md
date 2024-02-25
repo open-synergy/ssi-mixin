@@ -21,14 +21,14 @@ addon | version | maintainers | summary
 [ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.7.0 |  | Accounting Entry Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.1.0 |  | Company Currency Mixin
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.2.0 |  | Currency Mixin
-[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.3.1.0 |  | Custom Information Mixin
+[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.3.1.1 |  | Custom Information Mixin
 [ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.3.5.0 |  | Data Requirement Mixin
 [ssi_decorator](ssi_decorator/) | 14.0.1.4.0 |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.1.0 |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.1.0 |  | Custom Date Field With Callable Attribute
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 14.0.1.0.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 14.0.2.1.0 |  | Many2one Configurator Mixin
-[ssi_master_data_mixin](ssi_master_data_mixin/) | 14.0.3.1.0 |  | Master Data Mixin
+[ssi_master_data_mixin](ssi_master_data_mixin/) | 14.0.3.1.1 |  | Master Data Mixin
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 14.0.1.6.0 |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.1.0 |  | Operating Unit Mixin
 [ssi_partner_mixin](ssi_partner_mixin/) | 14.0.1.3.0 |  | Partner Mixin
@@ -40,7 +40,7 @@ addon | version | maintainers | summary
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.3.0 |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.1.0 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.2.1.0 |  | Reference Document Mixin
-[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.2.0 |  | Related Attachment Mixin
+[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.2.1 |  | Related Attachment Mixin
 [ssi_res_currency_m2o_configurator_mixin](ssi_res_currency_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.currency Many2one Configurator Mixin
 [ssi_res_partner_bank_m2o_configurator_mixin](ssi_res_partner_bank_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.partner.bank Many2one Configurator Mixin
 [ssi_res_partner_m2o_configurator_mixin](ssi_res_partner_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.partner Many2one Configurator Mixin
@@ -48,14 +48,14 @@ addon | version | maintainers | summary
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.1.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.1.2.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.1.0 |  | Source Document Mixin
-[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.6.0 |  | State Change Constrain Mixin
-[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.1.0 |  | Status Check Mixin
+[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.6.1 |  | State Change Constrain Mixin
+[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.1.1 |  | Status Check Mixin
 [ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.8.0 |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 14.0.2.5.0 |  | Transaction Mixin - Waiting for Approval State
 [ssi_transaction_date_due_mixin](ssi_transaction_date_due_mixin/) | 14.0.1.0.0 |  | Transaction Mixin - Date Due
 [ssi_transaction_date_duration_mixin](ssi_transaction_date_duration_mixin/) | 14.0.1.0.0 |  | Transaction Date Duration Mixin
 [ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | 14.0.1.8.0 |  | Transaction Mixin - Done State
-[ssi_transaction_mixin](ssi_transaction_mixin/) | 14.0.4.4.0 |  | Transaction Mixin
+[ssi_transaction_mixin](ssi_transaction_mixin/) | 14.0.4.4.1 |  | Transaction Mixin
 [ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | 14.0.1.7.0 |  | Transaction Mixin - In Progress State
 [ssi_transaction_partner_mixin](ssi_transaction_partner_mixin/) | 14.0.1.0.0 |  | Transaction + Partner Mixin
 [ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | 14.0.1.1.0 |  | Transaction + Pricelist Mixin
