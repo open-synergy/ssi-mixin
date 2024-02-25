@@ -22,11 +22,7 @@
                 <header>
                 </header>
                 <sheet>
-                    <div
-                        class="oe_right oe_button_box"
-                        style="width: 300px;"
-                        name="buttons"
-                    >
+                    <div class="oe_button_box" style="width: 300px;" name="buttons">
                     </div>
                     <group name="group_1" colspan="4" col="2">
                         <group name="group_1_1" colspan="1" col="2">

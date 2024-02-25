@@ -20,7 +20,7 @@
     <field name="arch" type="xml">
         <form>
           <header />
-          <div name="div_smart_buttons" class="oe_right oe_button_box" />
+          <div name="div_smart_buttons" class="oe_button_box" />
           <sheet>
               <group name="group1">
                   <field name="name" />
