@@ -68,12 +68,18 @@ class MixinRelatedAttachment(models.AbstractModel):
         self.ensure_one()
         res = False
         localdict = self._get_related_attachment_localdict()
-        try:
-            safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
-            if "result" in localdict:
-                res = localdict["result"]
-        except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error)
+        if template:
+            try:
+                safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
+                if "result" in localdict:
+                    res = localdict["result"]
+            except Exception as error:
+                error_message = """Context: Related Attachment
+Error: %s
+""" % (
+                    error
+                )
+                raise UserError(_(error_message))
         return res
 
     def _get_template_related_attachment(self):
