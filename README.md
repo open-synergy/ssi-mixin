@@ -40,7 +40,7 @@ addon | version | maintainers | summary
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.3.0 |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.1.0 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.2.1.0 |  | Reference Document Mixin
-[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.2.1 |  | Related Attachment Mixin
+[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.2.2 |  | Related Attachment Mixin
 [ssi_res_currency_m2o_configurator_mixin](ssi_res_currency_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.currency Many2one Configurator Mixin
 [ssi_res_partner_bank_m2o_configurator_mixin](ssi_res_partner_bank_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.partner.bank Many2one Configurator Mixin
 [ssi_res_partner_m2o_configurator_mixin](ssi_res_partner_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.partner Many2one Configurator Mixin
