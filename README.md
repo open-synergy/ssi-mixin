@@ -18,7 +18,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.7.0 |  | Accounting Entry Mixin
+[ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.8.0 |  | Accounting Entry Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 14.0.1.1.0 |  | Company Currency Mixin
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.2.0 |  | Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 14.0.3.1.1 |  | Custom Information Mixin
