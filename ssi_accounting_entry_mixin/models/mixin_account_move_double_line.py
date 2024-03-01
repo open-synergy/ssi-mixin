@@ -232,7 +232,7 @@ class MixinAccountMoveDoubleLine(models.AbstractModel):
             if self._debit_analytic_account_id_field_name and hasattr(
                 self, self._debit_analytic_account_id_field_name
             ):
-                result = getattr(self, self._analytic_account_id_field_name)
+                result = getattr(self, self._debit_analytic_account_id_field_name)
         elif direction == "credit":
             if self._credit_analytic_account_id_field_name and hasattr(
                 self, self._credit_analytic_account_id_field_name
