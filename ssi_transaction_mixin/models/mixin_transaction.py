@@ -103,6 +103,18 @@ class MixinTransaction(models.AbstractModel):
         compute="_compute_policy",
         compute_sudo=True,
     )
+    display_name = fields.Char(
+        string='# Document',
+        compute='_compute_display_name',
+        store=True,
+        index=True
+    )
+
+    @api.depends(lambda self: [self._document_number_field])
+    def _compute_display_name(self):
+        names = dict(self.name_get())
+        for rec in self:
+            rec.display_name = names.get(rec.id)
 
     @api.model
     def _default_company_id(self):

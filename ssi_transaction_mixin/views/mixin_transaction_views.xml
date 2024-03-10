@@ -74,7 +74,7 @@
         <tree decoration-bf="message_unread==True">
             <field name="message_unread" invisible="1" />
             <field name="id" optional="hide" />
-            <field name="display_name" string="# Document" />
+            <field name="display_name" />
             <field
                     name="company_id"
                     groups="base.group_multi_company"
