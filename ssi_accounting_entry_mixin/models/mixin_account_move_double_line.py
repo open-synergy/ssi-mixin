@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import models
+from odoo import api, fields, models
 
 
 class MixinAccountMoveDoubleLine(models.AbstractModel):
@@ -271,3 +271,51 @@ class MixinAccountMoveDoubleLine(models.AbstractModel):
             amount_currency *= -1
 
         return debit, credit, amount_currency
+
+
+class MixinAccountMoveDoubleLineWithField(models.AbstractModel):
+    _name = "mixin.account_move_double_line_with_field"
+    _description = "Accounting Move Double Line With Field Mixin"
+    _inherit = [
+        "mixin.account_move_double_line",
+    ]
+
+    debit_result_move_line_id = fields.Many2one(
+        string="Debit Journal Item",
+        comodel_name="account.move.line",
+        readonly=True,
+    )
+    debit_realized = fields.Boolean(
+        related="debit_result_move_line_id.reconciled",
+        string="Debit Journal Item Realized",
+        store=True,
+    )
+    credit_result_move_line_id = fields.Many2one(
+        string="Debit Journal Item",
+        comodel_name="account.move.line",
+        readonly=True,
+    )
+    credit_realized = fields.Boolean(
+        related="credit_result_move_line_id.reconciled",
+        string="Credit Journal Item Realized",
+        store=True,
+    )
+    debit_credit_realized = fields.Boolean(
+        string="Debit and Credit Journal Item Realized",
+        compute="_compute_debit_credit_realized",
+        store=True,
+        compute_sudo=True,
+    )
+
+    @api.depends(
+        "debit_realized",
+        "credit_realized",
+        "credit_result_move_line_id.reconciled",
+        "debit_result_move_line_id.reconciled",
+    )
+    def _compute_debit_credit_realized(self):
+        for record in self:
+            result = False
+            if record.debit_realized and record.credit_realized:
+                result = True
+            record.debit_credit_realized = result
