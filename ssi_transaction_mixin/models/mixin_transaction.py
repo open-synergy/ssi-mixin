@@ -104,10 +104,7 @@ class MixinTransaction(models.AbstractModel):
         compute_sudo=True,
     )
     display_name = fields.Char(
-        string='# Document',
-        compute='_compute_display_name',
-        store=True,
-        index=True
+        string="# Document", compute="_compute_display_name", store=True, index=True
     )
 
     @api.depends(lambda self: [self._document_number_field])
