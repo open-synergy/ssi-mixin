@@ -69,6 +69,9 @@ class MixinProductLine(models.AbstractModel):
         compute="_compute_qty",
         store=True,
     )
+    note = fields.Text(
+        string="Note",
+    )
 
     @api.onchange(
         "product_id",
