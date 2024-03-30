@@ -36,7 +36,7 @@ addon | version | maintainers | summary
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.1.0 |  | Pricelist Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 14.0.1.2.0 |  | Print Policy Mixin
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.4.0 |  | Product Line Mixin - With Accounting
-[ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.1.0 |  | Product Line Mixin
+[ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.2.0 |  | Product Line Mixin
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.3.0 |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.1.0 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.2.1.0 |  | Reference Document Mixin
