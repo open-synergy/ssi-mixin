@@ -207,13 +207,34 @@ class MixinTransaction(models.AbstractModel):
 
         return result
 
+    def action_test_tree_button(self):
+        raise UserError(str(self.env.context))
+
     def action_restart(self):
         for record in self.sudo():
+            record._check_restart_policy()
             record._run_pre_restart_check()
             record._run_pre_restart_action()
             record.write(record._prepare_restart_data())
             record._run_post_restart_check()
             record._run_post_restart_action()
+
+    def _check_restart_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_restart_policy", False):
+            return True
+
+        if not self.restart_ok:
+            error_message = """
+            Context: Restart %s
+            Database ID: %s
+            Problem: Document is not allowed to restart
+            Solution: Check restart policy prerequisite
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     def _run_pre_restart_check(self):
         self.ensure_one()

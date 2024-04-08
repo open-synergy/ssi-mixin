@@ -359,6 +359,7 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def action_approve_approval(self):
         for rec in self.sudo():
+            rec._check_approve_policy()
             rec._run_pre_approve_check()
             rec._run_pre_approve_action()
             rec._action_approval("approved")
@@ -366,6 +367,23 @@ class MixinMultipleApproval(models.AbstractModel):
                 getattr(rec, self._after_approved_method)()
             rec._run_post_approve_check()
             rec._run_post_approve_action()
+
+    def _check_approve_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_approve_policy", False):
+            return True
+
+        if not self.approve_ok:
+            error_message = """
+            Context: Approve %s
+            Database ID: %s
+            Problem: Document is not allowed to approve
+            Solution: Check approve policy prerequisite
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     def _run_pre_reject_check(self):
         self.ensure_one()
@@ -409,11 +427,29 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def action_reject_approval(self):
         for rec in self.sudo():
+            rec._check_reject_policy()
             rec._run_pre_reject_check()
             rec._run_pre_reject_action()
             rec._action_approval("rejected")
             rec._run_post_reject_check()
             rec._run_post_reject_action()
+
+    def _check_reject_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_reject_policy", False):
+            return True
+
+        if not self.reject_ok:
+            error_message = """
+            Context: Reject %s
+            Database ID: %s
+            Problem: Document is not allowed to reject
+            Solution: Check reject policy prerequisite
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     def action_reload_approval_template(self):
         for rec in self.sudo():

@@ -75,6 +75,23 @@ def post_open_action(*args):
     return attrsetter("_post_open_action", args)
 
 
+# READY
+def pre_ready_check(*args):
+    return attrsetter("_pre_ready_check", args)
+
+
+def post_ready_check(*args):
+    return attrsetter("_post_ready_check", args)
+
+
+def pre_ready_action(*args):
+    return attrsetter("_pre_ready_action", args)
+
+
+def post_ready_action(*args):
+    return attrsetter("_post_ready_action", args)
+
+
 # DONE
 def pre_done_check(*args):
     return attrsetter("_pre_done_check", args)

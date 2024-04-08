@@ -6,7 +6,10 @@ from inspect import getmembers
 
 from lxml import etree
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class MixinTransactionDone(models.AbstractModel):
@@ -96,11 +99,29 @@ class MixinTransactionDone(models.AbstractModel):
 
     def action_done(self):
         for record in self.sudo():
+            record._check_done_policy()
             record._run_pre_done_check()
             record._run_pre_done_action()
             record.write(record._prepare_done_data())
             record._run_post_done_check()
             record._run_post_done_action()
+
+    def _check_done_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_done_policy", False):
+            return True
+
+        if not self.done_ok:
+            error_message = """
+                Context: Finish %s
+                Database ID: %s
+                Problem: Document is not allowed to finish
+                Solution: Check finish policy prerequisite
+                """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     @api.model
     def fields_view_get(
@@ -176,5 +197,16 @@ class MixinTransactionDone(models.AbstractModel):
                 "ssi_transaction_done_mixin.button_done",
                 "/form/header/field[@name='state']",
                 "before",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_done_button(self, view_arch):
+        if self._automatically_insert_done_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_done_mixin.tree_button_done",
+                "/tree/header",
+                "inside",
             )
         return view_arch

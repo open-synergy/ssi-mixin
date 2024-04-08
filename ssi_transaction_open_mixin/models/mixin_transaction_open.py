@@ -6,7 +6,10 @@ from inspect import getmembers
 
 from lxml import etree
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class MixinTransactionOpen(models.AbstractModel):
@@ -96,11 +99,29 @@ class MixinTransactionOpen(models.AbstractModel):
 
     def action_open(self):
         for record in self.sudo():
+            record._check_open_policy()
             record._run_pre_open_check()
             record._run_pre_open_action()
             record.write(record._prepare_open_data())
             record._run_post_open_check()
             record._run_post_open_action()
+
+    def _check_open_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_open_policy", False):
+            return True
+
+        if not self.open_ok:
+            error_message = """
+                Context: Start %s
+                Database ID: %s
+                Problem: Document is not allowed to start
+                Solution: Check start policy prerequisite
+                """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     @api.model
     def fields_view_get(
@@ -176,5 +197,16 @@ class MixinTransactionOpen(models.AbstractModel):
                 "ssi_transaction_open_mixin.open_filter",
                 self._state_filter_xpath,
                 "after",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_open_button(self, view_arch):
+        if self._automatically_insert_open_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_open_mixin.tree_button_open",
+                "/tree/header",
+                "inside",
             )
         return view_arch
