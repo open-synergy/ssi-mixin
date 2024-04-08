@@ -72,6 +72,14 @@
     <field name="model">mixin.transaction</field>
     <field name="arch" type="xml">
         <tree decoration-bf="message_unread==True">
+            <header>
+                <button
+                        name="action_restart"
+                        type="object"
+                        string="Restart"
+                        confirm="Restart data. Are you sure?"
+                    />
+            </header>
             <field name="message_unread" invisible="1" />
             <field name="id" optional="hide" />
             <field name="display_name" />
