@@ -2,9 +2,14 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from inspect import getmembers
+
 from lxml import etree
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class MixinTransactionWinLost(models.AbstractModel):
@@ -90,15 +95,139 @@ class MixinTransactionWinLost(models.AbstractModel):
 
     def action_win(self, real_win_date=False):
         for record in self.sudo():
+            record._check_win_policy()
+            record._run_pre_win_check()
+            record._run_pre_win_action()
             record.write(record._prepare_win_data(real_win_date=real_win_date))
+            record._run_post_win_check()
+            record._run_post_win_action()
 
     def action_lost(self, real_lost_date=False, lost_reason=False):
         for record in self.sudo():
+            record._check_lost_policy()
+            record._run_pre_lost_check()
+            record._run_pre_lost_action()
             record.write(
                 record._prepare_lost_data(
                     real_lost_date=real_lost_date, lost_reason=lost_reason
                 )
             )
+            record._run_post_lost_check()
+            record._run_post_lost_action()
+
+    def _run_pre_win_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_win_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_win_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_win_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_win_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_win_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_win_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_win_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _check_win_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_win_policy", False):
+            return True
+
+        if not self.win_ok:
+            error_message = """
+            Context: Mark as win %s
+            Database ID: %s
+            Problem: Document is not allowed to mark as win
+            Solution: Check mark as win policy prerequisite
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
+
+    def _run_pre_lost_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_lost_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_lost_check(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_lost_check"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_pre_lost_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_pre_lost_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _run_post_lost_action(self):
+        self.ensure_one()
+        cls = type(self)
+        methods = []
+        for _attr, func in getmembers(cls):
+            if self.is_decorator(func, "_post_lost_action"):
+                methods.append(func)
+        if methods:
+            self.run_decorator_method(methods)
+
+    def _check_lost_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_lost_policy", False):
+            return True
+
+        if not self.lost_ok:
+            error_message = """
+            Context: Mark as lost %s
+            Database ID: %s
+            Problem: Document is not allowed to mark as lost
+            Solution: Check mark as lost policy prerequisite
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     def _prepare_restart_data(self):
         self.ensure_one()
@@ -249,5 +378,27 @@ class MixinTransactionWinLost(models.AbstractModel):
                 "ssi_transaction_win_lost_mixin.lost_reason",
                 "/form/sheet/div[@class='oe_left']/div[@class='oe_title']/h1",
                 "after",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_lost_button(self, view_arch):
+        if self._automatically_insert_lost_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_win_lost_mixin.tree_button_lost",
+                "/tree/header",
+                "inside",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_win_button(self, view_arch):
+        if self._automatically_insert_win_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_win_lost_mixin.tree_button_win",
+                "/tree/header",
+                "inside",
             )
         return view_arch

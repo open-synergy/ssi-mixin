@@ -28,6 +28,23 @@
         />
 </template>
 
+<template id="tree_button_win">
+    <button
+            name="action_win"
+            string="Win"
+            type="object"
+            confirm="Mark as Win. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_lost">
+    <button
+            name="%(ssi_transaction_win_lost_mixin.base_select_lost_reason_action)d"
+            string="Lost"
+            type="action"
+        />
+</template>
+
 <template id="lost_reason">
     <h2 attrs="{'invisible': [('state', '!=', 'lost')]}">
         <label for="lost_reason_id" string="Lost reason:" />
