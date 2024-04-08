@@ -14,6 +14,15 @@
         />
 </template>
 
+<template id="tree_button_open">
+    <button
+            name="action_open"
+            string="Start"
+            type="object"
+            confirm="Start data. Are you sure?"
+        />
+</template>
+
 <template id="open_filter">
     <filter name="dom_open" string="In Progress" domain="[('state', '=', 'open')]" />
 </template>
