@@ -59,4 +59,31 @@
             attrs="{'invisible':[('reject_ok','!=',True)]}"
         />
 </template>
+
+<template id="tree_button_confirm">
+    <button
+            name="action_confirm"
+            string="Confirm"
+            type="object"
+            confirm="Confirm data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_approve">
+    <button
+            name="action_approve_approval"
+            string="Approve"
+            type="object"
+            confirm="Approve data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_reject">
+    <button
+            name="action_reject_approval"
+            string="Reject"
+            type="object"
+            confirm="Reject data. Are you sure?"
+        />
+</template>
 </odoo>

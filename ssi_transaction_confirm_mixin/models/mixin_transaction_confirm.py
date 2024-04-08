@@ -6,7 +6,10 @@ from inspect import getmembers
 
 from lxml import etree
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class MixinTransactionConfirm(models.AbstractModel):
@@ -109,12 +112,30 @@ class MixinTransactionConfirm(models.AbstractModel):
 
     def action_confirm(self):
         for record in self.sudo():
+            record._check_confirm_policy()
             record._run_pre_confirm_check()
             record._run_pre_confirm_action()
             record.write(record._prepare_confirm_data())
             record._run_post_confirm_check()
             record._run_post_confirm_action()
             record.action_request_approval()
+
+    def _check_confirm_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_confirm_policy", False):
+            return True
+
+        if not self.confirm_ok:
+            error_message = """
+                Context: Confirm %s
+                Database ID: %s
+                Problem: Document is not allowed to confirm
+                Solution: Check confirm policy prerequisite
+                """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     def _prepare_confirm_data(self):
         self.ensure_one()
@@ -246,5 +267,38 @@ class MixinTransactionConfirm(models.AbstractModel):
                 "ssi_transaction_confirm_mixin.button_reject",
                 "/form/header/field[@name='state']",
                 "before",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _03_view_add_tree_confirm_button(self, view_arch):
+        if self._automatically_insert_confirm_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.tree_button_confirm",
+                "/tree/header",
+                "inside",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _02_view_add_tree_approve_button(self, view_arch):
+        if self._automatically_insert_approve_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.tree_button_approve",
+                "/tree/header",
+                "inside",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_reject_button(self, view_arch):
+        if self._automatically_insert_reject_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.tree_button_reject",
+                "/tree/header",
+                "inside",
             )
         return view_arch
