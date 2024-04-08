@@ -15,6 +15,15 @@
         />
 </template>
 
+<template id="tree_button_done">
+    <button
+            name="action_done"
+            string="Done"
+            type="object"
+            confirm="Finish data. Are you sure?"
+        />
+</template>
+
 <template id="done_filter">
     <filter name="dom_done" string="Done" domain="[('state', '=', 'done')]" />
 </template>
