@@ -13,6 +13,14 @@
         />
 </template>
 
+<template id="tree_button_cancel">
+    <button
+            name="%(ssi_transaction_cancel_mixin.base_select_cancel_reason_action)d"
+            string="Cancel"
+            type="action"
+        />
+</template>
+
 <template id="cancel_reason">
     <h2 attrs="{'invisible': [('state', '!=', 'cancel')]}">
         <label for="cancel_reason_id" string="Cancellation reason:" />

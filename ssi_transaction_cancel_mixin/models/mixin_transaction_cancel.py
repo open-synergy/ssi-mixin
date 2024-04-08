@@ -6,7 +6,10 @@ from inspect import getmembers
 
 from lxml import etree
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class MixinTransactionCancel(models.AbstractModel):
@@ -99,11 +102,29 @@ class MixinTransactionCancel(models.AbstractModel):
 
     def action_cancel(self, cancel_reason=False):
         for record in self.sudo():
+            record._check_cancel_policy()
             record._run_pre_cancel_check()
             record._run_pre_cancel_action()
             record.write(record._prepare_cancel_data(cancel_reason))
             record._run_post_cancel_check()
             record._run_post_cancel_action()
+
+    def _check_cancel_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_cancel_policy", False):
+            return True
+
+        if not self.cancel_ok:
+            error_message = """
+                Context: Cancel %s
+                Database ID: %s
+                Problem: Document is not allowed to cancel
+                Solution: Check cancel policy prerequisite
+                """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
 
     def _prepare_restart_data(self):
         self.ensure_one()
@@ -203,5 +224,16 @@ class MixinTransactionCancel(models.AbstractModel):
                 "ssi_transaction_cancel_mixin.cancel_reason",
                 "/form/sheet/div[@class='oe_left']/div[@class='oe_title']/h1",
                 "after",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_cancel_button(self, view_arch):
+        if self._automatically_insert_confirm_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_cancel_mixin.tree_button_cancel",
+                "/tree/header",
+                "inside",
             )
         return view_arch
