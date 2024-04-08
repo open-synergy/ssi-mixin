@@ -13,6 +13,14 @@
         />
 </template>
 
+<template id="tree_button_terminate">
+    <button
+            name="%(ssi_transaction_terminate_mixin.base_select_terminate_reason_action)d"
+            string="Terminate"
+            type="action"
+        />
+</template>
+
 <template id="terminate_reason">
     <h2 attrs="{'invisible': [('state', '!=', 'terminate')]}">
         <label for="terminate_reason_id" string="Termination reason:" />
