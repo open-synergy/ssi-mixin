@@ -157,7 +157,7 @@ class MixinTransactionWinLost(models.AbstractModel):
 
     def _check_win_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_win_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.win_ok:
@@ -214,7 +214,7 @@ class MixinTransactionWinLost(models.AbstractModel):
 
     def _check_lost_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_lost_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.lost_ok:

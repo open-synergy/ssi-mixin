@@ -364,13 +364,16 @@ class MixinMultipleApproval(models.AbstractModel):
             rec._run_pre_approve_action()
             rec._action_approval("approved")
             if rec._check_all_approve() and self._after_approved_method:
-                getattr(rec, self._after_approved_method)()
+                getattr(
+                    rec.with_context(bypass_policy_check=True),
+                    self._after_approved_method,
+                )()
             rec._run_post_approve_check()
             rec._run_post_approve_action()
 
     def _check_approve_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_approve_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.approve_ok:
@@ -436,7 +439,7 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def _check_reject_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_reject_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.reject_ok:
@@ -451,8 +454,26 @@ class MixinMultipleApproval(models.AbstractModel):
             )
             raise UserError(_(error_message))
 
+    def _check_restart_approval_policy_policy(self):
+        self.ensure_one()
+        if self.env.context.get("bypass_policy_check", False):
+            return True
+
+        if not self.restart_approval_ok:
+            error_message = """
+            Context: Restart approval %s
+            Database ID: %s
+            Problem: Document is not allowed to restart approval
+            Solution: Check restart approval policy prerequisite
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
+
     def action_reload_approval_template(self):
         for rec in self.sudo():
+            rec._check_restart_approval_policy_policy()
             rec.mapped("approval_ids").unlink()
             rec.mapped("active_approver_partner_ids").unlink()
             rec.action_request_approval()

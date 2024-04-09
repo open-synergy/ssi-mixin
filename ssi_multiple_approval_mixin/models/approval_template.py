@@ -56,6 +56,7 @@ class ApprovalTemplate(models.Model):
         string="Details",
         comodel_name="approval.template_detail",
         inverse_name="template_id",
+        copy=True,
     )
     computation_method = fields.Selection(
         string="Computation Method",

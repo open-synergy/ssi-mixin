@@ -60,6 +60,16 @@
         />
 </template>
 
+<template id="button_restart_approval">
+    <button
+            name="action_reload_approval_template"
+            string="Restart Approval Process"
+            type="object"
+            confirm="Restart approval process. Are you sure?"
+            attrs="{'invisible':[('restart_approval_ok','!=',True)]}"
+        />
+</template>
+
 <template id="tree_button_confirm">
     <button
             name="action_confirm"
@@ -84,6 +94,15 @@
             string="Reject"
             type="object"
             confirm="Reject data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_restart_approval">
+    <button
+            name="action_reload_approval_template"
+            string="Restart Approval Process"
+            type="object"
+            confirm="Restart approval process. Are you sure?"
         />
 </template>
 </odoo>

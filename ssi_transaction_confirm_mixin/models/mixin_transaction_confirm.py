@@ -26,6 +26,7 @@ class MixinTransactionConfirm(models.AbstractModel):
     _automatically_insert_confirm_button = True
     _automatically_insert_approve_button = True
     _automatically_insert_reject_button = True
+    _automatically_insert_restart_approval_button = True
 
     # Attributes related to add element on search view automatically
     _automatically_insert_confirm_filter = True
@@ -122,7 +123,7 @@ class MixinTransactionConfirm(models.AbstractModel):
 
     def _check_confirm_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_confirm_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.confirm_ok:
@@ -158,6 +159,7 @@ class MixinTransactionConfirm(models.AbstractModel):
             view_arch = self._view_add_confirm_button(view_arch)
             view_arch = self._view_add_approve_button(view_arch)
             view_arch = self._view_add_reject_button(view_arch)
+            view_arch = self._view_add_restart_approval_button(view_arch)
             view_arch = self._reorder_header_button(view_arch)
             view_arch = self._reorder_policy_field(view_arch)
         elif view_type == "tree" and self._automatically_insert_view_element:
@@ -260,6 +262,17 @@ class MixinTransactionConfirm(models.AbstractModel):
         return view_arch
 
     @api.model
+    def _view_add_restart_approval_button(self, view_arch):
+        if self._automatically_insert_restart_approval_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.button_restart_approval",
+                "/form/header/field[@name='state']",
+                "before",
+            )
+        return view_arch
+
+    @api.model
     def _view_add_reject_button(self, view_arch):
         if self._automatically_insert_reject_button:
             view_arch = self._add_view_element(
@@ -282,7 +295,7 @@ class MixinTransactionConfirm(models.AbstractModel):
         return view_arch
 
     @ssi_decorator.insert_on_tree_view()
-    def _02_view_add_tree_approve_button(self, view_arch):
+    def _03_view_add_tree_approve_button(self, view_arch):
         if self._automatically_insert_approve_button:
             view_arch = self._add_view_element(
                 view_arch,
@@ -293,11 +306,22 @@ class MixinTransactionConfirm(models.AbstractModel):
         return view_arch
 
     @ssi_decorator.insert_on_tree_view()
-    def _01_view_add_tree_reject_button(self, view_arch):
+    def _02_view_add_tree_reject_button(self, view_arch):
         if self._automatically_insert_reject_button:
             view_arch = self._add_view_element(
                 view_arch,
                 "ssi_transaction_confirm_mixin.tree_button_reject",
+                "/tree/header",
+                "inside",
+            )
+        return view_arch
+
+    @ssi_decorator.insert_on_tree_view()
+    def _01_view_add_tree_reject_button(self, view_arch):
+        if self._automatically_insert_restart_approval_button:
+            view_arch = self._add_view_element(
+                view_arch,
+                "ssi_transaction_confirm_mixin.tree_button_restart_approval",
                 "/tree/header",
                 "inside",
             )

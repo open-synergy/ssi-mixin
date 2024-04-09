@@ -113,7 +113,7 @@ class MixinTransactionTerminate(models.AbstractModel):
 
     def _check_terminate_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_terminate_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.terminate_ok:
