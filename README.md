@@ -55,7 +55,7 @@ addon | version | maintainers | summary
 [ssi_transaction_date_due_mixin](ssi_transaction_date_due_mixin/) | 14.0.1.0.0 |  | Transaction Mixin - Date Due
 [ssi_transaction_date_duration_mixin](ssi_transaction_date_duration_mixin/) | 14.0.1.0.0 |  | Transaction Date Duration Mixin
 [ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | 14.0.1.9.0 |  | Transaction Mixin - Done State
-[ssi_transaction_mixin](ssi_transaction_mixin/) | 14.0.4.6.0 |  | Transaction Mixin
+[ssi_transaction_mixin](ssi_transaction_mixin/) | 14.0.4.7.0 |  | Transaction Mixin
 [ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | 14.0.1.8.0 |  | Transaction Mixin - In Progress State
 [ssi_transaction_partner_mixin](ssi_transaction_partner_mixin/) | 14.0.1.0.0 |  | Transaction + Partner Mixin
 [ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | 14.0.1.1.0 |  | Transaction + Pricelist Mixin
