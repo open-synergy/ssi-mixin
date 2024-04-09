@@ -108,7 +108,7 @@ class MixinTransactionReady(models.AbstractModel):
 
     def _check_ready_policy(self):
         self.ensure_one()
-        if self.env.context.get("bypass_ready_policy", False):
+        if self.env.context.get("bypass_policy_check", False):
             return True
 
         if not self.ready_ok:
