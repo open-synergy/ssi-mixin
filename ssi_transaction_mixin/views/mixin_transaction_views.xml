@@ -141,8 +141,13 @@
                     <page name="note" string="Note">
                         <field name="note" colspan="4" nolabel="1" />
                     </page>
-                    <page name="policy" string="Policies" groups="base.group_system">
-                        <group name="policy_1" colspan="4" col="2">
+                    <page name="policy" string="Policies">
+                        <group
+                                name="policy_1"
+                                colspan="4"
+                                col="2"
+                                groups="base.group_system"
+                            >
                             <field name="policy_template_id" />
                             <button
                                     name="action_reload_policy_template"
