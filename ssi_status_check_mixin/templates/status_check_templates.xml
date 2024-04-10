@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="status_check_page">
-        <page name="page_status_check" string="Check Status">
+        <page name="page_status_check" string="Status Checks">
             <group
                 name="grp_status_check_1"
                 colspan="4"

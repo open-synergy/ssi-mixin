@@ -35,6 +35,9 @@ class StatusCheck(models.Model):
         related="template_detail_id.status_check_item_id",
         readonly=True,
     )
+    resolution_instruction = fields.Html(
+        related="status_check_item_id.resolution_instruction",
+    )
 
     def _compute_status_ok(self):
         for document in self:
@@ -44,7 +47,7 @@ class StatusCheck(models.Model):
                 document.status_ok = result
 
     status_ok = fields.Boolean(
-        string="Status Ok",
+        string="Passed?",
         compute="_compute_status_ok",
     )
 
