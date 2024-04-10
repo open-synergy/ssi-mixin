@@ -118,7 +118,8 @@ class MixinTransactionTerminate(models.AbstractModel):
 
         if not self.terminate_ok:
             error_message = """
-            Context: Terminate %s
+            Document Type: %s
+            Context: Terminate document
             Database ID: %s
             Problem: Document is not allowed to terminate
             Solution: Check terminate policy prerequisite
