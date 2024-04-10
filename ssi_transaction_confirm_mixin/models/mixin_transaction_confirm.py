@@ -128,7 +128,8 @@ class MixinTransactionConfirm(models.AbstractModel):
 
         if not self.confirm_ok:
             error_message = """
-                Context: Confirm %s
+                Document Type: %s
+                Context: Confirm document
                 Database ID: %s
                 Problem: Document is not allowed to confirm
                 Solution: Check confirm policy prerequisite
