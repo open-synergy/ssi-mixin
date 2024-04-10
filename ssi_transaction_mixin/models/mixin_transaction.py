@@ -133,7 +133,8 @@ class MixinTransaction(models.AbstractModel):
         for record in self.sudo():
             if not record._check_duplicate_document_number():
                 error_message = """
-                Context: Change %s document number
+                Document Type: %s
+                Context: Change document number
                 Database ID: %s
                 Problem: Duplicate document number
                 Solution: Change document number into different number
@@ -158,7 +159,8 @@ class MixinTransaction(models.AbstractModel):
         for record in self:
             if not record._check_state_unlink(force_unlink):
                 error_message = """
-                Context: Delete %s
+                Document Type: %s
+                Context: Delete document
                 Database ID: %s
                 Problem: Document state is not draft
                 Solution: Cancel and restart document
@@ -169,7 +171,8 @@ class MixinTransaction(models.AbstractModel):
                 raise UserError(_(error_message))
             if not record._check_document_number_unlink(force_unlink):
                 error_message = """
-                Context: Delete %s
+                Document Type: %s
+                Context: Delete document
                 Database ID: %s
                 Problem: Document number is not equal to /
                 Solution: Change document number into /
@@ -207,9 +210,6 @@ class MixinTransaction(models.AbstractModel):
 
         return result
 
-    def action_test_tree_button(self):
-        raise UserError(str(self.env.context))
-
     def action_restart(self):
         for record in self.sudo():
             record._check_restart_policy()
@@ -226,7 +226,8 @@ class MixinTransaction(models.AbstractModel):
 
         if not self.restart_ok:
             error_message = """
-            Context: Restart %s
+            Document Type: %s
+            Context: Restart document
             Database ID: %s
             Problem: Document is not allowed to restart
             Solution: Check restart policy prerequisite

@@ -113,7 +113,8 @@ class MixinTransactionReady(models.AbstractModel):
 
         if not self.ready_ok:
             error_message = """
-            Context: Stage %s
+            Document Type: %s
+            Context: Stage document
             Database ID: %s
             Problem: Document is not allowed to stage
             Solution: Check stage policy prerequisite

@@ -113,7 +113,8 @@ class MixinTransactionDone(models.AbstractModel):
 
         if not self.done_ok:
             error_message = """
-                Context: Finish %s
+                Document Type: %s
+                Context: Finish document
                 Database ID: %s
                 Problem: Document is not allowed to finish
                 Solution: Check finish policy prerequisite

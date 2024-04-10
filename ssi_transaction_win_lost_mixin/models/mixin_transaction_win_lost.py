@@ -162,7 +162,8 @@ class MixinTransactionWinLost(models.AbstractModel):
 
         if not self.win_ok:
             error_message = """
-            Context: Mark as win %s
+            Document Type: %s
+            Context: Mark as win document
             Database ID: %s
             Problem: Document is not allowed to mark as win
             Solution: Check mark as win policy prerequisite
@@ -219,7 +220,8 @@ class MixinTransactionWinLost(models.AbstractModel):
 
         if not self.lost_ok:
             error_message = """
-            Context: Mark as lost %s
+            Document Type: %s
+            Context: Mark as lost document
             Database ID: %s
             Problem: Document is not allowed to mark as lost
             Solution: Check mark as lost policy prerequisite

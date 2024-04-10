@@ -113,7 +113,8 @@ class MixinTransactionOpen(models.AbstractModel):
 
         if not self.open_ok:
             error_message = """
-                Context: Start %s
+                Document: %s
+                Context: Start document
                 Database ID: %s
                 Problem: Document is not allowed to start
                 Solution: Check start policy prerequisite
