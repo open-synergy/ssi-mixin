@@ -116,7 +116,8 @@ class MixinTransactionCancel(models.AbstractModel):
 
         if not self.cancel_ok:
             error_message = """
-                Context: Cancel %s
+                Document Type: %s
+                Context: Cancel document
                 Database ID: %s
                 Problem: Document is not allowed to cancel
                 Solution: Check cancel policy prerequisite
