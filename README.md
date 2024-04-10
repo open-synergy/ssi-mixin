@@ -48,8 +48,8 @@ addon | version | maintainers | summary
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.1.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.1.2.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.1.0 |  | Source Document Mixin
-[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.6.1 |  | State Change Constrain Mixin
-[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.1.1 |  | Status Check Mixin
+[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.7.0 |  | State Change Constrain Mixin
+[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.2.0 |  | Status Check Mixin
 [ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.10.0 |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 14.0.2.7.0 |  | Transaction Mixin - Waiting for Approval State
 [ssi_transaction_date_due_mixin](ssi_transaction_date_due_mixin/) | 14.0.1.0.0 |  | Transaction Mixin - Date Due
