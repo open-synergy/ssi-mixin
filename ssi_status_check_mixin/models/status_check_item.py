@@ -41,6 +41,9 @@ class StatusCheckItem(models.Model):
     description = fields.Text(
         string="Description",
     )
+    resolution_instruction = fields.Html(
+        string="Resolution Instruction",
+    )
     status_check_method = fields.Selection(
         string="Status Check Method",
         selection=[

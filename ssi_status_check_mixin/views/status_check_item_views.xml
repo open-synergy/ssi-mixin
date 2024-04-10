@@ -76,6 +76,9 @@
                                 />
                             </group>
                         </page>
+                        <page name="instruction" string="Resolution Instructions">
+                            <field name="resolution_instruction" />
+                        </page>
                     </notebook>
                 </sheet>
             </form>

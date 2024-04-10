@@ -29,6 +29,7 @@ class MixinStatusCheck(models.AbstractModel):
         inverse_name="res_id",
         domain=lambda self: [("model", "=", self._name)],
         auto_join=True,
+        readonly=True,
     )
 
     @ssi_decorator.insert_on_form_view()

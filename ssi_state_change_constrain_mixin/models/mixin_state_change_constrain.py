@@ -83,8 +83,22 @@ class MixinStateChangeConstrain(models.AbstractModel):
                         )
                         if not status_check.status_ok:
                             item = status_check.status_check_item_id.name
-                            msg_error = _("Check Status item: %s") % (item)
-                            raise UserError(msg_error)
+                            state_name = dict(self._fields["state"].selection).get(
+                                document.state
+                            )
+                            error_message = """
+                            Document Type: %s
+                            Context: Change document state into %s
+                            Database ID: %s
+                            Problem: Status check %s failed
+                            Solution: Follow check status resolution instruction
+                            """ % (
+                                self._description,
+                                state_name,
+                                self.id,
+                                item,
+                            )
+                            raise UserError(error_message)
 
     @api.model
     def create(self, values):
