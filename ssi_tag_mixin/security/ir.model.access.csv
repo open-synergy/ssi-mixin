@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_global_tag_category_administrator,global_tag_category - administrator,model_global_tag_category,base.group_system,1,1,1,1
+access_global_tag_category_all,global_tag_category - all,model_global_tag_category,,1,0,0,0
+access_global_tag_administrator,global_tag - administrator,model_global_tag,base.group_system,1,1,1,1
+access_global_tag_all,global_tag - all,model_global_tag,,1,0,0,0
