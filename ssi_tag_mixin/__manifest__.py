@@ -13,13 +13,10 @@
     ],
     "data": [
         "security/ir.model.access.csv",
-        # "templates/mixin_tag_templates.xml",
         "menu.xml",
         "views/global_tag_category_views.xml",
         "views/global_tag_views.xml",
         "views/ir_model_views.xml",
     ],
-    "demo": [
-        # "demo/global_tag_demo.xml",
-    ],
+    "demo": [],
 }
