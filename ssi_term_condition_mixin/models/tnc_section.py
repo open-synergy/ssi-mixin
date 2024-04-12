@@ -82,10 +82,12 @@ class TncSection(models.Model):
     )
     def _compute_content(self):
         for record in self:
-            # self.env["mail.template"]
+            MailTemplate = self.env["mail.template"]
             result = "-"
-            # if type(record.id) is int:
-            #     result = MailTemplate.with_context(lang=lang).render_template(
-            #         record.raw_content, record._model, record.id
-            #     )
+            if type(record.id) is int:
+                result = MailTemplate._render_template_jinja(
+                    template_txt=record.raw_content,
+                    model=record._name,
+                    res_ids=[record.id],
+                )[record.id]
             record.content = result

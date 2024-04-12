@@ -29,8 +29,8 @@
             </group>
             <notebook>
                 <page name="content" string="Content">
-                    <field name="raw_content" />
-                    <field name="content" />
+                    <field name="raw_content" class="oe_edit_only" />
+                    <field name="content" class="oe_read_only" />
                 </page>
             </notebook>
         </form>
@@ -63,8 +63,8 @@
             </group>
             <notebook>
                 <page name="content" string="Content">
-                    <field name="raw_content" />
-                    <field name="content" />
+                    <field name="raw_content" class="oe_edit_only" />
+                    <field name="content" class="oe_read_only" />
                 </page>
             </notebook>
         </form>
