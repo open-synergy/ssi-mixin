@@ -41,6 +41,7 @@ setuptools.setup(
         'odoo14-addon-ssi_state_change_constrain_mixin',
         'odoo14-addon-ssi_status_check_mixin',
         'odoo14-addon-ssi_tag_mixin',
+        'odoo14-addon-ssi_term_condition_mixin',
         'odoo14-addon-ssi_transaction_cancel_mixin',
         'odoo14-addon-ssi_transaction_confirm_mixin',
         'odoo14-addon-ssi_transaction_date_due_mixin',
