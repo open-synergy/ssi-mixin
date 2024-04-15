@@ -108,6 +108,9 @@ class MixinTransactionOpen(models.AbstractModel):
 
     def _check_open_policy(self):
         self.ensure_one()
+        if not self._automatically_insert_open_button:
+            return True
+
         if self.env.context.get("bypass_policy_check", False):
             return True
 

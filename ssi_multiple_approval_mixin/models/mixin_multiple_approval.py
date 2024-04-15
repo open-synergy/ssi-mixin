@@ -28,6 +28,9 @@ class MixinMultipleApproval(models.AbstractModel):
     _automatically_insert_view_element = False
     _automatically_insert_multiple_approval_page = True
     _multiple_approval_xpath_reference = "//page[last()]"
+    _automatically_insert_approve_button = True
+    _automatically_insert_reject_button = True
+    _automatically_insert_restart_approval_button = True
 
     approval_template_id = fields.Many2one(
         string="Approval Template",
@@ -373,6 +376,10 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def _check_approve_policy(self):
         self.ensure_one()
+
+        if not self._automatically_insert_approve_button:
+            return True
+
         if self.env.context.get("bypass_policy_check", False):
             return True
 
@@ -439,6 +446,10 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def _check_reject_policy(self):
         self.ensure_one()
+
+        if not self._automatically_insert_reject_button:
+            return True
+
         if self.env.context.get("bypass_policy_check", False):
             return True
 
@@ -456,6 +467,10 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def _check_restart_approval_policy_policy(self):
         self.ensure_one()
+
+        if not self._automatically_insert_restart_approval_button:
+            return True
+
         if self.env.context.get("bypass_policy_check", False):
             return True
 
