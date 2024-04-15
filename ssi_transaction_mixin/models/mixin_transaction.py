@@ -30,6 +30,7 @@ class MixinTransaction(models.AbstractModel):
     _document_number_field = "name"
     _automatically_insert_view_element = False
     _automatically_insert_print_button = True
+    _automatically_insert_restart_button = True
 
     _automatically_reconfigure_statusbar_visible = True
     _policy_field_order = False
@@ -221,6 +222,10 @@ class MixinTransaction(models.AbstractModel):
 
     def _check_restart_policy(self):
         self.ensure_one()
+
+        if not self._automatically_insert_restart_button:
+            return True
+
         if self.env.context.get("bypass_policy_check", False):
             return True
 
