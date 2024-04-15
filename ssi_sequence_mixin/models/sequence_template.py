@@ -96,7 +96,8 @@ class SequenceTemplate(models.Model):
     python_code = fields.Text(
         string="Python Code",
         default=DEFAULT_PYTHON_CODE
-        + "\n#  - result: Return result, the value is boolean.",
+        + "\n#  - result: Return result, the value is boolean."
+        + "\nreturn = True",
         copy=True,
     )
     sequence_selection_method = fields.Selection(

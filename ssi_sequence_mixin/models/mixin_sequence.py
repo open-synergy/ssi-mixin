@@ -77,11 +77,20 @@ class MixingSequence(models.AbstractModel):
                 result = template.create_sequence(self)
             else:
                 result = getattr(self, template.sequence_field_id.name)
+            setattr(
+                self,
+                template.sequence_field_id.name,
+                result,
+            )
         else:
-            result = getattr(self, self._fallback_sequence_field)
-
-        setattr(
-            self,
-            template.sequence_field_id.name,
-            result,
-        )
+            error_message = """
+            Document Type: %s
+            Context: Generate code or document number
+            Database ID: %s
+            Problem: No sequence template found
+            Solution: Create sequence template
+            """ % (
+                self._description.lower(),
+                self.id,
+            )
+            raise UserError(_(error_message))
