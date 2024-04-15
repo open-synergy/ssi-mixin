@@ -11,6 +11,7 @@
     "depends": [
         "mail",
         "ssi_print_mixin",
+        "ssi_sequence_mixin",
     ],
     "data": [
         "views/mixin_master_data_views.xml",

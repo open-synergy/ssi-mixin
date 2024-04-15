@@ -12,6 +12,7 @@ class MixinMasterData(models.AbstractModel):
         "mail.activity.mixin",
         "mail.thread",
         "mixin.print_document",
+        "mixin.sequence",
     ]
     _description = "Mixin for Master Data"
     _field_name_string = "Name"
@@ -51,15 +52,29 @@ class MixinMasterData(models.AbstractModel):
 
     @api.constrains("code")
     def _check_duplicate_code(self):
-        error_msg = _("Duplicate code not allowed")
         for record in self:
             criteria = [
                 ("code", "=", record.code),
                 ("id", "!=", record.id),
+                ("code", "!=", "/"),
             ]
             count_duplicate = self.search_count(criteria)
             if count_duplicate > 0:
-                raise UserError(error_msg)
+                error_message = """
+                Document Type: %s
+                Context: Create or update document
+                Database ID: %s
+                Problem: Dupilicate code
+                Solution: Change code
+                """ % (
+                    self._description.lower(),
+                    self.id,
+                )
+                raise UserError(error_message)
+
+    def action_generate_code(self):
+        for record in self.sudo():
+            record._create_sequence()
 
     def name_get(self):
         result = []

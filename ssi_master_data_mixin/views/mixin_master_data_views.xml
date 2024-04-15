@@ -34,7 +34,14 @@
     <field name="model">mixin.master_data</field>
     <field name="arch" type="xml">
         <form>
-            <header />
+            <header>
+                <button
+                        name="action_generate_code"
+                        string="Generate Code"
+                        type="object"
+                        class="oe_highlight"
+                    />
+            </header>
             <sheet>
                 <div name="div_smart_buttons" class="oe_button_box" />
                 <group name="group_1" colspan="4" col="2">
