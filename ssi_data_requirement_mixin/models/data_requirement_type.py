@@ -27,3 +27,6 @@ class DataRequirementType(models.Model):
         string="Duration",
         comodel_name="base.duration",
     )
+    instruction_url = fields.Char(
+        string="Instruction URL",
+    )

@@ -89,6 +89,7 @@
                         name="attachment_id"
                         attrs="{'invisible': [('mode','!=','attachment')], 'required': [('state','=','open'),('mode','=','attachment')]}"
                     />
+                <field name="instruction_url" />
             </xpath>
             <xpath expr="//group[@name='header_center']" position="inside">
                 <field name="title" />
