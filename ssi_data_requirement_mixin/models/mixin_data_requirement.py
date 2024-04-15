@@ -169,6 +169,7 @@ class MixinDataRequirement(models.AbstractModel):
                     "date_commitment": fields.Date.today(),
                     "mode": data_requirement.type_id.mode,
                     "title": data_requirement.title or data_requirement.type_id.name,
+                    "instruction_url": data_requirement.type_id.instruction_url,
                 }
             )
 

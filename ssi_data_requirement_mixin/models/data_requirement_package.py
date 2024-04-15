@@ -4,13 +4,15 @@
 
 from odoo import api, fields, models
 
+from odoo.addons.ssi_decorator import ssi_decorator
+
 
 class DataRequirementPackage(models.Model):
     _name = "data_requirement_package"
     _inherit = [
-        "mixin.transaction_confirm",
-        "mixin.transaction_done",
         "mixin.transaction_cancel",
+        "mixin.transaction_done",
+        "mixin.transaction_confirm",
         "mixin.partner",
     ]
     _description = "Data Requirement Package"
@@ -136,18 +138,6 @@ class DataRequirementPackage(models.Model):
             ],
         },
     )
-    state = fields.Selection(
-        string="State",
-        selection=[
-            ("draft", "Draft"),
-            ("confirm", "Waiting for Approval"),
-            ("done", "Done"),
-            ("cancel", "Cancelled"),
-            ("reject", "Rejected"),
-        ],
-        default="draft",
-        copy=False,
-    )
 
     @api.model
     def _get_policy_field(self):
@@ -234,3 +224,9 @@ class DataRequirementPackage(models.Model):
         self.ensure_one()
         for detail in self.detail_ids:
             detail._cleanup_data_requirement()
+
+    @ssi_decorator.insert_on_form_view()
+    def _insert_form_element(self, view_arch):
+        if self._automatically_insert_view_element:
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        return view_arch

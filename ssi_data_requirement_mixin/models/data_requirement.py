@@ -4,14 +4,16 @@
 
 from odoo import api, fields, models
 
+from odoo.addons.ssi_decorator import ssi_decorator
+
 
 class DataRequirement(models.Model):
     _name = "data_requirement"
     _inherit = [
+        "mixin.transaction_cancel",
+        "mixin.transaction_done",
         "mixin.transaction_open",
         "mixin.transaction_confirm",
-        "mixin.transaction_done",
-        "mixin.transaction_cancel",
         "mixin.localdict",
         "mixin.partner",
     ]
@@ -103,7 +105,7 @@ class DataRequirement(models.Model):
         string="Submit Date",
         required=False,
         readonly=True,
-        states={"open": [("readonly", False), ("required", True)]},
+        states={"open": [("readonly", False)]},
     )
     type_id = fields.Many2one(
         string="Type",
@@ -144,7 +146,7 @@ class DataRequirement(models.Model):
         },
     )
     url = fields.Char(
-        string="URL",
+        string="Instruction URL",
         readonly=True,
         states={
             "draft": [
@@ -168,19 +170,8 @@ class DataRequirement(models.Model):
             ],
         },
     )
-
-    state = fields.Selection(
-        string="State",
-        selection=[
-            ("draft", "Draft"),
-            ("open", "In Progress"),
-            ("confirm", "Waiting for Approval"),
-            ("done", "Done"),
-            ("cancel", "Cancelled"),
-            ("reject", "Rejected"),
-        ],
-        default="draft",
-        copy=False,
+    instruction_url = fields.Char(
+        string="Instruction URL",
     )
 
     @api.model
@@ -227,3 +218,27 @@ class DataRequirement(models.Model):
         self.title = False
         if self.type_id:
             self.title = self.type_id.name
+
+    @api.onchange(
+        "type_id",
+    )
+    def onchange_instruction_url(self):
+        self.instruction_url = False
+        if self.type_id.instruction_url:
+            self.instruction_url = self.type_id.instruction_url
+
+    @ssi_decorator.post_done_action()
+    def _update_date_submit(self):
+        self.ensure_one()
+        if not self.date_submit:
+            self.write(
+                {
+                    "date_submit": fields.Date.today(),
+                }
+            )
+
+    @ssi_decorator.insert_on_form_view()
+    def _insert_form_element(self, view_arch):
+        if self._automatically_insert_view_element:
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        return view_arch

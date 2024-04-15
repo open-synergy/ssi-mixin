@@ -43,6 +43,7 @@
                 <field name="mode" />
                 <field name="category_id" />
                 <field name="duration_id" />
+                <field name="instruction_url" />
             </xpath>
         </data>
     </field>
