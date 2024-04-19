@@ -76,6 +76,14 @@ class MixinMasterData(models.AbstractModel):
         for record in self.sudo():
             record._create_sequence()
 
+    def action_reset_code(self):
+        for record in self.sudo():
+            record.write(
+                {
+                    "code": "/",
+                }
+            )
+
     def name_get(self):
         result = []
         for record in self:
