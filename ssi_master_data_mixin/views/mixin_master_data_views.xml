@@ -20,6 +20,20 @@
     <field name="model">mixin.master_data</field>
     <field name="arch" type="xml">
         <tree>
+           <header>
+                <button
+                        name="action_reset_code"
+                        type="object"
+                        string="Reset code"
+                        confirm="Reset code. Are you sure?"
+                    />
+                <button
+                        name="action_generate_code"
+                        type="object"
+                        string="Generate code"
+                        confirm="Generate code. Are you sure?"
+                    />
+            </header>
             <field name="id" optional="hide" />
             <field name="code" />
             <field name="name" />
