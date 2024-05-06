@@ -146,7 +146,7 @@ class DataRequirement(models.Model):
         },
     )
     url = fields.Char(
-        string="Instruction URL",
+        string="URL",
         readonly=True,
         states={
             "draft": [
