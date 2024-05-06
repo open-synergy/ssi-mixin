@@ -53,6 +53,7 @@ setuptools.setup(
         'odoo14-addon-ssi_transaction_pricelist_mixin',
         'odoo14-addon-ssi_transaction_ready_mixin',
         'odoo14-addon-ssi_transaction_salesperson_mixin',
+        'odoo14-addon-ssi_transaction_tax_address_mixin',
         'odoo14-addon-ssi_transaction_terminate_mixin',
         'odoo14-addon-ssi_transaction_total_mixin',
         'odoo14-addon-ssi_transaction_win_lost_mixin',
