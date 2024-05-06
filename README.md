@@ -63,6 +63,7 @@ addon | version | maintainers | summary
 [ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | 14.0.1.1.0 |  | Transaction + Pricelist Mixin
 [ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | 14.0.1.10.0 |  | Transaction Mixin - Ready to Process State
 [ssi_transaction_salesperson_mixin](ssi_transaction_salesperson_mixin/) | 14.0.1.1.0 |  | Transaction + Salesperson Mixin
+[ssi_transaction_tax_address_mixin](ssi_transaction_tax_address_mixin/) | 14.0.1.0.0 |  | Transaction + Tax Address Mixin
 [ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | 14.0.1.11.0 |  | Transaction Mixin - Terminate State
 [ssi_transaction_total_mixin](ssi_transaction_total_mixin/) | 14.0.1.0.1 |  | Transaction Mixin - Total
 [ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | 14.0.1.8.0 |  | Transaction Mixin - Win & Lost State
