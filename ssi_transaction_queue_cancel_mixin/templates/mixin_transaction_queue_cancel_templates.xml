@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="transaction_queue_cancel_form_template">
+    <field
+            name="cancel_queue_job_ids"
+            attrs="{'invisible':[('state','!=','queue_cancel')]}"
+        />
+    <button
+            name="action_requeue_cancel"
+            string="Requeue"
+            type="object"
+            class="oe_highlight"
+            icon="fa-refresh"
+            attrs="{'invisible':['|',('state','!=','queue_cancel'),'&amp;',('state','=','queue_cancel'),('cancel_queue_job_batch_state','=','finished')]}"
+        />
+    <button
+            name="action_recompute_queue_cancel_result"
+            string="Recompute Queue Cancel Result"
+            type="object"
+            class="oe_highlight"
+            attrs="{'invisible':[('state','!=','queue_cancel')]}"
+            confirm="Recompute queue cancel result. Are you sure?"
+            style="margin-right:4px"
+        />
+    <group
+            name="transaction_queue_cancel"
+            col="2"
+            colspan="4"
+            string="Queue To Cancel"
+            attrs="{'invisible':[('state','!=','queue_cancel')]}"
+        >
+        <field name="cancel_queue_job_batch_id" string="Job Batch" />
+        <field name="cancel_queue_job_batch_state" string="State" />
+    </group>
+</template>
+
+<template id="queue_cancel_policy_field">
+    <field name="queue_cancel_ok" />
+</template>
+
+<template id="button_queue_cancel">
+    <button
+            name="action_queue_cancel"
+            string="Cancel"
+            type="object"
+            class="oe_highlight"
+            attrs="{'invisible':[('queue_cancel_ok','!=',True)]}"
+            confirm="Finish data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_queue_cancel">
+    <button
+            name="action_queue_cancel"
+            string="Cancel"
+            type="object"
+            confirm="Finish data. Are you sure?"
+        />
+    <button
+            name="action_recompute_queue_cancel_result"
+            string="Recompute Queue Cancel Result"
+            type="object"
+            class="oe_highlight"
+        />
+</template>
+
+<template id="queue_cancel_filter">
+    <filter
+            name="dom_queue_cancel"
+            string="Queue To Cancel"
+            domain="[('state', '=', 'queue_cancel')]"
+        />
+</template>
+</odoo>
