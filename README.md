@@ -52,7 +52,7 @@ addon | version | maintainers | summary
 [ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.2.0 |  | Status Check Mixin
 [ssi_tag_mixin](ssi_tag_mixin/) | 14.0.1.0.0 |  | Tag Mixin
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 14.0.1.1.0 |  | Terms and Conditions Mixin
-[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.12.0 |  | Transaction Mixin - Cancel State
+[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.12.1 |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 14.0.2.9.0 |  | Transaction Mixin - Waiting for Approval State
 [ssi_transaction_date_due_mixin](ssi_transaction_date_due_mixin/) | 14.0.1.0.0 |  | Transaction Mixin - Date Due
 [ssi_transaction_date_duration_mixin](ssi_transaction_date_duration_mixin/) | 14.0.1.0.0 |  | Transaction Date Duration Mixin
