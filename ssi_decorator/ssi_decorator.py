@@ -92,6 +92,23 @@ def post_ready_action(*args):
     return attrsetter("_post_ready_action", args)
 
 
+# QUEUE TO DONE
+def pre_queue_done_check(*args):
+    return attrsetter("_pre_queue_done_check", args)
+
+
+def post_queue_done_check(*args):
+    return attrsetter("_post_queue_done_check", args)
+
+
+def pre_queue_done_action(*args):
+    return attrsetter("_pre_queue_done_action", args)
+
+
+def post_queue_done_action(*args):
+    return attrsetter("_post_queue_done_action", args)
+
+
 # DONE
 def pre_done_check(*args):
     return attrsetter("_pre_done_check", args)
@@ -107,6 +124,23 @@ def pre_done_action(*args):
 
 def post_done_action(*args):
     return attrsetter("_post_done_action", args)
+
+
+# QUEUE TO CANCEL
+def pre_queue_cancel_check(*args):
+    return attrsetter("_pre_queue_cancel_check", args)
+
+
+def post_queue_cancel_check(*args):
+    return attrsetter("_post_queue_cancel_check", args)
+
+
+def pre_queue_cancel_action(*args):
+    return attrsetter("_pre_queue_cancel_action", args)
+
+
+def post_queue_cancel_action(*args):
+    return attrsetter("_post_queue_cancel_action", args)
 
 
 # CANCEL
