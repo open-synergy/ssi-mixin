@@ -2,4 +2,5 @@
 
 oca-operating-unit https://github.com/open-synergy/operating-unit.git 14.0
 oca-currency https://github.com/OCA/currency.git 14.0
+oca-queue https://github.com/OCA/queue.git 14.0
 ssi-product-attribute https://github.com/open-synergy/ssi-product-attribute.git 14.0
