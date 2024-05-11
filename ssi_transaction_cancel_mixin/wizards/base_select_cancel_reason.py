@@ -52,4 +52,4 @@ class BaseSelectCancelReason(models.TransientModel):
         record_ids = self.env.context.get("active_ids", [])
         if len(record_ids) > 0:
             records = obj_record.browse(record_ids)
-            records.action_cancel(self.cancel_reason_id)
+            getattr(records, records._method_to_run_from_wizard)(self.cancel_reason_id)

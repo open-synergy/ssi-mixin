@@ -31,6 +31,8 @@ class MixinTransactionCancel(models.AbstractModel):
     # Attributes related to add element on tree view automatically
     _automatically_insert_cancel_state_badge_decorator = True
 
+    _method_to_run_from_wizard = "action_cancel"
+
     cancel_reason_id = fields.Many2one(
         string="Cancel Reason",
         comodel_name="base.cancel_reason",
