@@ -20,6 +20,7 @@
                 />
                 <field name="user_id" />
                 <field name="date" />
+                <field name="date_manual" readonly="1" />
                 <field name="verify_ok" invisible="1" />
                 <field name="unverify_ok" invisible="1" />
                 <field name="verified" invisible="1" />

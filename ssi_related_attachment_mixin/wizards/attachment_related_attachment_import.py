@@ -23,6 +23,9 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
     filename = fields.Char(
         string="Filename",
     )
+    date_manual = fields.Datetime(
+        string="Date Manual",
+    )
 
     @api.model
     def _default_allowed_attachment_ids(self):
@@ -69,9 +72,15 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
             if related_attachment.attachment_id:
                 self._delete_attachment(related_attachment)
             attachment_id = self.sudo()._create_attachment(record)
-            related_attachment.write({"attachment_id": attachment_id.id})
+            related_attachment.write({
+                "attachment_id": attachment_id.id,
+                "date_manual": self.date_manual,
+            })
         else:
-            related_attachment.write({"attachment_id": self.attachment_id.id})
+            related_attachment.write({
+                "attachment_id": self.attachment_id.id,
+                "date_manual": self.date_manual,
+            })
 
     def _prepare_attachment_data(self, record):
         name = "%s" % (self.filename)
