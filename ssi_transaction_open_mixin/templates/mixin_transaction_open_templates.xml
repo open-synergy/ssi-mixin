@@ -11,6 +11,7 @@
             type="object"
             class="oe_highlight"
             attrs="{'invisible':[('open_ok','!=',True)]}"
+            confirm="Start data. Are you sure?"
         />
 </template>
 
