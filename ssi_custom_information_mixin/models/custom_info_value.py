@@ -2,7 +2,10 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
+
 from odoo import _, api, fields, models
+from odoo.tools.misc import formatLang, get_lang
 
 
 class CustomInfoValue(models.Model):
@@ -116,6 +119,15 @@ class CustomInfoValue(models.Model):
                     result += "{}) {} \n".format(num_ids, value.name)
                     num_ids += 1
                 s.value = result
+            elif s.field_type in ["int", "float"]:
+                if s.field_type == "int":
+                    fmt = "%.{0}f".format(0)
+                else:
+                    fmt = "%.{0}f".format(2)
+                lang = get_lang(self.env)
+                amount = float(getattr(s, s.field_name, False))
+                formatted_amount = lang.format(fmt, amount, grouping=True, monetary=True)
+                s.value = formatted_amount
             else:
                 s.value = getattr(s, s.field_name, False)
 

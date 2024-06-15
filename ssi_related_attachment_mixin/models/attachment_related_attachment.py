@@ -51,6 +51,9 @@ class AttachmentRelatedAttachment(models.Model):
         related="template_detail_id.verify_method",
         readonly=True,
     )
+    date_manual = fields.Datetime(
+        string="Date Manual",
+    )
 
     @api.depends(
         "template_detail_id",
