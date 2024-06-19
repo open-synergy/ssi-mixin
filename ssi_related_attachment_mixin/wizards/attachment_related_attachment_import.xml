@@ -9,6 +9,7 @@
         <field name="arch" type="xml">
             <form>
                 <group name="grp_1">
+                  <field name="date_manual" string="Verified Date Manual"/>
                   <field name="action_type" />
                 </group>
                 <group
