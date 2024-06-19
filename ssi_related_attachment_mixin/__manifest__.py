@@ -4,7 +4,7 @@
 
 {
     "name": "Related Attachment Mixin",
-    "version": "14.0.2.2.2",
+    "version": "14.0.2.3.2",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
