@@ -90,12 +90,13 @@ Error: %s
         criteria = [
             ("model_id.model", "=", str(self._name)),
         ]
-        template_id = obj_related_attachment_template.search(
+        templates = obj_related_attachment_template.search(
             criteria,
-            limit=1,
         )
-        if self._evaluate_related_attachment(template_id):
-            result = template_id.id
+        for template in templates:
+            if self._evaluate_related_attachment(template):
+                result = template.id
+                return result
         return result
 
     @api.onchange(
