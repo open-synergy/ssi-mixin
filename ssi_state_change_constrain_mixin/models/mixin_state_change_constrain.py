@@ -95,7 +95,7 @@ class MixinStateChangeConstrain(models.AbstractModel):
                             """ % (
                                 self._description,
                                 state_name,
-                                self.id,
+                                document.id,
                                 item,
                             )
                             raise UserError(error_message)
