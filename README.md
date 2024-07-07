@@ -48,7 +48,7 @@ addon | version | maintainers | summary
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.1.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 14.0.2.0.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.1.0 |  | Source Document Mixin
-[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.7.0 |  | State Change Constrain Mixin
+[ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.7.1 |  | State Change Constrain Mixin
 [ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.2.0 |  | Status Check Mixin
 [ssi_tag_mixin](ssi_tag_mixin/) | 14.0.1.0.0 |  | Tag Mixin
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 14.0.1.1.0 |  | Terms and Conditions Mixin
