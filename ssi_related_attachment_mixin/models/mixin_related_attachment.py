@@ -45,6 +45,85 @@ class MixinRelatedAttachment(models.AbstractModel):
         domain=lambda self: [("model", "=", self._name)],
         auto_join=True,
     )
+    num_of_related_attachment = fields.Integer(
+        string="Num. of Related Attachments",
+        compute="_compute_num_of_related_attachment",
+        store=True,
+        compute_sudo=True,
+        help="Number of all related attchments",
+    )
+    num_of_verified_related_attachment = fields.Integer(
+        string="Num. of Verified Related Attachments",
+        compute="_compute_num_of_related_attachment",
+        store=True,
+        compute_sudo=True,
+        help="Number of verified related attchments",
+    )
+    num_of_unverified_related_attachment = fields.Integer(
+        string="Num. of Unverified Related Attachments",
+        compute="_compute_num_of_related_attachment",
+        store=True,
+        compute_sudo=True,
+        help="Number of unverified related attchments",
+    )
+    related_attchment_status = fields.Selection(
+        string="Related Attachment Status",
+        selection=[
+            ("not_needed", "Not Needed"),
+            ("open", "In Progress"),
+            ("done", "Done"),
+        ],
+        compute="_compute_related_attchment_status",
+        store=True,
+        compute_sudo=True,
+        help="Related attachment status.\n\n"
+        "This will change when users verified/unverified related attchments\n"
+        "Not Needed: No related attchment for this document\n"
+        "In Progress: There is/are unverified related attachments\n"
+        "Done: All related attchment verified",
+    )
+
+    @api.depends(
+        "related_attachment_ids",
+        "related_attachment_ids.verified",
+    )
+    def _compute_num_of_related_attachment(self):
+        for record in self:
+            num_of_attachment = (
+                num_of_verified_attachment
+            ) = num_of_unverified_attachment = 0
+
+            for attachment in record.related_attachment_ids:
+                num_of_attachment += 1
+                if attachment.verified:
+                    num_of_verified_attachment += 1
+                else:
+                    num_of_unverified_attachment += 1
+            record.num_of_related_attachment = num_of_attachment
+            record.num_of_verified_related_attachment = num_of_verified_attachment
+            record.num_of_unverified_related_attachment = num_of_unverified_attachment
+
+    @api.depends(
+        "num_of_related_attachment",
+        "num_of_verified_related_attachment",
+    )
+    def _compute_related_attchment_status(self):
+        for record in self:
+            result = "not_needed"
+            if (
+                record.num_of_related_attachment != 0
+                and record.num_of_related_attachment
+                != record.num_of_verified_related_attachment
+            ):
+                result = "open"
+            elif (
+                record.num_of_related_attachment != 0
+                and record.num_of_related_attachment
+                == record.num_of_verified_related_attachment
+            ):
+                result = "done"
+
+            record.related_attchment_status = result
 
     @ssi_decorator.insert_on_form_view()
     def _related_attachment_insert_form_element(self, view_arch):
@@ -164,16 +243,19 @@ Error: %s
                 "template_detail_id"
             )
             for detail in to_be_added:
-                self.related_attachment_ids.create(
-                    {
-                        "model": self._name,
-                        "res_id": self.id,
-                        "template_id": template.id,
-                        "template_detail_id": detail.id,
-                    }
-                )
+                # TODO
+                data = {
+                    "model": self._name,
+                    "res_id": self.id,
+                    "template_id": template.id,
+                    "template_detail_id": detail.id,
+                }
+                self.env["attachment.related_attachment"].create(data)
+
+                self.related_attachment_ids.create(data)
         else:
             self.related_attachment_ids.unlink()
+        self._compute_num_of_related_attachment()
 
     def unlink(self):
         related_attachments = self.mapped("related_attachment_ids")
@@ -191,4 +273,5 @@ Error: %s
             if template_id:
                 result.sudo().write({"related_attachment_template_id": template_id})
                 result.sudo().action_reload_rel_attachment_detail()
+                result.sudo()._compute_num_of_related_attachment()
         return result

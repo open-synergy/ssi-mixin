@@ -10,6 +10,13 @@
                 icon="fa-refresh"
             />
             <group name="grp_related_attachment_1" colspan="4" col="2">
+                <field name="num_of_related_attachment" string="All" />
+                <field name="num_of_verified_related_attachment" string="Verified" />
+                <field
+                    name="num_of_unverified_related_attachment"
+                    string="Unverified"
+                />
+                <field name="related_attchment_status" string="State" />
                 <field
                     name="allowed_related_attachment_template_ids"
                     widget="many2many_tags"
@@ -19,6 +26,7 @@
                 <field
                     name="related_attachment_template_id"
                     domain="[('id','in',allowed_related_attachment_template_ids)]"
+                    string="Template"
                 />
             </group>
             <field
