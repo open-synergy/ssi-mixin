@@ -124,6 +124,7 @@ class AttachmentRelatedAttachment(models.Model):
     )
     verified = fields.Boolean(
         string="Verified",
+        default=False,
     )
 
     def _get_local_record(self):
