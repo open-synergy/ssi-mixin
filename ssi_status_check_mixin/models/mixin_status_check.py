@@ -81,8 +81,19 @@ class MixinStatusCheck(models.AbstractModel):
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             if "result" in localdict:
                 res = localdict["result"]
-        except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error)
+        except Exception:
+            error_message = """
+                Document: %s
+                Context: Evaluating status check template condition
+                Database ID: %s
+                Problem: Python code error
+                Solution: Check status check template ID %s
+                """ % (
+                self._description.lower(),
+                self.id,
+                template.id,
+            )
+            raise UserError(_(error_message))
         return res
 
     def _get_template_status_check(self):
@@ -91,14 +102,13 @@ class MixinStatusCheck(models.AbstractModel):
         criteria = [
             ("model_id.model", "=", str(self._name)),
         ]
-        template_id = obj_status_check_template.search(
+        templates = obj_status_check_template.search(
             criteria,
-            order="sequence desc",
-            limit=1,
+            order="sequence",
         )
-        if template_id:
-            if self._evaluate_status_check(template_id):
-                result = template_id.id
+        for template in templates:
+            if self._evaluate_status_check(template):
+                return template.id
         return result
 
     def action_reload_status_check_template(self):
@@ -147,13 +157,10 @@ class MixinStatusCheck(models.AbstractModel):
                 res += obj_status_check.create(data)
         return res
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         _super = super(MixinStatusCheck, self)
-        result = _super.create(values)
-        if not result.status_check_template_id:
-            template_id = result._get_template_status_check()
-            if template_id:
-                result.write({"status_check_template_id": template_id})
-                result.onchange_status_check_ids()
-        return result
+        results = _super.create(vals_list)
+        results.onchange_status_check_template_id()
+        results.action_reload_status_check()
+        return results

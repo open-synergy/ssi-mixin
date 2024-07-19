@@ -74,9 +74,20 @@ class StatusCheck(models.Model):
         try:
             method_name = "_evaluate_status_check_" + self.status_check_method
             result = getattr(self, method_name)()
-        except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
+        except Exception:
+            record = self.env[self.model].browse(self.res_id)
+            error_message = """
+                Document: %s
+                Context: Evaluating status check item
+                Database ID: %s
+                Problem: Python code error
+                Solution: Check status check item ID %s
+                """ % (
+                record._description.lower(),
+                record and record.id or "New Record",
+                self.status_check_item_id.id,
+            )
+            raise UserError(_(error_message))
         return result
 
     def _evaluate_status_check_use_python(self):
