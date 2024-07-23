@@ -161,6 +161,6 @@ class MixinStatusCheck(models.AbstractModel):
     def create(self, vals_list):
         _super = super(MixinStatusCheck, self)
         results = _super.create(vals_list)
-        results.onchange_status_check_template_id()
-        results.action_reload_status_check()
+        results.action_reload_status_check_template()
+        results.onchange_status_check_ids()
         return results
