@@ -39,6 +39,7 @@ setuptools.setup(
         'odoo14-addon-ssi_sequence_mixin',
         'odoo14-addon-ssi_source_document_mixin',
         'odoo14-addon-ssi_state_change_constrain_mixin',
+        'odoo14-addon-ssi_state_change_history_mixin',
         'odoo14-addon-ssi_status_check_mixin',
         'odoo14-addon-ssi_tag_mixin',
         'odoo14-addon-ssi_term_condition_mixin',
