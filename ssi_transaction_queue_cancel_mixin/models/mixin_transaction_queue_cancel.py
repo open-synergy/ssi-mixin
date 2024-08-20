@@ -296,7 +296,7 @@ class MixinTransactionQueueCancel(models.AbstractModel):
 
     def _create_job_batch_cancel(self):
         self.ensure_one()
-        str_group = "Inventory Closing Cancel Batch for ID %s" % (self.id)
+        str_group = "%s Cancel Batch for ID %s" % (self._description, self.id)
         batch = self.env["queue.job.batch"].get_new_batch(str_group)
         self.write(
             {
