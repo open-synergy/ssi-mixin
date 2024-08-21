@@ -36,6 +36,8 @@ class MixinTransactionQueueCancel(models.AbstractModel):
     # Attributes related to cancel reason wizard
     _method_to_run_from_wizard = "action_cancel"
 
+    _auto_enqueue_cancel = True
+
     state = fields.Selection(
         selection_add=[
             ("queue_cancel", "Queue To Cancel"),
@@ -102,8 +104,13 @@ class MixinTransactionQueueCancel(models.AbstractModel):
             record.write(record._prepare_queue_cancel_data(cancel_reason))
             record._run_post_queue_cancel_check()
             record._run_post_queue_cancel_action()
-            record.cancel_queue_job_batch_id.enqueue()
+            record._start_auto_enqueue_cancel()
             record._set_cancel_if_no_job()
+
+    def _start_auto_enqueue_cancel(self):
+        self.ensure_one()
+        if self._auto_enqueue_cancel:
+            self.cancel_queue_job_batch_id.enqueue()
 
     def action_recompute_queue_cancel_result(self):
         for record in self.sudo():
@@ -296,7 +303,7 @@ class MixinTransactionQueueCancel(models.AbstractModel):
 
     def _create_job_batch_cancel(self):
         self.ensure_one()
-        str_group = "Inventory Closing Cancel Batch for ID %s" % (self.id)
+        str_group = "%s Cancel Batch for ID %s" % (self._description, self.id)
         batch = self.env["queue.job.batch"].get_new_batch(str_group)
         self.write(
             {

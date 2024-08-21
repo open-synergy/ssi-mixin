@@ -34,6 +34,8 @@ class MixinTransactionQueueDone(models.AbstractModel):
     # Attributes related to add element on tree view automatically
     _automatically_insert_queue_done_state_badge_decorator = True
 
+    _auto_enqueue_done = True
+
     state = fields.Selection(
         selection_add=[
             ("queue_done", "Queue To Done"),
@@ -103,12 +105,17 @@ class MixinTransactionQueueDone(models.AbstractModel):
             record.write(record._prepare_queue_done_data())
             record._run_post_queue_done_check()
             record._run_post_queue_done_action()
-            record.done_queue_job_batch_id.enqueue()
+            record._start_auto_enqueue_done()
             record._set_done_if_no_job()
 
     def action_recompute_queue_done_result(self):
         for record in self.sudo():
             record._recompute_queue_done_result()
+
+    def _start_auto_enqueue_done(self):
+        self.ensure_one()
+        if self._auto_enqueue_done:
+            self.done_queue_job_batch_id.enqueue()
 
     @ssi_decorator.post_done_action()
     def _disconnect_done_batch(self):
@@ -292,7 +299,7 @@ class MixinTransactionQueueDone(models.AbstractModel):
 
     def _create_job_batch_done(self):
         self.ensure_one()
-        str_group = "Inventory Closing Done Batch for ID %s" % (self.id)
+        str_group = "%s Done Batch for ID %s" % (self._description, self.id)
         batch = self.env["queue.job.batch"].get_new_batch(str_group)
         self.write(
             {
