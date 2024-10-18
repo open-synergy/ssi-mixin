@@ -50,7 +50,7 @@ addon | version | maintainers | summary
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 14.0.1.1.0 |  | Source Document Mixin
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 14.0.1.7.1 |  | State Change Constrain Mixin
 [ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 14.0.1.1.0 |  | State Change History Mixin
-[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.3.0 |  | Status Check Mixin
+[ssi_status_check_mixin](ssi_status_check_mixin/) | 14.0.2.3.1 |  | Status Check Mixin
 [ssi_tag_mixin](ssi_tag_mixin/) | 14.0.1.0.0 |  | Tag Mixin
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 14.0.1.1.0 |  | Terms and Conditions Mixin
 [ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 14.0.1.12.1 |  | Transaction Mixin - Cancel State
