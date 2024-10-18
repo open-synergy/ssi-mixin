@@ -17,6 +17,8 @@ class MixinStatusCheck(models.AbstractModel):
 
     _status_check_create_page = False
     _status_check_page_xpath = "//page[last()]"
+    _status_check_reload_state = ["draft"]
+    _status_check_include_fields = []
 
     status_check_template_id = fields.Many2one(
         string="Status Check Template",
@@ -113,7 +115,7 @@ class MixinStatusCheck(models.AbstractModel):
 
     def action_reload_status_check_template(self):
         for record in self:
-            record.status_check_template_id = False
+            # record.status_check_template_id = False
             record.write(
                 {
                     "status_check_template_id": self._get_template_status_check(),
@@ -164,3 +166,20 @@ class MixinStatusCheck(models.AbstractModel):
         results.action_reload_status_check_template()
         results.onchange_status_check_ids()
         return results
+
+    def write(self, values):
+        _super = super(MixinStatusCheck, self)
+        _super.write(values)
+        for record in self:
+            include_field = False
+            for field_name in values.keys():
+                if field_name in self._status_check_include_fields:
+                    include_field = True
+                if (
+                    record.state in self._status_check_reload_state
+                    and not values.get("status_check_template_id", False)
+                    and include_field
+                ):
+                    record.action_reload_status_check_template()
+                    record.onchange_status_check_ids()
+        return True
