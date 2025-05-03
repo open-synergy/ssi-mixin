@@ -1,0 +1,265 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* test_ssi_accounting_entry_mixin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__name
+msgid "# Document"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__move_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__move_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__move_id
+msgid "# Move"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__account_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__account_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__account_id
+msgid "Account"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.ui.menu,name:test_ssi_accounting_entry_mixin.menu_accounting_entry_mixin
+msgid "Accounting ENtry Mixin"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__amount
+msgid "Amount"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__amount_tax
+msgid "Amount Tax"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__amount_total
+msgid "Amount Total"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__amount_untaxed
+msgid "Amount Untaxed"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__analytic_account_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__analytic_account_id
+msgid "Analytic Account"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__base_amount
+msgid "Base Amount"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__company_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__company_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__company_id
+msgid "Company"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__company_currency_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__company_currency_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__company_currency_id
+msgid "Company Currency"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_view_form
+msgid "Compute Tax"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_view_form
+msgid "Create"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__create_uid
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__create_uid
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__create_date
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__create_date
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__date
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__date
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__date
+msgid "Date"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__date_due
+msgid "Date Due"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_view_form
+msgid "Delete"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__name
+msgid "Description"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__detail_ids
+msgid "Detail"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_view_form
+msgid "Details"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__display_name
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__display_name
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__header_object_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__header_object_id
+msgid "Header Object"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__id
+msgid "ID"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__journal_id
+msgid "Journal"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__move_line_id
+msgid "Journal Item"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin____last_update
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin____last_update
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__write_uid
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__write_uid
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__write_date
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__write_date
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__manual
+msgid "Manual"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__name
+msgid "Name"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__partner_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__partner_id
+msgid "Partner"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__rate_inverted
+msgid "Rate Inverted"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__tax_ids
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__tax_ids
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__tax_id
+msgid "Tax"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_tax_line_one_mixin__tax_amount
+msgid "Tax Amount"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_view_form
+msgid "Taxes"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model,name:test_ssi_accounting_entry_mixin.model_test_account_move_line_one_mixin
+msgid "Test Account Move Line One Mixin"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model,name:test_ssi_accounting_entry_mixin.model_test_account_move_one_mixin
+msgid "Test Account Move One Mixin"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.actions.act_window,name:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_action
+#: model:ir.ui.menu,name:test_ssi_accounting_entry_mixin.test_account_move_one_mixin_menu
+msgid "Test Single Accounting Entry"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model,name:test_ssi_accounting_entry_mixin.model_test_tax_line_one_mixin
+msgid "Test Tax One Mixin"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_line_one_mixin__currency_id
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__currency_id
+msgid "Transaction Currency"
+msgstr ""
+
+#. module: test_ssi_accounting_entry_mixin
+#: model:ir.model.fields,field_description:test_ssi_accounting_entry_mixin.field_test_account_move_one_mixin__rate
+msgid "Transaction Rate"
+msgstr ""
