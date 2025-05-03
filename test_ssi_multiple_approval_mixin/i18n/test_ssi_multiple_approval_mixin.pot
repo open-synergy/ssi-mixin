@@ -1,0 +1,362 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* test_ssi_multiple_approval_mixin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__name
+msgid "# Document"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__active
+msgid "Active"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__active_approval_ids
+msgid "Active Approvals"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__active_approver_partner_ids
+msgid "Active Partners"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__active_approver_user_ids
+msgid "Active Users"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__approval_template_id
+msgid "Approval Configuration"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model,name:test_ssi_multiple_approval_mixin.model_approval_template
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__approval_template_id
+msgid "Approval Template"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__approval_ids
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Approvals"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Approve"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Approve Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__approved
+msgid "Approved"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Cancel"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Cancel Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__cancel
+msgid "Cancelled"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Confirm"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Confirm Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__date
+msgid "Date"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_approval_template__display_name
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Done"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Done Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__done
+msgid "Finished"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_approval_template__id
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__id
+msgid "ID"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_needaction
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_approval_template____last_update
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__need_validation
+msgid "Need Validation"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__next_approval_ids
+msgid "Next Approvals"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__notes
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Notes"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__open
+msgid "On Progress"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Reject"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Reject Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__rejected
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__reject
+msgid "Rejected"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Reload Approval"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Reload Template"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Request Approval"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Request Approval Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Restart"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_multiple_approval_mixin.test_multiple_approval_view_form
+msgid "Restart Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__state
+msgid "State"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__terminate
+msgid "Terminated"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model,name:test_ssi_multiple_approval_mixin.model_test_multiple_approval_mixin
+msgid "Test Multiple Approval Mixin"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.ui.menu,name:test_ssi_multiple_approval_mixin.test_multiple_approval_mixin_menu
+msgid "Test Multiple Approvals"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.actions.act_window,name:test_ssi_multiple_approval_mixin.test_multiple_approval_mixin_action
+msgid "Test Multiple Approvals Mixin"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__active_approver_user_ids
+msgid "Users that can approve/reject document"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields.selection,name:test_ssi_multiple_approval_mixin.selection__test_multiple_approval_mixin__state__confirm
+msgid "Waiting for Approval"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,field_description:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: test_ssi_multiple_approval_mixin
+#: model:ir.model.fields,help:test_ssi_multiple_approval_mixin.field_test_multiple_approval_mixin__website_message_ids
+msgid "Website communication history"
+msgstr ""
