@@ -1,0 +1,843 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* test_ssi_transaction_mixin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__name
+msgid "# Document"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_approve
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_approve
+msgid "# Post Approve"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_cancel
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_cancel
+msgid "# Post Cancel"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_confirm
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_confirm
+msgid "# Post Confirm"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_done
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_done
+msgid "# Post Done"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_open
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_open
+msgid "# Post Open"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_reject
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_reject
+msgid "# Post Reject"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_restart
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_restart
+msgid "# Post Restart"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_post_terminate
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_post_terminate
+msgid "# Post Terminate"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_approve
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_approve
+msgid "# Pre Approve"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_approve_2
+msgid "# Pre Approve 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_approve_3
+msgid "# Pre Approve 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_cancel
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_cancel
+msgid "# Pre Cancel"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_cancel_2
+msgid "# Pre Cancel 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_cancel_3
+msgid "# Pre Cancel 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_confirm
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_confirm
+msgid "# Pre Confirm"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_confirm_2
+msgid "# Pre Confirm 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_confirm_3
+msgid "# Pre Confirm 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_done
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_done
+msgid "# Pre Done"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_done_2
+msgid "# Pre Done 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_done_3
+msgid "# Pre Done 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_open
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_open
+msgid "# Pre Open"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_open_2
+msgid "# Pre Open 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_open_3
+msgid "# Pre Open 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_reject
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_reject
+msgid "# Pre Reject"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_reject_2
+msgid "# Pre Reject 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_reject_3
+msgid "# Pre Reject 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_restart
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_restart
+msgid "# Pre Restart"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_restart_2
+msgid "# Pre Restart 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_restart_3
+msgid "# Pre Restart 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__chk_pre_terminate
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_terminate
+msgid "# Pre Terminate"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_terminate_2
+msgid "# Pre Terminate 2"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__str_pre_terminate_3
+msgid "# Pre Terminate 3"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__test_transaction_id
+msgid "# Transaction"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_transaction_mixin.test_transaction_mixin_view_form
+msgid "Action"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__active_approval_ids
+msgid "Active Approvals"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__active_approver_partner_ids
+msgid "Active Partners"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__active_approver_user_ids
+msgid "Active Users"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__allowed_policy_template_ids
+msgid "Allowed Policy Templates"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__allowed_pricelist_ids
+msgid "Allowed Pricelists"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__allowed_uom_ids
+msgid "Allowed UoMs"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__approval_template_id
+msgid "Approval Configuration"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__approval_template_id
+msgid "Approval Template"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__approval_ids
+msgid "Approvals"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__approve_ok
+msgid ""
+"Approve policy\n"
+"\n"
+"* If active user can see and execute 'Approve' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__approved
+msgid "Approved"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__approve_ok
+msgid "Can Approve"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__cancel_ok
+msgid "Can Cancel"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__confirm_ok
+msgid "Can Confirm"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__done_ok
+msgid "Can Finished"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__manual_number_ok
+msgid "Can Input Manual Document Number"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__reject_ok
+msgid "Can Reject"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__restart_ok
+msgid "Can Restart"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__restart_approval_ok
+msgid "Can Restart Approval"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__open_ok
+msgid "Can Start"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__terminate_ok
+msgid "Can Terminate"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__cancel_reason_id
+msgid "Cancel Reason"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__cancel_ok
+msgid ""
+"Cancel policy\n"
+"\n"
+"* If active user can see and execute 'Cancel' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__cancel
+msgid "Cancelled"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model_terms:ir.ui.view,arch_db:test_ssi_transaction_mixin.test_transaction_mixin_view_form
+msgid "Check"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__company_id
+msgid "Company"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__company_currency_id
+msgid "Company Currency"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__company_partner_id
+msgid "Company Partner"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__company_id
+msgid ""
+"Company that own the document\n"
+"\n"
+"* Automatically filled with user's company.\n"
+"  Default company can be changed"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__confirm_ok
+msgid ""
+"Confirm policy\n"
+"\n"
+"* If active user can see and execute 'Confirm' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__create_uid
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__create_date
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__date
+msgid "Date"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__name
+msgid "Description"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__detail_ids
+#: model_terms:ir.ui.view,arch_db:test_ssi_transaction_mixin.test_transaction_mixin_view_form
+msgid "Details"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__display_name
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__done
+msgid "Done"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__done_ok
+msgid ""
+"Done policy\n"
+"\n"
+"* If active user can see and execute 'Done' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__id
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__id
+msgid "ID"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_needaction
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__open
+msgid "In Progress"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin____last_update
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__write_uid
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__write_date
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__manual_number_ok
+msgid ""
+"Manual number assignment policy\n"
+"\n"
+"* If active user can edit document number"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__need_validation
+msgid "Need Validation"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__next_approval_ids
+msgid "Next Approvals"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__note
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__note
+msgid "Note"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__policy_template_id
+msgid "Policy Template"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__price_subtotal
+msgid "Price Subtotal"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__price_unit
+msgid "Price Unit"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__pricelist_id
+msgid "Pricelist"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__product_id
+msgid "Product"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__product_category_id
+msgid "Product Category"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__quantity
+msgid "Quantity"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__reject_ok
+msgid ""
+"Reject policy\n"
+"\n"
+"* If active user can see and execute 'Reject' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__rejected
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__reject
+msgid "Rejected"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__user_id
+msgid "Responsible"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__restart_approval_ok
+msgid ""
+"Restart approval policy\n"
+"\n"
+"* If active user can see and execute 'Restart Approval' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__restart_ok
+msgid ""
+"Restart policy\n"
+"\n"
+"* If active user can see and execute 'Restart' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__product_category_id
+msgid "Select category for the current product"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__standard_price_subtotal
+msgid "Standard Price Subtotal"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__standard_price_subtotal_diff
+msgid "Standard Price Subtotal Diff."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__standard_price_unit
+msgid "Standard Price Unit"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__standard_price_unit_diff
+msgid "Standard Price Unit Diff."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__open_ok
+msgid ""
+"Start policy\n"
+"\n"
+"* If active user can see and execute 'Start' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__state
+msgid "State"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__terminate
+msgid "Terminate"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__terminate_reason_id
+msgid "Terminate Reason"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__terminate_ok
+msgid ""
+"Terminate policy\n"
+"\n"
+"* If active user can see and execute 'Terminate' button"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.ui.menu,name:test_ssi_transaction_mixin.test_transaction_mixin_menu
+msgid "Test"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model,name:test_ssi_transaction_mixin.model_test_transaction_detail_mixin
+msgid "Test Transaction Detail Mixin"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.actions.act_window,name:test_ssi_transaction_mixin.test_transaction_mixin_action
+#: model:ir.model,name:test_ssi_transaction_mixin.model_test_transaction_mixin
+msgid "Test Transaction Mixin"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__name
+msgid ""
+"Transaction/document number\n"
+"\n"
+"* Unique indentifer of transaction\n"
+"* Leave '/' to automatically generate number\n"
+"* Change '/' into any number/identifier to manually assign number.\n"
+"  Manual number assignment can be done in 'Draft' state\n"
+"  Only user with 'Can Manualy Assign Number' policy can manually assign number.\n"
+"* Transaction with number other than '/' can not be deleted."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__uom_id
+msgid "UoM"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__uom_quantity
+msgid "UoM Quantity"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__user_id
+msgid ""
+"User that responsible for document\n"
+"\n"
+"* Create user can be different with responsible user\n"
+"* Automatically filled with user that initiate document creation.\n"
+"  Default responsible can be changed."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__active_approver_user_ids
+msgid "Users that can approve/reject document"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields.selection,name:test_ssi_transaction_mixin.selection__test_transaction_mixin__state__confirm
+msgid "Waiting for Approval"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__website_message_ids
+msgid "Website communication history"
+msgstr ""
