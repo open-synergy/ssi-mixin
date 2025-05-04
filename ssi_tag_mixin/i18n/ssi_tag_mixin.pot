@@ -195,9 +195,7 @@ msgstr ""
 
 #. module: ssi_tag_mixin
 #: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag__message_has_error
-#: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag__message_has_sms_error
 #: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag_category__message_has_error
-#: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag_category__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -344,12 +342,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__activity_user_id
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag_category__activity_user_id
 msgid "Responsible User"
-msgstr ""
-
-#. module: ssi_tag_mixin
-#: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__message_has_sms_error
-#: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag_category__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: ssi_tag_mixin
