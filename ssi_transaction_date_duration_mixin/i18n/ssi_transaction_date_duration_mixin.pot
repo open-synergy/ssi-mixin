@@ -140,6 +140,7 @@ msgstr ""
 
 #. module: ssi_transaction_date_duration_mixin
 #: model:ir.model.fields,help:ssi_transaction_date_duration_mixin.field_mixin_transaction_date_duration__message_has_error
+#: model:ir.model.fields,help:ssi_transaction_date_duration_mixin.field_mixin_transaction_date_duration__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -252,6 +253,11 @@ msgid ""
 "Restart policy\n"
 "\n"
 "* If active user can see and execute 'Restart' button"
+msgstr ""
+
+#. module: ssi_transaction_date_duration_mixin
+#: model:ir.model.fields,field_description:ssi_transaction_date_duration_mixin.field_mixin_transaction_date_duration__message_has_sms_error
+msgid "SMS Delivery error"
 msgstr ""
 
 #. module: ssi_transaction_date_duration_mixin
