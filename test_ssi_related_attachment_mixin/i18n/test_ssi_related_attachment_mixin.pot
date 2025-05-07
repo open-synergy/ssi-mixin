@@ -131,7 +131,6 @@ msgstr ""
 
 #. module: test_ssi_related_attachment_mixin
 #: model:ir.model.fields,help:test_ssi_related_attachment_mixin.field_test_related_attachment__message_has_error
-#: model:ir.model.fields,help:test_ssi_related_attachment_mixin.field_test_related_attachment__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -300,11 +299,6 @@ msgstr ""
 #. module: test_ssi_related_attachment_mixin
 #: model_terms:ir.ui.view,arch_db:test_ssi_related_attachment_mixin.test_related_attachment_view_form
 msgid "Restart Data. Are you sure?"
-msgstr ""
-
-#. module: test_ssi_related_attachment_mixin
-#: model:ir.model.fields,field_description:test_ssi_related_attachment_mixin.field_test_related_attachment__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: test_ssi_related_attachment_mixin
