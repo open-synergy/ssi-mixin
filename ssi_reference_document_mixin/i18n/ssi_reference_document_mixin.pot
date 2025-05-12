@@ -168,11 +168,8 @@ msgstr ""
 
 #. module: ssi_reference_document_mixin
 #: model:ir.model.fields,help:ssi_reference_document_mixin.field_reference_document__message_has_error
-#: model:ir.model.fields,help:ssi_reference_document_mixin.field_reference_document__message_has_sms_error
 #: model:ir.model.fields,help:ssi_reference_document_mixin.field_reference_document_category__message_has_error
-#: model:ir.model.fields,help:ssi_reference_document_mixin.field_reference_document_category__message_has_sms_error
 #: model:ir.model.fields,help:ssi_reference_document_mixin.field_reference_document_set__message_has_error
-#: model:ir.model.fields,help:ssi_reference_document_mixin.field_reference_document_set__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -379,13 +376,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_reference_document_mixin.field_reference_document_category__activity_user_id
 #: model:ir.model.fields,field_description:ssi_reference_document_mixin.field_reference_document_set__activity_user_id
 msgid "Responsible User"
-msgstr ""
-
-#. module: ssi_reference_document_mixin
-#: model:ir.model.fields,field_description:ssi_reference_document_mixin.field_reference_document__message_has_sms_error
-#: model:ir.model.fields,field_description:ssi_reference_document_mixin.field_reference_document_category__message_has_sms_error
-#: model:ir.model.fields,field_description:ssi_reference_document_mixin.field_reference_document_set__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: ssi_reference_document_mixin
