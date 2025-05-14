@@ -176,6 +176,7 @@ msgstr ""
 
 #. module: test_ssi_status_check_mixin
 #: model:ir.model.fields,help:test_ssi_status_check_mixin.field_test_status_check__message_has_error
+#: model:ir.model.fields,help:test_ssi_status_check_mixin.field_test_status_check__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -298,6 +299,11 @@ msgstr ""
 #. module: test_ssi_status_check_mixin
 #: model_terms:ir.ui.view,arch_db:test_ssi_status_check_mixin.test_status_check_view_form
 msgid "Restart Data. Are you sure?"
+msgstr ""
+
+#. module: test_ssi_status_check_mixin
+#: model:ir.model.fields,field_description:test_ssi_status_check_mixin.field_test_status_check__message_has_sms_error
+msgid "SMS Delivery error"
 msgstr ""
 
 #. module: test_ssi_status_check_mixin
