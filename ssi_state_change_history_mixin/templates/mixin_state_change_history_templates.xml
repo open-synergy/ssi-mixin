@@ -2,7 +2,7 @@
 <odoo>
 <template id="state_change_history">
     <page string="State Change Histories" name="state_change_history">
-        <field name="state_change_history_ids" style="pointer-events:none;"/>
+        <field name="state_change_history_ids" style="pointer-events:none;" />
     </page>
 </template>
 </odoo>
