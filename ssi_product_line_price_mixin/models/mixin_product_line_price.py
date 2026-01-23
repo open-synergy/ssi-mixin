@@ -82,15 +82,12 @@ class MixinProductLinePrice(models.AbstractModel):
     )
     def _compute_standard_price(self):
         for record in self:
-            standard_price_unit = (
-                standard_price_subtotal
-            ) = standard_price_unit_diff = standard_price_subtotal_diff = 0.0
+            standard_price_unit = standard_price_subtotal = standard_price_unit_diff = (
+                standard_price_subtotal_diff
+            ) = 0.0
             if record.pricelist_id and record.product_id:
-                product_context = dict(
-                    self.env.context, uom=record.uom_id and record.uom_id.id or False
-                )
-                final_price, rule_id = record.pricelist_id.with_context(
-                    product_context
+                final_price, _rule_id = record.pricelist_id.with_context(
+                    uom=record.uom_id and record.uom_id.id or False
                 ).get_product_price_rule(
                     record.product_id, record.uom_quantity or 1.0, False
                 )
@@ -109,12 +106,12 @@ class MixinProductLinePrice(models.AbstractModel):
         "currency_id",
     )
     def _compute_allowed_pricelist_ids(self):
-        Pricelist = self.env["product.pricelist"]
+        pricelist = self.env["product.pricelist"]
         for record in self:
             result = []
             if record.currency_id:
                 criteria = record._get_pricelist_domain()
-                result = Pricelist.search(criteria).ids
+                result = pricelist.search(criteria).ids
             record.allowed_pricelist_ids = result
 
     @api.depends(
@@ -148,10 +145,7 @@ class MixinProductLinePrice(models.AbstractModel):
     )
     def onchange_price_unit(self):
         if self.product_id and self.pricelist_id:
-            product_context = dict(
-                self.env.context, uom=self.uom_id and self.uom_id.id or False
-            )
-            final_price, rule_id = self.pricelist_id.with_context(
-                product_context
+            final_price, _rule_id = self.pricelist_id.with_context(
+                uom=self.uom_id and self.uom_id.id or False
             ).get_product_price_rule(self.product_id, self.uom_quantity or 1.0, False)
             self.price_unit = final_price
