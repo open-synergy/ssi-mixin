@@ -70,22 +70,22 @@ class MixinTransactionQueueDone(models.AbstractModel):
     )
 
     def _compute_policy(self):
-        _super = super(MixinTransactionQueueDone, self)
-        _super._compute_policy()
+        _super = super()
+        return _super._compute_policy()
 
     @api.model
-    def fields_view_get(
+    def fields_view_get(  # pylint: disable=W8160
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
         result = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
+        view = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
         if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+            view = view.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = view.postprocess_and_fields(view_arch, self._name)
         result["arch"] = new_arch
         new_fields.update(result["fields"])
         result["fields"] = new_fields
@@ -285,21 +285,19 @@ class MixinTransactionQueueDone(models.AbstractModel):
             return True
 
         if not self.queue_done_ok:
-            error_message = """
-                Document Type: %s
+            error_message = f"""
+                Document Type: {self._description.lower()}
                 Context: Start Finish's Queue Job
-                Database ID: %s
+                Database ID: {self.id}
                 Problem: Document is not allowed to start finish queue job
                 Solution: Check queue finish policy prerequisite
-                """ % (
-                self._description.lower(),
-                self.id,
-            )
+                """
             raise UserError(_(error_message))
+        return True
 
     def _create_job_batch_done(self):
         self.ensure_one()
-        str_group = "%s Done Batch for ID %s" % (self._description, self.id)
+        str_group = f"{self._description} Done Batch for ID {self.id}"
         batch = self.env["queue.job.batch"].get_new_batch(str_group)
         self.write(
             {
