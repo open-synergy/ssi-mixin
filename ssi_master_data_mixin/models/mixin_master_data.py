@@ -61,7 +61,7 @@ but master data already used on transaction""",
             default = {}
         if "code" not in default:
             default["code"] = _("%s (copy)", self.code)
-        return super(MixinMasterData, self).copy(default=default)
+        return super().copy(default=default)
 
     @api.constrains("code")
     def _check_duplicate_code(self):
