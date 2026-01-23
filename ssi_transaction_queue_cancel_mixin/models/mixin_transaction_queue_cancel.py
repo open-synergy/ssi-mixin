@@ -12,6 +12,7 @@ from odoo.exceptions import UserError
 from odoo.addons.ssi_decorator import ssi_decorator
 
 
+# pylint: disable=W0212
 class MixinTransactionQueueCancel(models.AbstractModel):
     _name = "mixin.transaction_queue_cancel"
     _inherit = [
