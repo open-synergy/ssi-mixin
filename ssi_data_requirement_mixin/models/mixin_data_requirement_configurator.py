@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=R0903
 class MixinDataRequirementConfigurator(models.AbstractModel):
     _name = "mixin.data_requirement_configurator"
     _description = "Data Requirement Configurator Mixin"
@@ -20,5 +21,5 @@ class MixinDataRequirementConfigurator(models.AbstractModel):
     def unlink(self):
         for record in self.sudo():
             record.data_requirement_ids.unlink()
-        _super = super(MixinDataRequirementConfigurator, self)
-        _super.unlink()
+        _super = super()
+        return _super.unlink()
