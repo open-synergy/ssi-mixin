@@ -31,10 +31,9 @@ class MixinStateChangeConstrain(models.AbstractModel):
         localdict = self._get_state_change_localdict()
         try:
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
-            if "result" in localdict:
-                res = localdict["result"]
+            res = localdict.get("result", False)
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error)
+            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
         return res
 
     def _get_template_state_change(self):
@@ -71,38 +70,35 @@ class MixinStateChangeConstrain(models.AbstractModel):
         for document in self:
             if document.state_change_constrain_template_id:
                 detail_ids = document.state_change_constrain_template_id.detail_ids
+                doc_state = document.state  # Create local copy
                 check_detail_ids = detail_ids.filtered(
-                    lambda r: r.state_id.value == document.state
+                    lambda r, ds=doc_state: r.state_id.value == ds
                 )
                 if check_detail_ids:
                     status_check_item_ids = check_detail_ids.status_check_item_ids
                     status_check_ids = document.status_check_ids
                     for detail in status_check_item_ids:
+                        detail_id = detail.id  # Create local copy
                         status_check = status_check_ids.filtered(
-                            lambda r: r.status_check_item_id.id == detail.id
+                            lambda r, did=detail_id: r.status_check_item_id.id == did
                         )
                         if not status_check.status_ok:
                             item = status_check.status_check_item_id.name
                             state_name = dict(self._fields["state"].selection).get(
                                 document.state
                             )
-                            error_message = """
-                            Document Type: %s
-                            Context: Change document state into %s
-                            Database ID: %s
-                            Problem: Status check %s failed
+                            error_message = f"""
+                            Document Type: {self._description}
+                            Context: Change document state into {state_name}
+                            Database ID: {document.id}
+                            Problem: Status check {item} failed
                             Solution: Follow check status resolution instruction
-                            """ % (
-                                self._description,
-                                state_name,
-                                document.id,
-                                item,
-                            )
+                            """
                             raise UserError(error_message)
 
     @api.model
     def create(self, values):
-        _super = super(MixinStateChangeConstrain, self)
+        _super = super()
         result = _super.create(values)
         if not result.state_change_constrain_template_id:
             template_id = result._get_template_state_change()
