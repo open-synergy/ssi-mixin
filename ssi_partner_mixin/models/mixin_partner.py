@@ -7,7 +7,7 @@ from lxml import etree
 from odoo import api, fields, models
 
 
-class MixinPartner(models.AbstractModel):
+class MixinPartner(models.AbstractModel):  # pylint: disable=E1135
     _name = "mixin.partner"
     _description = "Mixin for Object With Partner"
 
@@ -48,7 +48,7 @@ class MixinPartner(models.AbstractModel):
         "partner_id",
     )
     def _compute_allowed_contact_ids(self):
-        Partner = self.env["res.partner"]
+        partner = self.env["res.partner"]
         for record in self:
             result = []
             if record.partner_id:
@@ -57,7 +57,7 @@ class MixinPartner(models.AbstractModel):
                     ("id", "!=", record.partner_id.id),
                     ("type", "=", "contact"),
                 ]
-                result = Partner.search(criteria).ids
+                result = partner.search(criteria).ids
             record.allowed_contact_ids = result
 
     allowed_contact_ids = fields.Many2many(
@@ -98,11 +98,9 @@ class MixinPartner(models.AbstractModel):
     @api.depends(
         "name",
     )
-    def _compute_mixin_partner_attribute(self):
+    def _compute_mixin_partner_attribute(self):  # pylint: disable=R0912,E1135
         for record in self:
-            mixin_partner_partner_id_required = (
-                mixin_partner_partner_id_readonly
-            ) = (
+            mixin_partner_partner_id_required = mixin_partner_partner_id_readonly = (
                 mixin_partner_contact_id_required
             ) = mixin_partner_contact_id_readonly = False
 
@@ -111,6 +109,7 @@ class MixinPartner(models.AbstractModel):
             elif (
                 self._mixin_partner_partner_id_required_include_state
                 and hasattr(self, "state")
+                # pylint: disable=E1135
                 and record.state
                 in self._mixin_partner_partner_id_required_include_state
             ):
@@ -118,6 +117,7 @@ class MixinPartner(models.AbstractModel):
             elif (
                 self._mixin_partner_partner_id_required_exclude_state
                 and hasattr(self, "state")
+                # pylint: disable=E1135
                 and record.state
                 not in self._mixin_partner_partner_id_required_exclude_state
             ):
@@ -128,6 +128,7 @@ class MixinPartner(models.AbstractModel):
             elif (
                 self._mixin_partner_partner_id_readonly_include_state
                 and hasattr(self, "state")
+                # pylint: disable=E1135
                 and record.state
                 in self._mixin_partner_partner_id_readonly_include_state
             ):
@@ -145,6 +146,7 @@ class MixinPartner(models.AbstractModel):
             elif (
                 self._mixin_partner_contact_id_required_include_state
                 and hasattr(self, "state")
+                # pylint: disable=E1135
                 and record.state
                 in self._mixin_partner_contact_id_required_include_state
             ):
@@ -152,6 +154,7 @@ class MixinPartner(models.AbstractModel):
             elif (
                 self._mixin_partner_contact_id_required_exclude_state
                 and hasattr(self, "state")
+                # pylint: disable=E1135
                 and record.state
                 not in self._mixin_partner_contact_id_required_exclude_state
             ):
@@ -162,6 +165,7 @@ class MixinPartner(models.AbstractModel):
             elif (
                 self._mixin_partner_contact_id_readonly_include_state
                 and hasattr(self, "state")
+                # pylint: disable=E1135
                 and record.state
                 in self._mixin_partner_contact_id_readonly_include_state
             ):
@@ -186,7 +190,7 @@ class MixinPartner(models.AbstractModel):
         self.contact_partner_id = False
 
     @api.model
-    def fields_view_get(
+    def fields_view_get(  # pylint: disable=W8160,R0915
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
         res = super().fields_view_get(
@@ -199,6 +203,7 @@ class MixinPartner(models.AbstractModel):
             and self._mixin_partner_xpath_form
         ):
             node_xpath = doc.xpath(self._mixin_partner_xpath_form)
+            # pylint: disable=W0511
             # TODO: Refactor
             if node_xpath:
                 str_element = self.env["ir.qweb"]._render(
@@ -220,6 +225,7 @@ class MixinPartner(models.AbstractModel):
                 node_xpath[0].addnext(new_node)
 
             node_xpath = doc.xpath(self._mixin_partner_xpath_page)
+            # pylint: disable=W0511
             # TODO: Refactor
             if node_xpath:
                 str_element = self.env["ir.qweb"]._render(
@@ -233,6 +239,7 @@ class MixinPartner(models.AbstractModel):
             and self._mixin_partner_xpath_tree
         ):
             node_xpath = doc.xpath(self._mixin_partner_xpath_tree)
+            # pylint: disable=W0511
             # TODO: Refactor
             if node_xpath:
                 str_element = self.env["ir.qweb"]._render(
@@ -253,6 +260,7 @@ class MixinPartner(models.AbstractModel):
             and self._mixin_partner_xpath_search
         ):
             node_xpath = doc.xpath(self._mixin_partner_xpath_search)
+            # pylint: disable=W0511
             # TODO: Refactor
             if node_xpath:
                 str_element = self.env["ir.qweb"]._render(
@@ -268,6 +276,7 @@ class MixinPartner(models.AbstractModel):
                 node_xpath[0].addnext(new_node)
 
             node_xpath = doc.xpath(self._mixin_partner_xpath_group)
+            # pylint: disable=W0511
             # TODO: Refactor
             if node_xpath:
                 str_element = self.env["ir.qweb"]._render(
@@ -282,11 +291,11 @@ class MixinPartner(models.AbstractModel):
                 new_node = etree.fromstring(str_element)
                 node_xpath[0].addnext(new_node)
 
-        View = self.env["ir.ui.view"]
+        view = self.env["ir.ui.view"]
 
         if view_id and res.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=res["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(doc, self._name)
+            view = view.with_context(base_model_name=res["base_model"])
+        new_arch, new_fields = view.postprocess_and_fields(doc, self._name)
         res["arch"] = new_arch
         new_fields.update(res["fields"])
         res["fields"] = new_fields
