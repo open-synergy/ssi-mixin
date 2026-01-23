@@ -5,6 +5,7 @@
 from odoo import api, fields, models
 
 
+# pylint: disable=R0903
 class AttachmentRelatedAttachmentImport(models.TransientModel):
     _name = "attachment.related_attachment_import"
     _description = "Wizard for import attachment"
@@ -57,8 +58,8 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
             model = context.get("active_model", False)
         if not res_id:
             res_id = context.get("active_id", False)
-        object = self.env[model]
-        record = object.browse(res_id).sudo()
+        obj = self.env[model]
+        record = obj.browse(res_id).sudo()
         return record
 
     def action_submit(self):
@@ -72,18 +73,22 @@ class AttachmentRelatedAttachmentImport(models.TransientModel):
             if related_attachment.attachment_id:
                 self._delete_attachment(related_attachment)
             attachment_id = self.sudo()._create_attachment(record)
-            related_attachment.write({
-                "attachment_id": attachment_id.id,
-                "date_manual": self.date_manual,
-            })
+            related_attachment.write(
+                {
+                    "attachment_id": attachment_id.id,
+                    "date_manual": self.date_manual,
+                }
+            )
         else:
-            related_attachment.write({
-                "attachment_id": self.attachment_id.id,
-                "date_manual": self.date_manual,
-            })
+            related_attachment.write(
+                {
+                    "attachment_id": self.attachment_id.id,
+                    "date_manual": self.date_manual,
+                }
+            )
 
     def _prepare_attachment_data(self, record):
-        name = "%s" % (self.filename)
+        name = f"{self.filename}"
         vals = {
             "name": name,
             "type": "binary",
