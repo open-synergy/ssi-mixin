@@ -58,7 +58,7 @@ class PrintDcoumentType(models.Model):
             default = {}
         if "code" not in default:
             default["code"] = _("%s (copy)", self.code)
-        return super(PrintDcoumentType, self).copy(default=default)
+        return super().copy(default=default)
 
     @api.constrains("code")
     def _check_duplicate_code(self):
@@ -70,16 +70,13 @@ class PrintDcoumentType(models.Model):
             ]
             count_duplicate = self.search_count(criteria)
             if count_duplicate > 0:
-                error_message = """
-                Document Type: %s
+                error_message = f"""
+                Document Type: {self._description.lower()}
                 Context: Create or update document
-                Database ID: %s
+                Database ID: {self.id}
                 Problem: Dupilicate code
                 Solution: Change code
-                """ % (
-                    self._description.lower(),
-                    self.id,
-                )
+                """
                 raise UserError(error_message)
 
     def action_generate_code(self):
