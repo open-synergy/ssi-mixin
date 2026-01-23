@@ -81,21 +81,16 @@ class MixinStatusCheck(models.AbstractModel):
         localdict = self._get_status_check_localdict()
         try:
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
-            if "result" in localdict:
-                res = localdict["result"]
-        except Exception:
-            error_message = """
-                Document: %s
+            res = localdict.get("result", False)
+        except Exception as exc:
+            error_message = f"""
+                Document: {self._description.lower()}
                 Context: Evaluating status check template condition
-                Database ID: %s
+                Database ID: {self.id}
                 Problem: Python code error
-                Solution: Check status check template ID %s
-                """ % (
-                self._description.lower(),
-                self.id,
-                template.id,
-            )
-            raise UserError(_(error_message))
+                Solution: Check status check template ID {template.id}
+                """
+            raise UserError(_(error_message)) from exc
         return res
 
     def _get_template_status_check(self):
@@ -160,13 +155,13 @@ class MixinStatusCheck(models.AbstractModel):
 
     @api.model_create_multi
     def create(self, vals_list):
-        _super = super(MixinStatusCheck, self)
+        _super = super()
         results = _super.create(vals_list)
         results.action_reload_status_check_template()
         return results
 
     def write(self, values):
-        _super = super(MixinStatusCheck, self)
+        _super = super()
         _super.write(values)
         for record in self:
             include_field = False
