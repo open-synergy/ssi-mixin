@@ -13,10 +13,11 @@ _logger = logging.getLogger(__name__)
 
 try:
     import qrcode
-except (ImportError, IOError) as err:
+except (ImportError, OSError) as err:
     _logger.debug(err)
 
 
+# pylint: disable=R0903
 class MixinQRCode(models.AbstractModel):
     _name = "mixin.qr_code"
     _inherit = [
@@ -72,9 +73,6 @@ class MixinQRCode(models.AbstractModel):
     def _get_qr_standard_content(self):
         self.ensure_one()
         odoo_url = self.env["ir.config_parameter"].get_param("web.base.url")
-        document_url = "/web?#id=%d&view_type=form&model=%s" % (
-            self.id,
-            self._name,
-        )
+        document_url = f"/web?#id={self.id}&view_type=form&model={self._name}"
         full_url = odoo_url + document_url
         return full_url
