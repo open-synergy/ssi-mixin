@@ -2,12 +2,12 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import json
 
 from odoo import _, api, fields, models
-from odoo.tools.misc import formatLang, get_lang
+from odoo.tools.misc import get_lang
 
 
+# pylint: disable=R0903
 class CustomInfoValue(models.Model):
     _description = "Custom information value"
     _name = "custom_info.value"
@@ -57,7 +57,7 @@ class CustomInfoValue(models.Model):
     def _compute_field_name(self):
         """Get the technical name where the real typed value is stored."""
         for s in self:
-            s.field_name = "value_{!s}".format(s.property_id.field_type)
+            s.field_name = f"value_{s.property_id.field_type!s}"
 
     field_name = fields.Char(
         compute="_compute_field_name",
@@ -116,17 +116,19 @@ class CustomInfoValue(models.Model):
                 num_ids = 1
                 result = ""
                 for value in s.value_ids:
-                    result += "{}) {} \n".format(num_ids, value.name)
+                    result += f"{num_ids}) {value.name} \n"
                     num_ids += 1
                 s.value = result
             elif s.field_type in ["int", "float"]:
                 if s.field_type == "int":
-                    fmt = "%.{0}f".format(0)
+                    fmt = f"%.{0}f"
                 else:
-                    fmt = "%.{0}f".format(2)
+                    fmt = f"%.{2}f"
                 lang = get_lang(self.env)
                 amount = float(getattr(s, s.field_name, False))
-                formatted_amount = lang.format(fmt, amount, grouping=True, monetary=True)
+                formatted_amount = lang.format(
+                    fmt, amount, grouping=True, monetary=True
+                )
                 s.value = formatted_amount
             else:
                 s.value = getattr(s, s.field_name, False)

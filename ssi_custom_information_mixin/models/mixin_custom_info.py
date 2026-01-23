@@ -48,10 +48,10 @@ class MixinCustomInfo(models.AbstractModel):
             subfields = getattr(self, x2many_field)._fields.keys()
             for subfield in subfields:
                 field_onchange.setdefault(
-                    "{}.{}".format(x2many_field, subfield),
+                    f"{x2many_field}.{subfield}",
                     "",
                 )
-        return super(MixinCustomInfo, self).onchange(
+        return super().onchange(
             values,
             field_name,
             field_onchange,
@@ -116,7 +116,7 @@ class MixinCustomInfo(models.AbstractModel):
         automatically.
         """
         info_values = self.mapped("custom_info_ids")
-        res = super(MixinCustomInfo, self).unlink()
+        res = super().unlink()
         if res:
             info_values.unlink()
         return res
@@ -137,7 +137,7 @@ class MixinCustomInfo(models.AbstractModel):
             result = getattr(self, method_name)(template)
         except Exception as error:
             msg_err = _("Error evaluating conditions.\n %s") % error
-            raise UserError(msg_err)
+            raise UserError(msg_err) from error
         return result
 
     def _evaluate_custom_info_use_python(self, template):
@@ -148,7 +148,7 @@ class MixinCustomInfo(models.AbstractModel):
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             res = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error)
+            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
         return res
 
     def _evaluate_custom_info_use_domain(self, template):
