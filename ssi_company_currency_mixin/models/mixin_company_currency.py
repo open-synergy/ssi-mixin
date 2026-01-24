@@ -5,6 +5,7 @@
 from odoo import api, fields, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinCompanyCurrency(models.AbstractModel):
     _name = "mixin.company_currency"
     _description = "Company Currency Mixin"
