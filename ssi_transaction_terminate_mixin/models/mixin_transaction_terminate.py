@@ -38,8 +38,9 @@ class MixinTransactionTerminate(models.AbstractModel):
     )
 
     def _compute_policy(self):
-        _super = super(MixinTransactionTerminate, self)
-        _super._compute_policy()
+        _super = super()
+        result = _super._compute_policy()
+        return result
 
     terminate_ok = fields.Boolean(
         string="Can Terminate",
@@ -124,21 +125,19 @@ class MixinTransactionTerminate(models.AbstractModel):
             return True
 
         if not self.terminate_ok:
-            error_message = """
-            Document Type: %s
+            error_message = f"""
+            Document Type: {self._description.lower()}
             Context: Terminate document
-            Database ID: %s
+            Database ID: {self.id}
             Problem: Document is not allowed to terminate
             Solution: Check terminate policy prerequisite
-            """ % (
-                self._description.lower(),
-                self.id,
-            )
+            """
             raise UserError(_(error_message))
+        return True
 
     def _prepare_restart_data(self):
         self.ensure_one()
-        _super = super(MixinTransactionTerminate, self)
+        _super = super()
         result = _super._prepare_restart_data()
         result.update(
             {
@@ -148,13 +147,9 @@ class MixinTransactionTerminate(models.AbstractModel):
         return result
 
     @api.model
-    def fields_view_get(
-        self, view_id=None, view_type="form", toolbar=False, submenu=False
-    ):
-        result = super().fields_view_get(
-            view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
-        )
-        View = self.env["ir.ui.view"]
+    def get_view(self, view_id=None, view_type="form", **options):
+        result = super().get_view(view_id=view_id, view_type=view_type, **options)
+        view = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
 
@@ -171,8 +166,8 @@ class MixinTransactionTerminate(models.AbstractModel):
             view_arch = self._reorder_state_filter_on_search_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+            view = view.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = view.postprocess_and_fields(view_arch, self._name)
         result["arch"] = new_arch
         new_fields.update(result["fields"])
         result["fields"] = new_fields
