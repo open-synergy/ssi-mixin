@@ -14,13 +14,14 @@ class MixinDecorator(models.AbstractModel):
     _description = "SSI Decorator Mixin"
 
     @api.model
+    # pylint: disable=deprecated-odoo-model-method
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
         result = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
+        view = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
 
@@ -32,8 +33,8 @@ class MixinDecorator(models.AbstractModel):
             view_arch = self._run_insert_on_tree_view(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+            view = view.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = view.postprocess_and_fields(view_arch, self._name)
         result["arch"] = new_arch
         new_fields.update(result["fields"])
         result["fields"] = new_fields
@@ -91,6 +92,7 @@ class MixinDecorator(models.AbstractModel):
         return view_arch
 
     @api.model
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def _add_view_element(
         self, view_arch, qweb_template_xml_id, xpath, position="after", order=False
     ):
