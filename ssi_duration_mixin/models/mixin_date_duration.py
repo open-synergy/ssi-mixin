@@ -5,6 +5,7 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
+# pylint: disable=too-few-public-methods
 class MixinDateDuration(models.AbstractModel):
     _name = "mixin.date_duration"
     _description = "Date Duration Mixin"
@@ -94,6 +95,6 @@ class MixinDateDuration(models.AbstractModel):
     def _check_date_start_end(self):
         for record in self:
             if record.date_start and record.date_end:
-                strWarning = _("Date end must be greater than date start")
+                str_warning = _("Date end must be greater than date start")
                 if record.date_end < record.date_start:
-                    raise UserError(strWarning)
+                    raise UserError(str_warning)

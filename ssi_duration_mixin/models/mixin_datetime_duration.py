@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinDatetimeDuration(models.AbstractModel):
     _name = "mixin.datetime_duration"
     _description = "Datetime Duration Mixin"
