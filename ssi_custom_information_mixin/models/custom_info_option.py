@@ -5,11 +5,13 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class CustomInfoOption(models.Model):
     _description = "Available options for a custom property"
     _name = "custom_info.option"
     _order = "name"
 
+    # pylint: disable=duplicate-code
     name = fields.Char(
         index=True,
         translate=True,

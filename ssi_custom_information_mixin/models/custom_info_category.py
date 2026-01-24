@@ -5,11 +5,13 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class CustomInfoCategory(models.Model):
     _description = "Categorize custom info properties"
     _name = "custom_info.category"
     _order = "sequence, name"
 
+    # pylint: disable=duplicate-code
     name = fields.Char(
         index=True,
         translate=True,

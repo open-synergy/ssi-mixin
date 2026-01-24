@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class CustomInfoTemplateDetail(models.Model):
     _description = "Custom Information Template Detail"
     _name = "custom_info.template_detail"

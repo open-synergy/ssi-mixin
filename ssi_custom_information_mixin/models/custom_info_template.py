@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import test_python_expr
 
 
+# pylint: disable=too-few-public-methods
 class CustomInfoTemplate(models.Model):
     _description = "Custom information template"
     _name = "custom_info.template"
@@ -79,13 +80,15 @@ class CustomInfoTemplate(models.Model):
         comodel_name="custom_info.template_detail",
         inverse_name="template_id",
     )
+    display_name = fields.Char(
+        compute="_compute_display_name",
+        store=True,
+    )
 
-    def name_get(self):
-        result = []
+    @api.depends("model", "name")
+    def _compute_display_name(self):
         for record in self:
-            name = "[{}] {}".format(record.model, record.name)
-            result.append((record.id, name))
-        return result
+            record.display_name = f"[{record.model}] {record.name}"
 
     @api.constrains(
         "python_code",
