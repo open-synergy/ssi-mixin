@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval, test_python_expr
 
 
+# pylint: disable=too-few-public-methods
 class IrActionsReport(models.Model):
     _inherit = "ir.actions.report"
 
@@ -42,7 +43,7 @@ class IrActionsReport(models.Model):
         try:
             safe_eval(self.print_python_code, localdict, mode="exec", nocopy=True)
             result = localdict["result"]
-        except:  # noqa: E722
+        except Exception:
             result = False
         return result
 

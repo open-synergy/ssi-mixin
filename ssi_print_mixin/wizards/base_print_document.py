@@ -6,6 +6,7 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
+# pylint: disable=too-few-public-methods
 class BasePrintDocument(models.TransientModel):
     _name = "base.print_document"
     _description = "Select Report To Print"
@@ -111,7 +112,7 @@ class BasePrintDocument(models.TransientModel):
         active_ids = self.env.context.get("active_ids", False)
         active_model = self.env.context.get("active_model", "")
         self.env.context.get("print_multi")
-        # TODO: Assert when invalid active_id or active_model
+        # NOTE: Assert when invalid active_id or active_model
         result = self.env[active_model].browse(active_ids)
         return result
 
@@ -121,5 +122,4 @@ class BasePrintDocument(models.TransientModel):
             report_action = self.report_action_id.report_action(recordset)
             report_action.update({"close_on_report_download": True})
             return report_action
-        else:
-            raise UserError(_("No Report Selected"))
+        raise UserError(_("No Report Selected"))

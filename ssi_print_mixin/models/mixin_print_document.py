@@ -7,6 +7,7 @@ from lxml import etree, html
 from odoo import api, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinPrintDocument(models.AbstractModel):
     _name = "mixin.print_document"
     _description = "Print Document Mixin"
@@ -17,13 +18,15 @@ class MixinPrintDocument(models.AbstractModel):
     _print_button_position = "before"
 
     @api.model
+    # pylint: disable=deprecated-odoo-model-method
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
         result = super().fields_view_get(
             view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu
         )
-        View = self.env["ir.ui.view"]
+
+        view = self.env["ir.ui.view"]
 
         view_arch = etree.XML(result["arch"])
 
@@ -33,8 +36,8 @@ class MixinPrintDocument(models.AbstractModel):
             view_arch = self._view_add_tree_print_button(view_arch)
 
         if view_id and result.get("base_model", self._name) != self._name:
-            View = View.with_context(base_model_name=result["base_model"])
-        new_arch, new_fields = View.postprocess_and_fields(view_arch, self._name)
+            view = view.with_context(base_model_name=result["base_model"])
+        new_arch, new_fields = view.postprocess_and_fields(view_arch, self._name)
         result["arch"] = new_arch
         new_fields.update(result["fields"])
         result["fields"] = new_fields
@@ -42,15 +45,16 @@ class MixinPrintDocument(models.AbstractModel):
         return result
 
     @api.model
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def _add_view_element(
-        self, view_arch, qweb_template_xml_id, xpath, position="after", order=False
+        self, view_arch, qweb_template_xml_id, xpath, position="after", order=None
     ):
         additional_element = self.env["ir.qweb"]._render(qweb_template_xml_id)
         if len(view_arch.xpath(xpath)) == 0:
             return view_arch
         node_xpath = view_arch.xpath(xpath)[0]
         for frag in html.fragments_fromstring(additional_element):
-            if order:
+            if order is not None:
                 frag.set("order", str(order))
             if position == "after":
                 node_xpath.addnext(frag)
