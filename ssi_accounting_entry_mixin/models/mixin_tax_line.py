@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods,duplicate-code
 class MixinTaxLine(models.AbstractModel):
     _name = "mixin.tax_line"
     _description = "Tax Line Mixin"

@@ -5,6 +5,7 @@
 from odoo import api, fields, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinAccountMoveDoubleLine(models.AbstractModel):
     _name = "mixin.account_move_double_line"
     _description = "Accounting Move Double Line Mixin"
@@ -47,15 +48,16 @@ class MixinAccountMoveDoubleLine(models.AbstractModel):
 
     def _create_standard_ml(self):
         self.ensure_one()
-        ML = self.env["account.move.line"]
-        debit_ml = ML.with_context(check_move_validity=False).create(
+        move_line_obj = self.env["account.move.line"]
+        debit_ml = move_line_obj.with_context(check_move_validity=False).create(
             self._prepare_standard_ml("debit")
         )
-        credit_ml = ML.with_context(check_move_validity=False).create(
+        credit_ml = move_line_obj.with_context(check_move_validity=False).create(
             self._prepare_standard_ml("credit")
         )
         return debit_ml, credit_ml
 
+    # pylint: disable=duplicate-code
     def _prepare_standard_ml(self, direction):
         self.ensure_one()
         debit, credit, amount_currency = self._get_standard_amount(direction)
@@ -243,6 +245,10 @@ class MixinAccountMoveDoubleLine(models.AbstractModel):
     def _get_standard_amount(self, direction):
         self.ensure_one()
         debit = credit = amount = 0.0
+        amount_currency = 0.0
+        currency = False
+        company_currency = False
+
         if direction == "debit":
             amount_currency = getattr(self, self._debit_amount_currency_field_name)
             currency = getattr(self, self._debit_currency_id_field_name)
@@ -273,6 +279,7 @@ class MixinAccountMoveDoubleLine(models.AbstractModel):
         return debit, credit, amount_currency
 
 
+# pylint: disable=too-few-public-methods
 class MixinAccountMoveDoubleLineWithField(models.AbstractModel):
     _name = "mixin.account_move_double_line_with_field"
     _description = "Accounting Move Double Line With Field Mixin"

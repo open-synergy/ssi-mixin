@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinAccountMoveSingleLine(models.AbstractModel):
     _name = "mixin.account_move_single_line"
     _description = "Accounting Move Single Line Mixin"
@@ -31,12 +32,13 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
 
     def _create_standard_ml(self):
         self.ensure_one()
-        ML = self.env["account.move.line"]
-        ml = ML.with_context(check_move_validity=False).create(
+        move_line_obj = self.env["account.move.line"]
+        ml = move_line_obj.with_context(check_move_validity=False).create(
             self._prepare_standard_ml()
         )
         return ml
 
+    # pylint: disable=duplicate-code
     def _prepare_standard_ml(self):
         self.ensure_one()
         debit, credit, amount_currency = self._get_standard_amount()
@@ -164,6 +166,7 @@ class MixinAccountMoveSingleLine(models.AbstractModel):
         return debit, credit, amount_currency
 
 
+# pylint: disable=too-few-public-methods
 class MixinAccountMoveSingleLineWithField(models.AbstractModel):
     _name = "mixin.account_move_single_line_with_field"
     _description = "Accounting Move Single Line With Field Mixin"

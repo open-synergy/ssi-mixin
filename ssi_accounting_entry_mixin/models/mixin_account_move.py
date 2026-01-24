@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinAccountMove(models.AbstractModel):
     _name = "mixin.account_move"
     _description = "Accounting Entry Header Mixin"
@@ -25,8 +26,8 @@ class MixinAccountMove(models.AbstractModel):
 
     def _create_standard_move(self):
         self.ensure_one()
-        Move = self.env["account.move"]
-        move = Move.with_context(check_move_validity=False).create(
+        move_obj = self.env["account.move"]
+        move = move_obj.with_context(check_move_validity=False).create(
             self._prepare_standard_move()
         )
         self.write(
@@ -68,6 +69,7 @@ class MixinAccountMove(models.AbstractModel):
         )
         move.button_cancel()
         move.with_context(force_delete=True).unlink()
+        return True
 
     def _get_standard_tax_lines(self):
         self.ensure_one()
@@ -148,6 +150,7 @@ class MixinAccountMove(models.AbstractModel):
         return vals
 
 
+# pylint: disable=too-few-public-methods
 class MixinTransactionAccountMoveWithField(models.AbstractModel):
     _name = "mixin.transaction_account_move_with_field"
     _description = "Accounting Entry Header Mixin - With Field"
