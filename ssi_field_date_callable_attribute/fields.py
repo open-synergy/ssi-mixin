@@ -9,24 +9,27 @@ from odoo import fields
 _logger = logging.getLogger(__name__)
 
 
+# pylint: disable=too-few-public-methods
 class DateCallable(fields.Date):
+    # pylint: disable=access-member-before-definition,attribute-defined-outside-init
     def _setup_attrs(self, model, name):
-        super()._setup_attrs(model, name)
+        result = super()._setup_attrs(model, name)
         readonly_attr = self.readonly
-        if self.readonly and callable(readonly_attr):
+        if readonly_attr and callable(readonly_attr):
             self.readonly = readonly_attr(model)
 
         required_attr = self.required
-        if self.required and callable(readonly_attr):
+        if required_attr and callable(required_attr):
             self.required = required_attr(model)
 
         string_attr = self.string
-        if self.string and callable(string_attr):
+        if string_attr and callable(string_attr):
             self.string = string_attr(model)
 
         states_attr = self.states
-        if self.states and callable(states_attr):
+        if states_attr and callable(states_attr):
             self.states = states_attr(model)
+        return result
 
 
 fields.DateCallable = DateCallable
