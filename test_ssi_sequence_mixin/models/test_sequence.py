@@ -163,7 +163,7 @@ class TestSequence(models.Model):
 
     @api.model
     def create(self, values):
-        _super = super(TestSequence, self)
+        _super = super()
         result = _super.create(values)
         result._create_sequence()
         return result
