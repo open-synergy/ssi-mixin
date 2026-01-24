@@ -7,6 +7,7 @@ from odoo import api, fields, models
 from odoo.addons.ssi_decorator import ssi_decorator
 
 
+# pylint: disable=too-few-public-methods
 class TestTransactionMixin(models.Model):
     _name = "test.transaction_mixin"
     _description = "Test Transaction Mixin"
@@ -69,7 +70,7 @@ class TestTransactionMixin(models.Model):
 
     @api.model
     def _get_policy_field(self):
-        res = super(TestTransactionMixin, self)._get_policy_field()
+        res = super()._get_policy_field()
         policy_field = [
             "confirm_ok",
             "approve_ok",

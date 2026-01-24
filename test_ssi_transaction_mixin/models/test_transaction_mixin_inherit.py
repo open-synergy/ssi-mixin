@@ -7,6 +7,7 @@ from odoo import fields, models
 from odoo.addons.ssi_decorator import ssi_decorator
 
 
+# pylint: disable=too-few-public-methods
 class TestTransactionMixin(models.Model):
     _inherit = "test.transaction_mixin"
 
@@ -82,10 +83,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_restart_action()
     def _set_pre_restart(self):
-        _super = super(TestTransactionMixin, self)
-        _super._set_pre_restart()
+        _super = super()
+        result = _super._set_pre_restart()
         for record in self:
             record.str_pre_restart_3 = "Pre-Restart 3"
+        return result
 
     @ssi_decorator.pre_confirm_action()
     def _set_pre_confirm_2(self):
@@ -94,10 +96,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_confirm_action()
     def _set_pre_confirm(self):
-        _super = super(TestTransactionMixin, self)
-        _super._set_pre_confirm()
+        _super = super()
+        result = _super._set_pre_confirm()
         for record in self:
             record.str_pre_confirm_3 = "Pre-Confirm 3"
+        return result
 
     @ssi_decorator.pre_cancel_action()
     def _pre_cancel_2(self):
@@ -106,10 +109,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_cancel_action()
     def _pre_cancel_1(self):
-        _super = super(TestTransactionMixin, self)
-        _super._pre_cancel_1()
+        _super = super()
+        result = _super._pre_cancel_1()
         for record in self:
             record.str_pre_cancel_3 = "Pre-Cancel 3"
+        return result
 
     @ssi_decorator.pre_open_action()
     def _pre_open_2(self):
@@ -118,10 +122,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_open_action()
     def _pre_open_1(self):
-        _super = super(TestTransactionMixin, self)
-        _super._pre_open_1()
+        _super = super()
+        result = _super._pre_open_1()
         for record in self:
             record.str_pre_open_3 = "Pre-Open 3"
+        return result
 
     @ssi_decorator.pre_done_action()
     def _pre_done_2(self):
@@ -130,10 +135,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_done_action()
     def _pre_done_1(self):
-        _super = super(TestTransactionMixin, self)
-        _super._pre_done_1()
+        _super = super()
+        result = _super._pre_done_1()
         for record in self:
             record.str_pre_done_3 = "Pre-Done 3"
+        return result
 
     @ssi_decorator.pre_terminate_action()
     def _pre_terminate_2(self):
@@ -142,10 +148,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_terminate_action()
     def _pre_terminate_1(self):
-        _super = super(TestTransactionMixin, self)
-        _super._pre_terminate_1()
+        _super = super()
+        result = _super._pre_terminate_1()
         for record in self:
             record.str_pre_terminate_3 = "Pre-Terminate 3"
+        return result
 
     @ssi_decorator.pre_approve_action()
     def _pre_approve_2(self):
@@ -154,10 +161,11 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_approve_action()
     def _pre_approve_1(self):
-        _super = super(TestTransactionMixin, self)
-        _super._pre_approve_1()
+        _super = super()
+        result = _super._pre_approve_1()
         for record in self:
             record.str_pre_approve_3 = "Pre-Approve 3"
+        return result
 
     @ssi_decorator.pre_reject_action()
     def _pre_reject_2(self):
@@ -166,7 +174,8 @@ class TestTransactionMixin(models.Model):
 
     @ssi_decorator.pre_reject_action()
     def _pre_reject_1(self):
-        _super = super(TestTransactionMixin, self)
-        _super._pre_reject_1()
+        _super = super()
+        result = _super._pre_reject_1()
         for record in self:
             record.str_pre_reject_3 = "Pre-Reject 3"
+        return result
