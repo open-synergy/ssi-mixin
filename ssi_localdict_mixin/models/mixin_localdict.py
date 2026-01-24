@@ -10,6 +10,7 @@ from odoo import models, tools
 from odoo.tools.float_utils import float_compare
 
 
+# pylint: disable=too-few-public-methods
 class MixinLocaldict(models.AbstractModel):
     _name = "mixin.localdict"
     _description = "Mixin for Object With Localdict"
