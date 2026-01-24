@@ -15,7 +15,7 @@ class TestPolicy(models.Model):
 
     @api.model
     def _get_policy_field(self):
-        res = super(TestPolicy, self)._get_policy_field()
+        res = super()._get_policy_field()
         policy_field = [
             "confirm_ok",
             "open_ok",
@@ -63,8 +63,9 @@ class TestPolicy(models.Model):
     )
 
     def _compute_policy(self):
-        _super = super(TestPolicy, self)
-        _super._compute_policy()
+        _super = super()
+        result = _super._compute_policy()
+        return result
 
     # Policy Field
     confirm_ok = fields.Boolean(
@@ -95,7 +96,7 @@ class TestPolicy(models.Model):
     def onchange_policy_template_id(self):
         if self.type_id:
             template_id = self._get_template_policy()
-            self.policy_template_id = template_id
+            self.update({"policy_template_id": template_id})
 
     def _prepare_confirm_data(self):
         self.ensure_one()
