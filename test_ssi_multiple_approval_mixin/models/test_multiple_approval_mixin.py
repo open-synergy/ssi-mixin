@@ -72,8 +72,9 @@ class TestMultipleApprovalMixin(models.Model):
             document.write({"state": "draft"})
 
     def action_approve_approval(self):
-        _super = super(TestMultipleApprovalMixin, self)
-        _super.action_approve_approval()
+        _super = super()
+        result = _super.action_approve_approval()
         for document in self:
             if document.approved:
                 document.action_open()
+        return result
