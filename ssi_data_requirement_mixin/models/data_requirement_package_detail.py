@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class DataRequirementPackageDetail(models.Model):
     _name = "data_requirement_package.detail"
     _description = "Data Requirement Package Detail"
@@ -16,6 +17,7 @@ class DataRequirementPackageDetail(models.Model):
         required=True,
         ondelete="cascade",
     )
+    # pylint: disable=duplicate-code
     sequence = fields.Integer(
         string="Sequence",
         default=10,

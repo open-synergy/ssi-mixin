@@ -29,6 +29,7 @@ class MixinDataRequirement(models.AbstractModel):
         string="Data Requirements",
         comodel_name="data_requirement",
     )
+    # pylint: disable=duplicate-code
     data_requirement_status = fields.Selection(
         string="Data Requirement Status",
         selection=[
@@ -63,6 +64,7 @@ class MixinDataRequirement(models.AbstractModel):
         "data_requirement_ids",
         "data_requirement_ids.state",
     )
+    # pylint: disable=duplicate-code
     def _compute_data_requirement_status(self):
         for record in self:
             result = "not_needed"
@@ -71,10 +73,7 @@ class MixinDataRequirement(models.AbstractModel):
                 record.data_requirement_ids.filtered(lambda r: r.state == "done")
             )
 
-            if (
-                num_of_data_requirement != 0
-                and num_of_data_requirement != num_of_done_data_requirement
-            ):
+            if num_of_data_requirement not in (0, num_of_done_data_requirement):
                 result = "open"
             elif (
                 num_of_data_requirement != 0
@@ -186,3 +185,4 @@ class MixinDataRequirement(models.AbstractModel):
             )
 
             self.write({"data_requirement_ids": [(4, dr.id)]})
+        return True

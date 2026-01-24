@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class DataRequirementType(models.Model):
     _name = "data_requirement_type"
     _description = "Data Requirement Type"

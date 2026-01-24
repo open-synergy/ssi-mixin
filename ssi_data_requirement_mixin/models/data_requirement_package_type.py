@@ -5,6 +5,7 @@
 from odoo import fields, models
 
 
+# pylint: disable=too-few-public-methods
 class DataRequirementPackageType(models.Model):
     _name = "data_requirement_package_type"
     _description = "Data Requirement Package Type"

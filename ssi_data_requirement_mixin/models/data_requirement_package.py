@@ -117,6 +117,7 @@ class DataRequirementPackage(models.Model):
         comodel_name="data_requirement",
         inverse_name="package_id",
     )
+    # pylint: disable=duplicate-code
     data_requirement_status = fields.Selection(
         string="Data Requirement Status",
         selection=[
@@ -158,6 +159,7 @@ class DataRequirementPackage(models.Model):
         "data_requirement_ids",
         "data_requirement_ids.state",
     )
+    # pylint: disable=duplicate-code
     def _compute_data_requirement_status(self):
         for record in self:
             result = "not_needed"
@@ -166,10 +168,7 @@ class DataRequirementPackage(models.Model):
                 record.data_requirement_ids.filtered(lambda r: r.state == "done")
             )
 
-            if (
-                num_of_data_requirement != 0
-                and num_of_data_requirement != num_of_done_data_requirement
-            ):
+            if num_of_data_requirement not in (0, num_of_done_data_requirement):
                 result = "open"
             elif (
                 num_of_data_requirement != 0
@@ -214,6 +213,7 @@ class DataRequirementPackage(models.Model):
 
         for detail in self.type_id.detail_ids:
             detail._create_package_detail(self)
+        return True
 
     def _create_data_requirement(self):
         self.ensure_one()
