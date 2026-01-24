@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import SUPERUSER_ID, _, api, fields, models
-from odoo.exceptions import ValidationError, Warning as UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval, test_python_expr
 
 
@@ -130,7 +130,7 @@ class PolicyTemplateDetail(models.Model):
                     result_user = getattr(self, method_name)(document)
                 except Exception as error:
                     msg_err = _("Error evaluating conditions.\n %s") % error
-                    raise UserError(msg_err)
+                    raise UserError(msg_err) from error
 
         if self.restrict_additional:
             localdict = self._get_localdict(document)
@@ -141,7 +141,7 @@ class PolicyTemplateDetail(models.Model):
                 result_additional = localdict["result"]
             except Exception as error:
                 msg_err = _("Error evaluating conditions.\n %s") % error
-                raise UserError(msg_err)
+                raise UserError(msg_err) from error
 
         return result_state and result_user and result_additional
 
@@ -185,7 +185,7 @@ class PolicyTemplateDetail(models.Model):
             safe_eval(self.python_code, localdict, mode="exec", nocopy=True)
             result = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error)
+            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
         return result
 
     def _evaluate_states(self, document):

@@ -3,6 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import api, fields, models
+
+# pylint: disable=too-few-public-methods
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import test_python_expr
 
@@ -80,12 +82,15 @@ class PolicyTemplate(models.Model):
         copy=True,
     )
 
-    def name_get(self):
-        result = []
+    display_name = fields.Char(
+        compute="_compute_display_name",
+        store=True,
+    )
+
+    @api.depends("model", "name")
+    def _compute_display_name(self):
         for record in self:
-            name = "[{}] {}".format(record.model, record.name)
-            result.append((record.id, name))
-        return result
+            record.display_name = f"[{record.model}] {record.name}"
 
     @api.constrains(
         "python_code",
