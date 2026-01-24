@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import test_python_expr
 
 
+# pylint: disable=too-few-public-methods
 class ApprovalTemplateDetail(models.Model):
     _name = "approval.template_detail"
     _description = "Approval Template Detail"

@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 
 
+# pylint: disable=too-few-public-methods
 class ApprovalApproval(models.Model):
     _name = "approval.approval"
     _description = "Workflow Policy"
@@ -138,9 +139,9 @@ class ApprovalApproval(models.Model):
                 python_condition, globals_dict=localdict, mode="exec", nocopy=True
             )
             result = localdict
-        except Exception:
+        except Exception as exc:
             msg_err = "Error when execute python code"
-            raise UserError(_(msg_err))
+            raise UserError(_(msg_err)) from exc
 
         return result
 

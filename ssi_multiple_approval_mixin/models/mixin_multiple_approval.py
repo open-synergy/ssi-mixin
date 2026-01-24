@@ -157,7 +157,7 @@ class MixinMultipleApproval(models.AbstractModel):
     def _get_approvals_approved(self, approvals):
         if not approvals:
             return False
-        return not any([s != "approved" for s in approvals.mapped("status")])
+        return not any(s != "approved" for s in approvals.mapped("status"))
 
     @api.model
     def _get_approvals_rejected(self, approvals):
@@ -166,6 +166,7 @@ class MixinMultipleApproval(models.AbstractModel):
         for rec in approvals:
             if rec.status == "rejected":
                 return True
+        return False
 
     def _prepare_domain_need_validation(self):
         self.ensure_one()
@@ -206,6 +207,7 @@ class MixinMultipleApproval(models.AbstractModel):
 
     @api.model
     def _search_approved(self, operator, value):
+        # pylint: disable=no-search-all
         rec = self.search([])
         if operator == "=":
             rec = rec.filtered(lambda r: r.approval_ids and r.rejected == value)
@@ -224,6 +226,7 @@ class MixinMultipleApproval(models.AbstractModel):
 
     @api.model
     def _search_need_validation(self, operator, value):
+        # pylint: disable=no-search-all
         rec = self.search([])
         if operator == "=":
             rec = rec.filtered(lambda r: r.approval_ids and r.need_validation == value)
@@ -247,7 +250,7 @@ class MixinMultipleApproval(models.AbstractModel):
             result = getattr(self, method_name)(template)
         except Exception as error:
             msg_err = _("Error evaluating approval conditions.\n %s") % error
-            raise UserError(msg_err)
+            raise UserError(msg_err) from error
         return result
 
     def _evaluate_approval_use_python(self, template):
@@ -258,7 +261,7 @@ class MixinMultipleApproval(models.AbstractModel):
             safe_eval(template.python_code, localdict, mode="exec", nocopy=True)
             res = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error)
+            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
         return res
 
     def _evaluate_approval_use_domain(self, template):
@@ -273,11 +276,11 @@ class MixinMultipleApproval(models.AbstractModel):
 
     @api.model
     def _get_under_approval_exceptions(self):
-        fields = [
+        exception_fields = [
             "message_last_post",
             "message_follower_ids",
         ]
-        return fields
+        return exception_fields
 
     def _check_allow_write_under_approval(self, vals):
         exceptions = self._get_under_approval_exceptions()
@@ -323,7 +326,7 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def _prepare_approve_action_notification(self):
         self.ensure_one()
-        msg = "%s %s approved" % (self._description, self.display_name)
+        msg = f"{self._description} {self.display_name} approved"
         return msg
 
     def _check_all_approve(self):
@@ -399,16 +402,14 @@ class MixinMultipleApproval(models.AbstractModel):
             return True
 
         if not self.approve_ok:
-            error_message = """
-            Context: Approve %s
-            Database ID: %s
+            error_message = f"""
+            Context: Approve {self._description.lower()}
+            Database ID: {self.id}
             Problem: Document is not allowed to approve
             Solution: Check approve policy prerequisite
-            """ % (
-                self._description.lower(),
-                self.id,
-            )
+            """
             raise UserError(_(error_message))
+        return True
 
     def _run_pre_reject_check(self):
         self.ensure_one()
@@ -469,7 +470,7 @@ class MixinMultipleApproval(models.AbstractModel):
 
     def _prepare_reject_action_notification(self):
         self.ensure_one()
-        msg = "%s %s rejected" % (self._description, self.display_name)
+        msg = f"{self._description} {self.display_name} rejected"
         return msg
 
     def _check_reject_policy(self):
@@ -482,16 +483,14 @@ class MixinMultipleApproval(models.AbstractModel):
             return True
 
         if not self.reject_ok:
-            error_message = """
-            Context: Reject %s
-            Database ID: %s
+            error_message = f"""
+            Context: Reject {self._description.lower()}
+            Database ID: {self.id}
             Problem: Document is not allowed to reject
             Solution: Check reject policy prerequisite
-            """ % (
-                self._description.lower(),
-                self.id,
-            )
+            """
             raise UserError(_(error_message))
+        return True
 
     def _check_restart_approval_policy_policy(self):
         self.ensure_one()
@@ -503,16 +502,14 @@ class MixinMultipleApproval(models.AbstractModel):
             return True
 
         if not self.restart_approval_ok:
-            error_message = """
-            Context: Restart approval %s
-            Database ID: %s
+            error_message = f"""
+            Context: Restart approval {self._description.lower()}
+            Database ID: {self.id}
             Problem: Document is not allowed to restart approval
             Solution: Check restart approval policy prerequisite
-            """ % (
-                self._description.lower(),
-                self.id,
-            )
+            """
             raise UserError(_(error_message))
+        return True
 
     def action_reload_approval_template(self):
         for rec in self.sudo():
@@ -636,6 +633,7 @@ class MixinMultipleApproval(models.AbstractModel):
         return super().unlink()
 
     @api.model
+    # pylint: disable=deprecated-odoo-model-method
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
@@ -652,11 +650,11 @@ class MixinMultipleApproval(models.AbstractModel):
                 new_node = etree.fromstring(str_element)
                 node.addnext(new_node)
 
-            View = self.env["ir.ui.view"]
+            view = self.env["ir.ui.view"]
 
             if view_id and res.get("base_model", self._name) != self._name:
-                View = View.with_context(base_model_name=res["base_model"])
-            new_arch, new_fields = View.postprocess_and_fields(doc, self._name)
+                view = view.with_context(base_model_name=res["base_model"])
+            new_arch, new_fields = view.postprocess_and_fields(doc, self._name)
             res["arch"] = new_arch
             new_fields.update(res["fields"])
             res["fields"] = new_fields
