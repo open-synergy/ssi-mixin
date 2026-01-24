@@ -5,6 +5,7 @@
 from odoo import api, fields, models
 
 
+# pylint: disable=too-few-public-methods
 class MixinPricelist(models.AbstractModel):
     _name = "mixin.pricelist"
     _description = "Pricelist Mixin"
@@ -18,14 +19,14 @@ class MixinPricelist(models.AbstractModel):
         "currency_id",
     )
     def _compute_allowed_pricelist_ids(self):
-        Pricelist = self.env["product.pricelist"]
+        pricelist_obj = self.env["product.pricelist"]
         for record in self:
             result = False
             if record.currency_id:
                 criteria = [
                     ("currency_id", "=", record.currency_id.id),
                 ]
-                result = Pricelist.search(criteria).ids
+                result = pricelist_obj.search(criteria).ids
             record.allowed_pricelist_ids = result
 
     allowed_pricelist_ids = fields.Many2many(
