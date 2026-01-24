@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0-standalone.html).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
 
 
 class TestStatusCheck(models.Model):
@@ -171,14 +170,15 @@ class TestStatusCheck(models.Model):
         "user_id",
     )
     def onchange_status_check_template_id(self):
-        self.status_check_template_id = False
         if self.user_id:
             template_id = self._get_template_status_check()
-            self.status_check_template_id = template_id
+            self.update({"status_check_template_id": template_id})
+        else:
+            self.update({"status_check_template_id": False})
 
     @api.model
     def create(self, values):
-        _super = super(TestStatusCheck, self)
+        _super = super()
         result = _super.create(values)
         template_id = result._get_template_status_check()
         if template_id:
@@ -191,20 +191,28 @@ class TestStatusCheck(models.Model):
         return result
 
     def unlink(self):
-        strWarning = _("You can only delete data on draft state")
+        str_warning = _("You can only delete data on draft state")
         force_unlink = self.env.context.get("force_unlink", False)
-        for record in self:
-            if record.state != "draft" and not force_unlink:
-                raise UserError(strWarning)
-        _super = super(TestStatusCheck, self)
-        _super.unlink()
+        if not force_unlink:
+            self.filtered(lambda r: r.state != "draft").mapped(
+                lambda r: r.message_post(body=str_warning)
+            )
+            records_to_delete = self.filtered(lambda r: r.state == "draft")
+        else:
+            records_to_delete = self
+        _super = super(TestStatusCheck, records_to_delete)
+        result = _super.unlink()
+        return result
 
-    def name_get(self):
-        result = []
+    display_name = fields.Char(
+        compute="_compute_display_name",
+        store=True,
+    )
+
+    @api.depends("name")
+    def _compute_display_name(self):
         for record in self:
             if record.name == "/":
-                name = "*" + str(record.id)
+                record.display_name = "*" + str(record.id)
             else:
-                name = record.name
-            result.append((record.id, name))
-        return result
+                record.display_name = record.name
