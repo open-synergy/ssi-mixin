@@ -1,32 +1,22 @@
-setup:
-  steps:
-    - step: "Create partner"
-      action: "create"
-      model: "res.partner"
-      save_as: "partner"
-      values:
-        name: "Test Data Requirement OU Partner"
-        is_company: true
-
-    - step: "Create data requirement type"
-      action: "create"
-      model: "data_requirement_type"
-      save_as: "dr_type"
-      values:
-        name: "OU Test Data Requirement Type"
-        code: "OUDRT001"
-
-    - step: "Create data requirement package type"
-      action: "create"
-      model: "data_requirement_package_type"
-      save_as: "drp_type"
-      values:
-        name: "OU Test Data Requirement Package Type"
-        code: "OUDRPT001"
-
 scenarios:
   - name: "Data Requirement - Operating Unit propagation"
     steps:
+      - step: "Create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Data Requirement OU Partner 1"
+          is_company: true
+
+      - step: "Create data requirement type"
+        action: "create"
+        model: "data_requirement_type"
+        save_as: "dr_type"
+        values:
+          name: "OU Test Data Requirement Type 1"
+          code: "OUDRT001"
+
       - step: "Create data_requirement with operating_unit_id"
         action: "create"
         model: "data_requirement"
@@ -48,6 +38,22 @@ scenarios:
 
   - name: "Data Requirement Package - Operating Unit propagation"
     steps:
+      - step: "Create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Data Requirement OU Partner 2"
+          is_company: true
+
+      - step: "Create data requirement package type"
+        action: "create"
+        model: "data_requirement_package_type"
+        save_as: "drp_type"
+        values:
+          name: "OU Test Data Requirement Package Type 1"
+          code: "OUDRPT001"
+
       - step: "Create data_requirement_package with operating_unit_id"
         action: "create"
         model: "data_requirement_package"
@@ -70,6 +76,22 @@ scenarios:
 
   - name: "Data Requirement - ir.rule restricts access by operating unit"
     steps:
+      - step: "Create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Data Requirement OU Partner 3"
+          is_company: true
+
+      - step: "Create data requirement type"
+        action: "create"
+        model: "data_requirement_type"
+        save_as: "dr_type"
+        values:
+          name: "OU Test Data Requirement Type 2"
+          code: "OUDRT002"
+
       - step: "Create data_requirement with main operating unit"
         action: "create"
         model: "data_requirement"
@@ -119,6 +141,22 @@ scenarios:
 
   - name: "Data Requirement Package - ir.rule restricts access by operating unit"
     steps:
+      - step: "Create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Data Requirement OU Partner 4"
+          is_company: true
+
+      - step: "Create data requirement package type"
+        action: "create"
+        model: "data_requirement_package_type"
+        save_as: "drp_type"
+        values:
+          name: "OU Test Data Requirement Package Type 2"
+          code: "OUDRPT002"
+
       - step: "Create data_requirement_package with main operating unit"
         action: "create"
         model: "data_requirement_package"
