@@ -1,0 +1,169 @@
+setup:
+  steps:
+    - step: "Create partner"
+      action: "create"
+      model: "res.partner"
+      save_as: "partner"
+      values:
+        name: "Test Data Requirement OU Partner"
+        is_company: true
+
+    - step: "Create data requirement type"
+      action: "create"
+      model: "data_requirement_type"
+      save_as: "dr_type"
+      values:
+        name: "OU Test Data Requirement Type"
+        code: "OUDRT001"
+
+    - step: "Create data requirement package type"
+      action: "create"
+      model: "data_requirement_package_type"
+      save_as: "drp_type"
+      values:
+        name: "OU Test Data Requirement Package Type"
+        code: "OUDRPT001"
+
+scenarios:
+  - name: "Data Requirement - Operating Unit propagation"
+    steps:
+      - step: "Create data_requirement with operating_unit_id"
+        action: "create"
+        model: "data_requirement"
+        save_as: "data_requirement"
+        as_user: "base.user_admin"
+        values:
+          partner_id: "REC: partner.id"
+          type_id: "REC: dr_type.id"
+          date_commitment: "2024-06-01"
+          operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+      - step: "Assert data_requirement operating_unit_id is set"
+        action: "assert"
+        target: "data_requirement"
+        asserts:
+          operating_unit_id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "Data Requirement Package - Operating Unit propagation"
+    steps:
+      - step: "Create data_requirement_package with operating_unit_id"
+        action: "create"
+        model: "data_requirement_package"
+        save_as: "data_requirement_package"
+        as_user: "base.user_admin"
+        values:
+          partner_id: "REC: partner.id"
+          type_id: "REC: drp_type.id"
+          date: "2024-06-01"
+          date_commitment: "2024-06-15"
+          operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+      - step: "Assert data_requirement_package operating_unit_id is set"
+        action: "assert"
+        target: "data_requirement_package"
+        asserts:
+          operating_unit_id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "Data Requirement - ir.rule restricts access by operating unit"
+    steps:
+      - step: "Create data_requirement with main operating unit"
+        action: "create"
+        model: "data_requirement"
+        save_as: "data_requirement"
+        as_user: "base.user_admin"
+        values:
+          partner_id: "REC: partner.id"
+          type_id: "REC: dr_type.id"
+          date_commitment: "2024-06-01"
+          operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+      - step: "Create user restricted to a different operating unit"
+        action: "create"
+        model: "res.users"
+        save_as: "restricted_user"
+        values:
+          name: "Restricted Data Requirement OU User"
+          login: "restricted_data_requirement_ou_user@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+                - "REF: ssi_data_requirement_mixin.data_requirement_user_group"
+                - "REF:
+                  ssi_data_requirement_mixin_operating_unit.data_requirement_ou_group"
+          assigned_operating_unit_ids:
+            - - 6
+              - 0
+              - - "REF: operating_unit.b2b_operating_unit"
+
+      - step: "Restricted user cannot see the record"
+        action: "search"
+        model: "data_requirement"
+        domain: [["id", "=", "REC: data_requirement.id"]]
+        save_as: "search_result"
+        as_user: "restricted_user"
+        expect_count: 0
+
+      - step: "Restricted user cannot write the record"
+        action: "write"
+        target: "data_requirement"
+        as_user: "restricted_user"
+        expect_error:
+          type: "AccessError"
+        values:
+          date_commitment: "2024-07-01"
+
+  - name: "Data Requirement Package - ir.rule restricts access by operating unit"
+    steps:
+      - step: "Create data_requirement_package with main operating unit"
+        action: "create"
+        model: "data_requirement_package"
+        save_as: "data_requirement_package"
+        as_user: "base.user_admin"
+        values:
+          partner_id: "REC: partner.id"
+          type_id: "REC: drp_type.id"
+          date: "2024-06-01"
+          date_commitment: "2024-06-15"
+          operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+      - step: "Create user restricted to a different operating unit"
+        action: "create"
+        model: "res.users"
+        save_as: "restricted_user"
+        values:
+          name: "Restricted Data Requirement Package OU User"
+          login: "restricted_data_requirement_package_ou_user@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+                - "REF:
+                  ssi_data_requirement_mixin.data_requirement_package_user_group"
+                - "REF:
+                  ssi_data_requirement_mixin_operating_unit.data_requirement_package_ou_group"
+          assigned_operating_unit_ids:
+            - - 6
+              - 0
+              - - "REF: operating_unit.b2b_operating_unit"
+
+      - step: "Restricted user cannot see the record"
+        action: "search"
+        model: "data_requirement_package"
+        domain: [["id", "=", "REC: data_requirement_package.id"]]
+        save_as: "search_result"
+        as_user: "restricted_user"
+        expect_count: 0
+
+      - step: "Restricted user cannot write the record"
+        action: "write"
+        target: "data_requirement_package"
+        as_user: "restricted_user"
+        expect_error:
+          type: "AccessError"
+        values:
+          date_commitment: "2024-07-01"
