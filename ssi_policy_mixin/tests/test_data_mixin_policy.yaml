@@ -34,8 +34,8 @@ setup:
 
 scenarios:
   - name:
-      "allowed_policy_template_ids only lists policy.template records scoped
-      to the document's own model"
+      "allowed_policy_template_ids only lists policy.template records scoped to the
+      document's own model"
     steps:
       - step: "Create a policy.template for model test.policy"
         action: "create"
@@ -62,8 +62,8 @@ scenarios:
           name: "Policy Scope Record"
 
       - step:
-          "Assert allowed_policy_template_ids contains exactly the
-          test.policy template, not the unrelated-model one"
+          "Assert allowed_policy_template_ids contains exactly the test.policy template,
+          not the unrelated-model one"
         action: "assert"
         target: "record"
         asserts:
@@ -73,21 +73,24 @@ scenarios:
             expected_records:
               - "REC: template_test_policy"
 
-      - step: "Deactivate the test.policy template so it does not leak into later scenarios"
+      - step:
+          "Deactivate the test.policy template so it does not leak into later scenarios"
         action: "write"
         target: "template_test_policy"
         values:
           active: false
 
-      - step: "Deactivate the unrelated-model template so it does not leak into later scenarios"
+      - step:
+          "Deactivate the unrelated-model template so it does not leak into later
+          scenarios"
         action: "write"
         target: "template_other_model"
         values:
           active: false
 
   - name:
-      "policy_template_id drives a policy boolean field according to the
-      evaluated python code of its detail line"
+      "policy_template_id drives a policy boolean field according to the evaluated
+      python code of its detail line"
     steps:
       - step: "Create a policy.template for model test.policy"
         action: "create"
@@ -99,8 +102,8 @@ scenarios:
           python_code: "result = True"
 
       - step:
-          "Create a detail line whose additional_python_code always
-          evaluates confirm_ok to True"
+          "Create a detail line whose additional_python_code always evaluates confirm_ok
+          to True"
         action: "create"
         model: "policy.template_detail"
         save_as: "detail_true"
@@ -120,7 +123,8 @@ scenarios:
           name: "Policy True Record"
           policy_template_id: "REC: template_true.id"
 
-      - step: "Assert the template is set and confirm_ok follows the evaluated python code"
+      - step:
+          "Assert the template is set and confirm_ok follows the evaluated python code"
         action: "assert"
         target: "record"
         asserts:
@@ -138,8 +142,8 @@ scenarios:
           active: false
 
   - name:
-      "action_reload_policy_template re-selects the matching template and
-      re-evaluates the policy field after the document's state changes"
+      "action_reload_policy_template re-selects the matching template and re-evaluates
+      the policy field after the document's state changes"
     steps:
       - step: "Create a template that only applies while the document is in draft"
         action: "create"
@@ -186,8 +190,8 @@ scenarios:
           additional_python_code: "result = False"
 
       - step:
-          "Create the document without a template; create() auto-selects
-          via _get_template_policy() while state is draft"
+          "Create the document without a template; create() auto-selects via
+          _get_template_policy() while state is draft"
         action: "create"
         model: "test.policy"
         save_as: "record"
@@ -223,8 +227,8 @@ scenarios:
         method: "action_reload_policy_template"
 
       - step:
-          "Assert the confirm template is now selected and confirm_ok
-          followed it to False"
+          "Assert the confirm template is now selected and confirm_ok followed it to
+          False"
         action: "assert"
         target: "record"
         asserts:
