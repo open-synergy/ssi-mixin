@@ -1,0 +1,44 @@
+scenarios:
+  - name:
+      "action_reload_status_check_template tidak melempar AttributeError pada model yang
+      memakai mixin.status_check tanpa mixin.state_change_constrain"
+    steps:
+      - step:
+          "Create test.status_check (fixture test_ssi_status_check_mixin; hanya _inherit
+          mixin.status_check + mail.thread, TANPA mixin.state_change_constrain)"
+        action: "create"
+        model: "test.status_check"
+        save_as: "doc"
+        values:
+          name: "Dokumen Guard Status Check"
+
+      - step: "Assert dokumen berhasil dibuat tanpa AttributeError"
+        action: "assert"
+        target: "doc"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+
+  - name:
+      "action_reload_status_check_template tetap memicu
+      onchange_state_change_constrain_template_id untuk model yang memakai kedua mixin
+      (tidak ada regresi)"
+    steps:
+      - step:
+          "Create test.state_change_constrain (fixture
+          test_ssi_state_change_constrain_mixin; _inherit mixin.state_change_constrain +
+          mixin.status_check + mail.thread)"
+        action: "create"
+        model: "test.state_change_constrain"
+        save_as: "doc"
+        values:
+          name: "Dokumen Guard State Change Constrain"
+
+      - step: "Assert dokumen berhasil dibuat tanpa AttributeError"
+        action: "assert"
+        target: "doc"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
