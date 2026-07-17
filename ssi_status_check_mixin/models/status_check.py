@@ -183,6 +183,18 @@ class StatusCheck(models.Model):
             "dateutil": tools.safe_eval.dateutil,
         }
 
+    def _evaluate_python_code(self, python_code):
+        self.ensure_one()
+        res = {}
+        localdict = self._get_localdict()
+        try:
+            safe_eval(python_code, localdict, mode="exec", nocopy=True)
+            if "result" in localdict:
+                res = localdict["result"]
+        except Exception as error:
+            raise UserError(_("Error evaluating conditions.\n %s") % error)
+        return res
+
     def _evaluate_status_check(self):
         self.ensure_one()
         if not self.template_detail_id:
