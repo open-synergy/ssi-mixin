@@ -1,0 +1,216 @@
+options:
+  auto_refresh: true
+
+# Shared read-only lookups: the ir.model / ir.model.fields rows describing the
+# "test.sequence" fixture model (module test_ssi_sequence_mixin). These are
+# plain searches (no side effects), so replaying them before every scenario is
+# harmless and keeps each scenario self-contained.
+setup:
+  steps:
+    - step: "Find ir.model record for test.sequence"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.sequence"]]
+      save_as: "test_sequence_model"
+      limit: 1
+      expect_count: 1
+
+    - step: "Find ir.model.fields record for test.sequence.name"
+      action: "search"
+      model: "ir.model.fields"
+      domain: [["model", "=", "test.sequence"], ["name", "=", "name"]]
+      save_as: "name_field"
+      limit: 1
+      expect_count: 1
+
+    - step: "Find ir.model.fields record for test.sequence.date"
+      action: "search"
+      model: "ir.model.fields"
+      domain: [["model", "=", "test.sequence"], ["name", "=", "date"]]
+      save_as: "date_field"
+      limit: 1
+      expect_count: 1
+
+scenarios:
+  # `action: call` never exposes a method's return value to `asserts`, so the
+  # only way to observe what `_evaluate_sequence` returns from YAML is to have
+  # the python_code mirror `result` onto a real field of `document` (the
+  # record injected by `_get_sequence_localdict`). We use the free-form
+  # `notes` field for that. The document is created through `create()`
+  # (test_ssi_sequence_mixin's `test.sequence.create()` calls
+  # `_create_sequence()`), which is the real, production entry point that
+  # drives `mixin.sequence._evaluate_sequence` / `_evaluate_sequence_use_python`.
+  - name: "computation_method use_python: _evaluate_sequence returns exactly what python_code sets as result"
+    steps:
+      - step: "Create the ir.sequence backing the template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence_python"
+        values:
+          name: "Test Sequence Mixin - Python"
+          code: "test.sequence.mixin.python"
+
+      - step: "Create sequence.template with computation_method=use_python"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template_python"
+        values:
+          name: "Use Python Template"
+          model_id: "REC: test_sequence_model.id"
+          sequence_field_id: "REC: name_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_python"
+          python_code: |
+            result = 'SEQ-001'
+            document.notes = result
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence_python.id"
+
+      - step: "Create the document; create() -> _create_sequence() -> _evaluate_sequence(template)"
+        action: "create"
+        model: "test.sequence"
+        save_as: "record"
+        values: {}
+
+      - step: "Assert notes mirrors the exact result computed by python_code"
+        action: "assert"
+        target: "record"
+        asserts:
+          notes:
+            type: "value"
+            expected: "SEQ-001"
+
+      - step: "Deactivate the template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_python"
+        values:
+          active: false
+
+  - name: "computation_method use_domain: True when the document matches, False when it does not"
+    steps:
+      - step: "Create the ir.sequence backing the always-matching template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence_domain"
+        values:
+          name: "Test Sequence Mixin - Domain"
+          code: "test.sequence.mixin.domain"
+
+      - step: "Create sequence.template whose domain matches any document ([] -> True)"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template_domain_match"
+        values:
+          name: "Domain Match Template"
+          model_id: "REC: test_sequence_model.id"
+          sequence_field_id: "REC: name_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_domain"
+          domain: "[]"
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence_domain.id"
+
+      - step: "Create a document; _evaluate_sequence_use_domain([]) is True so the sequence is applied"
+        action: "create"
+        model: "test.sequence"
+        save_as: "record_match"
+        values: {}
+
+      - step: "Assert a document number was really generated (template matched)"
+        action: "assert"
+        target: "record_match"
+        asserts:
+          name:
+            type: "value"
+            operator: "not_equals"
+            expected: "/"
+
+      - step: "Deactivate the always-matching template"
+        action: "write"
+        target: "template_domain_match"
+        values:
+          active: false
+
+      - step: "Create sequence.template whose domain never matches any document (id=0 -> False)"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template_domain_no_match"
+        values:
+          name: "Domain No-Match Template"
+          model_id: "REC: test_sequence_model.id"
+          sequence_field_id: "REC: name_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_domain"
+          domain: "[('id', '=', 0)]"
+
+      - step: "Create a document; _evaluate_sequence_use_domain(...) is False for every document, so no template applies"
+        action: "create"
+        model: "test.sequence"
+        expect_error:
+          type: "UserError"
+          message_contains: "No sequence template found"
+        values: {}
+
+      - step: "Deactivate the never-matching template"
+        action: "write"
+        target: "template_domain_no_match"
+        values:
+          active: false
+
+  - name: "computation_method use_python: _evaluate_sequence raises when python_code errors"
+    steps:
+      - step: "Create the ir.sequence backing a working template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence_ok"
+        values:
+          name: "Test Sequence Mixin - OK"
+          code: "test.sequence.mixin.ok"
+
+      - step: "Create a working sequence.template so the document itself can be created"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template_ok"
+        values:
+          name: "Working Template"
+          model_id: "REC: test_sequence_model.id"
+          sequence_field_id: "REC: name_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_domain"
+          domain: "[]"
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence_ok.id"
+
+      - step: "Create the document under test"
+        action: "create"
+        model: "test.sequence"
+        save_as: "record"
+        values: {}
+
+      - step: "Create sequence.template whose python_code raises at evaluation time"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template_broken"
+        values:
+          name: "Broken Python Template"
+          model_id: "REC: test_sequence_model.id"
+          sequence_field_id: "REC: name_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_python"
+          python_code: "result = 1 / 0"
+
+      # mixin_sequence.py imports `from odoo.exceptions import Warning as
+      # UserError`, so the class actually raised is odoo.exceptions.Warning.
+      # It is a subclass of odoo.exceptions.UserError (see odoo/exceptions.py),
+      # and expect_error matches by isinstance/except, so `type: "UserError"`
+      # correctly catches it. "Warning" itself is not a whitelisted
+      # expect_error type.
+      - step: "_evaluate_sequence must raise when python_code errors during evaluation"
+        action: "call"
+        target: "record"
+        method: "_evaluate_sequence"
+        args:
+          - "REC: template_broken"
+        expect_error:
+          type: "UserError"
+          message_contains: "Error evaluating conditions"
