@@ -1,0 +1,178 @@
+scenarios:
+  - name: "Create test.transaction_mixin - default state dan nomor dokumen"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values: {}
+
+      - step: "Assert default state is draft and document number is unassigned"
+        action: "assert"
+        target: "record"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          name:
+            type: "value"
+            expected: "/"
+
+  - name: "Display name mengikuti name_get saat nomor dokumen belum di-assign"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values: {}
+
+      - step: "Assert display_name berformat *<id> selama name masih /"
+        action: "assert"
+        target: "record"
+        asserts:
+          display_name:
+            type: "value"
+            expected: "EVAL: '*%s' % registry['record'].id"
+
+  - name: "Nomor dokumen manual tersimpan dan display_name mengikuti nama"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values: {}
+
+      - step: "Write manual document number"
+        action: "write"
+        target: "record"
+        values:
+          name: "TEST-TRANS-MIXIN-001"
+
+      - step: "Assert name and display_name follow the manual number"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "TEST-TRANS-MIXIN-001"
+          display_name:
+            type: "value"
+            expected: "TEST-TRANS-MIXIN-001"
+
+  - name: "Nomor dokumen duplikat ditolak"
+    steps:
+      - step: "Create first record with manual document number"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values:
+          name: "TEST-TRANS-MIXIN-DUP"
+
+      - step: "Create second record with the same document number must fail"
+        action: "create"
+        model: "test.transaction_mixin"
+        expect_error:
+          type: "UserError"
+          message_contains: "Duplicate document number"
+        values:
+          name: "TEST-TRANS-MIXIN-DUP"
+
+  - name: "action_reset_document_number mengembalikan nomor menjadi /"
+    steps:
+      - step: "Create record with manual document number"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values:
+          name: "TEST-TRANS-MIXIN-RESET"
+
+      - step: "Reset document number as admin (manual_number_ok true on draft)"
+        action: "call"
+        target: "record"
+        method: "action_reset_document_number"
+        as_user: "base.user_admin"
+        asserts:
+          name:
+            type: "value"
+            expected: "/"
+
+  - name: "action_reset_document_number ditolak saat state bukan draft"
+    steps:
+      - step: "Create record with manual document number"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values:
+          name: "TEST-TRANS-MIXIN-LOCKED"
+
+      - step: "Force state to open to setup the precondition"
+        action: "write"
+        target: "record"
+        values:
+          state: "open"
+
+      - step: "Reset document number on non-draft state must fail"
+        action: "call"
+        target: "record"
+        method: "action_reset_document_number"
+        as_user: "base.user_admin"
+        expect_error:
+          type: "UserError"
+          message_contains: "Reset document is no allowed"
+
+      - step: "Assert document number is unchanged"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "TEST-TRANS-MIXIN-LOCKED"
+
+  - name: "action_restart mengembalikan state ke draft dari cancel"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values: {}
+
+      - step: "Force state to cancel to setup the precondition"
+        action: "write"
+        target: "record"
+        values:
+          state: "cancel"
+
+      - step: "Restart record as admin (restart_ok true on cancel)"
+        action: "call"
+        target: "record"
+        method: "action_restart"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+
+  - name: "action_restart ditolak saat state masih draft"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.transaction_mixin"
+        save_as: "record"
+        values: {}
+
+      - step: "Restart on draft state must fail (restart_ok only true on cancel)"
+        action: "call"
+        target: "record"
+        method: "action_restart"
+        as_user: "base.user_admin"
+        expect_error:
+          type: "UserError"
+          message_contains: "not allowed to restart"
+
+      - step: "Assert state is unchanged"
+        action: "assert"
+        target: "record"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
