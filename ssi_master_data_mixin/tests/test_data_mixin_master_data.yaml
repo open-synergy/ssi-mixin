@@ -108,13 +108,13 @@ scenarios:
 
   - name: "Duplicate non-slash code is rejected"
     steps:
-      - step: "Create first record with code X001"
+      - step: "Create first record with code DUP001"
         action: "create"
         model: "test.master_data"
         save_as: "first"
         values:
           name: "First"
-          code: "X001"
+          code: "DUP001"
       - step: "Create second record with the same code must fail"
         action: "create"
         model: "test.master_data"
@@ -127,7 +127,7 @@ scenarios:
           message_contains: "Dupilicate code"
         values:
           name: "Second"
-          code: "X001"
+          code: "DUP001"
 
   - name: "copy() appends ' (copy)' suffix to code"
     steps:
@@ -137,7 +137,7 @@ scenarios:
         save_as: "original"
         values:
           name: "Original"
-          code: "X001"
+          code: "CPY001"
       - step: "Copy the record"
         action: "call"
         target: "original"
@@ -145,7 +145,7 @@ scenarios:
       - step: "Verify the duplicate record was created with the suffixed code"
         action: "search"
         model: "test.master_data"
-        domain: [["code", "=", "X001 (copy)"]]
+        domain: [["code", "=", "CPY001 (copy)"]]
         save_as: "duplicate"
         expect_count: 1
       - step: "Assert duplicate name matches the original"
