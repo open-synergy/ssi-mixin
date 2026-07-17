@@ -262,7 +262,6 @@ msgstr ""
 
 #. module: ssi_multiple_approval_mixin
 #: model:ir.ui.menu,name:ssi_multiple_approval_mixin.menu_multiple_approval
-#: model_terms:ir.ui.view,arch_db:ssi_multiple_approval_mixin.approval_approval_view_tree
 msgid "Multiple Approval"
 msgstr ""
 
