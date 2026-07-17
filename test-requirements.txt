@@ -1,2 +1,3 @@
 odoo14-addon-queue-job
 odoo14-addon-queue-job-batch
+odoo-yaml-test
