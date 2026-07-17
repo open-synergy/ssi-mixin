@@ -36,11 +36,16 @@ scenarios:
   # only way to observe what `_evaluate_sequence` returns from YAML is to have
   # the python_code mirror `result` onto a real field of `document` (the
   # record injected by `_get_sequence_localdict`). We use the free-form
-  # `notes` field for that. The document is created through `create()`
-  # (test_ssi_sequence_mixin's `test.sequence.create()` calls
+  # `notes` field for that, written through `document.write({...})` because
+  # Odoo's safe_eval blacklists the STORE_ATTR opcode (plain attribute
+  # assignment like `document.notes = result` is rejected), while method
+  # calls such as `.write()` are allowed. The document is created through
+  # `create()` (test_ssi_sequence_mixin's `test.sequence.create()` calls
   # `_create_sequence()`), which is the real, production entry point that
   # drives `mixin.sequence._evaluate_sequence` / `_evaluate_sequence_use_python`.
-  - name: "computation_method use_python: _evaluate_sequence returns exactly what python_code sets as result"
+  - name:
+      "computation_method use_python: _evaluate_sequence returns exactly what
+      python_code sets as result"
     steps:
       - step: "Create the ir.sequence backing the template"
         action: "create"
@@ -62,11 +67,13 @@ scenarios:
           computation_method: "use_python"
           python_code: |
             result = 'SEQ-001'
-            document.notes = result
+            document.write({'notes': result})
           sequence_selection_method: "use_sequence"
           sequence_id: "REC: ir_sequence_python.id"
 
-      - step: "Create the document; create() -> _create_sequence() -> _evaluate_sequence(template)"
+      - step:
+          "Create the document; create() -> _create_sequence() ->
+          _evaluate_sequence(template)"
         action: "create"
         model: "test.sequence"
         save_as: "record"
@@ -86,7 +93,9 @@ scenarios:
         values:
           active: false
 
-  - name: "computation_method use_domain: True when the document matches, False when it does not"
+  - name:
+      "computation_method use_domain: True when the document matches, False when it does
+      not"
     steps:
       - step: "Create the ir.sequence backing the always-matching template"
         action: "create"
@@ -110,7 +119,9 @@ scenarios:
           sequence_selection_method: "use_sequence"
           sequence_id: "REC: ir_sequence_domain.id"
 
-      - step: "Create a document; _evaluate_sequence_use_domain([]) is True so the sequence is applied"
+      - step:
+          "Create a document; _evaluate_sequence_use_domain([]) is True so the sequence
+          is applied"
         action: "create"
         model: "test.sequence"
         save_as: "record_match"
@@ -131,7 +142,9 @@ scenarios:
         values:
           active: false
 
-      - step: "Create sequence.template whose domain never matches any document (id=0 -> False)"
+      - step:
+          "Create sequence.template whose domain never matches any document (id=0 ->
+          False)"
         action: "create"
         model: "sequence.template"
         save_as: "template_domain_no_match"
@@ -143,7 +156,9 @@ scenarios:
           computation_method: "use_domain"
           domain: "[('id', '=', 0)]"
 
-      - step: "Create a document; _evaluate_sequence_use_domain(...) is False for every document, so no template applies"
+      - step:
+          "Create a document; _evaluate_sequence_use_domain(...) is False for every
+          document, so no template applies"
         action: "create"
         model: "test.sequence"
         expect_error:
@@ -157,7 +172,8 @@ scenarios:
         values:
           active: false
 
-  - name: "computation_method use_python: _evaluate_sequence raises when python_code errors"
+  - name:
+      "computation_method use_python: _evaluate_sequence raises when python_code errors"
     steps:
       - step: "Create the ir.sequence backing a working template"
         action: "create"
