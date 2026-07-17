@@ -5,10 +5,7 @@
 <odoo>
 <record id="data_requirement_rule_ou" model="ir.rule">
     <field name="name">Data Requirement - Responsible to operating unit data</field>
-    <field
-            name="model_id"
-            ref="ssi_data_requirement_mixin.model_data_requirement"
-        />
+    <field name="model_id" ref="ssi_data_requirement_mixin.model_data_requirement" />
     <field name="groups" eval="[(4, ref('data_requirement_ou_group'))]" />
     <field
             name="domain_force"

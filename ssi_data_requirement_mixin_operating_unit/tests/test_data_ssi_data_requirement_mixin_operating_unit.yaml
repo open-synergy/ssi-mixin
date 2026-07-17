@@ -142,8 +142,7 @@ scenarios:
             - - 6
               - 0
               - - "REF: base.group_user"
-                - "REF:
-                  ssi_data_requirement_mixin.data_requirement_package_user_group"
+                - "REF: ssi_data_requirement_mixin.data_requirement_package_user_group"
                 - "REF:
                   ssi_data_requirement_mixin_operating_unit.data_requirement_package_ou_group"
           assigned_operating_unit_ids:
