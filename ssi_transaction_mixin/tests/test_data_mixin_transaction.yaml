@@ -32,7 +32,7 @@ scenarios:
         asserts:
           display_name:
             type: "value"
-            expected: "EVAL: '*' + str(registry['record'].id)"
+            expected: "EVAL: '*%s' % registry['record'].id"
 
   - name: "Nomor dokumen manual tersimpan dan display_name mengikuti nama"
     steps:
