@@ -202,6 +202,34 @@ class MixinPartner(models.AbstractModel):
     def onchange_contact_partner_id(self):
         self.contact_partner_id = False
 
+    def _mixin_partner_insert_view_node(self, doc, xpath, template_xml_ids):
+        """
+        Render one or more QWeb templates and insert them right after the
+        node located by ``xpath`` in ``doc``.
+
+        Each XML ID in ``template_xml_ids`` is rendered and inserted via
+        ``addnext()`` on the same anchor node (``node_xpath[0]``), matching
+        the original behavior: since every insertion targets the anchor
+        itself (not the previously inserted node), the resulting sibling
+        order after the anchor is the reverse of ``template_xml_ids``.
+
+        :param doc: root ``etree`` element of the view arch being modified.
+        :param xpath: XPath expression used to locate the anchor node.
+        :param template_xml_ids: list of QWeb template XML IDs to render
+            and insert, in the same order as the original insertion calls.
+        :return: ``True`` if the anchor node was found and templates were
+            inserted, ``False`` otherwise.
+        """
+        node_xpath = doc.xpath(xpath)
+        if not node_xpath:
+            return False
+
+        for xml_id in template_xml_ids:
+            str_element = self.env["ir.qweb"]._render(xml_id)
+            new_node = etree.fromstring(str_element)
+            node_xpath[0].addnext(new_node)
+        return True
+
     @api.model
     def fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
@@ -215,89 +243,54 @@ class MixinPartner(models.AbstractModel):
             and self._mixin_partner_insert_form
             and self._mixin_partner_xpath_form
         ):
-            node_xpath = doc.xpath(self._mixin_partner_xpath_form)
-            # TODO: Refactor
-            if node_xpath:
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.allowed_contact_ids"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.contact_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.partner_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-            node_xpath = doc.xpath(self._mixin_partner_xpath_page)
-            # TODO: Refactor
-            if node_xpath:
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.mixin_partner_setting"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
+            self._mixin_partner_insert_view_node(
+                doc,
+                self._mixin_partner_xpath_form,
+                [
+                    "ssi_partner_mixin.allowed_contact_ids",
+                    "ssi_partner_mixin.contact_id",
+                    "ssi_partner_mixin.partner_id",
+                ],
+            )
+            self._mixin_partner_insert_view_node(
+                doc,
+                self._mixin_partner_xpath_page,
+                ["ssi_partner_mixin.mixin_partner_setting"],
+            )
         elif (
             view_type == "tree"
             and self._mixin_partner_insert_tree
             and self._mixin_partner_xpath_tree
         ):
-            node_xpath = doc.xpath(self._mixin_partner_xpath_tree)
-            # TODO: Refactor
-            if node_xpath:
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.tree_contact_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.tree_partner_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
+            self._mixin_partner_insert_view_node(
+                doc,
+                self._mixin_partner_xpath_tree,
+                [
+                    "ssi_partner_mixin.tree_contact_id",
+                    "ssi_partner_mixin.tree_partner_id",
+                ],
+            )
         elif (
             view_type == "search"
             and self._mixin_partner_insert_search
             and self._mixin_partner_xpath_search
         ):
-            node_xpath = doc.xpath(self._mixin_partner_xpath_search)
-            # TODO: Refactor
-            if node_xpath:
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.search_contact_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.search_partner_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-            node_xpath = doc.xpath(self._mixin_partner_xpath_group)
-            # TODO: Refactor
-            if node_xpath:
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.group_contact_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
-
-                str_element = self.env["ir.qweb"]._render(
-                    "ssi_partner_mixin.group_partner_id"
-                )
-                new_node = etree.fromstring(str_element)
-                node_xpath[0].addnext(new_node)
+            self._mixin_partner_insert_view_node(
+                doc,
+                self._mixin_partner_xpath_search,
+                [
+                    "ssi_partner_mixin.search_contact_id",
+                    "ssi_partner_mixin.search_partner_id",
+                ],
+            )
+            self._mixin_partner_insert_view_node(
+                doc,
+                self._mixin_partner_xpath_group,
+                [
+                    "ssi_partner_mixin.group_contact_id",
+                    "ssi_partner_mixin.group_partner_id",
+                ],
+            )
 
         View = self.env["ir.ui.view"]
 
