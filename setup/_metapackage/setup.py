@@ -68,6 +68,7 @@ setuptools.setup(
         'odoo14-addon-test_ssi_custom_information_mixin',
         'odoo14-addon-test_ssi_decorator',
         'odoo14-addon-test_ssi_duration_mixin',
+        'odoo14-addon-test_ssi_master_data_mixin',
         'odoo14-addon-test_ssi_multiple_approval_mixin',
         'odoo14-addon-test_ssi_policy_mixin',
         'odoo14-addon-test_ssi_product_line_account_mixin',

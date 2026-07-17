@@ -78,6 +78,7 @@ addon | version | maintainers | summary
 [test_ssi_custom_information_mixin](test_ssi_custom_information_mixin/) | 14.0.2.1.0 |  | Test Module: Custom Information Mixin
 [test_ssi_decorator](test_ssi_decorator/) | 14.0.1.0.0 |  | Test Module - Decorator
 [test_ssi_duration_mixin](test_ssi_duration_mixin/) | 14.0.1.1.0 |  | Test Module: Duration Mixin
+[test_ssi_master_data_mixin](test_ssi_master_data_mixin/) | 14.0.1.0.0 |  | Test Module - Master Data Mixin
 [test_ssi_multiple_approval_mixin](test_ssi_multiple_approval_mixin/) | 14.0.1.1.0 |  | Test Module: Multiple Approval Mixin
 [test_ssi_policy_mixin](test_ssi_policy_mixin/) | 14.0.1.2.0 |  | Test Module: Policy Mixin
 [test_ssi_product_line_account_mixin](test_ssi_product_line_account_mixin/) | 14.0.1.1.0 |  | Test Module: Product Line With Accounting Mixin
