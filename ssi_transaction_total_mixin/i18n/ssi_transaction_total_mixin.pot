@@ -245,6 +245,20 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: ssi_transaction_total_mixin
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_residual__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_residual_with_field__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_tax__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_tax_with_field__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_total__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_total_with_field__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed__note
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed_with_field__note
+msgid ""
+"Free-form note attached to the document, used for any additional remarks or "
+"information related to the transaction."
+msgstr ""
+
+#. module: ssi_transaction_total_mixin
 #: model:ir.model.fields,field_description:ssi_transaction_total_mixin.field_mixin_transaction_residual__id
 #: model:ir.model.fields,field_description:ssi_transaction_total_mixin.field_mixin_transaction_residual_with_field__id
 #: model:ir.model.fields,field_description:ssi_transaction_total_mixin.field_mixin_transaction_tax__id
@@ -505,6 +519,23 @@ msgstr ""
 #: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed__message_unread_counter
 #: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed_with_field__message_unread_counter
 msgid "Number of unread messages"
+msgstr ""
+
+#. module: ssi_transaction_total_mixin
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_residual__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_residual_with_field__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_tax__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_tax_with_field__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_total__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_total_with_field__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed__company_partner_id
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed_with_field__company_partner_id
+msgid ""
+"Partner (res.partner) linked to the document's company\n"
+"\n"
+"* Automatically follows 'company_id.partner_id'.\n"
+"* Used for reporting/printing documents that require the company-level\n"
+"  partner instead of the responsible user's partner."
 msgstr ""
 
 #. module: ssi_transaction_total_mixin
@@ -777,4 +808,21 @@ msgstr ""
 #: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed__website_message_ids
 #: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed_with_field__website_message_ids
 msgid "Website communication history"
+msgstr ""
+
+#. module: ssi_transaction_total_mixin
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_residual__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_residual_with_field__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_tax__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_tax_with_field__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_total__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_total_with_field__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed__state
+#: model:ir.model.fields,help:ssi_transaction_total_mixin.field_mixin_transaction_untaxed_with_field__state
+msgid ""
+"Workflow status of the document\n"
+"\n"
+"* 'draft' is the only base state provided by this mixin.\n"
+"* Other states (e.g. confirmed, done, cancel) are added by derivative mixin\n"
+"  modules (such as confirm/done/cancel mixins) via 'selection_add'."
 msgstr ""
