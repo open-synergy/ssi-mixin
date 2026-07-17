@@ -475,6 +475,13 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__note
+msgid ""
+"Free-form note attached to the document, used for any additional remarks or "
+"information related to the transaction."
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
 #: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_detail_mixin__id
 #: model:ir.model.fields,field_description:test_ssi_transaction_mixin.field_test_transaction_mixin__id
 msgid "ID"
@@ -611,6 +618,16 @@ msgstr ""
 #. module: test_ssi_transaction_mixin
 #: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__message_unread_counter
 msgid "Number of unread messages"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__company_partner_id
+msgid ""
+"Partner (res.partner) linked to the document's company\n"
+"\n"
+"* Automatically follows 'company_id.partner_id'.\n"
+"* Used for reporting/printing documents that require the company-level\n"
+"  partner instead of the responsible user's partner."
 msgstr ""
 
 #. module: test_ssi_transaction_mixin
@@ -853,4 +870,14 @@ msgstr ""
 #. module: test_ssi_transaction_mixin
 #: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__website_message_ids
 msgid "Website communication history"
+msgstr ""
+
+#. module: test_ssi_transaction_mixin
+#: model:ir.model.fields,help:test_ssi_transaction_mixin.field_test_transaction_mixin__state
+msgid ""
+"Workflow status of the document\n"
+"\n"
+"* 'draft' is the only base state provided by this mixin.\n"
+"* Other states (e.g. confirmed, done, cancel) are added by derivative mixin\n"
+"  modules (such as confirm/done/cancel mixins) via 'selection_add'."
 msgstr ""
