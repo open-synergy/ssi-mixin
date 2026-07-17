@@ -55,7 +55,7 @@ class IrActionsReport(models.Model):
         try:
             safe_eval(self.print_python_code, localdict, mode="exec", nocopy=True)
             result = localdict["result"]
-        except:  # noqa: E722
+        except Exception:
             result = False
         return result
 
