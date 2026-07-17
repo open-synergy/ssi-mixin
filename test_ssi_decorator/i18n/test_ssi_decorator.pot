@@ -1,0 +1,199 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* test_ssi_decorator
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields.selection,name:test_ssi_decorator.selection__test_decorator__state__confirm
+msgid "Confirmed"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields.selection,name:test_ssi_decorator.selection__test_decorator__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__id
+msgid "ID"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__message_needaction
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model_terms:ir.ui.view,arch_db:test_ssi_decorator.test_decorator_page
+msgid "Injected By Decorator"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__name
+msgid "Name"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model_terms:ir.ui.view,arch_db:test_ssi_decorator.test_decorator_view_form
+msgid "Notes"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__test_result
+msgid ""
+"Scratch field used only by the unit test suite to capture the outcome of "
+"methods whose result cannot be asserted directly (e.g. the arch returned by "
+"fields_view_get, or the arch returned by _add_view_element), so it can be "
+"read back and asserted from a YAML scenario."
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__state
+msgid "State"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model,name:test_ssi_decorator.model_test_decorator
+msgid "Test Decorator"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__test_result
+msgid "Test Result"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,field_description:test_ssi_decorator.field_test_decorator__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: test_ssi_decorator
+#: model:ir.model.fields,help:test_ssi_decorator.field_test_decorator__website_message_ids
+msgid "Website communication history"
+msgstr ""
