@@ -81,7 +81,7 @@
         <field name="name">attachment.related.attachment.tree</field>
         <field name="model">attachment.related_attachment</field>
         <field name="arch" type="xml">
-            <tree string="Related Attachment" editable="bottom">
+            <tree editable="bottom">
                 <field name="category_id" />
                 <field name="attachment_id" invisible="1" />
                 <field name="datas_fname" invisible="0" />

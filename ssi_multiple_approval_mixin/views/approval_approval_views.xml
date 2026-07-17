@@ -8,7 +8,6 @@
     <field name="model">approval.approval</field>
     <field name="arch" type="xml">
         <tree
-                string="Multiple Approval"
                 decoration-danger="status=='rejected'"
                 decoration-success="status=='approved'"
                 create="false"
