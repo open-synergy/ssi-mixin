@@ -1,0 +1,344 @@
+options:
+  auto_refresh: true
+
+# Shared read-only lookup and fixtures replayed before every scenario (fresh
+# registry each time, no state leaks between scenarios):
+# - the ir.model row describing the "test.status_check" fixture model
+#   (module test_ssi_status_check_mixin), needed as status.check.template's
+#   required model_id;
+# - a status.check.item usable by every scenario below. Its own
+#   status_check_method/python_code only matter for
+#   mixin.status_check._evaluate_status_check() (status_ok's non-bypass
+#   path), which none of these scenarios rely on - they either force
+#   status_ok via bypass_user_id, or only exercise
+#   _compute_allowed_bypass_user_ids()/action_bypass_status_check(), which
+#   never call _evaluate_status_check();
+# - a test.status_check document to be referenced by status.check.model/
+#   res_id (status.check._get_document() browses it).
+setup:
+  steps:
+    - step: "Cari ir.model untuk test.status_check"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.status_check"]]
+      save_as: "model_test_status_check"
+      limit: 1
+      expect_count: 1
+
+    - step: "Buat status.check.item default (dipakai seluruh skenario)"
+      action: "create"
+      model: "status.check.item"
+      save_as: "item"
+      values:
+        name: "Item Uji Status Check"
+        code: "TEST_ITEM_STATUS_CHECK"
+        status_check_method: "use_python"
+        python_code: "result = False"
+
+    - step: "Buat dokumen test.status_check yang dirujuk status.check"
+      action: "create"
+      model: "test.status_check"
+      save_as: "doc"
+      values:
+        name: "Dokumen Uji Status Check"
+
+scenarios:
+  - name:
+      "status_ok = True bila bypass_user_id terisi, terlepas dari hasil
+      _evaluate_status_check"
+    steps:
+      - step: "Buat status.check.template"
+        action: "create"
+        model: "status.check.template"
+        save_as: "template"
+        values:
+          name: "Template Bypass User"
+          model_id: "REC: model_test_status_check.id"
+
+      - step: "Buat status.check.template_detail"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          status_check_item_id: "REC: item.id"
+          bypass_method: "use_user"
+
+      - step:
+          "Buat status.check dengan bypass_user_id terisi (item.python_code
+          mengembalikan False)"
+        action: "create"
+        model: "status.check"
+        save_as: "check"
+        values:
+          model: "test.status_check"
+          res_id: "REC: doc.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail.id"
+          bypass_user_id: "REC: user.id"
+
+      - step: "Assert status_ok True walau _evaluate_status_check bernilai False"
+        action: "assert"
+        target: "check"
+        asserts:
+          status_ok:
+            type: "value"
+            expected: true
+
+  - name:
+      "_compute_allowed_bypass_user_ids mengumpulkan user dari bypass_user_ids
+      langsung"
+    steps:
+      - step: "Buat user kandidat bypass"
+        action: "create"
+        model: "res.users"
+        save_as: "bypass_user"
+        values:
+          name: "Bypass User Langsung"
+          login: "bypass.user.langsung@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+
+      - step: "Buat status.check.template"
+        action: "create"
+        model: "status.check.template"
+        save_as: "template"
+        values:
+          name: "Template Bypass User Ids"
+          model_id: "REC: model_test_status_check.id"
+
+      - step: "Buat status.check.template_detail dengan bypass_user_ids"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          status_check_item_id: "REC: item.id"
+          bypass_method: "use_user"
+          bypass_user_ids:
+            - - 6
+              - 0
+              - - "REC: bypass_user.id"
+
+      - step: "Buat status.check"
+        action: "create"
+        model: "status.check"
+        save_as: "check"
+        values:
+          model: "test.status_check"
+          res_id: "REC: doc.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail.id"
+
+      - step: "Assert bypass_user muncul di allowed_bypass_user_ids"
+        action: "assert"
+        target: "check"
+        asserts:
+          allowed_bypass_user_ids:
+            type: "m2m"
+            check: "contains"
+            expected_records:
+              - "REC: bypass_user"
+
+  - name:
+      "_compute_allowed_bypass_user_ids mengumpulkan seluruh anggota
+      bypass_group_ids"
+    steps:
+      - step: "Buat user anggota grup bypass 1"
+        action: "create"
+        model: "res.users"
+        save_as: "group_member_1"
+        values:
+          name: "Anggota Grup Bypass 1"
+          login: "anggota.grup.bypass1@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+
+      - step: "Buat user anggota grup bypass 2"
+        action: "create"
+        model: "res.users"
+        save_as: "group_member_2"
+        values:
+          name: "Anggota Grup Bypass 2"
+          login: "anggota.grup.bypass2@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+
+      - step: "Buat grup bypass berisi kedua user"
+        action: "create"
+        model: "res.groups"
+        save_as: "bypass_group"
+        values:
+          name: "Grup Bypass Status Check"
+          users:
+            - - 6
+              - 0
+              - - "REC: group_member_1.id"
+                - "REC: group_member_2.id"
+
+      - step: "Buat status.check.template"
+        action: "create"
+        model: "status.check.template"
+        save_as: "template"
+        values:
+          name: "Template Bypass Group"
+          model_id: "REC: model_test_status_check.id"
+
+      - step: "Buat status.check.template_detail dengan bypass_group_ids"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          status_check_item_id: "REC: item.id"
+          bypass_method: "use_group"
+          bypass_group_ids:
+            - - 6
+              - 0
+              - - "REC: bypass_group.id"
+
+      - step: "Buat status.check"
+        action: "create"
+        model: "status.check"
+        save_as: "check"
+        values:
+          model: "test.status_check"
+          res_id: "REC: doc.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail.id"
+
+      - step: "Assert seluruh anggota grup muncul di allowed_bypass_user_ids"
+        action: "assert"
+        target: "check"
+        asserts:
+          allowed_bypass_user_ids:
+            type: "m2m"
+            check: "contains"
+            expected_records:
+              - "REC: group_member_1"
+              - "REC: group_member_2"
+
+  - name:
+      "action_bypass_status_check tidak menulis bypass_user_id bila user
+      saat ini tidak ada di allowed_bypass_user_ids"
+    steps:
+      - step: "Buat user berwenang (masuk allowed list)"
+        action: "create"
+        model: "res.users"
+        save_as: "authorized_user"
+        values:
+          name: "User Berwenang Bypass"
+          login: "user.berwenang.bypass@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+
+      - step: "Buat user yang TIDAK berwenang"
+        action: "create"
+        model: "res.users"
+        save_as: "unauthorized_user"
+        values:
+          name: "User Tidak Berwenang Bypass"
+          login: "user.tidak.berwenang.bypass@example.com"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+
+      - step: "Buat status.check.template"
+        action: "create"
+        model: "status.check.template"
+        save_as: "template"
+        values:
+          name: "Template Unauthorized Bypass"
+          model_id: "REC: model_test_status_check.id"
+
+      - step:
+          "Buat status.check.template_detail dengan bypass_user_ids hanya
+          user berwenang"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          status_check_item_id: "REC: item.id"
+          bypass_method: "use_user"
+          bypass_user_ids:
+            - - 6
+              - 0
+              - - "REC: authorized_user.id"
+
+      - step: "Buat status.check"
+        action: "create"
+        model: "status.check"
+        save_as: "check"
+        values:
+          model: "test.status_check"
+          res_id: "REC: doc.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail.id"
+
+      - step: "Panggil action_bypass_status_check sebagai user tidak berwenang"
+        action: "call"
+        target: "check"
+        method: "action_bypass_status_check"
+        as_user: "unauthorized_user"
+
+      - step: "Assert bypass_user_id tetap kosong"
+        action: "assert"
+        target: "check"
+        asserts:
+          bypass_user_id:
+            type: "value"
+            operator: "is_falsy"
+
+  - name:
+      "bypass_method use_python dengan python_code yang tidak menyetel
+      result['user'] melempar UserError"
+    steps:
+      - step: "Buat status.check.template"
+        action: "create"
+        model: "status.check.template"
+        save_as: "template"
+        values:
+          name: "Template Bypass Python Tanpa User"
+          model_id: "REC: model_test_status_check.id"
+
+      - step:
+          "Buat status.check.template_detail bypass_method use_python; python_code
+          menyetel result tapi tanpa key 'user'"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          status_check_item_id: "REC: item.id"
+          bypass_method: "use_python"
+          python_code: "result = {'foo': True}"
+
+      - step: "Buat status.check"
+        action: "create"
+        model: "status.check"
+        save_as: "check"
+        values:
+          model: "test.status_check"
+          res_id: "REC: doc.id"
+          template_id: "REC: template.id"
+          template_detail_id: "REC: detail.id"
+
+      - step:
+          "Panggil action_bypass_status_check harus melempar UserError 'No User
+          defines on python code'"
+        action: "call"
+        target: "check"
+        method: "action_bypass_status_check"
+        expect_error:
+          type: "UserError"
+          message_contains: "No User defines on python code"
