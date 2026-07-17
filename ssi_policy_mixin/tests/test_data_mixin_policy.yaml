@@ -16,6 +16,26 @@ setup:
       limit: 1
       expect_count: 1
 
+    # test_ssi_policy_mixin ships its own demo policy.template scoped to
+    # test.policy (policy_template_test_ssi_policy, sequence 100,
+    # python_code="result=True"). Left active, it would win every
+    # auto-selection race in scenario 3 (highest sequence, always matches)
+    # and pollute the exact-membership check in scenario 1. We are not using
+    # its values as test input - we only neutralize it so the scenarios
+    # below are deterministic and independent of demo data.
+    - step:
+        "Find any pre-existing policy.template scoped to test.policy (e.g. demo data)"
+      action: "search"
+      model: "policy.template"
+      domain: [["model", "=", "test.policy"]]
+      save_as: "preexisting_test_policy_templates"
+
+    - step: "Deactivate pre-existing test.policy templates so they cannot interfere"
+      action: "write"
+      target: "preexisting_test_policy_templates"
+      values:
+        active: false
+
     - step: "Find ir.model record for test.policy.type (unrelated model)"
       action: "search"
       model: "ir.model"
