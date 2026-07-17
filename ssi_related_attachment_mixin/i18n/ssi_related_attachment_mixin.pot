@@ -317,7 +317,6 @@ msgstr ""
 #. module: ssi_related_attachment_mixin
 #: model:ir.model,name:ssi_related_attachment_mixin.model_attachment_related_attachment
 #: model:ir.ui.menu,name:ssi_related_attachment_mixin.menu_related_attachment
-#: model_terms:ir.ui.view,arch_db:ssi_related_attachment_mixin.attachment_related_attachment_view_tree
 #: model_terms:ir.ui.view,arch_db:ssi_related_attachment_mixin.ir_model_form
 #: model_terms:ir.ui.view,arch_db:ssi_related_attachment_mixin.related_attachment_page
 msgid "Related Attachment"
