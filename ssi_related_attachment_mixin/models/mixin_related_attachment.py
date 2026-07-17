@@ -89,9 +89,9 @@ class MixinRelatedAttachment(models.AbstractModel):
     )
     def _compute_num_of_related_attachment(self):
         for record in self:
-            num_of_attachment = num_of_verified_attachment = (
-                num_of_unverified_attachment
-            ) = 0
+            num_of_attachment = (
+                num_of_verified_attachment
+            ) = num_of_unverified_attachment = 0
             criteria = [
                 ("model", "=", self._name),
                 ("res_id", "=", record.id),
