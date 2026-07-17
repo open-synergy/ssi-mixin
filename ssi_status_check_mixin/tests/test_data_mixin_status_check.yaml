@@ -86,8 +86,7 @@ scenarios:
             expected: true
 
   - name:
-      "_compute_allowed_bypass_user_ids mengumpulkan user dari bypass_user_ids
-      langsung"
+      "_compute_allowed_bypass_user_ids mengumpulkan user dari bypass_user_ids langsung"
     steps:
       - step: "Buat user kandidat bypass"
         action: "create"
@@ -143,8 +142,7 @@ scenarios:
               - "REC: bypass_user"
 
   - name:
-      "_compute_allowed_bypass_user_ids mengumpulkan seluruh anggota
-      bypass_group_ids"
+      "_compute_allowed_bypass_user_ids mengumpulkan seluruh anggota bypass_group_ids"
     steps:
       - step: "Buat user anggota grup bypass 1"
         action: "create"
@@ -225,8 +223,8 @@ scenarios:
               - "REC: group_member_2"
 
   - name:
-      "action_bypass_status_check tidak menulis bypass_user_id bila user
-      saat ini tidak ada di allowed_bypass_user_ids"
+      "action_bypass_status_check tidak menulis bypass_user_id bila user saat ini tidak
+      ada di allowed_bypass_user_ids"
     steps:
       - step: "Buat user berwenang (masuk allowed list)"
         action: "create"
@@ -261,8 +259,7 @@ scenarios:
           model_id: "REC: model_test_status_check.id"
 
       - step:
-          "Buat status.check.template_detail dengan bypass_user_ids hanya
-          user berwenang"
+          "Buat status.check.template_detail dengan bypass_user_ids hanya user berwenang"
         action: "create"
         model: "status.check.template_detail"
         save_as: "detail"
@@ -300,8 +297,8 @@ scenarios:
             operator: "is_falsy"
 
   - name:
-      "bypass_method use_python dengan python_code yang tidak menyetel
-      result['user'] melempar UserError"
+      "bypass_method use_python dengan python_code yang tidak menyetel result['user']
+      melempar UserError"
     steps:
       - step: "Buat status.check.template"
         action: "create"
@@ -334,8 +331,8 @@ scenarios:
           template_detail_id: "REC: detail.id"
 
       - step:
-          "Panggil action_bypass_status_check harus melempar UserError 'No User
-          defines on python code'"
+          "Panggil action_bypass_status_check harus melempar UserError 'No User defines
+          on python code'"
         action: "call"
         target: "check"
         method: "action_bypass_status_check"
