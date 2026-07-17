@@ -78,6 +78,11 @@ class MixinTransaction(models.AbstractModel):
         string="Company Partner",
         related="company_id.partner_id",
         store=False,
+        help="""Partner (res.partner) linked to the document's company
+
+* Automatically follows 'company_id.partner_id'.
+* Used for reporting/printing documents that require the company-level
+  partner instead of the responsible user's partner.""",
     )
 
     user_id = fields.Many2one(
@@ -109,6 +114,8 @@ class MixinTransaction(models.AbstractModel):
     note = fields.Text(
         string="Note",
         copy=True,
+        help="Free-form note attached to the document, used for any additional "
+        "remarks or information related to the transaction.",
     )
     state = fields.Selection(
         string="State",
@@ -120,6 +127,11 @@ class MixinTransaction(models.AbstractModel):
         copy=False,
         readonly=True,
         states={"draft": [("readonly", False)]},
+        help="""Workflow status of the document
+
+* 'draft' is the only base state provided by this mixin.
+* Other states (e.g. confirmed, done, cancel) are added by derivative mixin
+  modules (such as confirm/done/cancel mixins) via 'selection_add'.""",
     )
 
     restart_ok = fields.Boolean(
