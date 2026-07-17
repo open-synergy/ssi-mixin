@@ -1,0 +1,248 @@
+options:
+  auto_refresh: true
+
+# Shared read-only lookups: the ir.model / ir.model.fields rows describing the
+# "test.policy" fixture model (module test_ssi_policy_mixin) and the unrelated
+# "test.policy.type" model used to prove template-scoping. These are plain
+# searches (no side effects), so replaying them before every scenario is
+# harmless and keeps each scenario self-contained.
+setup:
+  steps:
+    - step: "Find ir.model record for test.policy"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.policy"]]
+      save_as: "model_test_policy"
+      limit: 1
+      expect_count: 1
+
+    - step: "Find ir.model record for test.policy.type (unrelated model)"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.policy.type"]]
+      save_as: "model_test_policy_type"
+      limit: 1
+      expect_count: 1
+
+    - step: "Find ir.model.fields record for test.policy.confirm_ok"
+      action: "search"
+      model: "ir.model.fields"
+      domain: [["model", "=", "test.policy"], ["name", "=", "confirm_ok"]]
+      save_as: "field_confirm_ok"
+      limit: 1
+      expect_count: 1
+
+scenarios:
+  - name:
+      "allowed_policy_template_ids only lists policy.template records scoped
+      to the document's own model"
+    steps:
+      - step: "Create a policy.template for model test.policy"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_test_policy"
+        values:
+          name: "Template For Test Policy"
+          model_id: "REC: model_test_policy.id"
+          python_code: "result = True"
+
+      - step: "Create a policy.template for an unrelated model (test.policy.type)"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_other_model"
+        values:
+          name: "Template For Test Policy Type"
+          model_id: "REC: model_test_policy_type.id"
+
+      - step: "Create the test.policy document"
+        action: "create"
+        model: "test.policy"
+        save_as: "record"
+        values:
+          name: "Policy Scope Record"
+
+      - step:
+          "Assert allowed_policy_template_ids contains exactly the
+          test.policy template, not the unrelated-model one"
+        action: "assert"
+        target: "record"
+        asserts:
+          allowed_policy_template_ids:
+            type: "m2m"
+            check: "exact"
+            expected_records:
+              - "REC: template_test_policy"
+
+      - step: "Deactivate the test.policy template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_test_policy"
+        values:
+          active: false
+
+      - step: "Deactivate the unrelated-model template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_other_model"
+        values:
+          active: false
+
+  - name:
+      "policy_template_id drives a policy boolean field according to the
+      evaluated python code of its detail line"
+    steps:
+      - step: "Create a policy.template for model test.policy"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_true"
+        values:
+          name: "Confirm Always Allowed"
+          model_id: "REC: model_test_policy.id"
+          python_code: "result = True"
+
+      - step:
+          "Create a detail line whose additional_python_code always
+          evaluates confirm_ok to True"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_true"
+        values:
+          template_id: "REC: template_true.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "result = True"
+
+      - step: "Create the test.policy document with the template explicitly assigned"
+        action: "create"
+        model: "test.policy"
+        save_as: "record"
+        values:
+          name: "Policy True Record"
+          policy_template_id: "REC: template_true.id"
+
+      - step: "Assert the template is set and confirm_ok follows the evaluated python code"
+        action: "assert"
+        target: "record"
+        asserts:
+          policy_template_id:
+            type: "m2o"
+            expected: "REC: template_true"
+          confirm_ok:
+            type: "value"
+            expected: true
+
+      - step: "Deactivate the template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_true"
+        values:
+          active: false
+
+  - name:
+      "action_reload_policy_template re-selects the matching template and
+      re-evaluates the policy field after the document's state changes"
+    steps:
+      - step: "Create a template that only applies while the document is in draft"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_draft"
+        values:
+          name: "Applies While Draft"
+          model_id: "REC: model_test_policy.id"
+          sequence: 5
+          python_code: "result = document.state == 'draft'"
+
+      - step: "Create its detail line: confirm_ok is True while this template applies"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_draft"
+        values:
+          template_id: "REC: template_draft.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "result = True"
+
+      - step: "Create a template that only applies while the document is confirmed"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_confirm"
+        values:
+          name: "Applies While Confirm"
+          model_id: "REC: model_test_policy.id"
+          sequence: 10
+          python_code: "result = document.state == 'confirm'"
+
+      - step: "Create its detail line: confirm_ok is False while this template applies"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_confirm"
+        values:
+          template_id: "REC: template_confirm.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "result = False"
+
+      - step:
+          "Create the document without a template; create() auto-selects
+          via _get_template_policy() while state is draft"
+        action: "create"
+        model: "test.policy"
+        save_as: "record"
+        values:
+          name: "Policy Reload Record"
+
+      - step: "Assert the draft template was auto-selected and confirm_ok is True"
+        action: "assert"
+        target: "record"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          policy_template_id:
+            type: "m2o"
+            expected: "REC: template_draft"
+          confirm_ok:
+            type: "value"
+            expected: true
+
+      - step: "Move the document to the confirm state"
+        action: "call"
+        target: "record"
+        method: "action_confirm"
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+      - step: "Call action_reload_policy_template to re-evaluate the template selection"
+        action: "call"
+        target: "record"
+        method: "action_reload_policy_template"
+
+      - step:
+          "Assert the confirm template is now selected and confirm_ok
+          followed it to False"
+        action: "assert"
+        target: "record"
+        asserts:
+          policy_template_id:
+            type: "m2o"
+            expected: "REC: template_confirm"
+          confirm_ok:
+            type: "value"
+            expected: false
+
+      - step: "Deactivate the draft template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_draft"
+        values:
+          active: false
+
+      - step: "Deactivate the confirm template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_confirm"
+        values:
+          active: false
