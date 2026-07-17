@@ -6,7 +6,10 @@
 <record id="test_master_data_view_search" model="ir.ui.view">
     <field name="name">test.master_data - search</field>
     <field name="model">test.master_data</field>
-    <field name="inherit_id" ref="ssi_master_data_mixin.mixin_master_data_view_search" />
+    <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
     <field name="mode">primary</field>
     <field name="arch" type="xml">
         <data />
