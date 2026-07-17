@@ -50,7 +50,7 @@ class IrModel(models.Model):
         try:
             safe_eval(self.qr_python_code, localdict, mode="exec", nocopy=True)
             result = localdict["result"]
-        except:  # noqa: E722
+        except Exception:
             result = ""
         return result
 
