@@ -1,0 +1,231 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create test.master_data record"
+    steps:
+      - step: "Create record with a manual code"
+        action: "create"
+        model: "test.master_data"
+        save_as: "record"
+        values:
+          name: "Master One"
+          code: "X001"
+      - step: "Assert record created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Master One"
+          code:
+            type: "value"
+            expected: "X001"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Write test.master_data name"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.master_data"
+        save_as: "record"
+        values:
+          name: "Original Name"
+          code: "X002"
+      - step: "Write new name"
+        action: "write"
+        target: "record"
+        values:
+          name: "Updated Name"
+      - step: "Assert name updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "Updated Name"
+
+  - name: "Delete test.master_data record"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.master_data"
+        save_as: "record"
+        values:
+          name: "To Be Deleted"
+          code: "X003"
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+      - step: "Verify record no longer exists"
+        action: "search"
+        model: "test.master_data"
+        domain: [["code", "=", "X003"]]
+        save_as: "result"
+        expect_count: 0
+
+  - name: "Code '/' is excluded from the duplicate-code constraint"
+    steps:
+      - step: "Create first record with code '/'"
+        action: "create"
+        model: "test.master_data"
+        save_as: "first"
+        values:
+          name: "Slash One"
+          code: "/"
+      - step: "Create second record also with code '/'"
+        action: "create"
+        model: "test.master_data"
+        save_as: "second"
+        values:
+          name: "Slash Two"
+          code: "/"
+      - step: "Assert first record kept its '/' code"
+        action: "assert"
+        target: "first"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          code:
+            type: "value"
+            expected: "/"
+      - step: "Assert second record also kept its '/' code"
+        action: "assert"
+        target: "second"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          code:
+            type: "value"
+            expected: "/"
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create first record with code X001"
+        action: "create"
+        model: "test.master_data"
+        save_as: "first"
+        values:
+          name: "First"
+          code: "X001"
+      - step: "Create second record with the same code must fail"
+        action: "create"
+        model: "test.master_data"
+        expect_error:
+          type: "UserError"
+          # NOTE: "Dupilicate" is a typo that exists in
+          # ssi_master_data_mixin/models/mixin_master_data.py
+          # (_check_duplicate_code). It is intentionally kept as-is here -
+          # this test scenario does not "fix" that typo.
+          message_contains: "Dupilicate code"
+        values:
+          name: "Second"
+          code: "X001"
+
+  - name: "copy() appends ' (copy)' suffix to code"
+    steps:
+      - step: "Create original record"
+        action: "create"
+        model: "test.master_data"
+        save_as: "original"
+        values:
+          name: "Original"
+          code: "X001"
+      - step: "Copy the record"
+        action: "call"
+        target: "original"
+        method: "copy"
+      - step: "Verify the duplicate record was created with the suffixed code"
+        action: "search"
+        model: "test.master_data"
+        domain: [["code", "=", "X001 (copy)"]]
+        save_as: "duplicate"
+        expect_count: 1
+      - step: "Assert duplicate name matches the original"
+        action: "assert"
+        target: "duplicate"
+        asserts:
+          name:
+            type: "value"
+            expected: "Original"
+
+  - name: "action_generate_code assigns a sequence value to a '/' code"
+    steps:
+      - step: "Find ir.model record for test.master_data"
+        action: "search"
+        model: "ir.model"
+        domain: [["model", "=", "test.master_data"]]
+        save_as: "test_master_data_model"
+        limit: 1
+        expect_count: 1
+
+      - step: "Find ir.model.fields record for test.master_data.code"
+        action: "search"
+        model: "ir.model.fields"
+        domain: [["model", "=", "test.master_data"], ["name", "=", "code"]]
+        save_as: "code_field"
+        limit: 1
+        expect_count: 1
+
+      # "test.master_data" (mixin.master_data) intentionally has no custom
+      # date field - sequence.template still requires one (date_field_id),
+      # so this points at the built-in "create_date" (datetime) that every
+      # Odoo model already has, instead of adding a field to the fixture.
+      - step: "Find ir.model.fields record for test.master_data.create_date"
+        action: "search"
+        model: "ir.model.fields"
+        domain: [["model", "=", "test.master_data"], ["name", "=", "create_date"]]
+        save_as: "date_field"
+        limit: 1
+        expect_count: 1
+
+      - step: "Create the ir.sequence backing the template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence"
+        values:
+          name: "Test Master Data Mixin Sequence"
+          code: "test.master_data.mixin"
+
+      - step: "Create sequence.template pointing at the code field"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template"
+        values:
+          name: "Master Data Template"
+          model_id: "REC: test_master_data_model.id"
+          sequence_field_id: "REC: code_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_domain"
+          domain: "[]"
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence.id"
+
+      - step: "Create record with default code '/'"
+        action: "create"
+        model: "test.master_data"
+        save_as: "record"
+        values:
+          name: "Generated Code Target"
+          code: "/"
+
+      - step: "Call action_generate_code"
+        action: "call"
+        target: "record"
+        method: "action_generate_code"
+
+      - step: "Assert code is no longer '/'"
+        action: "assert"
+        target: "record"
+        asserts:
+          code:
+            type: "value"
+            operator: "not_equals"
+            expected: "/"
