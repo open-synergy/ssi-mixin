@@ -56,7 +56,7 @@ scenarios:
         model: "status.check.item"
         expect_error:
           type: "UserError"
-          message_contains: "Dupilicate code"
+          message_contains: "Duplicate code"
         values:
           name: "Item Two"
           code: "SCI-DUP-01"
