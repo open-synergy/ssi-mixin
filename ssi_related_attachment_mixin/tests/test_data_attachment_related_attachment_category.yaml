@@ -46,7 +46,7 @@ scenarios:
         model: "attachment.related_attachment_category"
         expect_error:
           type: "UserError"
-          message_contains: "Dupilicate code"
+          message_contains: "Duplicate code"
         values:
           name: "Invoice"
           code: "RAC-DUP-01"
