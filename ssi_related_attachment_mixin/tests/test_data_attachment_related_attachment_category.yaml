@@ -1,0 +1,72 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create attachment.related_attachment_category record"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "attachment.related_attachment_category"
+        save_as: "record"
+        values:
+          name: "Contract"
+          code: "RAC-01"
+          description: "Contract-related documents"
+      - step: "Assert record created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Contract"
+          code:
+            type: "value"
+            expected: "RAC-01"
+          description:
+            type: "value"
+            expected: "Contract-related documents"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create first record with code RAC-01"
+        action: "create"
+        model: "attachment.related_attachment_category"
+        save_as: "first"
+        values:
+          name: "Contract"
+          code: "RAC-01"
+      - step: "Create second record with the same code must fail"
+        action: "create"
+        model: "attachment.related_attachment_category"
+        expect_error:
+          type: "UserError"
+          message_contains: "Dupilicate code"
+        values:
+          name: "Invoice"
+          code: "RAC-01"
+
+  - name: "copy() appends ' (copy)' suffix to code"
+    steps:
+      - step: "Create original record"
+        action: "create"
+        model: "attachment.related_attachment_category"
+        save_as: "original"
+        values:
+          name: "Correspondence"
+          code: "RAC-02"
+      - step: "Copy the record"
+        action: "call"
+        target: "original"
+        method: "copy"
+      - step: "Verify the duplicate record was created with the suffixed code"
+        action: "search"
+        model: "attachment.related_attachment_category"
+        domain: [["code", "=", "RAC-02 (copy)"]]
+        save_as: "duplicate"
+        expect_count: 1
