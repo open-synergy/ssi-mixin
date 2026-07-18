@@ -120,11 +120,7 @@ scenarios:
         model: "test.master_data"
         expect_error:
           type: "UserError"
-          # NOTE: "Dupilicate" is a typo that exists in
-          # ssi_master_data_mixin/models/mixin_master_data.py
-          # (_check_duplicate_code). It is intentionally kept as-is here -
-          # this test scenario does not "fix" that typo.
-          message_contains: "Dupilicate code"
+          message_contains: "Duplicate code"
         values:
           name: "Second"
           code: "DUP001"
