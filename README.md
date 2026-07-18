@@ -18,6 +18,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[ssi_company_currency_mixin](ssi_company_currency_mixin/) | 19.0.1.0.0 |  | Company Currency Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 19.0.1.0.0 |  | Sequence Mixin
 
 [//]: # (end addons)
