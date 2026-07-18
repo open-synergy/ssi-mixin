@@ -9,6 +9,7 @@
     "license": "AGPL-3",
     "installable": True,
     "depends": [
+        "ssi_master_data_mixin",
         "ssi_transaction_mixin",
     ],
     "data": [

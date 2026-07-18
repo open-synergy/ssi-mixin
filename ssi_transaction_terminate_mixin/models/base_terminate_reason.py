@@ -13,23 +13,12 @@ class BaseTerminateReason(models.Model):
     """
 
     _name = "base.terminate_reason"
+    _inherit = [
+        "mixin.master_data",
+    ]
     _description = "Terminate Reason"
+    _field_name_string = "Terminate Reason"
 
-    name = fields.Char(
-        string="Terminate Reason",
-        required=True,
-    )
-    code = fields.Char(
-        string="Code",
-        required=True,
-    )
-    active = fields.Boolean(
-        string="Active",
-        default=True,
-    )
-    note = fields.Text(
-        string="Note",
-    )
     global_use = fields.Boolean(
         string="Global Use",
         default=False,
