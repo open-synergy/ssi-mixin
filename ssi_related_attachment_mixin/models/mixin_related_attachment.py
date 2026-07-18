@@ -43,7 +43,6 @@ class MixinRelatedAttachment(models.AbstractModel):
         comodel_name="attachment.related_attachment",
         inverse_name="res_id",
         domain=lambda self: [("model", "=", self._name)],
-        auto_join=True,
     )
     num_of_related_attachment = fields.Integer(
         string="Num. of Related Attachments",
