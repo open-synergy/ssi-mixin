@@ -34,6 +34,7 @@ class MixinMasterData(models.AbstractModel):
         "mixin.sequence",
     ]
     _description = "Mixin for Master Data"
+    _order = "name"
     _field_name_string = "Name"
     _show_code_on_display_name = False
     _automatically_insert_print_button = True
