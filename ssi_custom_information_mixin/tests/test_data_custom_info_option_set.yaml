@@ -1,0 +1,101 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create custom_info.option_set record"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "custom_info.option_set"
+        save_as: "record"
+        values:
+          name: "Option Set One"
+          code: "OPTSET-01"
+      - step: "Assert record created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Option Set One"
+          code:
+            type: "value"
+            expected: "OPTSET-01"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create first record with code OPTSET-01"
+        action: "create"
+        model: "custom_info.option_set"
+        save_as: "first"
+        values:
+          name: "Option Set One"
+          code: "OPTSET-01"
+      - step: "Create second record with the same code must fail"
+        action: "create"
+        model: "custom_info.option_set"
+        expect_error:
+          type: "UserError"
+          message_contains: "Dupilicate code"
+        values:
+          name: "Option Set Two"
+          code: "OPTSET-01"
+
+  - name: "copy() appends ' (copy)' suffix to code"
+    steps:
+      - step: "Create original record"
+        action: "create"
+        model: "custom_info.option_set"
+        save_as: "original"
+        values:
+          name: "Option Set Three"
+          code: "OPTSET-02"
+      - step: "Copy the record"
+        action: "call"
+        target: "original"
+        method: "copy"
+      - step: "Verify the duplicate record was created with the suffixed code"
+        action: "search"
+        model: "custom_info.option_set"
+        domain: [["code", "=", "OPTSET-02 (copy)"]]
+        save_as: "duplicate"
+        expect_count: 1
+
+  - name: "option_ids holds two custom_info.option records"
+    steps:
+      - step: "Create first option"
+        action: "create"
+        model: "custom_info.option"
+        save_as: "option_1"
+        values:
+          name: "Option A"
+          code: "OPTSET-OPT-01"
+      - step: "Create second option"
+        action: "create"
+        model: "custom_info.option"
+        save_as: "option_2"
+        values:
+          name: "Option B"
+          code: "OPTSET-OPT-02"
+      - step: "Create option set linking both options"
+        action: "create"
+        model: "custom_info.option_set"
+        save_as: "option_set"
+        values:
+          name: "Option Set With Options"
+          code: "OPTSET-03"
+          option_ids: [[6, 0, ["REC: option_1.id", "REC: option_2.id"]]]
+      - step: "Assert option set has exactly two options"
+        action: "assert"
+        target: "option_set"
+        asserts:
+          option_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 2

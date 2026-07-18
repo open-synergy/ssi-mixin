@@ -15,24 +15,12 @@ class CustomInfoProperty(models.Model):
     records on a ``custom_info.template``.
     """
 
-    _description = "Custom information property"
     _name = "custom_info.property"
+    _inherit = [
+        "mixin.master_data",
+    ]
+    _description = "Custom information property"
 
-    name = fields.Char(
-        required=True,
-        translate=True,
-    )
-    code = fields.Char(
-        string="Code",
-        required=True,
-    )
-    active = fields.Boolean(
-        string="Active",
-        default=True,
-    )
-    note = fields.Text(
-        string="Note",
-    )
     field_type = fields.Selection(
         selection=[
             ("str", "Text"),

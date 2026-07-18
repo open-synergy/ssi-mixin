@@ -4,50 +4,51 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="custom_info_option_set_tree" model="ir.ui.view">
+        <field name="name">custom_info.option_set - tree</field>
         <field name="model">custom_info.option_set</field>
-        <field name="priority" eval="999" />
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_tree"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name" />
-                <field name="code" />
-                <field name="option_ids" widget="many2many_tags" />
-            </list>
+            <data>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="option_ids" widget="many2many_tags" />
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="custom_info_option_set_form" model="ir.ui.view">
+        <field name="name">custom_info.option_set - form</field>
         <field name="model">custom_info.option_set</field>
-        <field name="priority" eval="999" />
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_form"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form>
-                <header />
-                <div name="div_smart_buttons" class="oe_button_box" />
-                <sheet>
-                    <group name="group1">
-                        <field name="name" />
-                        <field name="code" />
-                        <field name="active" />
-                    </group>
-                    <notebook>
-                        <page name="option" string="Options">
-                            <field name="option_ids" />
-                        </page>
-                        <page name="note" string="Note">
-                            <field name="note" />
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+            <data>
+                <xpath expr="//page[@name='note']" position="before">
+                    <page name="option" string="Options">
+                        <field name="option_ids" />
+                    </page>
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="custom_info_option_set_search" model="ir.ui.view">
+        <field name="name">custom_info.option_set - search</field>
         <field name="model">custom_info.option_set</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="code" />
-            </search>
+            <data />
         </field>
     </record>
 

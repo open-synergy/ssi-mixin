@@ -15,24 +15,12 @@ class CustomInfoOptionSet(models.Model):
     option list and ensures consistent vocabulary.
     """
 
-    _description = "Option Sets for Custom Information"
     _name = "custom_info.option_set"
+    _inherit = [
+        "mixin.master_data",
+    ]
+    _description = "Option Sets for Custom Information"
 
-    name = fields.Char(
-        translate=True,
-        required=True,
-    )
-    code = fields.Char(
-        string="Code",
-        required=True,
-    )
-    active = fields.Boolean(
-        string="Active",
-        default=True,
-    )
-    note = fields.Text(
-        string="Note",
-    )
     option_ids = fields.Many2many(
         string="Options",
         comodel_name="custom_info.option",
