@@ -34,13 +34,13 @@ scenarios:
 
   - name: "Duplicate non-slash code is rejected"
     steps:
-      - step: "Create first record with code RAC-01"
+      - step: "Create first record with code RAC-DUP-01"
         action: "create"
         model: "attachment.related_attachment_category"
         save_as: "first"
         values:
           name: "Contract"
-          code: "RAC-01"
+          code: "RAC-DUP-01"
       - step: "Create second record with the same code must fail"
         action: "create"
         model: "attachment.related_attachment_category"
@@ -49,7 +49,7 @@ scenarios:
           message_contains: "Dupilicate code"
         values:
           name: "Invoice"
-          code: "RAC-01"
+          code: "RAC-DUP-01"
 
   - name: "copy() appends ' (copy)' suffix to code"
     steps:
