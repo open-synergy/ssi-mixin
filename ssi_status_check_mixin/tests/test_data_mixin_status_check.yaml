@@ -31,7 +31,12 @@ setup:
       save_as: "item"
       values:
         name: "Item Uji Status Check"
-        code: "TEST_ITEM_STATUS_CHECK"
+        # "/" sengaja dipakai (bukan literal tetap) - status.check.item kini
+        # mewarisi mixin.master_data, yang menolak code non-"/" duplikat;
+        # blok setup ini diputar ulang sebelum SETIAP skenario dalam
+        # transaksi yang sama (tanpa rollback antar-skenario), jadi literal
+        # tetap akan gagal pada replay kedua dan seterusnya.
+        code: "/"
         status_check_method: "use_python"
         python_code: "result = False"
 

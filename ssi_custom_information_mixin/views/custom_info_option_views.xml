@@ -4,46 +4,41 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="custom_info_option_tree" model="ir.ui.view">
+        <field name="name">custom_info.option - tree</field>
         <field name="model">custom_info.option</field>
-        <field name="priority" eval="999" />
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_tree"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name" />
-                <field name="code" />
-            </list>
+            <data />
         </field>
     </record>
 
     <record id="custom_info_option_form" model="ir.ui.view">
+        <field name="name">custom_info.option - form</field>
         <field name="model">custom_info.option</field>
-        <field name="priority" eval="999" />
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_form"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form>
-                <header />
-                <div name="div_smart_buttons" class="oe_button_box" />
-                <sheet>
-                    <group name="group1">
-                        <field name="name" />
-                        <field name="code" />
-                        <field name="active" />
-                    </group>
-                    <notebook>
-                        <page name="note" string="Note">
-                            <field name="note" />
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+            <data />
         </field>
     </record>
 
     <record id="custom_info_option_search" model="ir.ui.view">
+        <field name="name">custom_info.option - search</field>
         <field name="model">custom_info.option</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="code" />
-            </search>
+            <data />
         </field>
     </record>
 

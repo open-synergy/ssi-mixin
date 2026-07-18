@@ -1,0 +1,68 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create custom_info.option record"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "custom_info.option"
+        save_as: "record"
+        values:
+          name: "Option One"
+          code: "OPT-01"
+      - step: "Assert record created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Option One"
+          code:
+            type: "value"
+            expected: "OPT-01"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create first record with code OPT-DUP-01"
+        action: "create"
+        model: "custom_info.option"
+        save_as: "first"
+        values:
+          name: "Option One"
+          code: "OPT-DUP-01"
+      - step: "Create second record with the same code must fail"
+        action: "create"
+        model: "custom_info.option"
+        expect_error:
+          type: "UserError"
+          message_contains: "Dupilicate code"
+        values:
+          name: "Option Two"
+          code: "OPT-DUP-01"
+
+  - name: "copy() appends ' (copy)' suffix to code"
+    steps:
+      - step: "Create original record"
+        action: "create"
+        model: "custom_info.option"
+        save_as: "original"
+        values:
+          name: "Option Three"
+          code: "OPT-02"
+      - step: "Copy the record"
+        action: "call"
+        target: "original"
+        method: "copy"
+      - step: "Verify the duplicate record was created with the suffixed code"
+        action: "search"
+        model: "custom_info.option"
+        domain: [["code", "=", "OPT-02 (copy)"]]
+        save_as: "duplicate"
+        expect_count: 1

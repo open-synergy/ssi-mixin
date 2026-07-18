@@ -4,46 +4,49 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="custom_info_category_tree" model="ir.ui.view">
+        <field name="name">custom_info.category - tree</field>
         <field name="model">custom_info.category</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_tree"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="sequence" widget="handle" />
-                <field name="code" />
-                <field name="name" />
-            </list>
+            <data>
+                <xpath expr="//field[1]" position="before">
+                    <field name="sequence" widget="handle" />
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="custom_info_category_form" model="ir.ui.view">
+        <field name="name">custom_info.category - form</field>
         <field name="model">custom_info.category</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_form"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form>
-                <header />
-                <div name="div_smart_buttons" class="oe_button_box" />
-                <sheet>
-                    <group name="group1">
-                        <field name="name" />
-                        <field name="code" />
-                        <field name="active" />
-                        <field name="sequence" />
-                    </group>
-                    <notebook>
-                        <page name="note" string="Note">
-                            <field name="note" />
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+            <data>
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="sequence" />
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="custom_info_category_search" model="ir.ui.view">
+        <field name="name">custom_info.category - search</field>
         <field name="model">custom_info.category</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="code" />
-            </search>
+            <data />
         </field>
     </record>
 

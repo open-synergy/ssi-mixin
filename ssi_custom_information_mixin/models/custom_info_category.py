@@ -15,26 +15,14 @@ class CustomInfoCategory(models.Model):
     together on the form view.
     """
 
-    _description = "Categorize custom info properties"
     _name = "custom_info.category"
+    _inherit = [
+        "mixin.master_data",
+    ]
+    _description = "Categorize custom info properties"
     _order = "sequence, name"
 
-    name = fields.Char(
-        translate=True,
-        required=True,
-    )
-    code = fields.Char(
-        string="Code",
-        required=True,
-    )
     sequence = fields.Integer(
         index=True,
         default=5,
-    )
-    active = fields.Boolean(
-        string="Active",
-        default=True,
-    )
-    note = fields.Text(
-        string="Note",
     )

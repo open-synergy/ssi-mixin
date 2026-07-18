@@ -4,82 +4,89 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="status_check_item_search_view" model="ir.ui.view">
-        <field name="name">status.check.item.view.search</field>
+        <field name="name">status.check.item - search</field>
         <field name="model">status.check.item</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="model_id" />
-                <group name="group1">
-                    <filter
-                        name="dom_python"
-                        string="Python Based Computation"
-                        domain="[('status_check_method','=','use_python')]"
-                    />
-                </group>
-                <group name="group2">
-                    <filter
-                        name="grp_model"
-                        string="Model"
-                        context="{'group_by':'model_id'}"
-                    />
-                </group>
-            </search>
+            <data>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="model_id" />
+                </xpath>
+                <xpath expr="//group[@name='dom_active']" position="after">
+                    <group name="group1">
+                        <filter
+                            name="dom_python"
+                            string="Python Based Computation"
+                            domain="[('status_check_method','=','use_python')]"
+                        />
+                    </group>
+                    <group name="group2">
+                        <filter
+                            name="grp_model"
+                            string="Model"
+                            context="{'group_by':'model_id'}"
+                        />
+                    </group>
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="status_check_item_tree_view" model="ir.ui.view">
-        <field name="name">status.check.item.view.tree</field>
+        <field name="name">status.check.item - tree</field>
         <field name="model">status.check.item</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_tree"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="code" />
-                <field name="name" />
-                <field name="model_id" />
-            </list>
+            <data>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="model_id" />
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="status_check_item_form_view" model="ir.ui.view">
-        <field name="name">status.check.item.view.form</field>
+        <field name="name">status.check.item - form</field>
         <field name="model">status.check.item</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_form"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form>
-                <header />
-                <sheet>
-                    <div class="oe_button_box" style="width: 300px;" name="buttons" />
-                    <group name="group_1" colspan="4" col="2">
-                        <group name="group_1_1" colspan="1" col="2">
-                            <field name="code" />
-                            <field name="name" />
-                            <field name="active" widget="boolean_toggle" />
+            <data>
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="model_id" />
+                    <field name="model" />
+                </xpath>
+                <xpath expr="//page[@name='note']" position="before">
+                    <page name="page_description" string="Description">
+                        <field name="description" colspan="4" />
+                    </page>
+                    <page name="page_computation" string="Computation">
+                        <group name="group_computation_1" colspan="4" col="2">
+                            <field name="status_check_method" colspan="4" />
+                            <field
+                                name="python_code"
+                                colspan="4"
+                                widget="ace"
+                                invisible="status_check_method != 'use_python'"
+                            />
                         </group>
-                        <group name="group_1_2">
-                            <field name="model_id" />
-                            <field name="model" />
-                        </group>
-                    </group>
-                    <notebook>
-                        <page name="page_description" string="Description">
-                            <field name="description" colspan="4" />
-                        </page>
-                        <page name="page_computation" string="Computation">
-                            <group name="group_computation_1" colspan="4" col="2">
-                                <field name="status_check_method" colspan="4" />
-                                <field
-                                    name="python_code"
-                                    colspan="4"
-                                    widget="ace"
-                                    invisible="status_check_method != 'use_python'"
-                                />
-                            </group>
-                        </page>
-                        <page name="instruction" string="Resolution Instructions">
-                            <field name="resolution_instruction" />
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+                    </page>
+                    <page name="instruction" string="Resolution Instructions">
+                        <field name="resolution_instruction" />
+                    </page>
+                </xpath>
+            </data>
         </field>
     </record>
 

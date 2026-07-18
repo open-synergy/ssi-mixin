@@ -12,20 +12,11 @@ class AttachmentRelatedAttachmentCategory(models.Model):
     """
 
     _name = "attachment.related_attachment_category"
+    _inherit = [
+        "mixin.master_data",
+    ]
     _description = "Related Attachment Category"
 
-    name = fields.Char(
-        string="Name",
-        required=True,
-    )
-    code = fields.Char(
-        string="Code",
-        required=True,
-    )
-    active = fields.Boolean(
-        string="Active",
-        default=True,
-    )
     description = fields.Text(
         string="Description",
     )
