@@ -18,6 +18,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[ssi_backend_mixin](ssi_backend_mixin/) | 19.0.1.0.0 |  | Backend Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 19.0.1.0.0 |  | Company Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 19.0.1.0.0 |  | Custom Information Mixin
 [ssi_decorator](ssi_decorator/) | 19.0.1.0.0 |  | SSI - Decorator
