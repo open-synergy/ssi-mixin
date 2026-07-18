@@ -1,11 +1,12 @@
 [project]
 name = "odoo-addons-open-synergy-ssi-mixin"
-version = "19.0.20260718.5"
+version = "19.0.20260718.6"
 dependencies = [
     "odoo-addon-ssi_company_currency_mixin==19.0.*",
     "odoo-addon-ssi_decorator==19.0.*",
     "odoo-addon-ssi_localdict_mixin==19.0.*",
     "odoo-addon-ssi_m2o_configurator_mixin==19.0.*",
+    "odoo-addon-ssi_print_mixin==19.0.*",
     "odoo-addon-ssi_sequence_mixin==19.0.*",
     "odoo-addon-ssi_source_document_mixin==19.0.*",
 ]
