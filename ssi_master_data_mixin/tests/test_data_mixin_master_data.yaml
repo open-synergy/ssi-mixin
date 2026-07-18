@@ -225,3 +225,48 @@ scenarios:
             type: "value"
             operator: "not_equals"
             expected: "/"
+
+  - name:
+      "search() without explicit order defaults to alphabetical name order (_order =
+      'name')"
+    steps:
+      - step: "Create record named Charlie (created first)"
+        action: "create"
+        model: "test.master_data"
+        save_as: "order_charlie"
+        values:
+          name: "Charlie"
+          code: "ORD-CHARLIE"
+      - step: "Create record named Alpha (created second)"
+        action: "create"
+        model: "test.master_data"
+        save_as: "order_alpha"
+        values:
+          name: "Alpha"
+          code: "ORD-ALPHA"
+      - step: "Create record named Bravo (created third)"
+        action: "create"
+        model: "test.master_data"
+        save_as: "order_bravo"
+        values:
+          name: "Bravo"
+          code: "ORD-BRAVO"
+      - step:
+          "Search without an explicit order, scoped to the three fixtures just created"
+        action: "search"
+        model: "test.master_data"
+        domain: [["code", "in", ["ORD-CHARLIE", "ORD-ALPHA", "ORD-BRAVO"]]]
+        save_as: "ordered_result"
+        expect_count: 3
+      - step:
+          "Assert result is sorted alphabetically by name (Alpha, Bravo, Charlie), not
+          creation order (Charlie, Alpha, Bravo)"
+        action: "assert"
+        target: "ordered_result"
+        asserts:
+          ids:
+            type: "value"
+            expected:
+              - "REC: order_alpha.id"
+              - "REC: order_bravo.id"
+              - "REC: order_charlie.id"
