@@ -36,6 +36,7 @@ addon | version | maintainers | summary
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 19.0.1.0.0 |  | State Change Constrain Mixin
 [ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 19.0.1.0.0 |  | State Change History Mixin
 [ssi_status_check_mixin](ssi_status_check_mixin/) | 19.0.1.0.0 |  | Status Check Mixin
+[ssi_tag_mixin](ssi_tag_mixin/) | 19.0.1.0.0 |  | Tag Mixin
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 19.0.1.0.0 |  | Terms and Conditions Mixin
 [ssi_transaction_mixin](ssi_transaction_mixin/) | 19.0.1.0.0 |  | Transaction Mixin
 
