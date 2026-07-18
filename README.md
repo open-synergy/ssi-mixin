@@ -31,6 +31,7 @@ addon | version | maintainers | summary
 [ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 19.0.1.0.0 |  | Related Attachment Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 19.0.1.0.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 19.0.1.0.0 |  | Source Document Mixin
+[ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 19.0.1.0.0 |  | State Change History Mixin
 
 [//]: # (end addons)
 
