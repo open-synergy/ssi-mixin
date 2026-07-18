@@ -1,6 +1,6 @@
 [project]
 name = "odoo-addons-open-synergy-ssi-mixin"
-version = "19.0.20260718.25"
+version = "19.0.20260718.26"
 dependencies = [
     "odoo-addon-ssi_backend_mixin==19.0.*",
     "odoo-addon-ssi_company_currency_mixin==19.0.*",
@@ -28,6 +28,7 @@ dependencies = [
     "odoo-addon-ssi_transaction_done_mixin==19.0.*",
     "odoo-addon-ssi_transaction_mixin==19.0.*",
     "odoo-addon-ssi_transaction_open_mixin==19.0.*",
+    "odoo-addon-ssi_transaction_ready_mixin==19.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
