@@ -111,10 +111,7 @@ scenarios:
       - step: "Find ir.model.fields record for base.terminate_reason.code"
         action: "search"
         model: "ir.model.fields"
-        domain: [
-            ["model", "=", "base.terminate_reason"],
-            ["name", "=", "code"],
-          ]
+        domain: [["model", "=", "base.terminate_reason"], ["name", "=", "code"]]
         save_as: "code_field"
         limit: 1
         expect_count: 1
@@ -122,10 +119,7 @@ scenarios:
       - step: "Find ir.model.fields record for base.terminate_reason.create_date"
         action: "search"
         model: "ir.model.fields"
-        domain: [
-            ["model", "=", "base.terminate_reason"],
-            ["name", "=", "create_date"],
-          ]
+        domain: [["model", "=", "base.terminate_reason"], ["name", "=", "create_date"]]
         save_as: "date_field"
         limit: 1
         expect_count: 1
