@@ -78,7 +78,7 @@
         <field name="name">mixin.transaction -tree</field>
         <field name="model">mixin.transaction</field>
         <field name="arch" type="xml">
-            <list decoration-bf="message_unread==True">
+            <list>
                 <header>
                     <button
                         name="action_reset_document_number"
@@ -93,7 +93,6 @@
                         confirm="Restart data. Are you sure?"
                     />
                 </header>
-                <field name="message_unread" column_invisible="1" />
                 <field name="id" optional="hide" />
                 <field name="display_name" string="# Document" />
                 <field
