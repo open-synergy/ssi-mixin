@@ -1,0 +1,64 @@
+scenarios:
+  - name: "Dekorator pre_confirm_check menempelkan marker dengan argumen yang benar"
+    steps:
+      - step: "Create test.decorator record"
+        action: "create"
+        model: "test.decorator"
+        save_as: "record"
+        values:
+          name: "Test Decorator Record"
+
+      - step: "Assert marker _pre_confirm_check menempel dengan argumen yang benar"
+        action: "assert"
+        target: "record"
+        asserts:
+          _test_decorator_pre_confirm_check._pre_confirm_check:
+            type: "value"
+            expected: "EVAL: ('test_decorator_marker',)"
+
+  - name: "_add_view_element menyisipkan fragmen QWeb pada xpath yang diminta"
+    steps:
+      - step: "Create test.decorator record"
+        action: "create"
+        model: "test.decorator"
+        save_as: "record"
+        values:
+          name: "Test Decorator Record"
+
+      - step: "Capture form view arch lewat fields_view_get"
+        action: "call"
+        target: "record"
+        method: "_test_capture_form_view_arch"
+
+      - step: "Assert arch memuat fragmen yang disisipkan _add_view_element"
+        action: "assert"
+        target: "record"
+        asserts:
+          test_result:
+            type: "value"
+            operator: "contains"
+            expected: "test_decorator_injected_page"
+
+  - name:
+      "_add_view_element mengembalikan arch tanpa perubahan saat xpath tidak ditemukan"
+    steps:
+      - step: "Create test.decorator record"
+        action: "create"
+        model: "test.decorator"
+        save_as: "record"
+        values:
+          name: "Test Decorator Record"
+
+      - step: "Panggil _add_view_element langsung dengan xpath yang tidak ada di arch"
+        action: "call"
+        target: "record"
+        method: "_test_capture_add_view_element_missing_xpath"
+
+      - step:
+          "Assert arch dikembalikan tanpa perubahan (early-return xpath tidak ketemu)"
+        action: "assert"
+        target: "record"
+        asserts:
+          test_result:
+            type: "value"
+            expected: '<form><group name="left"/></form>'
