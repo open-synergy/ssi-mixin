@@ -93,6 +93,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction__state__draft
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_cancel__state__draft
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_confirm__state__draft
+#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_done__state__draft
 #: model_terms:ir.ui.view,arch_db:ssi_transaction_mixin.mixin_transaction_view_search
 msgid "Draft"
 msgstr ""
