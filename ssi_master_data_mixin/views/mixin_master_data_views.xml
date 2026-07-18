@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 OpenSynergy Indonesia
+     Copyright 2021 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="mixin_master_data_view_search" model="ir.ui.view">
+        <field name="name">mixin.master_data - search</field>
+        <field name="model">mixin.master_data</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="id" />
+                <field name="name" />
+                <field name="code" />
+                <group name="dom_active">
+                    <filter
+                        name="dom_active"
+                        string="Active"
+                        domain="[('active','=',True)]"
+                    />
+                    <filter
+                        name="dom_inactive"
+                        string="Archived"
+                        domain="[('active','=',False)]"
+                    />
+                    <separator />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="mixin_master_data_view_tree" model="ir.ui.view">
+        <field name="name">mixin.master_data - list</field>
+        <field name="model">mixin.master_data</field>
+        <field name="arch" type="xml">
+            <list>
+                <header>
+                    <button
+                        name="action_reset_code"
+                        type="object"
+                        string="Reset code"
+                        confirm="Reset code. Are you sure?"
+                    />
+                    <button
+                        name="action_generate_code"
+                        type="object"
+                        string="Generate code"
+                        confirm="Generate code. Are you sure?"
+                    />
+                </header>
+                <field name="id" optional="hide" />
+                <field name="code" />
+                <field name="name" />
+                <field name="activity_ids" widget="list_activity" optional="show" />
+                <field name="active" widget="boolean_toggle" />
+            </list>
+        </field>
+    </record>
+
+    <record id="mixin_master_data_view_form" model="ir.ui.view">
+        <field name="name">mixin.master_data - form</field>
+        <field name="model">mixin.master_data</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_generate_code"
+                        string="Generate Code"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                </header>
+                <sheet>
+                    <div name="div_smart_buttons" class="oe_button_box" />
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        invisible="active"
+                    />
+                    <group name="group_1" colspan="4" col="2">
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="active" widget="boolean_toggle" />
+                    </group>
+                    <notebook>
+                        <page name="note" string="Note">
+                            <field name="note" colspan="4" nolabel="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+</odoo>
