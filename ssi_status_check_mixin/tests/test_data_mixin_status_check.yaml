@@ -174,7 +174,7 @@ scenarios:
         save_as: "bypass_group"
         values:
           name: "Grup Bypass Status Check"
-          users:
+          user_ids:
             - - 6
               - 0
               - - "REC: group_member_1.id"
