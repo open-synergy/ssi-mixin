@@ -111,11 +111,11 @@ class SequenceTemplate(models.Model):
         copy=True,
     )
     sequence_id = fields.Many2one(
-        string="Sequence",
+        string="Sequence Object",
         comodel_name="ir.sequence",
     )
     sequence_python_code = fields.Text(
-        string="Python Code",
+        string="Sequence Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - sequence: Return sequence, the value is recordset of sequence.",
         copy=True,
@@ -125,7 +125,7 @@ class SequenceTemplate(models.Model):
         default=False,
     )
     prefix_python_code = fields.Text(
-        string="Python Code",
+        string="Prefix Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - result: Return prefix, the value is string.",
         copy=True,
@@ -135,7 +135,7 @@ class SequenceTemplate(models.Model):
         default=False,
     )
     suffix_python_code = fields.Text(
-        string="Python Code",
+        string="Suffix Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - result: Return suffix, the value is string.",
         copy=True,
