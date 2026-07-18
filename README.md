@@ -23,7 +23,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_backend_mixin](ssi_backend_mixin/) | 19.0.1.1.0 |  | Backend Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 19.0.1.1.0 |  | Company Currency Mixin
-[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 19.0.1.1.0 |  | Custom Information Mixin
+[ssi_custom_information_mixin](ssi_custom_information_mixin/) | 19.0.1.2.0 |  | Custom Information Mixin
 [ssi_decorator](ssi_decorator/) | 19.0.1.1.0 |  | SSI - Decorator
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 19.0.1.1.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 19.0.1.1.0 |  | Many2one Configurator Mixin
@@ -34,15 +34,15 @@ addon | version | maintainers | summary
 [ssi_print_mixin](ssi_print_mixin/) | 19.0.1.1.0 |  | Print Policy Mixin
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 19.0.1.1.0 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 19.0.1.1.0 |  | Reference Document Mixin
-[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 19.0.1.1.0 |  | Related Attachment Mixin
+[ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 19.0.1.2.0 |  | Related Attachment Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 19.0.1.1.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 19.0.1.1.0 |  | Source Document Mixin
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 19.0.1.1.0 |  | State Change Constrain Mixin
 [ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 19.0.1.1.0 |  | State Change History Mixin
-[ssi_status_check_mixin](ssi_status_check_mixin/) | 19.0.1.1.0 |  | Status Check Mixin
+[ssi_status_check_mixin](ssi_status_check_mixin/) | 19.0.1.2.0 |  | Status Check Mixin
 [ssi_tag_mixin](ssi_tag_mixin/) | 19.0.1.1.0 |  | Tag Mixin
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 19.0.1.1.0 |  | Terms and Conditions Mixin
-[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Cancel State
+[ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 19.0.1.2.0 |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Waiting for Approval State
 [ssi_transaction_date_duration_mixin](ssi_transaction_date_duration_mixin/) | 19.0.1.1.0 |  | Transaction Date Duration Mixin
 [ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Done State
@@ -51,9 +51,9 @@ addon | version | maintainers | summary
 [ssi_transaction_partner_mixin](ssi_transaction_partner_mixin/) | 19.0.1.1.0 |  | Transaction + Partner Mixin
 [ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Ready to Process State
 [ssi_transaction_tax_address_mixin](ssi_transaction_tax_address_mixin/) | 19.0.1.1.0 |  | Transaction + Tax Address Mixin
-[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Terminate State
+[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | 19.0.1.2.0 |  | Transaction Mixin - Terminate State
 [ssi_transaction_total_mixin](ssi_transaction_total_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Total
-[ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | 19.0.1.1.0 |  | Transaction Mixin - Win & Lost State
+[ssi_transaction_win_lost_mixin](ssi_transaction_win_lost_mixin/) | 19.0.1.2.0 |  | Transaction Mixin - Win & Lost State
 
 [//]: # (end addons)
 
