@@ -1,0 +1,100 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ssi_decorator
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ssi_decorator
+#: model:ir.model.fields.selection,name:ssi_decorator.selection__test_decorator__state__confirm
+msgid "Confirmed"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_mixin_decorator__display_name
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields.selection,name:ssi_decorator.selection__test_decorator__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_mixin_decorator__id
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__id
+msgid "ID"
+msgstr ""
+
+#. module: ssi_decorator
+#: model_terms:ir.ui.view,arch_db:ssi_decorator.test_decorator_page
+msgid "Injected By Decorator"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__name
+msgid "Name"
+msgstr ""
+
+#. module: ssi_decorator
+#: model_terms:ir.ui.view,arch_db:ssi_decorator.test_decorator_view_form
+msgid "Notes"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model,name:ssi_decorator.model_mixin_decorator
+msgid "SSI Decorator Mixin"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,help:ssi_decorator.field_test_decorator__test_result
+msgid ""
+"Scratch field used only by the unit test suite to capture the outcome of "
+"methods whose result cannot be asserted directly (e.g. the arch returned by "
+"fields_view_get, or the arch returned by _add_view_element), so it can be "
+"read back and asserted from a YAML scenario."
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__state
+msgid "State"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model,name:ssi_decorator.model_test_decorator
+msgid "Test Decorator"
+msgstr ""
+
+#. module: ssi_decorator
+#: model:ir.model.fields,field_description:ssi_decorator.field_test_decorator__test_result
+msgid "Test Result"
+msgstr ""
