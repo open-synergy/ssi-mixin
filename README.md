@@ -32,6 +32,7 @@ addon | version | maintainers | summary
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 19.0.1.0.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 19.0.1.0.0 |  | Source Document Mixin
 [ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 19.0.1.0.0 |  | State Change History Mixin
+[ssi_term_condition_mixin](ssi_term_condition_mixin/) | 19.0.1.0.0 |  | Terms and Conditions Mixin
 
 [//]: # (end addons)
 
