@@ -92,7 +92,7 @@ class StatusCheck(models.Model):
                 group_ids = rec.template_detail_id.bypass_group_ids
                 if group_ids:
                     for group in group_ids:
-                        list_user += group.users.ids
+                        list_user += group.user_ids.ids
 
                 if selection_method == "use_python":
                     python_code = rec.template_detail_id.python_code
