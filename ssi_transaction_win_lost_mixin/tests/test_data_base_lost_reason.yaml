@@ -1,0 +1,172 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create base.lost_reason record"
+    steps:
+      - step: "Create record with a manual code"
+        action: "create"
+        model: "base.lost_reason"
+        save_as: "record"
+        values:
+          name: "Other Competitors"
+          code: "LOST-01"
+      - step: "Assert record created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Other Competitors"
+          code:
+            type: "value"
+            expected: "LOST-01"
+          active:
+            type: "value"
+            expected: true
+          display_name:
+            type: "value"
+            expected: "Other Competitors"
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create first record with code LOST-01"
+        action: "create"
+        model: "base.lost_reason"
+        save_as: "first"
+        values:
+          name: "Other Competitors"
+          code: "LOST-01"
+      - step: "Create second record with the same code must fail"
+        action: "create"
+        model: "base.lost_reason"
+        expect_error:
+          type: "UserError"
+          message_contains: "Dupilicate code"
+        values:
+          name: "Too Expensive"
+          code: "LOST-01"
+
+  - name: "copy() appends ' (copy)' suffix to code"
+    steps:
+      - step: "Create original record"
+        action: "create"
+        model: "base.lost_reason"
+        save_as: "original"
+        values:
+          name: "No Longer Need"
+          code: "LOST-02"
+      - step: "Copy the record"
+        action: "call"
+        target: "original"
+        method: "copy"
+      - step: "Verify the duplicate record was created with the suffixed code"
+        action: "search"
+        model: "base.lost_reason"
+        domain: [["code", "=", "LOST-02 (copy)"]]
+        save_as: "duplicate"
+        expect_count: 1
+      - step: "Assert duplicate name matches the original"
+        action: "assert"
+        target: "duplicate"
+        asserts:
+          name:
+            type: "value"
+            expected: "No Longer Need"
+
+  - name: "action_reset_code resets code back to '/'"
+    steps:
+      - step: "Create record with a manual code"
+        action: "create"
+        model: "base.lost_reason"
+        save_as: "record"
+        values:
+          name: "Reset Target"
+          code: "LOST-03"
+      - step: "Call action_reset_code"
+        action: "call"
+        target: "record"
+        method: "action_reset_code"
+      - step: "Assert code reset to '/'"
+        action: "assert"
+        target: "record"
+        asserts:
+          code:
+            type: "value"
+            expected: "/"
+
+  - name: "action_generate_code assigns a sequence value to a '/' code"
+    steps:
+      - step: "Find ir.model record for base.lost_reason"
+        action: "search"
+        model: "ir.model"
+        domain: [["model", "=", "base.lost_reason"]]
+        save_as: "model_lost_reason"
+        limit: 1
+        expect_count: 1
+
+      - step: "Find ir.model.fields record for base.lost_reason.code"
+        action: "search"
+        model: "ir.model.fields"
+        domain: [["model", "=", "base.lost_reason"], ["name", "=", "code"]]
+        save_as: "code_field"
+        limit: 1
+        expect_count: 1
+
+      - step: "Find ir.model.fields record for base.lost_reason.create_date"
+        action: "search"
+        model: "ir.model.fields"
+        domain: [
+            ["model", "=", "base.lost_reason"],
+            ["name", "=", "create_date"],
+          ]
+        save_as: "date_field"
+        limit: 1
+        expect_count: 1
+
+      - step: "Create the ir.sequence backing the template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence"
+        values:
+          name: "Test Lost Reason Sequence"
+          code: "base.lost_reason.test"
+
+      - step: "Create sequence.template pointing at the code field"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template"
+        values:
+          name: "Lost Reason Template"
+          model_id: "REC: model_lost_reason.id"
+          sequence_field_id: "REC: code_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_domain"
+          domain: "[]"
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence.id"
+
+      - step: "Create record with default code '/'"
+        action: "create"
+        model: "base.lost_reason"
+        save_as: "record"
+        values:
+          name: "Generated Code Target"
+          code: "/"
+
+      - step: "Call action_generate_code"
+        action: "call"
+        target: "record"
+        method: "action_generate_code"
+
+      - step: "Assert code is no longer '/'"
+        action: "assert"
+        target: "record"
+        asserts:
+          code:
+            type: "value"
+            operator: "not_equals"
+            expected: "/"
