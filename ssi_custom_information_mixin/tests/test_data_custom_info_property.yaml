@@ -45,7 +45,7 @@ scenarios:
         model: "custom_info.property"
         expect_error:
           type: "UserError"
-          message_contains: "Dupilicate code"
+          message_contains: "Duplicate code"
         values:
           name: "Property Two"
           code: "PROP-DUP-01"

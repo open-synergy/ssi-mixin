@@ -42,7 +42,7 @@ scenarios:
         model: "custom_info.option_set"
         expect_error:
           type: "UserError"
-          message_contains: "Dupilicate code"
+          message_contains: "Duplicate code"
         values:
           name: "Option Set Two"
           code: "OPTSET-DUP-01"
