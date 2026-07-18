@@ -1,0 +1,82 @@
+options:
+  auto_refresh: true
+
+setup:
+  steps:
+    - step: "Find ir.model record for res.partner"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "res.partner"]]
+      save_as: "model_res_partner"
+      limit: 1
+      expect_count: 1
+
+scenarios:
+  - name: "Create status.check.item record"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "status.check.item"
+        save_as: "record"
+        values:
+          name: "Item One"
+          code: "SCI-01"
+          model_id: "REC: model_res_partner.id"
+      - step: "Assert record created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Item One"
+          code:
+            type: "value"
+            expected: "SCI-01"
+          active:
+            type: "value"
+            expected: true
+          model:
+            type: "value"
+            expected: "res.partner"
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create first record with code SCI-01"
+        action: "create"
+        model: "status.check.item"
+        save_as: "first"
+        values:
+          name: "Item One"
+          code: "SCI-01"
+      - step: "Create second record with the same code must fail"
+        action: "create"
+        model: "status.check.item"
+        expect_error:
+          type: "UserError"
+          message_contains: "Dupilicate code"
+        values:
+          name: "Item Two"
+          code: "SCI-01"
+
+  - name: "copy() appends ' (copy)' suffix to code"
+    steps:
+      - step: "Create original record"
+        action: "create"
+        model: "status.check.item"
+        save_as: "original"
+        values:
+          name: "Item Three"
+          code: "SCI-02"
+      - step: "Copy the record"
+        action: "call"
+        target: "original"
+        method: "copy"
+      - step: "Verify the duplicate record was created with the suffixed code"
+        action: "search"
+        model: "status.check.item"
+        domain: [["code", "=", "SCI-02 (copy)"]]
+        save_as: "duplicate"
+        expect_count: 1

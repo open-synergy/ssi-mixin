@@ -7,6 +7,9 @@ from odoo import fields, models
 
 class StatusCheckItem(models.Model):
     _name = "status.check.item"
+    _inherit = [
+        "mixin.master_data",
+    ]
     _description = "Status Check Item"
     _order = "id"
 
@@ -14,14 +17,6 @@ class StatusCheckItem(models.Model):
 #  - env: Odoo Environment on which the action is triggered.
 #  - document: record on which the action is triggered; may be void."""
 
-    name = fields.Char(
-        string="Name",
-        required=True,
-    )
-    code = fields.Char(
-        string="Code",
-        required=True,
-    )
     model_id = fields.Many2one(
         string="Referenced Model",
         comodel_name="ir.model",
@@ -33,10 +28,6 @@ class StatusCheckItem(models.Model):
         related="model_id.model",
         index=True,
         store=True,
-    )
-    active = fields.Boolean(
-        string="Active",
-        default=True,
     )
     description = fields.Text(
         string="Description",
