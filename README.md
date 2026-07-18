@@ -23,6 +23,7 @@ addon | version | maintainers | summary
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 19.0.1.0.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 19.0.1.0.0 |  | Many2one Configurator Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 19.0.1.0.0 |  | Sequence Mixin
+[ssi_source_document_mixin](ssi_source_document_mixin/) | 19.0.1.0.0 |  | Source Document Mixin
 
 [//]: # (end addons)
 
