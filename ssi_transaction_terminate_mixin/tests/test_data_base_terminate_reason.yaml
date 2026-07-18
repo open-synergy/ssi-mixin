@@ -33,13 +33,13 @@ scenarios:
 
   - name: "Duplicate non-slash code is rejected"
     steps:
-      - step: "Create first record with code TERM-01"
+      - step: "Create first record with code TERM-DUP-01"
         action: "create"
         model: "base.terminate_reason"
         save_as: "first"
         values:
           name: "Non-Performance"
-          code: "TERM-01"
+          code: "TERM-DUP-01"
       - step: "Create second record with the same code must fail"
         action: "create"
         model: "base.terminate_reason"
@@ -48,7 +48,7 @@ scenarios:
           message_contains: "Dupilicate code"
         values:
           name: "Unilateral Cancellation"
-          code: "TERM-01"
+          code: "TERM-DUP-01"
 
   - name: "copy() appends ' (copy)' suffix to code"
     steps:
