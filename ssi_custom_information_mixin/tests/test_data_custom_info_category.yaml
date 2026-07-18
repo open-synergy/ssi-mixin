@@ -30,13 +30,13 @@ scenarios:
 
   - name: "Duplicate non-slash code is rejected"
     steps:
-      - step: "Create first record with code CAT-01"
+      - step: "Create first record with code CAT-DUP-01"
         action: "create"
         model: "custom_info.category"
         save_as: "first"
         values:
           name: "Category One"
-          code: "CAT-01"
+          code: "CAT-DUP-01"
       - step: "Create second record with the same code must fail"
         action: "create"
         model: "custom_info.category"
@@ -45,7 +45,7 @@ scenarios:
           message_contains: "Dupilicate code"
         values:
           name: "Category Two"
-          code: "CAT-01"
+          code: "CAT-DUP-01"
 
   - name: "copy() appends ' (copy)' suffix to code"
     steps:
