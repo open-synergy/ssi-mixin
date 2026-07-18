@@ -48,6 +48,7 @@ addon | version | maintainers | summary
 [ssi_transaction_partner_mixin](ssi_transaction_partner_mixin/) | 19.0.1.0.0 |  | Transaction + Partner Mixin
 [ssi_transaction_ready_mixin](ssi_transaction_ready_mixin/) | 19.0.1.0.0 |  | Transaction Mixin - Ready to Process State
 [ssi_transaction_tax_address_mixin](ssi_transaction_tax_address_mixin/) | 19.0.1.0.0 |  | Transaction + Tax Address Mixin
+[ssi_transaction_terminate_mixin](ssi_transaction_terminate_mixin/) | 19.0.1.0.0 |  | Transaction Mixin - Terminate State
 
 [//]: # (end addons)
 
