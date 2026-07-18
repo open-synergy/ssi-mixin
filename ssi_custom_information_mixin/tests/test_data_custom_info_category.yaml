@@ -42,7 +42,7 @@ scenarios:
         model: "custom_info.category"
         expect_error:
           type: "UserError"
-          message_contains: "Dupilicate code"
+          message_contains: "Duplicate code"
         values:
           name: "Category Two"
           code: "CAT-DUP-01"

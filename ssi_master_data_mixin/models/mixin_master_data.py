@@ -64,7 +64,7 @@ class MixinMasterData(models.AbstractModel):
 
 * Fill with '/' if You do not need unique identifier
 * Click 'Generate Code' button to automatically assign code.
-  Sequence template mush be set to perform this action
+  Sequence template must be set to perform this action
   Only master data with '/' code will be assign automatic code""",
     )
     active = fields.Boolean(
@@ -74,7 +74,7 @@ class MixinMasterData(models.AbstractModel):
 
 * Inactive data can not be selected when creating new transaction
 * Transaction with inactive master data can still be viewed
-* Set master data as inactive if master data no longger needed,
+* Set master data as inactive if master data no longer needed,
 but master data already used on transaction""",
     )
     note = fields.Text(
@@ -120,7 +120,7 @@ but master data already used on transaction""",
                 Document Type: {self._description.lower()}
                 Context: Create or update document
                 Database ID: {self.id}
-                Problem: Dupilicate code
+                Problem: Duplicate code
                 Solution: Change code
                 """
                 raise UserError(error_message)
