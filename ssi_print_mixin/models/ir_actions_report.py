@@ -35,7 +35,7 @@ class IrActionsReport(models.Model):
         string="Condition",
         help="The result of executing the expresion must be a boolean.",
         default=(
-            "# Available locals:\n" "#  - document: current recordset\n" "result = True"
+            "# Available locals:\n#  - document: current recordset\nresult = True"
         ),
     )
     print_multi = fields.Boolean(

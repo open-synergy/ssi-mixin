@@ -207,7 +207,7 @@ class StatusCheck(models.Model):
             error_message = f"""
                 Document: {record._description.lower()}
                 Context: Evaluating status check item
-                Database ID: {record and record.id or 'New Record'}
+                Database ID: {record and record.id or "New Record"}
                 Problem: Python code error
                 Solution: Check status check item ID {self.status_check_item_id.id}
                 """

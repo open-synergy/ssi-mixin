@@ -31,8 +31,7 @@ class MixingSourceDocument(models.AbstractModel):
             result = False
             if record.source_document_res_id > 0 and record.source_document_model_id:
                 result = (
-                    f"{record.source_document_model},"
-                    f"{record.source_document_res_id}"
+                    f"{record.source_document_model},{record.source_document_res_id}"
                 )
             record.source_document_id = result
 
