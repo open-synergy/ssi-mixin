@@ -11,13 +11,10 @@ class CustomInfoTemplate(models.Model):
     _description = "Custom information template"
     _name = "custom_info.template"
     _order = "model_id, name"
-    _sql_constraints = [
-        (
-            "name_model",
-            "UNIQUE (name, model_id)",
-            "Another template with that name exists for that model.",
-        ),
-    ]
+    _name_model_uniq = models.Constraint(
+        "UNIQUE (name, model_id)",
+        "Another template with that name exists for that model.",
+    )
 
     DEFAULT_PYTHON_CODE = """# Available variables:
 #  - env: Odoo Environment on which the action is triggered.

@@ -136,7 +136,7 @@ class CustomInfoValue(models.Model):
         compute="_compute_value",
         help="Value, always converted to/from the typed field.",
     )
-    value_str = fields.Char(string="Text value", translate=True, index=True)
+    value_str = fields.Char(string="Text value", translate=True)
     value_int = fields.Integer(
         string="Whole number value",
         index=True,

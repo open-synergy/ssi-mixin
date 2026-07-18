@@ -20,7 +20,6 @@ class CustomInfoCategory(models.Model):
     _order = "sequence, name"
 
     name = fields.Char(
-        index=True,
         translate=True,
         required=True,
     )

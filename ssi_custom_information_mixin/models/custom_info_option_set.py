@@ -19,7 +19,6 @@ class CustomInfoOptionSet(models.Model):
     _name = "custom_info.option_set"
 
     name = fields.Char(
-        index=True,
         translate=True,
         required=True,
     )

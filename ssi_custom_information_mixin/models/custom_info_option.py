@@ -20,7 +20,6 @@ class CustomInfoOption(models.Model):
     _order = "name"
 
     name = fields.Char(
-        index=True,
         translate=True,
         required=True,
     )
