@@ -4,50 +4,49 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="base_cancel_reason_view_search" model="ir.ui.view">
-        <field name="name">base.cancel_reason search</field>
+        <field name="name">base.cancel_reason - search</field>
         <field name="model">base.cancel_reason</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="code" />
-            </search>
+            <data />
         </field>
     </record>
 
     <record id="base_cancel_reason_view_tree" model="ir.ui.view">
-        <field name="name">base.cancel_reason tree</field>
+        <field name="name">base.cancel_reason - tree</field>
         <field name="model">base.cancel_reason</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_tree"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name" />
-                <field name="code" />
-                <field name="global_use" />
-            </list>
+            <data>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="global_use" />
+                </xpath>
+            </data>
         </field>
     </record>
 
     <record id="base_cancel_reason_view_form" model="ir.ui.view">
-        <field name="name">base.cancel_reason form</field>
+        <field name="name">base.cancel_reason - form</field>
         <field name="model">base.cancel_reason</field>
+        <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_form"
+        />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form>
-                <header />
-                <sheet>
-                    <group name="group_1" colspan="4" col="2">
-                        <field name="name" />
-                        <field name="code" />
-                        <field name="active" widget="boolean_toggle" />
-                        <field name="global_use" />
-                    </group>
-                    <notebook>
-                        <page name="page_note" string="Note">
-                            <group name="group_note_1" colspan="4" col="2">
-                                <field name="note" colspan="4" nolabel="1" />
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+            <data>
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="global_use" />
+                </xpath>
+            </data>
         </field>
     </record>
 
