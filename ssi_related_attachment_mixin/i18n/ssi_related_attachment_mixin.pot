@@ -25,10 +25,35 @@ msgid "# Template Detail"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__active
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_template__active
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_template_detail__active
 msgid "Active"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_type_icon
+msgid "Activity Type Icon"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -50,6 +75,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment__attachment_id
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_import__attachment_id
 msgid "Attachment"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_attachment_count
+msgid "Attachment Count"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -194,9 +224,29 @@ msgid "Filename"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_template_detail__verify_group_ids
 #: model:ir.model.fields.selection,name:ssi_related_attachment_mixin.selection__attachment_related_attachment_template_detail__verify_method__use_group
 msgid "Groups"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -211,8 +261,33 @@ msgid "ID"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model.fields.selection,name:ssi_related_attachment_mixin.selection__mixin_related_attachment__related_attchment_status__open
 msgid "In Progress"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_is_follower
+msgid "Is Follower"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -234,6 +309,38 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__active
+msgid ""
+"Master data status\n"
+"\n"
+"* Inactive data can not be selected when creating new transaction\n"
+"* Transaction with inactive master data can still be viewed\n"
+"* Set master data as inactive if master data no longger needed,\n"
+"but master data already used on transaction"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__code
+msgid ""
+"Master data unique identifier.\n"
+"\n"
+"* Fill with '/' if You do not need unique identifier\n"
+"* Click 'Generate Code' button to automatically assign code.\n"
+"  Sequence template mush be set to perform this action\n"
+"  Only master data with '/' code will be assign automatic code"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model,name:ssi_related_attachment_mixin.model_mixin_related_attachment
 msgid "Mixin Object for Related Attachment"
 msgstr ""
@@ -250,9 +357,29 @@ msgid "Models"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__name
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_template__name
 msgid "Name"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_type_id
+msgid "Next Activity Type"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -261,6 +388,7 @@ msgid "Not Needed"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__note
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_template__note
 #: model_terms:ir.ui.view,arch_db:ssi_related_attachment_mixin.attachment_related_attachment_template_view_form
 msgid "Note"
@@ -282,8 +410,28 @@ msgid "Num. of Verified Related Attachments"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model.fields,help:ssi_related_attachment_mixin.field_mixin_related_attachment__num_of_related_attachment
 msgid "Number of all related attchments"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__message_has_error_counter
+msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -384,6 +532,11 @@ msgid ""
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
 #: model:ir.model.fields.selection,name:ssi_related_attachment_mixin.selection__attachment_related_attachment_import__action_type__select_file
 msgid "Select File"
 msgstr ""
@@ -397,6 +550,15 @@ msgstr ""
 #. module: ssi_related_attachment_mixin
 #: model_terms:ir.ui.view,arch_db:ssi_related_attachment_mixin.related_attachment_page
 msgid "State"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
@@ -427,6 +589,11 @@ msgstr ""
 #. module: ssi_related_attachment_mixin
 #: model:ir.model.fields,field_description:ssi_related_attachment_mixin.field_attachment_related_attachment_import__action_type
 msgid "Type"
+msgstr ""
+
+#. module: ssi_related_attachment_mixin
+#: model:ir.model.fields,help:ssi_related_attachment_mixin.field_attachment_related_attachment_category__activity_exception_decoration
+msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: ssi_related_attachment_mixin
