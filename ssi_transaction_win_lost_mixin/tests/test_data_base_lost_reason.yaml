@@ -119,10 +119,7 @@ scenarios:
       - step: "Find ir.model.fields record for base.lost_reason.create_date"
         action: "search"
         model: "ir.model.fields"
-        domain: [
-            ["model", "=", "base.lost_reason"],
-            ["name", "=", "create_date"],
-          ]
+        domain: [["model", "=", "base.lost_reason"], ["name", "=", "create_date"]]
         save_as: "date_field"
         limit: 1
         expect_count: 1
