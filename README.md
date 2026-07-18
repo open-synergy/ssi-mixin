@@ -29,6 +29,7 @@ addon | version | maintainers | summary
 [ssi_policy_mixin](ssi_policy_mixin/) | 19.0.1.0.0 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 19.0.1.0.0 |  | Print Policy Mixin
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 19.0.1.0.0 |  | QR Code Mixin
+[ssi_reference_document_mixin](ssi_reference_document_mixin/) | 19.0.1.0.0 |  | Reference Document Mixin
 [ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 19.0.1.0.0 |  | Related Attachment Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 19.0.1.0.0 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 19.0.1.0.0 |  | Source Document Mixin

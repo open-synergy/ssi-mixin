@@ -1,6 +1,6 @@
 [project]
 name = "odoo-addons-open-synergy-ssi-mixin"
-version = "19.0.20260718.18"
+version = "19.0.20260718.19"
 dependencies = [
     "odoo-addon-ssi_company_currency_mixin==19.0.*",
     "odoo-addon-ssi_custom_information_mixin==19.0.*",
@@ -13,6 +13,7 @@ dependencies = [
     "odoo-addon-ssi_policy_mixin==19.0.*",
     "odoo-addon-ssi_print_mixin==19.0.*",
     "odoo-addon-ssi_qr_code_mixin==19.0.*",
+    "odoo-addon-ssi_reference_document_mixin==19.0.*",
     "odoo-addon-ssi_related_attachment_mixin==19.0.*",
     "odoo-addon-ssi_sequence_mixin==19.0.*",
     "odoo-addon-ssi_source_document_mixin==19.0.*",
