@@ -110,6 +110,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_total_with_field__state__draft
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_untaxed__state__draft
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_untaxed_with_field__state__draft
+#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_win_lost__state__draft
 #: model_terms:ir.ui.view,arch_db:ssi_transaction_mixin.mixin_transaction_view_search
 msgid "Draft"
 msgstr ""
