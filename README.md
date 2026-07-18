@@ -41,6 +41,7 @@ addon | version | maintainers | summary
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 19.0.1.0.0 |  | Terms and Conditions Mixin
 [ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 19.0.1.0.0 |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 19.0.1.0.0 |  | Transaction Mixin - Waiting for Approval State
+[ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | 19.0.1.0.0 |  | Transaction Mixin - Done State
 [ssi_transaction_mixin](ssi_transaction_mixin/) | 19.0.1.0.0 |  | Transaction Mixin
 
 [//]: # (end addons)
