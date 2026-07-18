@@ -1,8 +1,7 @@
 # Do NOT update manually; changes here will be overwritten by Copier
-_commit: c749e42
-_src_path: https://github.com/open-synergy/ssi-addons-repo-template.git
+_commit: v1.43
+_src_path: https://github.com/OCA/oca-addons-repo-template.git
 additional_ruff_rules: []
-ci: GitHub
 convert_readme_fragments_to_markdown: true
 enable_checklog_odoo: true
 generate_requirements_txt: true
@@ -15,13 +14,14 @@ github_enforce_dev_status_compatibility: true
 include_wkhtmltopdf: false
 odoo_test_flavor: Both
 odoo_version: 19.0
-org_name: PT. Simetri Sinergi Indonesia (SSI)
+org_name: PT. Simetri Sinergi Indonesia
 org_slug: open-synergy
+postgres_image: ''
 rebel_module_groups: []
 repo_description: ssi-mixin
 repo_name: ssi-mixin
 repo_slug: ssi-mixin
-repo_website: https://github.com/open-synergy/ssi-mixin
+repo_website: https://simetri-sinergi.id
 use_pyproject_toml: true
 use_ruff: true
 
