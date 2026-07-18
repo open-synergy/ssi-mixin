@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ssi_m2o_configurator_mixin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ssi_m2o_configurator_mixin
+#: model:ir.model.fields,field_description:ssi_m2o_configurator_mixin.field_mixin_many2one_configurator__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ssi_m2o_configurator_mixin
+#. odoo-python
+#: code:addons/ssi_m2o_configurator_mixin/models/mixin_many2one_configurator.py:0
+msgid ""
+"Error evaluating conditions.\n"
+" %s"
+msgstr ""
+
+#. module: ssi_m2o_configurator_mixin
+#: model:ir.model.fields,field_description:ssi_m2o_configurator_mixin.field_mixin_many2one_configurator__id
+msgid "ID"
+msgstr ""
+
+#. module: ssi_m2o_configurator_mixin
+#: model:ir.model,name:ssi_m2o_configurator_mixin.model_mixin_many2one_configurator
+msgid "Many2one Configurator Mixin"
+msgstr ""
