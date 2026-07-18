@@ -10,6 +10,4 @@ from odoo.tests import tagged
 @tagged("post_install", "-at_install")
 class TestAttachmentRelatedAttachmentCategory(YamlTransactionCase):
     def test_attachment_related_attachment_category(self):
-        self.run_yaml_scenario(
-            "test_data_attachment_related_attachment_category.yaml"
-        )
+        self.run_yaml_scenario("test_data_attachment_related_attachment_category.yaml")
