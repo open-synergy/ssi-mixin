@@ -14,13 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: ssi_sequence_mixin
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__name
-msgid "# Document"
-msgstr ""
-
-#. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__active
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__active
 msgid "Active"
 msgstr ""
 
@@ -46,19 +40,12 @@ msgstr ""
 
 #. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__create_uid
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__create_date
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__create_date
 msgid "Created on"
-msgstr ""
-
-#. module: ssi_sequence_mixin
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__date
-msgid "Date"
 msgstr ""
 
 #. module: ssi_sequence_mixin
@@ -69,7 +56,6 @@ msgstr ""
 #. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_mixin_sequence__display_name
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__display_name
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -133,7 +119,6 @@ msgstr ""
 #. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_mixin_sequence__id
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__id
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__id
 msgid "ID"
 msgstr ""
 
@@ -144,13 +129,11 @@ msgstr ""
 
 #. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__write_uid
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: ssi_sequence_mixin
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__write_date
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -174,11 +157,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_sequence_mixin.field_sequence_template__note
 #: model_terms:ir.ui.view,arch_db:ssi_sequence_mixin.sequence_template_view_form
 msgid "Note"
-msgstr ""
-
-#. module: ssi_sequence_mixin
-#: model:ir.model.fields,field_description:ssi_sequence_mixin.field_test_sequence__notes
-msgid "Notes"
 msgstr ""
 
 #. module: ssi_sequence_mixin
@@ -268,9 +246,4 @@ msgstr ""
 #. module: ssi_sequence_mixin
 #: model:ir.ui.menu,name:ssi_sequence_mixin.sequence_template_menu
 msgid "Templates"
-msgstr ""
-
-#. module: ssi_sequence_mixin
-#: model:ir.model,name:ssi_sequence_mixin.model_test_sequence
-msgid "Test Sequence"
 msgstr ""
