@@ -1,0 +1,214 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create, edit and delete a test.product_line_price"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.product_line_price"
+        save_as: "record"
+        values:
+          name: "Line CRUD"
+          uom_quantity: 1.0
+
+      - step: "Assert created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Line CRUD"
+
+      - step: "Write new name"
+        action: "write"
+        target: "record"
+        values:
+          name: "Line CRUD Updated"
+
+      - step: "Assert name updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "Line CRUD Updated"
+
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "test.product_line_price"
+        domain: [["name", "=", "Line CRUD Updated"]]
+        save_as: "deleted_check"
+        expect_count: 0
+
+  - name:
+      "_compute_price mirrors price_unit times uom_quantity, and follows a later write"
+    steps:
+      - step: "Create record with a price and a quantity"
+        action: "create"
+        model: "test.product_line_price"
+        save_as: "record"
+        values:
+          name: "Line Price"
+          price_unit: 150.0
+          uom_quantity: 2.0
+
+      - step: "Assert price_subtotal is price_unit times uom_quantity"
+        action: "assert"
+        target: "record"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 300.0
+
+      - step: "Zero out the price"
+        action: "write"
+        target: "record"
+        values:
+          price_unit: 0.0
+
+      - step: "Assert price_subtotal follows the write down to zero"
+        action: "assert"
+        target: "record"
+        refresh: true
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 0.0
+
+  - name: "allowed_pricelist_ids only lists pricelists sharing the record's currency"
+    steps:
+      - step:
+          "Create a currency dedicated to this scenario (no pre-existing pricelist uses
+          it)"
+        action: "create"
+        model: "res.currency"
+        save_as: "scenario_currency"
+        values:
+          name: "TS1"
+          symbol: "T1$"
+
+      - step: "Create record using the dedicated currency"
+        action: "create"
+        model: "test.product_line_price"
+        save_as: "record"
+        values:
+          name: "Line Pricelist Scope"
+          currency_id: "REC: scenario_currency.id"
+
+      - step: "Assert allowed_pricelist_ids is empty before any pricelist exists"
+        action: "assert"
+        target: "record"
+        asserts:
+          allowed_pricelist_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 0
+
+      - step: "Create a pricelist using the same dedicated currency"
+        action: "create"
+        model: "product.pricelist"
+        save_as: "scenario_pricelist"
+        values:
+          name: "Scenario Pricelist"
+          currency_id: "REC: scenario_currency.id"
+
+      - step: "Assert allowed_pricelist_ids now contains the matching pricelist"
+        action: "assert"
+        target: "record"
+        refresh: true
+        asserts:
+          allowed_pricelist_ids:
+            type: "m2m"
+            check: "contains"
+            expected_records:
+              - "REC: scenario_pricelist"
+
+  - name:
+      "_compute_standard_price reads the product list price through the pricelist when
+      both product_id and pricelist_id are set"
+    steps:
+      - step: "Create a product with a fixed list price"
+        action: "create"
+        model: "product.product"
+        save_as: "product_std"
+        values:
+          name: "Product With Standard Price"
+          list_price: 500.0
+
+      - step: "Create a pricelist without any pricing rule, in the company currency"
+        action: "create"
+        model: "product.pricelist"
+        save_as: "pricelist_std"
+        values:
+          name: "Standard Pricelist"
+          currency_id: "REC: company.currency_id.id"
+
+      - step:
+          "Create record with product_id, pricelist_id, and uom_id matching the
+          product's own UoM to keep the quantity conversion an identity"
+        action: "create"
+        model: "test.product_line_price"
+        save_as: "record"
+        values:
+          name: "Line Standard Price"
+          product_id: "REC: product_std.id"
+          pricelist_id: "REC: pricelist_std.id"
+          uom_id: "REF: uom.product_uom_unit"
+          price_unit: 450.0
+          uom_quantity: 2.0
+
+      - step:
+          "Assert standard price fields read the product's list_price (no pricelist rule
+          matches, so the rule engine falls back to it)"
+        action: "assert"
+        target: "record"
+        asserts:
+          standard_price_unit:
+            type: "value"
+            expected: 500.0
+          standard_price_subtotal:
+            type: "value"
+            expected: 1000.0
+          price_subtotal:
+            type: "value"
+            expected: 900.0
+          standard_price_unit_diff:
+            type: "value"
+            expected: -50.0
+          standard_price_subtotal_diff:
+            type: "value"
+            expected: -100.0
+
+  - name: "_compute_standard_price is zero when product_id or pricelist_id is missing"
+    steps:
+      - step: "Create record without product_id and without pricelist_id"
+        action: "create"
+        model: "test.product_line_price"
+        save_as: "record"
+        values:
+          name: "Line No Product No Pricelist"
+
+      - step: "Assert every standard price field defaults to zero"
+        action: "assert"
+        target: "record"
+        asserts:
+          standard_price_unit:
+            type: "value"
+            expected: 0.0
+          standard_price_subtotal:
+            type: "value"
+            expected: 0.0
+          standard_price_unit_diff:
+            type: "value"
+            expected: 0.0
+          standard_price_subtotal_diff:
+            type: "value"
+            expected: 0.0
