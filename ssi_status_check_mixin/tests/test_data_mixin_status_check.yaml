@@ -57,9 +57,8 @@ scenarios:
       status_check_ids kosong dan status_check_template_id falsy"
     steps:
       - step:
-          "Assert dokumen segar dari setup belum terhubung ke template apa
-          pun - belum ada status.check.template untuk model ini pada titik
-          ini"
+          "Assert dokumen segar dari setup belum terhubung ke template apa pun - belum
+          ada status.check.template untuk model ini pada titik ini"
         action: "assert"
         target: "doc"
         asserts:
@@ -430,8 +429,8 @@ scenarios:
         expect_count: 1
 
       - step:
-          "Nonaktifkan template agar tidak bocor ke skenario lain (search default
-          hanya melihat template aktif)"
+          "Nonaktifkan template agar tidak bocor ke skenario lain (search default hanya
+          melihat template aktif)"
         action: "write"
         target: "auto_template"
         values:
