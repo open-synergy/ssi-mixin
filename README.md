@@ -24,7 +24,7 @@ addon | version | maintainers | summary
 [ssi_backend_mixin](ssi_backend_mixin/) | 19.0.1.1.0 |  | Backend Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 19.0.1.1.0 |  | Company Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 19.0.1.3.0 |  | Custom Information Mixin
-[ssi_decorator](ssi_decorator/) | 19.0.1.1.0 |  | SSI - Decorator
+[ssi_decorator](ssi_decorator/) | 19.0.1.1.1 |  | SSI - Decorator
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 19.0.1.1.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 19.0.1.1.0 |  | Many2one Configurator Mixin
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 19.0.1.3.0 |  | Master Data Mixin
