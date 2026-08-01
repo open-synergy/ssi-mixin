@@ -1,18 +1,58 @@
+options:
+  auto_refresh: true
+
+fake_models:
+  classes:
+    - "odoo.addons.ssi_state_change_constrain_mixin.tests.fake_models:TestStatusCheckOnlyConsumer"
+    - "odoo.addons.ssi_state_change_constrain_mixin.tests.fake_models:TestStateChangeConsumer"
+
+# Shared read-only lookups, replayed before every scenario (fresh registry
+# each time, no state leaks between scenarios): the ir.model row for
+# "test_state_change_consumer", the ir.model.fields row for its "state"
+# field, and the ir.model.fields.selection row for the "confirm" value -
+# used to build state.change.constrain.template / template_detail records.
+setup:
+  steps:
+    - step: "Find ir.model record for test_state_change_consumer"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test_state_change_consumer"]]
+      save_as: "model_test_state_change_consumer"
+      limit: 1
+      expect_count: 1
+
+    - step: "Find ir.model.fields record for test_state_change_consumer.state"
+      action: "search"
+      model: "ir.model.fields"
+      domain: [["model", "=", "test_state_change_consumer"], ["name", "=", "state"]]
+      save_as: "field_state"
+      limit: 1
+      expect_count: 1
+
+    - step: "Find ir.model.fields.selection record for state value 'confirm'"
+      action: "search"
+      model: "ir.model.fields.selection"
+      domain: [["field_id", "=", "REC: field_state.id"], ["value", "=", "confirm"]]
+      save_as: "selection_confirm"
+      limit: 1
+      expect_count: 1
+
 scenarios:
   - name:
-      "action_reload_status_check_template tidak melempar AttributeError pada model yang
-      memakai mixin.status_check tanpa mixin.state_change_constrain"
+      "action_reload_status_check_template does not raise AttributeError on a model that
+      uses mixin.status_check without mixin.state_change_constrain (the hasattr guard in
+      models/mixin_status_check.py)"
     steps:
       - step:
-          "Create test.status_check (fixture test_ssi_status_check_mixin; hanya _inherit
-          mixin.status_check + mail.thread, TANPA mixin.state_change_constrain)"
+          "Create test_status_check_only_consumer; create() calls
+          action_reload_status_check_template() internally"
         action: "create"
-        model: "test.status_check"
+        model: "test_status_check_only_consumer"
         save_as: "doc"
         values:
-          name: "Dokumen Guard Status Check"
+          name: "Status Check Only Document"
 
-      - step: "Assert dokumen berhasil dibuat tanpa AttributeError"
+      - step: "Assert the document was created without AttributeError"
         action: "assert"
         target: "doc"
         asserts:
@@ -21,24 +61,373 @@ scenarios:
             operator: "is_truthy"
 
   - name:
-      "action_reload_status_check_template tetap memicu
-      onchange_state_change_constrain_template_id untuk model yang memakai kedua mixin
-      (tidak ada regresi)"
+      "A test_state_change_consumer document with no status.check.template attached
+      leaves state_change_constrain_template_id unset, and _check_state_constrain does
+      not block any state write"
     steps:
-      - step:
-          "Create test.state_change_constrain (fixture
-          test_ssi_state_change_constrain_mixin; _inherit mixin.state_change_constrain +
-          mixin.status_check + mail.thread)"
+      - step: "Create the document; no status.check.template exists yet for this model"
         action: "create"
-        model: "test.state_change_constrain"
-        save_as: "doc"
+        model: "test_state_change_consumer"
+        save_as: "record"
         values:
-          name: "Dokumen Guard State Change Constrain"
+          name: "No Template Attached"
 
-      - step: "Assert dokumen berhasil dibuat tanpa AttributeError"
+      - step: "Assert both template links stayed empty"
         action: "assert"
-        target: "doc"
+        target: "record"
         asserts:
-          id:
+          status_check_template_id:
             type: "value"
-            operator: "is_truthy"
+            operator: "is_falsy"
+          state_change_constrain_template_id:
+            type: "value"
+            operator: "is_falsy"
+
+      - step:
+          "Change state freely; _check_state_constrain exits immediately because
+          state_change_constrain_template_id is falsy"
+        action: "write"
+        target: "record"
+        values:
+          state: "confirm"
+
+      - step: "Assert the state change was not blocked"
+        action: "assert"
+        target: "record"
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+  - name:
+      "create() fills state_change_constrain_template_id via _get_template_state_change
+      when the template's python_code returns True, and
+      action_reload_status_check_template can be called again without AttributeError or
+      losing the selection"
+    steps:
+      - step: "Create a status.check.template that always applies to this model"
+        action: "create"
+        model: "status.check.template"
+        save_as: "status_template_c"
+        values:
+          name: "Always Applies (Scenario C)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          python_code: "result = True"
+
+      - step:
+          "Create a state.change.constrain.template bound to that status.check.template"
+        action: "create"
+        model: "state.change.constrain.template"
+        save_as: "state_template_c"
+        values:
+          name: "Always Applies (Scenario C)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          state_field_id: "REC: field_state.id"
+          status_check_template_id: "REC: status_template_c.id"
+          python_code: "result = True"
+
+      - step: "Create the document; create() must auto-select both templates"
+        action: "create"
+        model: "test_state_change_consumer"
+        save_as: "record"
+        values:
+          name: "Template Auto Selected"
+
+      - step: "Assert both templates were selected at create() time"
+        action: "assert"
+        target: "record"
+        asserts:
+          status_check_template_id:
+            type: "m2o"
+            expected: "REC: status_template_c"
+          state_change_constrain_template_id:
+            type: "m2o"
+            expected: "REC: state_template_c"
+
+      - step:
+          "Call action_reload_status_check_template() directly; it must re-trigger
+          onchange_state_change_constrain_template_id without AttributeError (the model
+          also inherits mixin.state_change_constrain, unlike the guard scenario above)"
+        action: "call"
+        target: "record"
+        method: "action_reload_status_check_template"
+
+      - step: "Assert both templates are still selected after the reload"
+        action: "assert"
+        target: "record"
+        asserts:
+          status_check_template_id:
+            type: "m2o"
+            expected: "REC: status_template_c"
+          state_change_constrain_template_id:
+            type: "m2o"
+            expected: "REC: state_template_c"
+
+      - step:
+          "Deactivate the status.check.template so it does not leak into later scenarios"
+        action: "write"
+        target: "status_template_c"
+        values:
+          active: false
+
+      - step:
+          "Deactivate the state.change.constrain.template so it does not leak into later
+          scenarios"
+        action: "write"
+        target: "state_template_c"
+        values:
+          active: false
+
+  - name:
+      "A state change to a value with no bound detail row on the template is not blocked"
+    steps:
+      - step: "Create a status.check.item that always fails"
+        action: "create"
+        model: "status.check.item"
+        save_as: "item_d"
+        values:
+          name: "Always Fails (Scenario D)"
+          code: "SCENARIO_D_ITEM"
+          python_code: "result = False"
+
+      - step: "Create a status.check.template that always applies to this model"
+        action: "create"
+        model: "status.check.template"
+        save_as: "status_template_d"
+        values:
+          name: "Always Applies (Scenario D)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          python_code: "result = True"
+
+      - step: "Bind the failing item to that status.check.template"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "status_detail_d"
+        values:
+          template_id: "REC: status_template_d.id"
+          status_check_item_id: "REC: item_d.id"
+
+      - step:
+          "Create a state.change.constrain.template bound to that status.check.template"
+        action: "create"
+        model: "state.change.constrain.template"
+        save_as: "state_template_d"
+        values:
+          name: "Confirm Requires Passing Check (Scenario D)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          state_field_id: "REC: field_state.id"
+          status_check_template_id: "REC: status_template_d.id"
+          python_code: "result = True"
+
+      - step:
+          "Bind the failing item to the 'confirm' state only - 'open' is deliberately
+          left without any detail row"
+        action: "create"
+        model: "state.change.constrain.template_detail"
+        save_as: "state_detail_d"
+        values:
+          template_id: "REC: state_template_d.id"
+          state_id: "REC: selection_confirm.id"
+          status_check_item_ids:
+            - - 6
+              - 0
+              - - "REC: item_d.id"
+
+      - step: "Create the document"
+        action: "create"
+        model: "test_state_change_consumer"
+        save_as: "record"
+        values:
+          name: "Unbound State Change"
+
+      - step:
+          "Move to 'open', a state with no detail row on the template - must not raise"
+        action: "write"
+        target: "record"
+        values:
+          state: "open"
+
+      - step: "Assert the state change went through"
+        action: "assert"
+        target: "record"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step:
+          "Deactivate the status.check.template so it does not leak into later scenarios"
+        action: "write"
+        target: "status_template_d"
+        values:
+          active: false
+
+      - step:
+          "Deactivate the state.change.constrain.template so it does not leak into later
+          scenarios"
+        action: "write"
+        target: "state_template_d"
+        values:
+          active: false
+
+  - name:
+      "A state change to a value bound to a failing status check is rejected with
+      UserError"
+    steps:
+      - step: "Create a status.check.item that always fails"
+        action: "create"
+        model: "status.check.item"
+        save_as: "item_e"
+        values:
+          name: "Always Fails (Scenario E)"
+          code: "SCENARIO_E_ITEM"
+          python_code: "result = False"
+
+      - step: "Create a status.check.template that always applies to this model"
+        action: "create"
+        model: "status.check.template"
+        save_as: "status_template_e"
+        values:
+          name: "Always Applies (Scenario E)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          python_code: "result = True"
+
+      - step: "Bind the failing item to that status.check.template"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "status_detail_e"
+        values:
+          template_id: "REC: status_template_e.id"
+          status_check_item_id: "REC: item_e.id"
+
+      - step:
+          "Create a state.change.constrain.template bound to that status.check.template"
+        action: "create"
+        model: "state.change.constrain.template"
+        save_as: "state_template_e"
+        values:
+          name: "Confirm Requires Passing Check (Scenario E)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          state_field_id: "REC: field_state.id"
+          status_check_template_id: "REC: status_template_e.id"
+          python_code: "result = True"
+
+      - step: "Bind the failing item to the 'confirm' state"
+        action: "create"
+        model: "state.change.constrain.template_detail"
+        save_as: "state_detail_e"
+        values:
+          template_id: "REC: state_template_e.id"
+          state_id: "REC: selection_confirm.id"
+          status_check_item_ids:
+            - - 6
+              - 0
+              - - "REC: item_e.id"
+
+      - step: "Create the document; both templates get auto-selected at create() time"
+        action: "create"
+        model: "test_state_change_consumer"
+        save_as: "record"
+        values:
+          name: "Blocked State Change"
+
+      - step: "Assert both templates were selected"
+        action: "assert"
+        target: "record"
+        asserts:
+          status_check_template_id:
+            type: "m2o"
+            expected: "REC: status_template_e"
+          state_change_constrain_template_id:
+            type: "m2o"
+            expected: "REC: state_template_e"
+
+      - step:
+          "Move to 'confirm'; the bound status.check for item_e has status_ok=False, so
+          _check_state_constrain must reject the write"
+        action: "write"
+        target: "record"
+        expect_error:
+          type: "UserError"
+          message_contains: "Status check"
+        values:
+          state: "confirm"
+
+      - step:
+          "Deactivate the status.check.template so it does not leak into later scenarios"
+        action: "write"
+        target: "status_template_e"
+        values:
+          active: false
+
+      - step:
+          "Deactivate the state.change.constrain.template so it does not leak into later
+          scenarios"
+        action: "write"
+        target: "state_template_e"
+        values:
+          active: false
+
+  - name:
+      "A state.change.constrain.template whose python_code raises during evaluation
+      surfaces as UserError, not a silent False"
+    steps:
+      - step: "Create a status.check.template that always applies to this model"
+        action: "create"
+        model: "status.check.template"
+        save_as: "status_template_f"
+        values:
+          name: "Always Applies (Scenario F)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          python_code: "result = True"
+
+      - step:
+          "Create a state.change.constrain.template whose python_code raises at
+          evaluation time (syntactically valid, so _check_python_code lets it through;
+          ZeroDivisionError only happens when safe_eval actually runs it)"
+        action: "create"
+        model: "state.change.constrain.template"
+        save_as: "state_template_f"
+        values:
+          name: "Broken Python Code (Scenario F)"
+          model_id: "REC: model_test_state_change_consumer.id"
+          state_field_id: "REC: field_state.id"
+          status_check_template_id: "REC: status_template_f.id"
+          python_code: "result = 1 / 0"
+
+      - step:
+          "Create the document; create() auto-selects status_template_f, then
+          _get_template_state_change evaluates state_template_f and must surface the
+          error"
+        action: "create"
+        model: "test_state_change_consumer"
+        expect_error:
+          type: "UserError"
+          message_contains: "Error evaluating conditions"
+        values:
+          name: "Broken Template Document"
+
+      - step:
+          "Deactivate the status.check.template so it does not leak past this scenario"
+        action: "write"
+        target: "status_template_f"
+        values:
+          active: false
+
+      - step:
+          "Deactivate the state.change.constrain.template so it does not leak past this
+          scenario"
+        action: "write"
+        target: "state_template_f"
+        values:
+          active: false
+
+      - step:
+          "Assert the deactivation was flushed (this is the last write in the file -
+          nothing else forces a flush before fake_models teardown runs)"
+        action: "assert"
+        target: "state_template_f"
+        asserts:
+          active:
+            type: "value"
+            expected: false

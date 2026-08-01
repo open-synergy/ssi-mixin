@@ -3,4 +3,3 @@ access_state_change_constrain_template_all,state.change.constrain.template - All
 access_state_change_constrain_template_admin,state.change.constrain.template - Administrator Setting,model_state_change_constrain_template,base.group_system,1,1,1,1
 access_state_change_constrain_template_detail_all,state.change.constrain.template_detail - All user,model_state_change_constrain_template_detail,base.group_user,1,0,0,0
 access_state_change_constrain_template_detail_admin,state.change.constrain.template_detail - Administrator Setting,model_state_change_constrain_template_detail,base.group_system,1,1,1,1
-access_test_state_change_constrain_all,test.state_change_constrain - All Users,model_test_state_change_constrain,base.group_user,1,1,1,1
