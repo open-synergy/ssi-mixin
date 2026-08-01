@@ -1,32 +1,39 @@
+fake_models:
+  - "odoo.addons.ssi_sequence_mixin.tests.fake_models:TestSequenceConsumer"
+
 options:
   auto_refresh: true
 
 # Shared read-only lookups: the ir.model / ir.model.fields rows describing the
-# "test.sequence" fixture model (module test_ssi_sequence_mixin). These are
-# plain searches (no side effects), so replaying them before every scenario is
-# harmless and keeps each scenario self-contained.
+# "test_sequence_consumer" fake model (tests/fake_models.py, loaded through
+# the top-level "fake_models:" key above). These are plain searches (no side
+# effects), so replaying them before every scenario is harmless and keeps
+# each scenario self-contained. The ir.model row exists because loading a
+# fake model runs the same registry setup as a real one, which is also what
+# lets sequence.template.model_id / sequence_field_id / date_field_id below
+# point at it.
 setup:
   steps:
-    - step: "Find ir.model record for test.sequence"
+    - step: "Find ir.model record for test_sequence_consumer"
       action: "search"
       model: "ir.model"
-      domain: [["model", "=", "test.sequence"]]
+      domain: [["model", "=", "test_sequence_consumer"]]
       save_as: "test_sequence_model"
       limit: 1
       expect_count: 1
 
-    - step: "Find ir.model.fields record for test.sequence.name"
+    - step: "Find ir.model.fields record for test_sequence_consumer.name"
       action: "search"
       model: "ir.model.fields"
-      domain: [["model", "=", "test.sequence"], ["name", "=", "name"]]
+      domain: [["model", "=", "test_sequence_consumer"], ["name", "=", "name"]]
       save_as: "name_field"
       limit: 1
       expect_count: 1
 
-    - step: "Find ir.model.fields record for test.sequence.date"
+    - step: "Find ir.model.fields record for test_sequence_consumer.date"
       action: "search"
       model: "ir.model.fields"
-      domain: [["model", "=", "test.sequence"], ["name", "=", "date"]]
+      domain: [["model", "=", "test_sequence_consumer"], ["name", "=", "date"]]
       save_as: "date_field"
       limit: 1
       expect_count: 1
@@ -40,7 +47,7 @@ scenarios:
   # Odoo's safe_eval blacklists the STORE_ATTR opcode (plain attribute
   # assignment like `document.notes = result` is rejected), while method
   # calls such as `.write()` are allowed. The document is created through
-  # `create()` (test_ssi_sequence_mixin's `test.sequence.create()` calls
+  # `create()` (tests/fake_models.py's `TestSequenceConsumer.create()` calls
   # `_create_sequence()`), which is the real, production entry point that
   # drives `mixin.sequence._evaluate_sequence` / `_evaluate_sequence_use_python`.
   - name:
@@ -53,7 +60,7 @@ scenarios:
         save_as: "ir_sequence_python"
         values:
           name: "Test Sequence Mixin - Python"
-          code: "test.sequence.mixin.python"
+          code: "test_sequence_consumer.mixin.python"
 
       - step: "Create sequence.template with computation_method=use_python"
         action: "create"
@@ -75,7 +82,7 @@ scenarios:
           "Create the document; create() -> _create_sequence() ->
           _evaluate_sequence(template)"
         action: "create"
-        model: "test.sequence"
+        model: "test_sequence_consumer"
         save_as: "record"
         values: {}
 
@@ -103,7 +110,7 @@ scenarios:
         save_as: "ir_sequence_domain"
         values:
           name: "Test Sequence Mixin - Domain"
-          code: "test.sequence.mixin.domain"
+          code: "test_sequence_consumer.mixin.domain"
 
       - step: "Create sequence.template whose domain matches any document ([] -> True)"
         action: "create"
@@ -123,7 +130,7 @@ scenarios:
           "Create a document; _evaluate_sequence_use_domain([]) is True so the sequence
           is applied"
         action: "create"
-        model: "test.sequence"
+        model: "test_sequence_consumer"
         save_as: "record_match"
         values: {}
 
@@ -160,7 +167,7 @@ scenarios:
           "Create a document; _evaluate_sequence_use_domain(...) is False for every
           document, so no template applies"
         action: "create"
-        model: "test.sequence"
+        model: "test_sequence_consumer"
         expect_error:
           type: "UserError"
           message_contains: "No sequence template found"
@@ -181,7 +188,7 @@ scenarios:
         save_as: "ir_sequence_ok"
         values:
           name: "Test Sequence Mixin - OK"
-          code: "test.sequence.mixin.ok"
+          code: "test_sequence_consumer.mixin.ok"
 
       - step: "Create a working sequence.template so the document itself can be created"
         action: "create"
@@ -199,7 +206,7 @@ scenarios:
 
       - step: "Create the document under test"
         action: "create"
-        model: "test.sequence"
+        model: "test_sequence_consumer"
         save_as: "record"
         values: {}
 
