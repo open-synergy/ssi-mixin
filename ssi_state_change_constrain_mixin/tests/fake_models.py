@@ -21,8 +21,9 @@ from odoo import fields, models
 class TestStatusCheckOnlyConsumer(models.Model):
     """Consumer of ``mixin.status_check`` only, alive only in a test.
 
-    Stands in for the ``test.status_check`` fixture this module's tests
-    used to borrow from the ``ssi_status_check_mixin`` dependency. Proves
+    Stands in for the permanent fixture model this module's tests used to
+    borrow from the ``ssi_status_check_mixin`` dependency (removed there in
+    favor of its own throwaway model). Proves
     ``action_reload_status_check_template`` runs without ``AttributeError``
     on a model that never inherited ``mixin.state_change_constrain`` - the
     ``hasattr`` guard in ``models/mixin_status_check.py``.
