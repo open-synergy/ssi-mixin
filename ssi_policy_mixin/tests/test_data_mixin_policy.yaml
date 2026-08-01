@@ -1,63 +1,83 @@
 options:
   auto_refresh: true
 
-# Shared read-only lookups: the ir.model / ir.model.fields rows describing the
-# "test.policy" fixture model (module test_ssi_policy_mixin) and the unrelated
-# "test.policy.type" model used to prove template-scoping. These are plain
-# searches (no side effects), so replaying them before every scenario is
-# harmless and keeps each scenario self-contained.
+fake_models:
+  classes:
+    - "odoo.addons.ssi_policy_mixin.tests.fake_models:TestPolicy"
+    - "odoo.addons.ssi_policy_mixin.tests.fake_models:TestPolicyType"
+
+# Shared read-only lookups, replayed before every scenario (fresh registry
+# each time, no state leaks between scenarios): the ir.model rows
+# describing the "test_policy" and "test_policy_type" fake models, and
+# the ir.model.fields row for "test_policy.confirm_ok" used by scenarios
+# that build a policy.template_detail.
 setup:
   steps:
-    - step: "Find ir.model record for test.policy"
+    - step: "Find ir.model record for test_policy"
       action: "search"
       model: "ir.model"
-      domain: [["model", "=", "test.policy"]]
+      domain: [["model", "=", "test_policy"]]
       save_as: "model_test_policy"
       limit: 1
       expect_count: 1
 
-    # test_ssi_policy_mixin ships its own demo policy.template scoped to
-    # test.policy (policy_template_test_ssi_policy, sequence 100,
-    # python_code="result=True"). Left active, it would win every
-    # auto-selection race in scenario 3 (highest sequence, always matches)
-    # and pollute the exact-membership check in scenario 1. We are not using
-    # its values as test input - we only neutralize it so the scenarios
-    # below are deterministic and independent of demo data.
-    - step:
-        "Find any pre-existing policy.template scoped to test.policy (e.g. demo data)"
-      action: "search"
-      model: "policy.template"
-      domain: [["model", "=", "test.policy"]]
-      save_as: "preexisting_test_policy_templates"
-
-    - step: "Deactivate pre-existing test.policy templates so they cannot interfere"
-      action: "write"
-      target: "preexisting_test_policy_templates"
-      values:
-        active: false
-
-    - step: "Find ir.model record for test.policy.type (unrelated model)"
+    - step: "Find ir.model record for test_policy_type (unrelated model)"
       action: "search"
       model: "ir.model"
-      domain: [["model", "=", "test.policy.type"]]
+      domain: [["model", "=", "test_policy_type"]]
       save_as: "model_test_policy_type"
       limit: 1
       expect_count: 1
 
-    - step: "Find ir.model.fields record for test.policy.confirm_ok"
+    - step: "Find ir.model.fields record for test_policy.confirm_ok"
       action: "search"
       model: "ir.model.fields"
-      domain: [["model", "=", "test.policy"], ["name", "=", "confirm_ok"]]
+      domain: [["model", "=", "test_policy"], ["name", "=", "confirm_ok"]]
       save_as: "field_confirm_ok"
       limit: 1
       expect_count: 1
 
 scenarios:
   - name:
+      "A test_policy document with no matching policy.template evaluates every policy
+      boolean field to False"
+    steps:
+      - step: "Create the test_policy document with no policy.template in play yet"
+        action: "create"
+        model: "test_policy"
+        save_as: "record"
+        values:
+          name: "No Template Record"
+
+      - step:
+          "Assert no template was auto-selected and every policy field is False"
+        action: "assert"
+        target: "record"
+        asserts:
+          policy_template_id:
+            type: "value"
+            operator: "is_falsy"
+          confirm_ok:
+            type: "value"
+            expected: false
+          open_ok:
+            type: "value"
+            expected: false
+          done_ok:
+            type: "value"
+            expected: false
+          cancel_ok:
+            type: "value"
+            expected: false
+          restart_ok:
+            type: "value"
+            expected: false
+
+  - name:
       "allowed_policy_template_ids only lists policy.template records scoped to the
       document's own model"
     steps:
-      - step: "Create a policy.template for model test.policy"
+      - step: "Create a policy.template for model test_policy"
         action: "create"
         model: "policy.template"
         save_as: "template_test_policy"
@@ -66,7 +86,7 @@ scenarios:
           model_id: "REC: model_test_policy.id"
           python_code: "result = True"
 
-      - step: "Create a policy.template for an unrelated model (test.policy.type)"
+      - step: "Create a policy.template for an unrelated model (test_policy_type)"
         action: "create"
         model: "policy.template"
         save_as: "template_other_model"
@@ -74,15 +94,15 @@ scenarios:
           name: "Template For Test Policy Type"
           model_id: "REC: model_test_policy_type.id"
 
-      - step: "Create the test.policy document"
+      - step: "Create the test_policy document"
         action: "create"
-        model: "test.policy"
+        model: "test_policy"
         save_as: "record"
         values:
           name: "Policy Scope Record"
 
       - step:
-          "Assert allowed_policy_template_ids contains exactly the test.policy template,
+          "Assert allowed_policy_template_ids contains exactly the test_policy template,
           not the unrelated-model one"
         action: "assert"
         target: "record"
@@ -94,7 +114,7 @@ scenarios:
               - "REC: template_test_policy"
 
       - step:
-          "Deactivate the test.policy template so it does not leak into later scenarios"
+          "Deactivate the test_policy template so it does not leak into later scenarios"
         action: "write"
         target: "template_test_policy"
         values:
@@ -110,9 +130,9 @@ scenarios:
 
   - name:
       "policy_template_id drives a policy boolean field according to the evaluated
-      python code of its detail line"
+      python code of its detail line (True case)"
     steps:
-      - step: "Create a policy.template for model test.policy"
+      - step: "Create a policy.template for model test_policy"
         action: "create"
         model: "policy.template"
         save_as: "template_true"
@@ -135,9 +155,9 @@ scenarios:
           restrict_additional: true
           additional_python_code: "result = True"
 
-      - step: "Create the test.policy document with the template explicitly assigned"
+      - step: "Create the test_policy document with the template explicitly assigned"
         action: "create"
-        model: "test.policy"
+        model: "test_policy"
         save_as: "record"
         values:
           name: "Policy True Record"
@@ -158,6 +178,59 @@ scenarios:
       - step: "Deactivate the template so it does not leak into later scenarios"
         action: "write"
         target: "template_true"
+        values:
+          active: false
+
+  - name:
+      "policy_template_id drives a policy boolean field according to the evaluated
+      python code of its detail line (False case)"
+    steps:
+      - step: "Create a policy.template for model test_policy"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_false"
+        values:
+          name: "Confirm Always Denied"
+          model_id: "REC: model_test_policy.id"
+          python_code: "result = True"
+
+      - step:
+          "Create a detail line whose additional_python_code always evaluates confirm_ok
+          to False"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_false"
+        values:
+          template_id: "REC: template_false.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "result = False"
+
+      - step: "Create the test_policy document with the template explicitly assigned"
+        action: "create"
+        model: "test_policy"
+        save_as: "record"
+        values:
+          name: "Policy False Record"
+          policy_template_id: "REC: template_false.id"
+
+      - step:
+          "Assert the template is set and confirm_ok follows the evaluated python code"
+        action: "assert"
+        target: "record"
+        asserts:
+          policy_template_id:
+            type: "m2o"
+            expected: "REC: template_false"
+          confirm_ok:
+            type: "value"
+            expected: false
+
+      - step: "Deactivate the template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_false"
         values:
           active: false
 
@@ -213,7 +286,7 @@ scenarios:
           "Create the document without a template; create() auto-selects via
           _get_template_policy() while state is draft"
         action: "create"
-        model: "test.policy"
+        model: "test_policy"
         save_as: "record"
         values:
           name: "Policy Reload Record"
@@ -268,5 +341,322 @@ scenarios:
       - step: "Deactivate the confirm template so it does not leak into later scenarios"
         action: "write"
         target: "template_confirm"
+        values:
+          active: false
+
+  - name:
+      "_get_template_policy picks the highest-sequence template when more than one
+      matches (search order 'sequence desc')"
+    steps:
+      - step: "Create a low-sequence template that also matches"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_seq_low"
+        values:
+          name: "Low Sequence Always Matches"
+          model_id: "REC: model_test_policy.id"
+          sequence: 5
+          python_code: "result = True"
+
+      - step: "Detail line: if the low-sequence template wins, confirm_ok is False"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_seq_low"
+        values:
+          template_id: "REC: template_seq_low.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "result = False"
+
+      - step: "Create a high-sequence template that also matches"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_seq_high"
+        values:
+          name: "High Sequence Always Matches"
+          model_id: "REC: model_test_policy.id"
+          sequence: 20
+          python_code: "result = True"
+
+      - step: "Detail line: if the high-sequence template wins, confirm_ok is True"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_seq_high"
+        values:
+          template_id: "REC: template_seq_high.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "result = True"
+
+      - step:
+          "Create the document without a template; both templates match, so the
+          higher-sequence one must win"
+        action: "create"
+        model: "test_policy"
+        save_as: "record"
+        values:
+          name: "Policy Sequence Record"
+
+      - step:
+          "Assert the high-sequence template was selected and confirm_ok followed it"
+        action: "assert"
+        target: "record"
+        asserts:
+          policy_template_id:
+            type: "m2o"
+            expected: "REC: template_seq_high"
+          confirm_ok:
+            type: "value"
+            expected: true
+
+      - step:
+          "Deactivate the low-sequence template so it does not leak into later
+          scenarios"
+        action: "write"
+        target: "template_seq_low"
+        values:
+          active: false
+
+      - step:
+          "Deactivate the high-sequence template so it does not leak into later
+          scenarios"
+        action: "write"
+        target: "template_seq_high"
+        values:
+          active: false
+
+  - name:
+      "computation_method use_group and use_user are only evaluated for the acting
+      user (as_user), never for the default superuser transaction"
+    steps:
+      - step: "Find ir.model.fields record for test_policy.open_ok"
+        action: "search"
+        model: "ir.model.fields"
+        domain: [["model", "=", "test_policy"], ["name", "=", "open_ok"]]
+        save_as: "field_open_ok"
+        limit: 1
+        expect_count: 1
+
+      - step: "Create the group authorized for the use_group detail line"
+        action: "create"
+        model: "res.groups"
+        save_as: "authorized_group"
+        values:
+          name: "Policy Authorized Group"
+
+      - step: "Create a user who is a member of the authorized group"
+        action: "create"
+        model: "res.users"
+        save_as: "group_member"
+        values:
+          name: "Policy Group Member"
+          login: "policy.group.member@example.com"
+          group_ids:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+                - "REC: authorized_group.id"
+
+      - step:
+          "Create a user who is not a member of the authorized group, but is the
+          specific user allowed by the use_user detail line"
+        action: "create"
+        model: "res.users"
+        save_as: "specific_user"
+        values:
+          name: "Policy Specific User"
+          login: "policy.specific.user@example.com"
+          group_ids:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+
+      - step: "Create the policy.template shared by both detail lines"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_user_scope"
+        values:
+          name: "Restricted By User Or Group"
+          model_id: "REC: model_test_policy.id"
+          python_code: "result = True"
+
+      - step:
+          "Detail line: confirm_ok is only allowed for members of authorized_group"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_use_group"
+        values:
+          template_id: "REC: template_user_scope.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_additional: false
+          restrict_user: true
+          computation_method: "use_group"
+          group_ids:
+            - - 6
+              - 0
+              - - "REC: authorized_group.id"
+
+      - step: "Detail line: open_ok is only allowed for specific_user"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_use_user"
+        values:
+          template_id: "REC: template_user_scope.id"
+          field_id: "REC: field_open_ok.id"
+          restrict_state: false
+          restrict_additional: false
+          restrict_user: true
+          computation_method: "use_user"
+          user_ids:
+            - - 6
+              - 0
+              - - "REC: specific_user.id"
+
+      - step: "Create the document with the shared template explicitly assigned"
+        action: "create"
+        model: "test_policy"
+        save_as: "record"
+        values:
+          name: "Policy User Scope Record"
+          policy_template_id: "REC: template_user_scope.id"
+
+      - step:
+          "As group_member: confirm_ok is allowed (in the group), open_ok is not
+          (not the specific user)"
+        action: "assert"
+        target: "record"
+        as_user: "group_member"
+        asserts:
+          confirm_ok:
+            type: "value"
+            expected: true
+          open_ok:
+            type: "value"
+            expected: false
+
+      - step:
+          "As specific_user: confirm_ok is not allowed (not in the group), open_ok is
+          (is the specific user)"
+        action: "assert"
+        target: "record"
+        as_user: "specific_user"
+        asserts:
+          confirm_ok:
+            type: "value"
+            expected: false
+          open_ok:
+            type: "value"
+            expected: true
+
+      - step: "Deactivate the template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_user_scope"
+        values:
+          active: false
+
+  - name: "A syntactically invalid policy.template python_code is rejected"
+    steps:
+      - step: "Create a policy.template with syntactically invalid python_code"
+        action: "create"
+        model: "policy.template"
+        expect_error:
+          type: "ValidationError"
+        values:
+          name: "Invalid Python Code"
+          model_id: "REC: model_test_policy.id"
+          python_code: "def bad(:"
+
+  - name:
+      "A policy.template whose python_code never assigns 'result' raises UserError
+      when it is selected"
+    steps:
+      - step: "Create the document with no template selected yet"
+        action: "create"
+        model: "test_policy"
+        save_as: "record"
+        values:
+          name: "Policy No Result Record"
+
+      - step:
+          "Create a policy.template whose python_code is valid Python but never
+          assigns 'result'"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_no_result"
+        values:
+          name: "Never Assigns Result"
+          model_id: "REC: model_test_policy.id"
+          python_code: "x = 1"
+
+      - step:
+          "action_reload_policy_template must raise UserError while evaluating the
+          template"
+        action: "call"
+        target: "record"
+        method: "action_reload_policy_template"
+        expect_error:
+          type: "UserError"
+          message_contains: "Error evaluating conditions"
+
+      - step: "Deactivate the template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_no_result"
+        values:
+          active: false
+
+  - name:
+      "A policy.template_detail whose additional_python_code never assigns 'result'
+      raises UserError when the policy field is read"
+    steps:
+      - step: "Create a policy.template that always matches"
+        action: "create"
+        model: "policy.template"
+        save_as: "template_bad_detail"
+        values:
+          name: "Detail Never Assigns Result"
+          model_id: "REC: model_test_policy.id"
+          python_code: "result = True"
+
+      - step:
+          "Create a detail line whose additional_python_code is valid Python but
+          never assigns 'result'"
+        action: "create"
+        model: "policy.template_detail"
+        save_as: "detail_bad"
+        values:
+          template_id: "REC: template_bad_detail.id"
+          field_id: "REC: field_confirm_ok.id"
+          restrict_state: false
+          restrict_user: false
+          restrict_additional: true
+          additional_python_code: "x = 1"
+
+      - step: "Create the document with the template explicitly assigned"
+        action: "create"
+        model: "test_policy"
+        save_as: "record"
+        values:
+          name: "Policy Bad Detail Record"
+          policy_template_id: "REC: template_bad_detail.id"
+
+      - step:
+          "Reading confirm_ok triggers _compute_policy, which must raise UserError"
+        action: "call"
+        target: "record"
+        method: "read"
+        args:
+          - - "confirm_ok"
+        expect_error:
+          type: "UserError"
+          message_contains: "Error evaluating conditions"
+
+      - step: "Deactivate the template so it does not leak into later scenarios"
+        action: "write"
+        target: "template_bad_detail"
         values:
           active: false

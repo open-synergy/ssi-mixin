@@ -6,6 +6,4 @@ from . import (
     policy_template,
     policy_template_detail,
     mixin_policy,
-    test_policy_type,
-    test_policy,
 )
