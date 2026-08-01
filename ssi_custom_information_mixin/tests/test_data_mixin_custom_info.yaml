@@ -1,0 +1,186 @@
+options:
+  auto_refresh: true
+
+# Shared read-only lookup: the ir.model record describing the
+# "test.custom_information" fixture model (module
+# test_ssi_custom_information_mixin), used to scope every
+# custom_info.template created below to that model.
+setup:
+  steps:
+    - step: "Find ir.model record for test.custom_information"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.custom_information"]]
+      save_as: "model_ci"
+      limit: 1
+      expect_count: 1
+
+scenarios:
+  - name: "Create, edit and delete a test.custom_information document"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.custom_information"
+        save_as: "record"
+        values:
+          name: "Doc CRUD"
+
+      - step: "Assert created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Doc CRUD"
+
+      - step: "Write new name"
+        action: "write"
+        target: "record"
+        values:
+          name: "Doc CRUD Updated"
+
+      - step: "Assert name updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "Doc CRUD Updated"
+
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "test.custom_information"
+        domain: [["name", "=", "Doc CRUD Updated"]]
+        save_as: "deleted_check"
+        expect_count: 0
+
+  - name:
+      "action_reload_custom_info_template selects the matching template, generates one
+      custom_info.value row per template detail, and unlink() cascades the generated
+      rows"
+    steps:
+      - step: "Create a text property"
+        action: "create"
+        model: "custom_info.property"
+        save_as: "prop_text"
+        values:
+          name: "Text Property"
+          code: "TXTPROP"
+          field_type: "str"
+
+      - step: "Create a template scoped to test.custom_information"
+        action: "create"
+        model: "custom_info.template"
+        save_as: "template"
+        values:
+          name: "CI Template 1"
+          model_id: "REC: model_ci.id"
+          computation_method: "use_python"
+          python_code: "result = True"
+          sequence: 1
+
+      - step: "Attach the text property as a template detail"
+        action: "create"
+        model: "custom_info.template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          property_id: "REC: prop_text.id"
+
+      - step: "Create the document without a template"
+        action: "create"
+        model: "test.custom_information"
+        save_as: "doc"
+        values:
+          name: "Doc Template Reload"
+
+      - step: "Reload the custom info template"
+        action: "call"
+        target: "doc"
+        method: "action_reload_custom_info_template"
+
+      - step: "Assert the template was selected and one detail row was generated"
+        action: "assert"
+        target: "doc"
+        asserts:
+          custom_info_template_id:
+            type: "m2o"
+            expected: "REC: template"
+          custom_info_ids:
+            type: "o2m"
+            check: "count"
+            expected_count: 1
+
+      - step: "Find the generated custom_info.value row"
+        action: "search"
+        model: "custom_info.value"
+        domain:
+          [["model", "=", "test.custom_information"], ["res_id", "=", "REC: doc.id"]]
+        save_as: "value_line"
+        limit: 1
+        expect_count: 1
+
+      - step: "Fill in the text value on the generated row"
+        action: "write"
+        target: "value_line"
+        values:
+          value_str: "Hello World"
+
+      - step: "Assert the display value mirrors the typed field for a 'str' property"
+        action: "assert"
+        target: "value_line"
+        asserts:
+          field_name:
+            type: "value"
+            expected: "value_str"
+          value:
+            type: "value"
+            expected: "Hello World"
+
+      - step: "Delete the document"
+        action: "unlink"
+        target: "doc"
+
+      - step: "Assert unlink() cascaded the generated custom_info.value row"
+        action: "search"
+        model: "custom_info.value"
+        domain:
+          [["model", "=", "test.custom_information"], ["res_id", "=", "REC: doc.id"]]
+        save_as: "value_line_after_delete"
+        expect_count: 0
+
+  - name:
+      "action_reload_custom_info_template surfaces a template evaluation error as a
+      UserError"
+    steps:
+      - step: "Create a template whose python_code raises when evaluated"
+        action: "create"
+        model: "custom_info.template"
+        save_as: "template_error"
+        values:
+          name: "CI Template Error"
+          model_id: "REC: model_ci.id"
+          computation_method: "use_python"
+          python_code: "result = 1 / 0"
+          sequence: 100
+
+      - step: "Create the document without a template"
+        action: "create"
+        model: "test.custom_information"
+        save_as: "doc_error"
+        values:
+          name: "Doc Template Error"
+
+      - step: "Reload must fail because the highest-sequence template errors out"
+        action: "call"
+        target: "doc_error"
+        method: "action_reload_custom_info_template"
+        expect_error:
+          type: "UserError"
