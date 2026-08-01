@@ -29,6 +29,12 @@ class IrModel(models.Model):
     )
 
     def _get_qr_localdict(self, document):
+        """Build the ``safe_eval`` localdict for ``qr_python_code``.
+
+        :param document: the document the QR code is generated for
+        :return: dict exposing ``env`` and ``document``; the custom
+            code is expected to assign the content to ``result``
+        """
         self.ensure_one()
         return {
             "env": self.env,
@@ -36,6 +42,12 @@ class IrModel(models.Model):
         }
 
     def _get_qr_content(self, document):
+        """Resolve the QR content configured on this ``ir.model`` row.
+
+        :param document: the document the QR code is generated for
+        :return: the standard content or the custom content,
+            depending on ``qr_use_standard_content``
+        """
         self.ensure_one()
         if self.qr_use_standard_content:
             content = document._get_qr_standard_content()
@@ -44,6 +56,18 @@ class IrModel(models.Model):
         return content
 
     def _get_qr_custom_content(self, document):
+        """Evaluate ``qr_python_code`` to build the custom QR content.
+
+        Executes ``qr_python_code`` with ``env`` and ``document`` in
+        its localdict, and expects it to assign the QR string to a
+        local variable ``result``. Any failure (syntax error, or
+        ``result`` never assigned) is swallowed and yields an empty
+        string, so the caller can treat it the same as "no content".
+
+        :param document: the document the QR code is generated for
+        :return: the custom QR content, or an empty string on
+            failure
+        """
         self.ensure_one()
         result = ""
         localdict = self._get_qr_localdict(document)
@@ -58,6 +82,11 @@ class IrModel(models.Model):
         "qr_python_code",
     )
     def _check_qr_python_code(self):
+        """Validate that ``qr_python_code`` is syntactically correct.
+
+        :raises ValidationError: when ``qr_python_code`` cannot be
+            compiled as a Python expression
+        """
         for action in self.sudo().filtered("qr_python_code"):
             msg = test_python_expr(expr=action.qr_python_code.strip(), mode="exec")
             if msg:

@@ -40,16 +40,34 @@ class MixinQRCode(models.AbstractModel):
     _qr_code_page_xpath = "//page[last()]"
 
     def _compute_qr_image(self):
+        """Render the QR-code PNG image of every record.
+
+        No ``@api.depends``: the QR content is produced by the
+        free-form ``qr_python_code`` defined on ``ir.model``, which
+        may read any field on the document, so the set of
+        dependencies cannot be declared statically. This falls under
+        the "called outside the dependency engine" exception for
+        compute methods without ``@api.depends``. The field stays
+        ``store=False`` for the same reason: a stored value could
+        never be reliably invalidated when ``qr_python_code``
+        changes.
+
+        :return: nothing; assigns ``qr_image``
+        """
+        ir_model = self.env["ir.model"].search(self._get_qr_code_content_criteria())
         for document in self:
-            qrcode_content = document._get_qr_code_content()
-            img = qrcode.make(qrcode_content)
-            result = io.BytesIO()
-            img.save(result, format="PNG")
-            result.seek(0)
-            img_bytes = result.read()
-            base64_encoded_result_bytes = b64encode(img_bytes)
-            qr_image = base64_encoded_result_bytes.decode("ascii")
-            document.qr_image = qr_image
+            result = False
+            content = document._get_qr_code_content(ir_model=ir_model)
+            if content:
+                try:
+                    img = qrcode.make(content)
+                    buffer = io.BytesIO()
+                    img.save(buffer, format="PNG")
+                    buffer.seek(0)
+                    result = b64encode(buffer.read()).decode("ascii")
+                except Exception:  # pylint: disable=broad-except
+                    result = False
+            document.qr_image = result
 
     qr_image = fields.Binary(
         string="QR Code",
@@ -59,6 +77,15 @@ class MixinQRCode(models.AbstractModel):
 
     @ssi_decorator.insert_on_form_view()
     def _qr_code_insert_form_element(self, view_arch):
+        """Insert the QR-code page into the form view.
+
+        Runs through the ``insert_on_form_view`` decorator hook, and
+        only adds the page when ``_qr_code_create_page`` is ``True``
+        on the inheriting model.
+
+        :param view_arch: the form view architecture being extended
+        :return: the (possibly modified) view architecture
+        """
         if self._qr_code_create_page:
             view_arch = self._add_view_element(
                 view_arch=view_arch,
@@ -68,20 +95,47 @@ class MixinQRCode(models.AbstractModel):
             )
         return view_arch
 
-    def _get_qr_code_content(self):
+    def _get_qr_code_content(self, ir_model=None):
+        """Resolve the QR content configured for this document.
+
+        Extension point: override to change how the content policy
+        is resolved.
+
+        :param ir_model: optional ``ir.model`` recordset already
+            located by the caller with ``_get_qr_code_content_criteria``
+            (avoids repeating the same search for every document in a
+            batch compute). When omitted, this method performs the
+            search itself, keeping the previous no-argument signature
+            working for external callers.
+        :return: the QR content, as returned by
+            ``ir.model._get_qr_content`` or ``_get_qr_standard_content``
+        """
         self.ensure_one()
-        criteria = [
-            ("model", "=", self._name),
-        ]
-        obj_ir_model = self.env["ir.model"]
-        content_policy = obj_ir_model.search(criteria)
-        if len(content_policy) > 0:
-            content = content_policy[0]._get_qr_content(self)
+        if ir_model is None:
+            ir_model = self.env["ir.model"].search(self._get_qr_code_content_criteria())
+        if ir_model:
+            content = ir_model[0]._get_qr_content(self)
         else:
             content = self._get_qr_standard_content()
         return content
 
+    def _get_qr_code_content_criteria(self):
+        """Build the domain selecting the ``ir.model`` of this model.
+
+        Extension point: override to widen or narrow which
+        ``ir.model`` record supplies the QR content configuration.
+
+        :return: an Odoo search domain
+        """
+        return [
+            ("model", "=", self._name),
+        ]
+
     def _get_qr_standard_content(self):
+        """Build the standard QR content: the backend URL of this document.
+
+        :return: the full backend URL of this record, as a string
+        """
         self.ensure_one()
         odoo_url = self.env["ir.config_parameter"].get_param("web.base.url")
         document_url = "/web?#id=%d&view_type=form&model=%s" % (

@@ -1,0 +1,87 @@
+setup:
+  steps:
+    - step: "Locate the ir.model row of test.qr_code"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.qr_code"]]
+      save_as: "qr_ir_model"
+      expect_count: 1
+
+scenarios:
+  - name: "QR image is generated from the ir.model standard content"
+    steps:
+      - step: "Ensure the ir.model row uses the standard content"
+        action: "write"
+        target: "qr_ir_model"
+        values:
+          qr_use_standard_content: true
+      - step: "Create a test.qr_code record"
+        action: "create"
+        model: "test.qr_code"
+        save_as: "record"
+        values:
+          name: "Standard Content Document"
+      - step: "Assert qr_image is populated"
+        action: "assert"
+        target: "record"
+        asserts:
+          qr_image:
+            type: "value"
+            operator: "is_truthy"
+
+  - name: "QR image follows an update to ir.model qr_python_code"
+    steps:
+      - step: "Configure a custom content that assigns a result"
+        action: "write"
+        target: "qr_ir_model"
+        values:
+          qr_use_standard_content: false
+          qr_python_code: "result = 'CUSTOM-CONTENT'"
+      - step: "Create a test.qr_code record"
+        action: "create"
+        model: "test.qr_code"
+        save_as: "record"
+        values:
+          name: "Custom Content Document"
+      - step: "Assert qr_image is populated from the custom content"
+        action: "assert"
+        target: "record"
+        asserts:
+          qr_image:
+            type: "value"
+            operator: "is_truthy"
+      - step: "Change the custom content to stop assigning result"
+        action: "write"
+        target: "qr_ir_model"
+        values:
+          qr_python_code: "pass"
+      - step: "Assert qr_image follows the updated content on re-read"
+        action: "assert"
+        target: "record"
+        refresh: true
+        asserts:
+          qr_image:
+            type: "value"
+            operator: "is_falsy"
+
+  - name: "QR image stays False without a cache error when result is not set"
+    steps:
+      - step: "Configure a custom content that never assigns result"
+        action: "write"
+        target: "qr_ir_model"
+        values:
+          qr_use_standard_content: false
+          qr_python_code: "pass"
+      - step: "Create a test.qr_code record"
+        action: "create"
+        model: "test.qr_code"
+        save_as: "record"
+        values:
+          name: "Missing Result Document"
+      - step: "Assert qr_image is False without raising a cache error"
+        action: "assert"
+        target: "record"
+        asserts:
+          qr_image:
+            type: "value"
+            operator: "is_falsy"
