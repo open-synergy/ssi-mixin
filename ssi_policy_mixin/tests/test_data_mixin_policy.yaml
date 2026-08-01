@@ -49,8 +49,7 @@ scenarios:
         values:
           name: "No Template Record"
 
-      - step:
-          "Assert no template was auto-selected and every policy field is False"
+      - step: "Assert no template was auto-selected and every policy field is False"
         action: "assert"
         target: "record"
         asserts:
@@ -414,8 +413,7 @@ scenarios:
             expected: true
 
       - step:
-          "Deactivate the low-sequence template so it does not leak into later
-          scenarios"
+          "Deactivate the low-sequence template so it does not leak into later scenarios"
         action: "write"
         target: "template_seq_low"
         values:
@@ -430,8 +428,8 @@ scenarios:
           active: false
 
   - name:
-      "computation_method use_group and use_user are only evaluated for the acting
-      user (as_user), never for the default superuser transaction"
+      "computation_method use_group and use_user are only evaluated for the acting user
+      (as_user), never for the default superuser transaction"
     steps:
       - step: "Find ir.model.fields record for test_policy.open_ok"
         action: "search"
@@ -484,8 +482,7 @@ scenarios:
           model_id: "REC: model_test_policy.id"
           python_code: "result = True"
 
-      - step:
-          "Detail line: confirm_ok is only allowed for members of authorized_group"
+      - step: "Detail line: confirm_ok is only allowed for members of authorized_group"
         action: "create"
         model: "policy.template_detail"
         save_as: "detail_use_group"
@@ -526,8 +523,8 @@ scenarios:
           policy_template_id: "REC: template_user_scope.id"
 
       - step:
-          "As group_member: confirm_ok is allowed (in the group), open_ok is not
-          (not the specific user)"
+          "As group_member: confirm_ok is allowed (in the group), open_ok is not (not
+          the specific user)"
         action: "assert"
         target: "record"
         as_user: "group_member"
@@ -572,8 +569,8 @@ scenarios:
           python_code: "def bad(:"
 
   - name:
-      "A policy.template whose python_code never assigns 'result' raises UserError
-      when it is selected"
+      "A policy.template whose python_code never assigns 'result' raises UserError when
+      it is selected"
     steps:
       - step: "Create the document with no template selected yet"
         action: "create"
@@ -583,8 +580,8 @@ scenarios:
           name: "Policy No Result Record"
 
       - step:
-          "Create a policy.template whose python_code is valid Python but never
-          assigns 'result'"
+          "Create a policy.template whose python_code is valid Python but never assigns
+          'result'"
         action: "create"
         model: "policy.template"
         save_as: "template_no_result"
@@ -623,8 +620,8 @@ scenarios:
           python_code: "result = True"
 
       - step:
-          "Create a detail line whose additional_python_code is valid Python but
-          never assigns 'result'"
+          "Create a detail line whose additional_python_code is valid Python but never
+          assigns 'result'"
         action: "create"
         model: "policy.template_detail"
         save_as: "detail_bad"
@@ -644,8 +641,7 @@ scenarios:
           name: "Policy Bad Detail Record"
           policy_template_id: "REC: template_bad_detail.id"
 
-      - step:
-          "Reading confirm_ok triggers _compute_policy, which must raise UserError"
+      - step: "Reading confirm_ok triggers _compute_policy, which must raise UserError"
         action: "call"
         target: "record"
         method: "read"
