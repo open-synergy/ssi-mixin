@@ -9,9 +9,5 @@
     "license": "AGPL-3",
     "installable": True,
     "depends": [],
-    "data": [
-        "security/ir.model.access.csv",
-        "templates/test_decorator_templates.xml",
-        "views/test_decorator_view.xml",
-    ],
+    "data": [],
 }

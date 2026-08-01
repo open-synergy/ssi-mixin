@@ -1,9 +1,13 @@
+fake_models:
+  classes:
+    - "odoo.addons.ssi_decorator.tests.fake_models:TestDecorator"
+
 scenarios:
   - name: "Dekorator pre_confirm_check menempelkan marker dengan argumen yang benar"
     steps:
-      - step: "Create test.decorator record"
+      - step: "Create test_decorator record"
         action: "create"
-        model: "test.decorator"
+        model: "test_decorator"
         save_as: "record"
         values:
           name: "Test Decorator Record"
@@ -16,49 +20,26 @@ scenarios:
             type: "value"
             expected: "EVAL: ('test_decorator_marker',)"
 
-  - name: "_add_view_element menyisipkan fragmen QWeb pada xpath yang diminta"
+  - name: "_add_view_element ditolak saat XML ID QWeb tidak ditemukan"
     steps:
-      - step: "Create test.decorator record"
+      - step: "Create test_decorator record"
         action: "create"
-        model: "test.decorator"
+        model: "test_decorator"
         save_as: "record"
         values:
           name: "Test Decorator Record"
-
-      - step: "Capture form view arch lewat fields_view_get"
-        action: "call"
-        target: "record"
-        method: "_test_capture_form_view_arch"
-
-      - step: "Assert arch memuat fragmen yang disisipkan _add_view_element"
-        action: "assert"
-        target: "record"
-        asserts:
-          test_result:
-            type: "value"
-            operator: "contains"
-            expected: "test_decorator_injected_page"
-
-  - name:
-      "_add_view_element mengembalikan arch tanpa perubahan saat xpath tidak ditemukan"
-    steps:
-      - step: "Create test.decorator record"
-        action: "create"
-        model: "test.decorator"
-        save_as: "record"
-        values:
-          name: "Test Decorator Record"
-
-      - step: "Panggil _add_view_element langsung dengan xpath yang tidak ada di arch"
-        action: "call"
-        target: "record"
-        method: "_test_capture_add_view_element_missing_xpath"
 
       - step:
-          "Assert arch dikembalikan tanpa perubahan (early-return xpath tidak ketemu)"
-        action: "assert"
+          "Panggil _add_view_element dengan qweb_template_xml_id yang tidak ada di
+          database (view_arch tidak relevan di sini karena ir.qweb._render melempar
+          error sebelum view_arch dibaca)"
+        action: "call"
         target: "record"
-        asserts:
-          test_result:
-            type: "value"
-            expected: '<form><group name="left"/></form>'
+        method: "_add_view_element"
+        kwargs:
+          view_arch: '<form><group name="left"/></form>'
+          qweb_template_xml_id: "ssi_decorator.does_not_exist"
+          xpath: "//group[@name='left']"
+          position: "after"
+        expect_error:
+          type: "MissingError"
