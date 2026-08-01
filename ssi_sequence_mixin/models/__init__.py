@@ -5,5 +5,4 @@
 from . import (
     sequence_template,
     mixin_sequence,
-    test_sequence,
 )
