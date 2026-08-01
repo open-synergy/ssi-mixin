@@ -168,8 +168,8 @@ scenarios:
             expected: "Original"
 
   - name:
-      "action_generate_code assigns a sequence value to a '/' code,
-      action_reset_code reverts it back to '/'"
+      "action_generate_code assigns a sequence value to a '/' code, action_reset_code
+      reverts it back to '/'"
     steps:
       - step: "Find ir.model record for test_master_data"
         action: "search"
