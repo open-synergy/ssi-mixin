@@ -14,11 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__name
-msgid "# Document"
-msgstr ""
-
-#. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check__template_id
 msgid "# Template"
 msgstr ""
@@ -37,7 +32,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__active
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__active
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__active
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__active
 msgid "Active"
 msgstr ""
 
@@ -98,21 +92,6 @@ msgid "Bypassed By"
 msgstr ""
 
 #. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__cancel_date
-msgid "Cancel Date"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields.selection,name:ssi_status_check_mixin.selection__test_status_check__state__cancel
-msgid "Cancelled"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__cancel_user_id
-msgid "Cancelled By"
-msgstr ""
-
-#. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__code
 msgid "Code"
 msgstr ""
@@ -130,21 +109,10 @@ msgid "Computation"
 msgstr ""
 
 #. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__confirm_date
-msgid "Confirm Date"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__confirm_user_id
-msgid "Confirmed By"
-msgstr ""
-
-#. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check__create_uid
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__create_uid
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__create_uid
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__create_uid
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__create_uid
 msgid "Created by"
 msgstr ""
 
@@ -153,13 +121,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__create_date
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__create_date
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__create_date
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check__date
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__date
 msgid "Date"
 msgstr ""
 
@@ -181,13 +147,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__display_name
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__display_name
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__display_name
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__display_name
 msgid "Display Name"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields.selection,name:ssi_status_check_mixin.selection__test_status_check__state__draft
-msgid "Draft"
 msgstr ""
 
 #. module: ssi_status_check_mixin
@@ -196,21 +156,6 @@ msgstr ""
 msgid ""
 "Error evaluating conditions.\n"
 " %s"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__done_date
-msgid "Finish Date"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields.selection,name:ssi_status_check_mixin.selection__test_status_check__state__done
-msgid "Finished"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__done_user_id
-msgid "Finished By"
 msgstr ""
 
 #. module: ssi_status_check_mixin
@@ -245,7 +190,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__id
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__id
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__id
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__id
 msgid "ID"
 msgstr ""
 
@@ -284,7 +228,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__write_uid
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__write_uid
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__write_uid
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__write_uid
 msgid "Last Updated by"
 msgstr ""
 
@@ -293,7 +236,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_item__write_date
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__write_date
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__write_date
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -376,7 +318,6 @@ msgstr ""
 
 #. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template__note
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__notes
 msgid "Notes"
 msgstr ""
 
@@ -398,26 +339,6 @@ msgstr ""
 #. module: ssi_status_check_mixin
 #: model:ir.model.fields,help:ssi_status_check_mixin.field_status_check_item__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields.selection,name:ssi_status_check_mixin.selection__test_status_check__state__open
-msgid "On Progress"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__open_date
-msgid "Open Date"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__open_user_id
-msgid "Opened By"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__partner_id
-msgid "Partner"
 msgstr ""
 
 #. module: ssi_status_check_mixin
@@ -488,14 +409,8 @@ msgid "Sequence"
 msgstr ""
 
 #. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__state
-msgid "State"
-msgstr ""
-
-#. module: ssi_status_check_mixin
 #: model:ir.model,name:ssi_status_check_mixin.model_status_check
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_mixin_status_check__status_check_ids
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__status_check_ids
 msgid "Status Check"
 msgstr ""
 
@@ -527,7 +442,6 @@ msgstr ""
 #: model:ir.model,name:ssi_status_check_mixin.model_status_check_template
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_mixin_status_check__status_check_template_id
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__template_id
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__status_check_template_id
 #: model_terms:ir.ui.view,arch_db:ssi_status_check_mixin.status_check_page
 msgid "Status Check Template"
 msgstr ""
@@ -562,11 +476,6 @@ msgid "Templates"
 msgstr ""
 
 #. module: ssi_status_check_mixin
-#: model:ir.model,name:ssi_status_check_mixin.model_test_status_check
-msgid "Test Status Check"
-msgstr ""
-
-#. module: ssi_status_check_mixin
 #. odoo-python
 #: code:addons/ssi_status_check_mixin/models/status_check.py:0
 msgid "The bypass has been reversed."
@@ -578,11 +487,6 @@ msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: ssi_status_check_mixin
-#: model:ir.model.fields,field_description:ssi_status_check_mixin.field_test_status_check__user_id
-msgid "User"
-msgstr ""
-
-#. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check_template_detail__bypass_user_ids
 #: model:ir.model.fields.selection,name:ssi_status_check_mixin.selection__status_check_template_detail__bypass_method__use_user
 msgid "Users"
@@ -591,17 +495,6 @@ msgstr ""
 #. module: ssi_status_check_mixin
 #: model:ir.model.fields,field_description:ssi_status_check_mixin.field_status_check__allowed_bypass_user_ids
 msgid "Users Allowed To Bypass"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#: model:ir.model.fields.selection,name:ssi_status_check_mixin.selection__test_status_check__state__confirm
-msgid "Waiting for Approval"
-msgstr ""
-
-#. module: ssi_status_check_mixin
-#. odoo-python
-#: code:addons/ssi_status_check_mixin/models/test_status_check.py:0
-msgid "You can only delete data on draft state"
 msgstr ""
 
 #. module: ssi_status_check_mixin
