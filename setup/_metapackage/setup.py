@@ -74,6 +74,7 @@ setuptools.setup(
         'odoo14-addon-test_ssi_product_line_account_mixin',
         'odoo14-addon-test_ssi_product_line_mixin',
         'odoo14-addon-test_ssi_product_line_price_mixin',
+        'odoo14-addon-test_ssi_qr_code_mixin',
         'odoo14-addon-test_ssi_related_attachment_mixin',
         'odoo14-addon-test_ssi_sequence_mixin',
         'odoo14-addon-test_ssi_state_change_constrain_mixin',
