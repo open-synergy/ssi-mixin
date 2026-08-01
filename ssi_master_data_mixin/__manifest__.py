@@ -15,7 +15,6 @@
         "ssi_sequence_mixin",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "views/mixin_master_data_views.xml",
     ],
 }

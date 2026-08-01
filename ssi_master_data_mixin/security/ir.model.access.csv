@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_test_master_data_all,test.master_data - All Users,model_test_master_data,base.group_user,1,1,1,1
