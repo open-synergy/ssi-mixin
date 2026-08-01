@@ -431,7 +431,10 @@ scenarios:
       "computation_method use_user is only evaluated for the acting user (as_user),
       never for the default superuser transaction"
     steps:
-      - step: "Create the user allowed by the use_user detail line"
+      - step:
+          "Create the user allowed by the use_user detail line (base.group_erp_manager
+          is required to read ir.model.fields, which _compute_policy needs for
+          detail.field_id.name - base.group_user alone cannot read it)"
         action: "create"
         model: "res.users"
         save_as: "specific_user"
@@ -442,6 +445,7 @@ scenarios:
             - - 6
               - 0
               - - "REF: base.group_user"
+                - "REF: base.group_erp_manager"
 
       - step: "Create a user not allowed by the use_user detail line"
         action: "create"
@@ -454,6 +458,7 @@ scenarios:
             - - 6
               - 0
               - - "REF: base.group_user"
+                - "REF: base.group_erp_manager"
 
       - step: "Create the policy.template used by this scenario"
         action: "create"
