@@ -1,0 +1,192 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Create, edit and delete a test.product_line"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.product_line"
+        save_as: "record"
+        values:
+          name: "Line CRUD"
+          uom_quantity: 1.0
+
+      - step: "Assert created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Line CRUD"
+
+      - step: "Write new name"
+        action: "write"
+        target: "record"
+        values:
+          name: "Line CRUD Updated"
+
+      - step: "Assert name updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "Line CRUD Updated"
+
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "test.product_line"
+        domain: [["name", "=", "Line CRUD Updated"]]
+        save_as: "deleted_check"
+        expect_count: 0
+
+  - name: "allowed_uom_ids only lists UoMs once product_id is set"
+    steps:
+      - step: "Create a product (defaults to UoM category Unit)"
+        action: "create"
+        model: "product.product"
+        save_as: "product_uom"
+        values:
+          name: "Product For UoM"
+
+      - step: "Create record without product_id"
+        action: "create"
+        model: "test.product_line"
+        save_as: "record_no_product"
+        values:
+          name: "Line No Product"
+
+      - step: "Assert allowed_uom_ids is empty without product_id"
+        action: "assert"
+        target: "record_no_product"
+        asserts:
+          allowed_uom_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 0
+
+      - step: "Create record with product_id"
+        action: "create"
+        model: "test.product_line"
+        save_as: "record_with_product"
+        values:
+          name: "Line With Product"
+          product_id: "REC: product_uom.id"
+
+      - step:
+          "Assert allowed_uom_ids contains the product's own UoM (Units). NOTE:
+          _compute_allowed_uom_ids compares uom.uom.category_id to product_id.uom_id.id
+          (a uom.uom id, not its category_id) - see open-synergy/ssi-mixin#422. This
+          only happens to hold for products whose uom_id is the reference UoM 'Units'
+          (id 1), because 'Units' and the 'Unit' category both got seeded with id 1.
+          This scenario is deliberately scoped to that coincidentally-correct case only,
+          so it does not bake the bug into the expected behaviour; #422 tracks the fix
+          and the broader regression scenario (e.g. a product on 'Dozens')."
+        action: "assert"
+        target: "record_with_product"
+        asserts:
+          allowed_uom_ids:
+            type: "m2m"
+            check: "contains"
+            expected_records:
+              - "RECORDSET: uom.product_uom_unit"
+
+  - name: "_compute_qty converts uom_quantity into the product's own UoM"
+    steps:
+      - step: "Create a product (defaults to UoM Units)"
+        action: "create"
+        model: "product.product"
+        save_as: "product_qty"
+        values:
+          name: "Product For Quantity"
+
+      - step: "Create record without product_id or uom_id (identity conversion)"
+        action: "create"
+        model: "test.product_line"
+        save_as: "record_no_uom"
+        values:
+          name: "Line No UoM"
+          uom_quantity: 5.0
+
+      - step: "Assert quantity mirrors uom_quantity when uom_id/product_id are unset"
+        action: "assert"
+        target: "record_no_uom"
+        asserts:
+          quantity:
+            type: "value"
+            expected: 5.0
+
+      - step:
+          "Create record with product_id and uom_id equal to the product's own UoM
+          (identity conversion, factor 1:1)"
+        action: "create"
+        model: "test.product_line"
+        save_as: "record_same_uom"
+        values:
+          name: "Line Same UoM"
+          product_id: "REC: product_qty.id"
+          uom_id: "REF: uom.product_uom_unit"
+          uom_quantity: 3.0
+
+      - step: "Assert quantity mirrors uom_quantity for a matching UoM"
+        action: "assert"
+        target: "record_same_uom"
+        asserts:
+          quantity:
+            type: "value"
+            expected: 3.0
+
+      - step:
+          "Create record with uom_id set to Dozens, converted into the product's own UoM
+          (Units): 2 dozen = 24 units"
+        action: "create"
+        model: "test.product_line"
+        save_as: "record_dozen"
+        values:
+          name: "Line Dozen"
+          product_id: "REC: product_qty.id"
+          uom_id: "REF: uom.product_uom_dozen"
+          uom_quantity: 2.0
+
+      - step: "Assert quantity is converted from Dozens to Units"
+        action: "assert"
+        target: "record_dozen"
+        asserts:
+          quantity:
+            type: "value"
+            expected: 24.0
+
+  - name: "onchange_name, onchange_uom_id and onchange_sequence follow product_id"
+    steps:
+      - step: "Create a product"
+        action: "create"
+        model: "product.product"
+        save_as: "product_onchange"
+        values:
+          name: "Product For Onchange"
+
+      - step: "Select the product in the form, without saving"
+        action: "form"
+        model: "test.product_line"
+        save: false
+        ops:
+          - set:
+              product_id: "REC: product_onchange"
+          - assert:
+              name:
+                type: "value"
+                expected: "Product For Onchange"
+              uom_id:
+                type: "m2o"
+                expected_xml_id: "uom.product_uom_unit"
+              sequence:
+                type: "value"
+                expected: 1
