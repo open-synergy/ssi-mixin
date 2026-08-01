@@ -1,0 +1,103 @@
+scenarios:
+  - name: "Create, edit and delete a test.master_data_date_duration"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.master_data_date_duration"
+        save_as: "record"
+        values:
+          name: "Master Duration A"
+          code: "MDD001"
+          date_start: 2024-07-01
+          date_end: 2024-07-10
+
+      - step: "Assert created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          date_start:
+            type: "value"
+            expected: 2024-07-01
+          date_end:
+            type: "value"
+            expected: 2024-07-10
+
+      - step: "Extend date_end"
+        action: "write"
+        target: "record"
+        values:
+          date_end: 2024-07-15
+
+      - step: "Assert date_end updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          date_end:
+            type: "value"
+            expected: 2024-07-15
+
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "test.master_data_date_duration"
+        domain: [["code", "=", "MDD001"]]
+        save_as: "deleted_check"
+        expect_count: 0
+
+  - name:
+      "_check_date_start_end rejects a master data record whose date_end precedes
+      date_start"
+    steps:
+      - step: "Create with date_end before date_start must be rejected"
+        action: "create"
+        model: "test.master_data_date_duration"
+        expect_error:
+          type: "UserError"
+        values:
+          name: "Master Duration Invalid"
+          code: "MDD002"
+          date_start: 2024-07-10
+          date_end: 2024-07-01
+
+  - name: "Create a test.transaction_date_duration spanning a date range"
+    steps:
+      - step: "Create the transaction with a start date and an end date"
+        action: "create"
+        model: "test.transaction_date_duration"
+        save_as: "record"
+        values:
+          date_start: 2024-08-01
+          date_end: 2024-08-05
+
+      - step: "Assert the document starts in draft with both dates stored"
+        action: "assert"
+        target: "record"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          date_start:
+            type: "value"
+            expected: 2024-08-01
+          date_end:
+            type: "value"
+            expected: 2024-08-05
+
+  - name:
+      "_check_date_start_end rejects a transaction record whose date_end precedes
+      date_start"
+    steps:
+      - step: "Create with date_end before date_start must be rejected"
+        action: "create"
+        model: "test.transaction_date_duration"
+        expect_error:
+          type: "UserError"
+        values:
+          date_start: 2024-08-10
+          date_end: 2024-08-01
