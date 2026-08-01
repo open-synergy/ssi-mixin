@@ -1,12 +1,16 @@
 options:
   auto_refresh: true
 
+fake_models:
+  classes:
+    - "odoo.addons.ssi_master_data_mixin.tests.fake_models:TestMasterData"
+
 scenarios:
-  - name: "Create test.master_data record"
+  - name: "Create test_master_data record"
     steps:
       - step: "Create record with a manual code"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "record"
         values:
           name: "Master One"
@@ -27,34 +31,45 @@ scenarios:
           active:
             type: "value"
             expected: true
+          display_name:
+            type: "value"
+            expected: "Master One"
 
-  - name: "Write test.master_data name"
+  - name: "Write test_master_data name, note and active"
     steps:
       - step: "Create record"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "record"
         values:
           name: "Original Name"
           code: "X002"
-      - step: "Write new name"
+      - step: "Write new name, note and active"
         action: "write"
         target: "record"
         values:
           name: "Updated Name"
-      - step: "Assert name updated"
+          note: "Some note about this record."
+          active: false
+      - step: "Assert name, note and active updated"
         action: "assert"
         target: "record"
         asserts:
           name:
             type: "value"
             expected: "Updated Name"
+          note:
+            type: "value"
+            expected: "Some note about this record."
+          active:
+            type: "value"
+            expected: false
 
-  - name: "Delete test.master_data record"
+  - name: "Delete test_master_data record"
     steps:
       - step: "Create record"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "record"
         values:
           name: "To Be Deleted"
@@ -64,7 +79,7 @@ scenarios:
         target: "record"
       - step: "Verify record no longer exists"
         action: "search"
-        model: "test.master_data"
+        model: "test_master_data"
         domain: [["code", "=", "X003"]]
         save_as: "result"
         expect_count: 0
@@ -73,14 +88,14 @@ scenarios:
     steps:
       - step: "Create first record with code '/'"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "first"
         values:
           name: "Slash One"
           code: "/"
       - step: "Create second record also with code '/'"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "second"
         values:
           name: "Slash Two"
@@ -110,14 +125,14 @@ scenarios:
     steps:
       - step: "Create first record with code DUP001"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "first"
         values:
           name: "First"
           code: "DUP001"
       - step: "Create second record with the same code must fail"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         expect_error:
           type: "UserError"
           message_contains: "Duplicate code"
@@ -129,7 +144,7 @@ scenarios:
     steps:
       - step: "Create original record"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "original"
         values:
           name: "Original"
@@ -140,7 +155,7 @@ scenarios:
         method: "copy"
       - step: "Verify the duplicate record was created with the suffixed code"
         action: "search"
-        model: "test.master_data"
+        model: "test_master_data"
         domain: [["code", "=", "CPY001 (copy)"]]
         save_as: "duplicate"
         expect_count: 1
@@ -152,32 +167,34 @@ scenarios:
             type: "value"
             expected: "Original"
 
-  - name: "action_generate_code assigns a sequence value to a '/' code"
+  - name:
+      "action_generate_code assigns a sequence value to a '/' code, action_reset_code
+      reverts it back to '/'"
     steps:
-      - step: "Find ir.model record for test.master_data"
+      - step: "Find ir.model record for test_master_data"
         action: "search"
         model: "ir.model"
-        domain: [["model", "=", "test.master_data"]]
+        domain: [["model", "=", "test_master_data"]]
         save_as: "test_master_data_model"
         limit: 1
         expect_count: 1
 
-      - step: "Find ir.model.fields record for test.master_data.code"
+      - step: "Find ir.model.fields record for test_master_data.code"
         action: "search"
         model: "ir.model.fields"
-        domain: [["model", "=", "test.master_data"], ["name", "=", "code"]]
+        domain: [["model", "=", "test_master_data"], ["name", "=", "code"]]
         save_as: "code_field"
         limit: 1
         expect_count: 1
 
-      # "test.master_data" (mixin.master_data) intentionally has no custom
+      # "test_master_data" (mixin.master_data) intentionally has no custom
       # date field - sequence.template still requires one (date_field_id),
       # so this points at the built-in "create_date" (datetime) that every
       # Odoo model already has, instead of adding a field to the fixture.
-      - step: "Find ir.model.fields record for test.master_data.create_date"
+      - step: "Find ir.model.fields record for test_master_data.create_date"
         action: "search"
         model: "ir.model.fields"
-        domain: [["model", "=", "test.master_data"], ["name", "=", "create_date"]]
+        domain: [["model", "=", "test_master_data"], ["name", "=", "create_date"]]
         save_as: "date_field"
         limit: 1
         expect_count: 1
@@ -188,7 +205,7 @@ scenarios:
         save_as: "ir_sequence"
         values:
           name: "Test Master Data Mixin Sequence"
-          code: "test.master_data.mixin"
+          code: "test_master_data.mixin"
 
       - step: "Create sequence.template pointing at the code field"
         action: "create"
@@ -206,7 +223,7 @@ scenarios:
 
       - step: "Create record with default code '/'"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "record"
         values:
           name: "Generated Code Target"
@@ -226,27 +243,40 @@ scenarios:
             operator: "not_equals"
             expected: "/"
 
+      - step: "Call action_reset_code"
+        action: "call"
+        target: "record"
+        method: "action_reset_code"
+
+      - step: "Assert code is back to '/'"
+        action: "assert"
+        target: "record"
+        asserts:
+          code:
+            type: "value"
+            expected: "/"
+
   - name:
       "search() without explicit order defaults to alphabetical name order (_order =
       'name')"
     steps:
       - step: "Create record named Charlie (created first)"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "order_charlie"
         values:
           name: "Charlie"
           code: "ORD-CHARLIE"
       - step: "Create record named Alpha (created second)"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "order_alpha"
         values:
           name: "Alpha"
           code: "ORD-ALPHA"
       - step: "Create record named Bravo (created third)"
         action: "create"
-        model: "test.master_data"
+        model: "test_master_data"
         save_as: "order_bravo"
         values:
           name: "Bravo"
@@ -254,7 +284,7 @@ scenarios:
       - step:
           "Search without an explicit order, scoped to the three fixtures just created"
         action: "search"
-        model: "test.master_data"
+        model: "test_master_data"
         domain: [["code", "in", ["ORD-CHARLIE", "ORD-ALPHA", "ORD-BRAVO"]]]
         save_as: "ordered_result"
         expect_count: 3
