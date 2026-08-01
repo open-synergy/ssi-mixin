@@ -17,6 +17,13 @@ class TestMixinPolicy(YamlTransactionCase):
     ``tests/fake_models.py`` and loaded via the ``fake_models:`` key of
     ``test_data_mixin_policy.yaml`` - see that module's docstring for why
     they must not be imported here.
+
+    Note: the "computation_method use_group ..." scenario documents a
+    pre-existing bug in ``PolicyTemplateDetail._get_policy_use_group``
+    (it still reads ``res.users.groups_id``, renamed to ``group_ids`` in
+    Odoo 19.0) rather than fixing it, since that file is out of scope
+    for this test-fixture refactor. Tracked separately as
+    open-synergy/ssi-mixin#415.
     """
 
     def test_mixin_policy(self):
