@@ -1,11 +1,15 @@
 options:
   auto_refresh: true
 
+fake_models:
+  classes:
+    - "odoo.addons.ssi_status_check_mixin.tests.fake_models:TestStatusCheckConsumer"
+
 # Shared read-only lookup and fixtures replayed before every scenario (fresh
 # registry each time, no state leaks between scenarios):
-# - the ir.model row describing the "test.status_check" fixture model
-#   (module test_ssi_status_check_mixin), needed as status.check.template's
-#   required model_id;
+# - the ir.model row describing the "test_status_check_consumer" fake model
+#   (declared in tests/fake_models.py, loaded via the fake_models: key
+#   above), needed as status.check.template's required model_id;
 # - a status.check.item usable by every scenario below. Its own
 #   status_check_method/python_code only matter for
 #   mixin.status_check._evaluate_status_check() (status_ok's non-bypass
@@ -13,15 +17,15 @@ options:
 #   status_ok via bypass_user_id, or only exercise
 #   _compute_allowed_bypass_user_ids()/action_bypass_status_check(), which
 #   never call _evaluate_status_check();
-# - a test.status_check document to be referenced by status.check.model/
-#   res_id (status.check._get_document() browses it).
+# - a test_status_check_consumer document to be referenced by
+#   status.check.model/res_id (status.check._get_document() browses it).
 setup:
   steps:
-    - step: "Cari ir.model untuk test.status_check"
+    - step: "Cari ir.model untuk test_status_check_consumer"
       action: "search"
       model: "ir.model"
-      domain: [["model", "=", "test.status_check"]]
-      save_as: "model_test_status_check"
+      domain: [["model", "=", "test_status_check_consumer"]]
+      save_as: "model_test_status_check_consumer"
       limit: 1
       expect_count: 1
 
@@ -40,14 +44,32 @@ setup:
         status_check_method: "use_python"
         python_code: "result = False"
 
-    - step: "Buat dokumen test.status_check yang dirujuk status.check"
+    - step: "Buat dokumen test_status_check_consumer yang dirujuk status.check"
       action: "create"
-      model: "test.status_check"
+      model: "test_status_check_consumer"
       save_as: "doc"
       values:
         name: "Dokumen Uji Status Check"
 
 scenarios:
+  - name:
+      "Kondisi kosong: dokumen tanpa status.check.template yang cocok punya
+      status_check_ids kosong dan status_check_template_id falsy"
+    steps:
+      - step:
+          "Assert dokumen segar dari setup belum terhubung ke template apa pun - belum
+          ada status.check.template untuk model ini pada titik ini"
+        action: "assert"
+        target: "doc"
+        asserts:
+          status_check_template_id:
+            type: "value"
+            operator: "is_falsy"
+          status_check_ids:
+            type: "o2m"
+            check: "count"
+            expected_count: 0
+
   - name:
       "status_ok = True bila bypass_user_id terisi, terlepas dari hasil
       _evaluate_status_check"
@@ -58,7 +80,7 @@ scenarios:
         save_as: "template"
         values:
           name: "Template Bypass User"
-          model_id: "REC: model_test_status_check.id"
+          model_id: "REC: model_test_status_check_consumer.id"
 
       - step: "Buat status.check.template_detail"
         action: "create"
@@ -76,7 +98,7 @@ scenarios:
         model: "status.check"
         save_as: "check"
         values:
-          model: "test.status_check"
+          model: "test_status_check_consumer"
           res_id: "REC: doc.id"
           template_id: "REC: template.id"
           template_detail_id: "REC: detail.id"
@@ -111,7 +133,7 @@ scenarios:
         save_as: "template"
         values:
           name: "Template Bypass User Ids"
-          model_id: "REC: model_test_status_check.id"
+          model_id: "REC: model_test_status_check_consumer.id"
 
       - step: "Buat status.check.template_detail dengan bypass_user_ids"
         action: "create"
@@ -131,7 +153,7 @@ scenarios:
         model: "status.check"
         save_as: "check"
         values:
-          model: "test.status_check"
+          model: "test_status_check_consumer"
           res_id: "REC: doc.id"
           template_id: "REC: template.id"
           template_detail_id: "REC: detail.id"
@@ -191,7 +213,7 @@ scenarios:
         save_as: "template"
         values:
           name: "Template Bypass Group"
-          model_id: "REC: model_test_status_check.id"
+          model_id: "REC: model_test_status_check_consumer.id"
 
       - step: "Buat status.check.template_detail dengan bypass_group_ids"
         action: "create"
@@ -211,7 +233,7 @@ scenarios:
         model: "status.check"
         save_as: "check"
         values:
-          model: "test.status_check"
+          model: "test_status_check_consumer"
           res_id: "REC: doc.id"
           template_id: "REC: template.id"
           template_detail_id: "REC: detail.id"
@@ -261,7 +283,7 @@ scenarios:
         save_as: "template"
         values:
           name: "Template Unauthorized Bypass"
-          model_id: "REC: model_test_status_check.id"
+          model_id: "REC: model_test_status_check_consumer.id"
 
       - step:
           "Buat status.check.template_detail dengan bypass_user_ids hanya user berwenang"
@@ -282,7 +304,7 @@ scenarios:
         model: "status.check"
         save_as: "check"
         values:
-          model: "test.status_check"
+          model: "test_status_check_consumer"
           res_id: "REC: doc.id"
           template_id: "REC: template.id"
           template_detail_id: "REC: detail.id"
@@ -311,7 +333,7 @@ scenarios:
         save_as: "template"
         values:
           name: "Template Bypass Python Tanpa User"
-          model_id: "REC: model_test_status_check.id"
+          model_id: "REC: model_test_status_check_consumer.id"
 
       - step:
           "Buat status.check.template_detail bypass_method use_python; python_code
@@ -330,7 +352,7 @@ scenarios:
         model: "status.check"
         save_as: "check"
         values:
-          model: "test.status_check"
+          model: "test_status_check_consumer"
           res_id: "REC: doc.id"
           template_id: "REC: template.id"
           template_detail_id: "REC: detail.id"
@@ -344,3 +366,82 @@ scenarios:
         expect_error:
           type: "UserError"
           message_contains: "No User defines on python code"
+
+  - name:
+      "create() memicu action_reload_status_check_template() -> baris status.check
+      terbentuk sesuai detail template"
+    steps:
+      - step: "Buat status.check.template yang selalu match model ini"
+        action: "create"
+        model: "status.check.template"
+        save_as: "auto_template"
+        values:
+          name: "Template Auto Select"
+          model_id: "REC: model_test_status_check_consumer.id"
+          python_code: "result = True"
+
+      - step: "Ikat status.check.item ke template lewat status.check.template_detail"
+        action: "create"
+        model: "status.check.template_detail"
+        save_as: "auto_detail"
+        values:
+          template_id: "REC: auto_template.id"
+          status_check_item_id: "REC: item.id"
+
+      - step:
+          "Buat dokumen baru; create() mixin.status_check otomatis memanggil
+          action_reload_status_check_template()"
+        action: "create"
+        model: "test_status_check_consumer"
+        save_as: "auto_doc"
+        values:
+          name: "Dokumen Auto Template"
+
+      - step: "Assert status_check_template_id terisi otomatis sesuai template"
+        action: "assert"
+        target: "auto_doc"
+        asserts:
+          status_check_template_id:
+            type: "m2o"
+            expected: "REC: auto_template"
+
+      - step: "Assert status_check_ids berisi tepat satu baris"
+        action: "assert"
+        target: "auto_doc"
+        asserts:
+          status_check_ids:
+            type: "o2m"
+            check: "count"
+            expected_count: 1
+
+      - step:
+          "Cari baris status.check yang terbentuk dan pastikan template_detail_id-nya
+          cocok dengan detail template"
+        action: "search"
+        model: "status.check"
+        domain:
+          [
+            ["res_id", "=", "REC: auto_doc.id"],
+            ["model", "=", "test_status_check_consumer"],
+            ["template_detail_id", "=", "REC: auto_detail.id"],
+          ]
+        save_as: "auto_check"
+        expect_count: 1
+
+      - step:
+          "Nonaktifkan template agar tidak bocor ke skenario lain (search default hanya
+          melihat template aktif)"
+        action: "write"
+        target: "auto_template"
+        values:
+          active: false
+
+      - step:
+          "Assert nonaktifasi ter-flush (ini write terakhir di berkas - tidak ada
+          pembacaan lain yang memaksa flush sebelum teardown fake_models berjalan)"
+        action: "assert"
+        target: "auto_template"
+        asserts:
+          active:
+            type: "value"
+            expected: false

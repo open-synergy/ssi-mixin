@@ -6,4 +6,3 @@ access_status_check_template_all,status.check.template - All user ,model_status_
 access_status_check_template_admin,status.check.template – Administrator Setting,model_status_check_template,base.group_system,1,1,1,1
 access_status_check_template_detail_all,status.check.template_detail - All user ,model_status_check_template_detail,base.group_user,1,0,0,0
 access_status_check_template_detail_admin,status.check.template_detail – Administrator Setting,model_status_check_template_detail,base.group_system,1,1,1,1
-access_test_status_check_all,test.status_check – All Users,model_test_status_check,base.group_user,1,1,1,1

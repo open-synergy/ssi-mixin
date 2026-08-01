@@ -12,10 +12,10 @@ class MixinStatusCheck(models.AbstractModel):
     when ``action_reload_status_check_template`` is triggered.
 
     Not every model that uses ``mixin.status_check`` also uses
-    ``mixin.state_change_constrain`` (e.g. the ``test.status_check`` fixture
-    used by ``ssi_status_check_mixin``'s own tests). The ``hasattr`` guard
-    below keeps this override safe for those models instead of raising
-    ``AttributeError`` on every ``create()``.
+    ``mixin.state_change_constrain`` (e.g. ``ssi_status_check_mixin``'s own
+    test fixture, or this module's own ``test_status_check_only_consumer``).
+    The ``hasattr`` guard below keeps this override safe for those models
+    instead of raising ``AttributeError`` on every ``create()``.
     """
 
     _inherit = "mixin.status_check"
