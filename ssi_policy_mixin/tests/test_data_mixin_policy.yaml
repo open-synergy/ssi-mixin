@@ -595,6 +595,16 @@ scenarios:
         values:
           active: false
 
+      - step:
+          "Assert the deactivation was flushed (the next scenario's expect_error step
+          has no other read to force it)"
+        action: "assert"
+        target: "template_group_scope"
+        asserts:
+          active:
+            type: "value"
+            expected: false
+
   - name: "A syntactically invalid policy.template python_code is rejected"
     steps:
       - step: "Create a policy.template with syntactically invalid python_code"
