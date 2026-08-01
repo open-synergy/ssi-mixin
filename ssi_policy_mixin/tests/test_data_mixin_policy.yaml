@@ -705,3 +705,13 @@ scenarios:
         target: "template_bad_detail"
         values:
           active: false
+
+      - step:
+          "Assert the deactivation was flushed (this is the last write in the file -
+          nothing else forces a flush before fake_models teardown runs)"
+        action: "assert"
+        target: "template_bad_detail"
+        asserts:
+          active:
+            type: "value"
+            expected: false
