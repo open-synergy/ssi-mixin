@@ -30,7 +30,7 @@ addon | version | maintainers | summary
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 19.0.1.3.1 |  | Master Data Mixin
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 19.0.1.1.0 |  | Multiple Approval
 [ssi_partner_mixin](ssi_partner_mixin/) | 19.0.1.1.0 |  | Partner Mixin
-[ssi_policy_mixin](ssi_policy_mixin/) | 19.0.1.1.0 |  | Policy Mixin
+[ssi_policy_mixin](ssi_policy_mixin/) | 19.0.1.1.1 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 19.0.1.1.0 |  | Print Policy Mixin
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 19.0.1.1.0 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 19.0.1.1.0 |  | Reference Document Mixin
