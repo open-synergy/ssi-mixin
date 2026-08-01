@@ -14,12 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__name
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__name
-msgid "# Document"
-msgstr ""
-
-#. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__template_id
 msgid "# Template"
 msgstr ""
@@ -32,8 +26,6 @@ msgstr ""
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__active
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__active
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__active
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__active
 msgid "Active"
 msgstr ""
 
@@ -44,7 +36,6 @@ msgstr ""
 
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_mixin_policy__allowed_policy_template_ids
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__allowed_policy_template_ids
 msgid "Allowed Policy Templates"
 msgstr ""
 
@@ -64,41 +55,6 @@ msgid "Both Specific User And Group"
 msgstr ""
 
 #. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__cancel_ok
-msgid "Can Cancel"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__confirm_ok
-msgid "Can Confirm"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__done_ok
-msgid "Can Finish"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__open_ok
-msgid "Can Open"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__restart_ok
-msgid "Can Restart"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields.selection,name:ssi_policy_mixin.selection__test_policy__state__cancel
-msgid "Cancelled"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__code
-msgid "Code"
-msgstr ""
-
-#. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__company_id
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__company_id
 msgid "Company"
@@ -112,22 +68,13 @@ msgstr ""
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__create_uid
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__create_uid
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__create_uid
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__create_date
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__create_date
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__create_date
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__create_date
 msgid "Created on"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__date
-msgid "Date"
 msgstr ""
 
 #. module: ssi_policy_mixin
@@ -140,19 +87,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_mixin_policy__display_name
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__display_name
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__display_name
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__display_name
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__domain
 msgid "Domain"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields.selection,name:ssi_policy_mixin.selection__test_policy__state__draft
-msgid "Draft"
 msgstr ""
 
 #. module: ssi_policy_mixin
@@ -170,11 +110,6 @@ msgid "Field"
 msgstr ""
 
 #. module: ssi_policy_mixin
-#: model:ir.model.fields.selection,name:ssi_policy_mixin.selection__test_policy__state__done
-msgid "Finished"
-msgstr ""
-
-#. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__group_ids
 msgid "Groups"
 msgstr ""
@@ -183,24 +118,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_mixin_policy__id
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__id
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__id
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__id
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__id
 msgid "ID"
 msgstr ""
 
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__write_uid
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__write_uid
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__write_uid
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__write_date
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__write_date
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__write_date
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -227,17 +156,6 @@ msgid "Note"
 msgstr ""
 
 #. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__notes
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy_type__notes
-msgid "Notes"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields.selection,name:ssi_policy_mixin.selection__test_policy__state__open
-msgid "On Progress"
-msgstr ""
-
-#. module: ssi_policy_mixin
 #: model_terms:ir.ui.view,arch_db:ssi_policy_mixin.policy_template_detail_view_form
 msgid "Policies"
 msgstr ""
@@ -250,7 +168,6 @@ msgstr ""
 #. module: ssi_policy_mixin
 #: model:ir.model,name:ssi_policy_mixin.model_policy_template
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_mixin_policy__policy_template_id
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__policy_template_id
 msgid "Policy Template"
 msgstr ""
 
@@ -317,11 +234,6 @@ msgid "Specific User"
 msgstr ""
 
 #. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__state
-msgid "State"
-msgstr ""
-
-#. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template__state_field_id
 msgid "State Field"
 msgstr ""
@@ -337,21 +249,6 @@ msgid "Templates"
 msgstr ""
 
 #. module: ssi_policy_mixin
-#: model:ir.model,name:ssi_policy_mixin.model_test_policy
-msgid "Test Policy"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model,name:ssi_policy_mixin.model_test_policy_type
-msgid "Test Policy Type"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields,field_description:ssi_policy_mixin.field_test_policy__type_id
-msgid "Type"
-msgstr ""
-
-#. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__computation_method
 msgid "User Evaluation Method"
 msgstr ""
@@ -359,9 +256,4 @@ msgstr ""
 #. module: ssi_policy_mixin
 #: model:ir.model.fields,field_description:ssi_policy_mixin.field_policy_template_detail__user_ids
 msgid "Users"
-msgstr ""
-
-#. module: ssi_policy_mixin
-#: model:ir.model.fields.selection,name:ssi_policy_mixin.selection__test_policy__state__confirm
-msgid "Waiting for Approval"
 msgstr ""
