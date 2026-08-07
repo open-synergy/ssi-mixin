@@ -171,7 +171,18 @@ class SequenceTemplate(models.Model):
         if sequence:
             if self.date_field_id:
                 sequence_date = getattr(document, self.date_field_id.name)
-                ctx = {"ir_sequence_date": sequence_date}
+                if sequence_date:
+                    ctx = {"ir_sequence_date": sequence_date}
+                # Do not set the context key at all when the document's own
+                # date field is empty (e.g. manually created records where
+                # it isn't required) -- ir.sequence._next() only falls back
+                # to fields.Date.today() when the "ir_sequence_date" key is
+                # *absent* from context (context.get(key, today())); an
+                # explicit False value still "wins" over that default and
+                # is later passed straight into
+                # fields.Date.from_string(False).strftime(...) in
+                # ir.sequence._create_date_range_seq(), raising
+                # "'NoneType' object has no attribute 'strftime'".
             result = sequence.with_context(ctx).next_by_id()
 
             if self.add_custom_prefix:
