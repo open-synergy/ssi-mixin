@@ -230,3 +230,71 @@ scenarios:
         expect_error:
           type: "UserError"
           message_contains: "Error evaluating conditions"
+
+  - name:
+      "create_sequence: a blank date_field_id value on the document must not crash the
+      date-range sequence (OFS/26/000025)"
+    steps:
+      # Reproduces the reported bug: a document whose date_field_id-tracked
+      # field is empty (e.g. a manually created record that never had its
+      # date filled in) used to crash ir.sequence with "'NoneType' object
+      # has no attribute 'strftime'" -- only when the backing ir.sequence
+      # has use_date_range=True (the plain, non-date-range path was already
+      # safe). create_sequence() used to always set the "ir_sequence_date"
+      # context key whenever date_field_id was configured, even with a
+      # False value; ir.sequence._next() only falls back to
+      # fields.Date.today() when that key is *absent* from context, so the
+      # explicit False value reached
+      # fields.Date.from_string(False).strftime(...) inside
+      # ir.sequence._create_date_range_seq() and blew up.
+      - step: "Create a date-range ir.sequence backing the template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence_date_range"
+        values:
+          name: "Test Sequence Mixin - Date Range"
+          code: "test.sequence.mixin.date_range"
+          use_date_range: true
+          prefix: "DR/%(year)s/"
+
+      - step: "Create sequence.template pointing date_field_id at test.sequence.date"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template_date_range"
+        values:
+          name: "Date Range Template"
+          model_id: "REC: test_sequence_model.id"
+          sequence_field_id: "REC: name_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_domain"
+          domain: "[]"
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence_date_range.id"
+
+      - step:
+          "Create the document with date explicitly blank (overriding the fixture's
+          default=context_today) -- create() -> _create_sequence() -> create_sequence()
+          must not raise"
+        action: "create"
+        model: "test.sequence"
+        save_as: "record_blank_date"
+        values:
+          date: false
+
+      - step: "Assert the document still got a real number, not left as '/'"
+        action: "assert"
+        target: "record_blank_date"
+        asserts:
+          date:
+            type: "value"
+            operator: "is_falsy"
+          name:
+            type: "value"
+            operator: "not_equals"
+            expected: "/"
+
+      - step: "Deactivate the date-range template so it does not leak into later runs"
+        action: "write"
+        target: "template_date_range"
+        values:
+          active: false
