@@ -103,7 +103,7 @@ class StatusCheck(models.Model):
                         else:
                             msg_err = "No User defines on python code"
                             raise UserError(_(msg_err))
-                rec.allowed_bypass_user_ids = list(set(list_user))
+            rec.allowed_bypass_user_ids = list(set(list_user))
 
     @api.depends(
         "template_detail_id",
