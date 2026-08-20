@@ -1,0 +1,296 @@
+options:
+  auto_refresh: true
+
+# Shared read-only lookup: the base account.account.type "Revenue" row,
+# system data shipped by the "account" module itself (not demo data), used
+# as the required user_type_id for every account.account created below.
+setup:
+  steps:
+    - step: "Find account.account.type record for Revenue (system data)"
+      action: "ref"
+      xml_id: "account.data_account_type_revenue"
+      save_as: "revenue_type"
+
+scenarios:
+  - name: "Create, edit and delete a test.product_line_account"
+    steps:
+      - step: "Create the account required by the line"
+        action: "create"
+        model: "account.account"
+        save_as: "account_crud"
+        values:
+          name: "PLA CRUD Account"
+          code: "PLACRUD1"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create record"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "record"
+        values:
+          name: "Line CRUD"
+          uom_quantity: 1.0
+          account_id: "REC: account_crud.id"
+
+      - step: "Assert created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Line CRUD"
+
+      - step: "Write new name"
+        action: "write"
+        target: "record"
+        values:
+          name: "Line CRUD Updated"
+
+      - step: "Assert name updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "Line CRUD Updated"
+
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "test.product_line_account"
+        domain: [["name", "=", "Line CRUD Updated"]]
+        save_as: "deleted_check"
+        expect_count: 0
+
+  - name: "_compute_total without tax_ids mirrors price_unit times uom_quantity"
+    steps:
+      - step: "Create the account required by the line"
+        action: "create"
+        model: "account.account"
+        save_as: "account_no_tax"
+        values:
+          name: "PLA No Tax Account"
+          code: "PLANOTAX"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create a product"
+        action: "create"
+        model: "product.product"
+        save_as: "product_no_tax"
+        values:
+          name: "Product Without Tax"
+          list_price: 100.0
+
+      - step: "Create record with price and quantity, no tax_ids"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "record"
+        values:
+          name: "Line No Tax"
+          product_id: "REC: product_no_tax.id"
+          account_id: "REC: account_no_tax.id"
+          price_unit: 100.0
+          uom_quantity: 3.0
+
+      - step: "Assert subtotal/tax/total without tax_ids"
+        action: "assert"
+        target: "record"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 300.0
+          price_tax:
+            type: "value"
+            expected: 0.0
+          price_total:
+            type: "value"
+            expected: 300.0
+
+  - name: "_compute_total with tax_ids applies account.tax.compute_all"
+    steps:
+      - step: "Create the account required by the line"
+        action: "create"
+        model: "account.account"
+        save_as: "account_tax"
+        values:
+          name: "PLA Tax Account"
+          code: "PLATAX01"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create a product"
+        action: "create"
+        model: "product.product"
+        save_as: "product_tax"
+        values:
+          name: "Product With Tax"
+          list_price: 100.0
+
+      - step: "Create a 10% tax"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax_10"
+        values:
+          name: "PLA Tax 10%"
+          amount: 10.0
+
+      - step:
+          "Create record with price, quantity and tax_ids; uom_id matches the product's
+          own UoM to keep the converted quantity equal to uom_quantity"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "record"
+        values:
+          name: "Line With Tax"
+          product_id: "REC: product_tax.id"
+          account_id: "REC: account_tax.id"
+          uom_id: "REF: uom.product_uom_unit"
+          price_unit: 100.0
+          uom_quantity: 3.0
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax_10.id"
+
+      - step: "Assert subtotal/tax/total with a 10% tax on a base of 300.0"
+        action: "assert"
+        target: "record"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 300.0
+          price_tax:
+            type: "value"
+            expected: 30.0
+          price_total:
+            type: "value"
+            expected: 330.0
+
+  - name: "allowed_usage_ids only lists product.usage_type once product_id is set"
+    steps:
+      - step: "Create the account required by the usage type"
+        action: "create"
+        model: "account.account"
+        save_as: "account_usage"
+        values:
+          name: "PLA Usage Account"
+          code: "PLAUSAGE"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create a product usage type"
+        action: "create"
+        model: "product.usage_type"
+        save_as: "usage_type"
+        values:
+          name: "Test Usage"
+          code: "TESTUSAGE"
+          account_id: "REC: account_usage.id"
+
+      - step: "Create a product"
+        action: "create"
+        model: "product.product"
+        save_as: "product_usage"
+        values:
+          name: "Product For Usage"
+
+      - step: "Create record without product_id"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "record_no_product"
+        values:
+          name: "Line No Product"
+          account_id: "REC: account_usage.id"
+
+      - step: "Assert allowed_usage_ids is empty without product_id"
+        action: "assert"
+        target: "record_no_product"
+        asserts:
+          allowed_usage_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 0
+
+      - step: "Create record with product_id"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "record_with_product"
+        values:
+          name: "Line With Product"
+          product_id: "REC: product_usage.id"
+          account_id: "REC: account_usage.id"
+
+      - step: "Assert allowed_usage_ids contains the created usage type"
+        action: "assert"
+        target: "record_with_product"
+        asserts:
+          allowed_usage_ids:
+            type: "m2m"
+            check: "contains"
+            expected_records:
+              - "REC: usage_type"
+
+  - name: "onchange_account_id and onchange_tax_ids follow the selected usage type"
+    steps:
+      - step: "Create the account configured on the usage type"
+        action: "create"
+        model: "account.account"
+        save_as: "account_onchange"
+        values:
+          name: "PLA Onchange Account"
+          code: "PLAONCH1"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create the tax configured on the usage type"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax_onchange"
+        values:
+          name: "PLA Onchange Tax"
+          amount: 5.0
+
+      - step: "Create the usage type with account and tax configured"
+        action: "create"
+        model: "product.usage_type"
+        save_as: "usage_type_onchange"
+        values:
+          name: "Onchange Usage"
+          code: "ONCHUSAGE"
+          account_id: "REC: account_onchange.id"
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax_onchange.id"
+
+      - step: "Create a product"
+        action: "create"
+        model: "product.product"
+        save_as: "product_onchange"
+        values:
+          name: "Product For Onchange"
+
+      - step:
+          "Fill the form and select product then usage, without saving (account_id has
+          no default and 'name' is required, so saving is not needed to observe the
+          onchange)"
+        action: "form"
+        model: "test.product_line_account"
+        save: false
+        ops:
+          - set:
+              product_id: "REC: product_onchange"
+          - set:
+              usage_id: "REC: usage_type_onchange"
+          - assert:
+              account_id:
+                type: "m2o"
+                expected: "REC: account_onchange"
+              tax_ids:
+                type: "m2m"
+                check: "contains"
+                expected_records:
+                  - "REC: tax_onchange"

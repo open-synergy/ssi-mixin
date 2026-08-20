@@ -1,0 +1,226 @@
+options:
+  auto_refresh: true
+
+# Shared read-only lookup: the ir.model record describing the
+# "test.related_attachment" fixture model (module
+# test_ssi_related_attachment_mixin), used to scope the
+# attachment.related_attachment_template created below to that model.
+setup:
+  steps:
+    - step: "Find ir.model record for test.related_attachment"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "test.related_attachment"]]
+      save_as: "model_ra"
+      limit: 1
+      expect_count: 1
+
+scenarios:
+  - name: "Create, edit and delete a test.related_attachment document"
+    steps:
+      - step: "Create record"
+        action: "create"
+        model: "test.related_attachment"
+        save_as: "record"
+        values:
+          name: "Doc CRUD"
+          user_id: "REC: user.id"
+
+      - step: "Assert created"
+        action: "assert"
+        target: "record"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Doc CRUD"
+          state:
+            type: "value"
+            expected: "draft"
+
+      - step: "Write new name"
+        action: "write"
+        target: "record"
+        values:
+          name: "Doc CRUD Updated"
+
+      - step: "Assert name updated"
+        action: "assert"
+        target: "record"
+        asserts:
+          name:
+            type: "value"
+            expected: "Doc CRUD Updated"
+
+      - step: "Delete record"
+        action: "unlink"
+        target: "record"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "test.related_attachment"
+        domain: [["name", "=", "Doc CRUD Updated"]]
+        save_as: "deleted_check"
+        expect_count: 0
+
+  - name:
+      "create() auto-selects the matching template, generates one related_attachment row
+      per template detail, and action_verify_attachment moves the related-attachment
+      status to done"
+    steps:
+      - step: "Create a related attachment category"
+        action: "create"
+        model: "attachment.related_attachment_category"
+        save_as: "category"
+        values:
+          name: "Category 1"
+          code: "CAT1"
+
+      - step:
+          "Create a template scoped to test.related_attachment (default python_code
+          always matches)"
+        action: "create"
+        model: "attachment.related_attachment_template"
+        save_as: "template"
+        values:
+          name: "RA Template 1"
+          model_id: "REC: model_ra.id"
+
+      - step:
+          "Attach the category as a template detail, allowing the current user to verify
+          it"
+        action: "create"
+        model: "attachment.related_attachment_template_detail"
+        save_as: "detail"
+        values:
+          template_id: "REC: template.id"
+          category_id: "REC: category.id"
+          verify_method: "use_user"
+          verify_user_ids:
+            - - 6
+              - 0
+              - - "REC: user.id"
+
+      - step: "Create the document without an explicit template"
+        action: "create"
+        model: "test.related_attachment"
+        save_as: "doc"
+        values:
+          name: "Doc Template Reload"
+          user_id: "REC: user.id"
+
+      - step:
+          "Assert the template was auto-selected and one related_attachment row was
+          generated, still unverified"
+        action: "assert"
+        target: "doc"
+        asserts:
+          related_attachment_template_id:
+            type: "m2o"
+            expected: "REC: template"
+          related_attachment_ids:
+            type: "o2m"
+            check: "count"
+            expected_count: 1
+          num_of_related_attachment:
+            type: "value"
+            expected: 1
+          num_of_verified_related_attachment:
+            type: "value"
+            expected: 0
+          num_of_unverified_related_attachment:
+            type: "value"
+            expected: 1
+          related_attchment_status:
+            type: "value"
+            expected: "open"
+
+      - step: "Find the generated related_attachment row"
+        action: "search"
+        model: "attachment.related_attachment"
+        domain:
+          [["model", "=", "test.related_attachment"], ["res_id", "=", "REC: doc.id"]]
+        save_as: "line"
+        limit: 1
+        expect_count: 1
+
+      - step: "Verify the attachment as the current user (member of verify_user_ids)"
+        action: "call"
+        target: "line"
+        method: "action_verify_attachment"
+
+      - step: "Assert the row is verified"
+        action: "assert"
+        target: "line"
+        asserts:
+          verified:
+            type: "value"
+            expected: true
+
+      - step: "Assert the document's counters and status followed the verification"
+        action: "assert"
+        target: "doc"
+        refresh: true
+        asserts:
+          num_of_verified_related_attachment:
+            type: "value"
+            expected: 1
+          num_of_unverified_related_attachment:
+            type: "value"
+            expected: 0
+          related_attchment_status:
+            type: "value"
+            expected: "done"
+
+  - name:
+      "unlink() rejects a related_attachment row that still has an attachment_id, and
+      action_unlink_attachment clears it so the row can then be deleted"
+    steps:
+      - step: "Create an attachment (URL type, no binary content needed)"
+        action: "create"
+        model: "ir.attachment"
+        save_as: "attach"
+        values:
+          name: "Test File"
+          type: "url"
+          url: "https://example.com/test.txt"
+
+      - step: "Create a related_attachment row carrying that attachment"
+        action: "create"
+        model: "attachment.related_attachment"
+        save_as: "line_with_attachment"
+        values:
+          attachment_id: "REC: attach.id"
+
+      - step: "Deleting the row while attachment_id is set must be rejected"
+        action: "unlink"
+        target: "line_with_attachment"
+        expect_error:
+          type: "UserError"
+          message_contains: "Attachment already exist"
+
+      - step: "Clear the attachment via action_unlink_attachment"
+        action: "call"
+        target: "line_with_attachment"
+        method: "action_unlink_attachment"
+
+      - step: "Assert attachment_id was cleared"
+        action: "assert"
+        target: "line_with_attachment"
+        asserts:
+          attachment_id:
+            type: "value"
+            operator: "is_falsy"
+
+      - step: "Deleting the row now succeeds"
+        action: "unlink"
+        target: "line_with_attachment"
+
+      - step: "Verify deleted"
+        action: "search"
+        model: "attachment.related_attachment"
+        domain: [["id", "=", "REC: line_with_attachment.id"]]
+        save_as: "deleted_check"
+        expect_count: 0
