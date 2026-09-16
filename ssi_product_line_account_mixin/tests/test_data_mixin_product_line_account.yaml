@@ -1,0 +1,223 @@
+options:
+  auto_refresh: true
+
+# Reproduces open-synergy/ssi-mixin#433: `_compute_total` used to pass the
+# rounded `quantity` (mixin.product_line._compute_qty, rounded to the
+# *product's* UoM precision via uom.uom._compute_quantity's
+# `precision_rounding=to_unit.rounding`) to `tax_ids.compute_all(...)`
+# instead of the raw `uom_quantity`, so `price_subtotal` silently changed
+# the moment a line got a tax, even at a 0% rate. Both scenarios below use a
+# custom UoM with `rounding=0.1` so the rounding effect on `quantity` is
+# reproducible without depending on any demo-data UoM's rounding value.
+
+# `test.product_line_account.account_id` is required, and a fresh test DB
+# without a chart-of-accounts localization has no account.account record to
+# point it at -- each scenario creates its own throwaway one below (`code`
+# has a `unique(code, company_id)` SQL constraint, and `setup:` steps replay
+# on EVERY scenario against the same shared DB transaction, so a single
+# shared fixture in `setup:` would collide on the second scenario).
+
+scenarios:
+  - name:
+      "_compute_total: price_subtotal must use uom_quantity (raw), not quantity
+      (UoM-rounded), whether tax_ids is empty or filled"
+    steps:
+      - step: "Create a UoM whose rounding (0.1) differs from its factor"
+        action: "create"
+        model: "uom.uom"
+        save_as: "rounded_uom"
+        values:
+          name: "Test Rounded Unit (0.1) - 433a"
+          category_id: "REF: uom.product_uom_categ_unit"
+          uom_type: "bigger"
+          factor: 1.0
+          rounding: 0.1
+
+      - step: "Create a product using the rounded UoM as its default UoM"
+        action: "create"
+        model: "product.product"
+        save_as: "product"
+        values:
+          name: "Test Product - Rounded UoM - 433a"
+          type: "consu"
+          uom_id: "REC: rounded_uom.id"
+          uom_po_id: "REC: rounded_uom.id"
+
+      - step: "Find the generic 'Revenue' account type shipped by account"
+        action: "ref"
+        xml_id: "account.data_account_type_revenue"
+        save_as: "revenue_account_type"
+
+      - step: "Create a throwaway account.account for the line's account_id"
+        action: "create"
+        model: "account.account"
+        save_as: "revenue_account"
+        values:
+          name: "Test Revenue Account - 433a"
+          code: "TST433A"
+          user_type_id: "REC: revenue_account_type.id"
+
+      - step:
+          "Create the line with uom_quantity=0.35, which rounds UP to 0.4 under the
+          product UoM's 0.1 rounding -- and no tax yet"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "line"
+        values:
+          name: "Test Line - 433a"
+          product_id: "REC: product.id"
+          uom_id: "REC: rounded_uom.id"
+          account_id: "REC: revenue_account.id"
+          uom_quantity: 0.35
+          price_unit: 100000000.0
+
+      - step:
+          "Sanity check: quantity really got rounded up to 0.4, so the bug's premise
+          (quantity != uom_quantity) is proven, not assumed"
+        action: "assert"
+        target: "line"
+        asserts:
+          quantity:
+            type: "value"
+            expected: 0.4
+          uom_quantity:
+            type: "value"
+            expected: 0.35
+
+      - step: "Without tax_ids, price_subtotal already uses uom_quantity"
+        action: "assert"
+        target: "line"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 35000000.0
+          price_total:
+            type: "value"
+            expected: 35000000.0
+
+      - step: "Create a 0% sale tax used only as a control (amount=0)"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax_zero"
+        values:
+          name: "Test Tax 0% - 433a"
+          amount_type: "percent"
+          amount: 0
+          type_tax_use: "sale"
+
+      - step:
+          "Fill tax_ids on the SAME line -- this is what used to switch the tax base
+          from uom_quantity to the rounded quantity"
+        action: "write"
+        target: "line"
+        values:
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax_zero.id"
+
+      - step:
+          "price_subtotal must stay 35_000_000 (== price_unit * uom_quantity) -- the bug
+          produced 40_000_000 here (price_unit * quantity)"
+        action: "assert"
+        target: "line"
+        refresh: true
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 35000000.0
+          price_tax:
+            type: "value"
+            expected: 0.0
+          price_total:
+            type: "value"
+            expected: 35000000.0
+
+  - name:
+      "_compute_total: uom_quantity that is already a multiple of the UoM rounding is
+      unaffected (quantity == uom_quantity), tax_ids filled"
+    steps:
+      - step: "Create the same kind of rounded UoM (0.1) for this scenario"
+        action: "create"
+        model: "uom.uom"
+        save_as: "rounded_uom_b"
+        values:
+          name: "Test Rounded Unit (0.1) - 433b"
+          category_id: "REF: uom.product_uom_categ_unit"
+          uom_type: "bigger"
+          factor: 1.0
+          rounding: 0.1
+
+      - step: "Create a product using the rounded UoM as its default UoM"
+        action: "create"
+        model: "product.product"
+        save_as: "product_b"
+        values:
+          name: "Test Product - Rounded UoM - 433b"
+          type: "consu"
+          uom_id: "REC: rounded_uom_b.id"
+          uom_po_id: "REC: rounded_uom_b.id"
+
+      - step: "Find the generic 'Revenue' account type shipped by account"
+        action: "ref"
+        xml_id: "account.data_account_type_revenue"
+        save_as: "revenue_account_type_b"
+
+      - step: "Create a throwaway account.account for the line's account_id"
+        action: "create"
+        model: "account.account"
+        save_as: "revenue_account_b"
+        values:
+          name: "Test Revenue Account - 433b"
+          code: "TST433B"
+          user_type_id: "REC: revenue_account_type_b.id"
+
+      - step: "Create a 0% sale tax used only as a control (amount=0)"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax_zero_b"
+        values:
+          name: "Test Tax 0% - 433b"
+          amount_type: "percent"
+          amount: 0
+          type_tax_use: "sale"
+
+      - step:
+          "Create the line with uom_quantity=1.0 (a plain multiple of the 0.1 rounding)
+          and tax_ids already filled"
+        action: "create"
+        model: "test.product_line_account"
+        save_as: "line_b"
+        values:
+          name: "Test Line - 433b"
+          product_id: "REC: product_b.id"
+          uom_id: "REC: rounded_uom_b.id"
+          account_id: "REC: revenue_account_b.id"
+          uom_quantity: 1.0
+          price_unit: 50000000.0
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax_zero_b.id"
+
+      - step: "quantity must equal uom_quantity -- rounding had nothing to do"
+        action: "assert"
+        target: "line_b"
+        asserts:
+          quantity:
+            type: "value"
+            expected: 1.0
+          uom_quantity:
+            type: "value"
+            expected: 1.0
+
+      - step: "price_subtotal must equal price_unit * uom_quantity exactly"
+        action: "assert"
+        target: "line_b"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 50000000.0
+          price_total:
+            type: "value"
+            expected: 50000000.0

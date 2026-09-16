@@ -35,6 +35,14 @@ class MixinProductLineAccount(models.AbstractModel):
         "currency_id",
     )
     def _compute_total(self):
+        """Compute ``price_subtotal``/``price_tax``/``price_total``.
+
+        Uses ``uom_quantity`` (the raw, user-entered quantity) as the
+        tax base, not ``quantity`` (the same quantity rounded to the
+        product's UoM precision) — so ``price_subtotal`` stays
+        identical whether ``tax_ids`` is empty or filled, for the same
+        ``uom_quantity`` and ``price_unit``.
+        """
         for record in self:
             subtotal = tax = total = 0.0
             subtotal = total = record.price_unit * record.uom_quantity
@@ -42,7 +50,7 @@ class MixinProductLineAccount(models.AbstractModel):
                 taxes = record.tax_ids.compute_all(
                     record.price_unit,
                     record.currency_id,
-                    record.quantity,
+                    record.uom_quantity,
                     product=record.product_id,
                     partner=False,
                 )
