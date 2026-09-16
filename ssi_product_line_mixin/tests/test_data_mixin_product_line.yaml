@@ -1,0 +1,93 @@
+# Reproduces open-synergy/ssi-mixin#434: `_compute_allowed_uom_ids` used to
+# compare `category_id` (a field on OTHER uom.uom records) against
+# `record.product_id.uom_id.id` -- the product UoM's own record id -- instead
+# of `record.product_id.uom_id.category_id.id`, its category's id. Both
+# scenarios use freshly-created UoMs, whose ids never coincide with their
+# category's id, so the bug's premise (uom.id != uom.category_id.id) is
+# structurally guaranteed rather than assumed.
+
+scenarios:
+  - name:
+      "_compute_allowed_uom_ids: with a product set, must return every UoM in the
+      product's default UoM category"
+    steps:
+      - step: "Create a fresh UoM category, unrelated to any demo data"
+        action: "create"
+        model: "uom.category"
+        save_as: "test_category"
+        values:
+          name: "Test Category - 434"
+
+      - step: "Create the category's reference UoM (Test A)"
+        action: "create"
+        model: "uom.uom"
+        save_as: "uom_a"
+        values:
+          name: "Test A - 434"
+          category_id: "REC: test_category.id"
+          uom_type: "reference"
+          factor: 1.0
+
+      - step: "Create a second UoM in the SAME category (Test B)"
+        action: "create"
+        model: "uom.uom"
+        save_as: "uom_b"
+        values:
+          name: "Test B - 434"
+          category_id: "REC: test_category.id"
+          uom_type: "bigger"
+          factor: 2.0
+
+      - step: "Create a product whose default UoM is Test A"
+        action: "create"
+        model: "product.product"
+        save_as: "product"
+        values:
+          name: "Test Product - 434"
+          type: "consu"
+          uom_id: "REC: uom_a.id"
+          uom_po_id: "REC: uom_a.id"
+
+      - step:
+          "Create the line pointing at the product -- Test A's own id differs from Test
+          Category's id, which is exactly what used to make allowed_uom_ids come back
+          empty"
+        action: "create"
+        model: "test.product_line"
+        save_as: "line"
+        values:
+          name: "Test Line - 434"
+          product_id: "REC: product.id"
+
+      - step:
+          "allowed_uom_ids must contain BOTH UoMs of the product's category, not be
+          empty"
+        action: "assert"
+        target: "line"
+        asserts:
+          allowed_uom_ids:
+            type: "m2m"
+            check: "exact"
+            expected_records:
+              - "REC: uom_a"
+              - "REC: uom_b"
+
+  - name:
+      "_compute_allowed_uom_ids: without a product, must stay empty (not every UoM in
+      the system)"
+    steps:
+      - step: "Create the line without setting product_id"
+        action: "create"
+        model: "test.product_line"
+        save_as: "line_no_product"
+        values:
+          name: "Test Line No Product - 434"
+
+      - step: "allowed_uom_ids must be empty"
+        action: "assert"
+        target: "line_no_product"
+        asserts:
+          allowed_uom_ids:
+            type: "m2m"
+            check: "count"
+            expected_count: 0

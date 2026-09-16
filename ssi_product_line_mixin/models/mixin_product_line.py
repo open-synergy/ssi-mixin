@@ -45,12 +45,18 @@ class MixinProductLine(models.AbstractModel):
 
     @api.depends("product_id")
     def _compute_allowed_uom_ids(self):
+        """Compute the UoMs selectable on this line's ``uom_id``.
+
+        Includes every ``uom.uom`` sharing the same category as the
+        line's product default UoM. Empty when no product is set.
+        """
         UoM = self.env["uom.uom"]
         for record in self:
             result = []
             if record.product_id:
+                category_id = record.product_id.uom_id.category_id.id
                 criteria = [
-                    ("category_id", "=", record.product_id.uom_id.id),
+                    ("category_id", "=", category_id),
                 ]
                 result = UoM.search(criteria).ids
             record.allowed_uom_ids = result
