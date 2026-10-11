@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 OpenSynergy Indonesia
+     Copyright 2021 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+<record id="ir_sequence_view_tree" model="ir.ui.view">
+    <field name="name">ir.sequence -tree</field>
+    <field name="model">ir.sequence</field>
+    <field name="inherit_id" ref="base.sequence_view_tree" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="operating_unit_ids" widget="many2many_tags" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<record id="ir_sequence_view_form" model="ir.ui.view">
+    <field name="name">ir.sequence - form</field>
+    <field name="model">ir.sequence</field>
+    <field name="inherit_id" ref="base.sequence_view" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="operating_unit_ids" widget="many2many_tags" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+</odoo>

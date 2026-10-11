@@ -1,0 +1,54 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ssi_currency_mixin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency__company_id
+msgid "Company"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model,name:ssi_currency_mixin.model_mixin_currency
+msgid "Currency Mixin"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency__id
+msgid "ID"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency__rate_inverted
+msgid "Rate Inverted"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency__currency_id
+msgid "Transaction Currency"
+msgstr ""
+
+#. module: ssi_currency_mixin
+#: model:ir.model.fields,field_description:ssi_currency_mixin.field_mixin_currency__rate
+msgid "Transaction Rate"
+msgstr ""

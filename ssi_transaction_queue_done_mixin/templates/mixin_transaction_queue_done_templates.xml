@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="transaction_queue_done_form_template">
+    <field
+            name="done_queue_job_ids"
+            attrs="{'invisible':[('state','!=','queue_done')]}"
+        />
+    <button
+            name="action_requeue_done"
+            string="Requeue"
+            type="object"
+            class="oe_highlight"
+            icon="fa-refresh"
+            attrs="{'invisible':['|',('state','!=','queue_done'),'&amp;',('state','=','queue_done'),('done_queue_job_batch_state','=','finished')]}"
+        />
+    <button
+            name="action_recompute_queue_done_result"
+            string="Recompute Queue Done Result"
+            type="object"
+            class="oe_highlight"
+            attrs="{'invisible':[('state','!=','queue_done')]}"
+            confirm="Recompute queue done result. Are you sure?"
+            style="margin-right:4px"
+        />
+    <group
+            name="transaction_queue_done"
+            col="2"
+            colspan="4"
+            string="Queue To Done"
+            attrs="{'invisible':[('state','!=','queue_done')]}"
+        >
+        <field name="done_queue_job_batch_id" string="Job Batch" />
+        <field name="done_queue_job_batch_state" string="State" />
+    </group>
+</template>
+
+<template id="queue_done_policy_field">
+    <field name="queue_done_ok" />
+</template>
+
+<template id="button_queue_done">
+    <button
+            name="action_queue_done"
+            string="Done"
+            type="object"
+            class="oe_highlight"
+            attrs="{'invisible':[('queue_done_ok','!=',True)]}"
+            confirm="Finish data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_queue_done">
+    <button
+            name="action_queue_done"
+            string="Done"
+            type="object"
+            confirm="Finish data. Are you sure?"
+        />
+    <button
+            name="action_recompute_queue_done_result"
+            string="Recompute Queue Done Result"
+            type="object"
+            class="oe_highlight"
+        />
+</template>
+
+<template id="queue_done_filter">
+    <filter
+            name="dom_queue_done"
+            string="Queue To Done"
+            domain="[('state', '=', 'queue_done')]"
+        />
+</template>
+</odoo>
