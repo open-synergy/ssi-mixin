@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_decorator](ssi_decorator/) | 20.0.1.0.0 |  | SSI - Decorator
+[ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.0 |  | Print Policy Mixin
 
 
 Unported addons
@@ -45,7 +46,6 @@ addon | version | maintainers | summary
 [ssi_partner_mixin](ssi_partner_mixin/) | 19.0.1.1.0 (unported) |  | Partner Mixin
 [ssi_policy_mixin](ssi_policy_mixin/) | 19.0.1.1.1 (unported) |  | Policy Mixin
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.1.0 (unported) |  | Pricelist Mixin
-[ssi_print_mixin](ssi_print_mixin/) | 19.0.1.1.0 (unported) |  | Print Policy Mixin
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.4.1 (unported) |  | Product Line Mixin - With Accounting
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.3.1 (unported) |  | Product Line Mixin
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.4.0 (unported) |  | Product Line Mixin - With Price
