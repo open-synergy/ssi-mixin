@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,6 +20,78 @@ msgid "# Document"
 msgstr ""
 
 #. module: ssi_transaction_mixin
+#: model:ir.module.module,description:base.module_ssi_transaction_mixin
+msgid ""
+".. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg\n"
+"   :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"=================\n"
+"Transaction Mixin\n"
+"=================\n"
+"\n"
+"``ssi_transaction_mixin`` provides the foundational abstract model —\n"
+"``mixin.transaction`` — used by all SSI transactional documents.\n"
+"\n"
+"It composes the following base capabilities:\n"
+"\n"
+"* **mail.thread** / **mail.activity.mixin** — chatter and activity tracking.\n"
+"* **mixin.decorator** — form-view injection framework.\n"
+"* **mixin.sequence** — auto-generated document number.\n"
+"* **mixin.policy** — policy-template-driven button visibility.\n"
+"* **mixin.print_document** — print/download actions.\n"
+"\n"
+"And adds:\n"
+"\n"
+"* A ``name`` (document number) and ``date`` field with a configurable draft\n"
+"  sequence state.\n"
+"* Automatic form-view injection of status bar, policy fields, and action\n"
+"  buttons.\n"
+"* ``action_confirm``, ``action_restart``, and base lifecycle hooks that\n"
+"  sub-mixins (confirm, open, done, cancel) extend.\n"
+"\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"1.  Clone the branch 14.0 of the repository https://github.com/open-synergy/ssi-mixin\n"
+"2.  Add the path to this repository in your configuration (addons-path)\n"
+"3.  Update the module list (Must be on developer mode)\n"
+"4.  Go to menu *Apps -> Apps -> Main Apps*\n"
+"5.  Search For *Transaction Mixin*\n"
+"6.  Install the module\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/open-synergy/ssi-mixin/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smash it by providing detailed and welcomed feedback.\n"
+"\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"* Andhitia Rama <andhitia.r@gmail.com>\n"
+"* Miftahussalam <miftahussalam08@gmail.com>\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+".. image:: https://simetri-sinergi.id/logo.png\n"
+"   :alt: PT. Simetri Sinergi Indonesia\n"
+"   :target: https://simetri-sinergi.id\n"
+"\n"
+"This module is maintained by the PT. Simetri Sinergi Indonesia.\n"
+msgstr ""
+
+#. module: ssi_transaction_mixin
 #: model:ir.model.fields,field_description:ssi_transaction_mixin.field_mixin_transaction__message_needaction
 msgid "Action Needed"
 msgstr ""
@@ -32,6 +104,11 @@ msgstr ""
 #. module: ssi_transaction_mixin
 #: model:ir.model.fields,field_description:ssi_transaction_mixin.field_mixin_transaction__activity_exception_decoration
 msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: ssi_transaction_mixin
+#: model:ir.model.fields,field_description:ssi_transaction_mixin.field_mixin_transaction__activity_plans_ids
+msgid "Activity Plans"
 msgstr ""
 
 #. module: ssi_transaction_mixin
@@ -91,26 +168,6 @@ msgstr ""
 
 #. module: ssi_transaction_mixin
 #: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_cancel__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_confirm__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_date_duration__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_done__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_open__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_partner__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_partner_contact_required__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_ready__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_residual__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_residual_with_field__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_tax__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_tax_address__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_tax_address_required__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_tax_with_field__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_terminate__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_total__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_total_with_field__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_untaxed__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_untaxed_with_field__state__draft
-#: model:ir.model.fields.selection,name:ssi_transaction_mixin.selection__mixin_transaction_win_lost__state__draft
 #: model_terms:ir.ui.view,arch_db:ssi_transaction_mixin.mixin_transaction_view_search
 msgid "Draft"
 msgstr ""
@@ -123,11 +180,6 @@ msgstr ""
 #. module: ssi_transaction_mixin
 #: model:ir.model.fields,field_description:ssi_transaction_mixin.field_mixin_transaction__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
-
-#. module: ssi_transaction_mixin
-#: model:ir.model.fields,help:ssi_transaction_mixin.field_mixin_transaction__activity_type_icon
-msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: ssi_transaction_mixin
@@ -188,6 +240,11 @@ msgid ""
 "Manual number assignment policy\n"
 "\n"
 "* If active user can edit document number"
+msgstr ""
+
+#. module: ssi_transaction_mixin
+#: model:ir.model.fields,help:ssi_transaction_mixin.field_mixin_transaction__activity_type_icon
+msgid "Material Symbols icon e.g. checklist"
 msgstr ""
 
 #. module: ssi_transaction_mixin
@@ -352,6 +409,7 @@ msgstr ""
 
 #. module: ssi_transaction_mixin
 #: model:ir.model,name:ssi_transaction_mixin.model_mixin_transaction
+#: model:ir.module.module,shortdesc:base.module_ssi_transaction_mixin
 msgid "Transaction Mixin"
 msgstr ""
 
