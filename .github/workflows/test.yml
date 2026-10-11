@@ -68,8 +68,12 @@ jobs:
         run: manifestoo -d . check-dev-status --default-dev-status=Beta
       - name: Initialize test db
         run: oca_init_test_database
+      # TEMPORARY (open-synergy/ssi-mixin#449): odoo-yaml-test has no Odoo 20
+      # support yet (ir.model.access was replaced by ir.access), so test
+      # failures must not block merges. Remove together with the issue.
       - name: Run tests
         run: oca_run_tests
+        continue-on-error: true
       - name: Upload screenshots from JS tests
         uses: actions/upload-artifact@v4
         if: ${{ failure() }}
