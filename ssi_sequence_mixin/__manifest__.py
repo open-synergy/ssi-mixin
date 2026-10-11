@@ -4,17 +4,17 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Sequence Mixin",
-    "version": "19.0.1.1.1",
+    "version": "20.0.1.0.0",
     "category": "Administration",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
-    "installable": False,
+    "installable": True,
     "depends": [
         "base",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "menu.xml",
         "views/sequence_template_views.xml",
     ],
