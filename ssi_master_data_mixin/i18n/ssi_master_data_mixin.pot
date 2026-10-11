@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,6 +17,87 @@ msgstr ""
 #. odoo-python
 #: code:addons/ssi_master_data_mixin/models/mixin_master_data.py:0
 msgid "%s (copy)"
+msgstr ""
+
+#. module: ssi_master_data_mixin
+#: model:ir.module.module,description:base.module_ssi_master_data_mixin
+msgid ""
+".. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg\n"
+"   :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"=================\n"
+"Master Data Mixin\n"
+"=================\n"
+"\n"
+"Description\n"
+"===========\n"
+"\n"
+"``ssi_master_data_mixin`` provides an abstract Odoo model — ``mixin.master_data``\n"
+"— that serves as a reusable base for **master/reference data** records.\n"
+"\n"
+"Any model that inherits from ``mixin.master_data`` automatically gains:\n"
+"\n"
+"* **Standard fields** — ``name`` (translatable), ``code`` (unique identifier),\n"
+"  ``active`` (archive / restore), and ``note`` (free-text remarks).\n"
+"* **Sequence generation** — a *Generate Code* button that assigns a\n"
+"  sequence-based code from a configured sequence template.  Records whose\n"
+"  ``code`` is ``'/'`` are treated as \"unassigned\" and can receive an automatic\n"
+"  code at any time.\n"
+"* **Unique-code constraint** — a SQL-level constraint prevents two records of\n"
+"  the same model from sharing the same non-slash code.\n"
+"* **Chatter integration** — inherits ``mail.thread`` and\n"
+"  ``mail.activity.mixin``, giving the form view a full messaging thread and\n"
+"  activity scheduler.\n"
+"* **Print-document support** — inherits ``mixin.print_document`` and\n"
+"  automatically injects a *Print* button into the form header.\n"
+"* **Configurable display name** — by setting ``_show_code_on_display_name =\n"
+"  True`` on a concrete model, the display name is rendered as ``[code] name``\n"
+"  throughout the UI.\n"
+"\n"
+"Typical use-cases: product types, work-order categories, payment terms,\n"
+"school grades, or any static reference table that modules need to configure\n"
+"once and reuse across transactions.\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"1.  Clone the branch 14.0 of the repository https://github.com/open-synergy/ssi-mixin\n"
+"2.  Add the path to this repository in your configuration (addons-path)\n"
+"3.  Update the module list (Must be on developer mode)\n"
+"4.  Go to menu *Apps -> Apps -> Main Apps*\n"
+"5.  Search For *Master Data Mixin*\n"
+"6.  Install the module\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/open-synergy/ssi-mixin/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smash it by providing detailed and welcomed feedback.\n"
+"\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"* Michael Viriyananda <viriyananda.michael@gmail.com>\n"
+"* Andhitia Rama <andhitia.r@gmail.com>\n"
+"* Asrul Bastian Yunas <asrulbastianyunas@gmail.com>\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+".. image:: https://simetri-sinergi.id/logo.png\n"
+"   :alt: PT. Simetri Sinergi Indonesia\n"
+"   :target: https://simetri-sinergi.id\n"
+"\n"
+"This module is maintained by the PT. Simetri Sinergi Indonesia.\n"
 msgstr ""
 
 #. module: ssi_master_data_mixin
@@ -38,6 +119,11 @@ msgstr ""
 #. module: ssi_master_data_mixin
 #: model:ir.model.fields,field_description:ssi_master_data_mixin.field_mixin_master_data__activity_exception_decoration
 msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: ssi_master_data_mixin
+#: model:ir.model.fields,field_description:ssi_master_data_mixin.field_mixin_master_data__activity_plans_ids
+msgid "Activity Plans"
 msgstr ""
 
 #. module: ssi_master_data_mixin
@@ -79,11 +165,6 @@ msgstr ""
 #. module: ssi_master_data_mixin
 #: model:ir.model.fields,field_description:ssi_master_data_mixin.field_mixin_master_data__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
-
-#. module: ssi_master_data_mixin
-#: model:ir.model.fields,help:ssi_master_data_mixin.field_mixin_master_data__activity_type_icon
-msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: ssi_master_data_mixin
@@ -137,6 +218,11 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: ssi_master_data_mixin
+#: model:ir.module.module,shortdesc:base.module_ssi_master_data_mixin
+msgid "Master Data Mixin"
+msgstr ""
+
+#. module: ssi_master_data_mixin
 #: model:ir.model.fields,help:ssi_master_data_mixin.field_mixin_master_data__active
 msgid ""
 "Master data status\n"
@@ -156,6 +242,11 @@ msgid ""
 "* Click 'Generate Code' button to automatically assign code.\n"
 "  Sequence template must be set to perform this action\n"
 "  Only master data with '/' code will be assign automatic code"
+msgstr ""
+
+#. module: ssi_master_data_mixin
+#: model:ir.model.fields,help:ssi_master_data_mixin.field_mixin_master_data__activity_type_icon
+msgid "Material Symbols icon e.g. checklist"
 msgstr ""
 
 #. module: ssi_master_data_mixin
