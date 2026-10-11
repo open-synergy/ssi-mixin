@@ -9,7 +9,7 @@
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "category": "Tools",
     "license": "AGPL-3",
-    "installable": True,
+    "installable": False,
     "depends": [
         "ssi_decorator",
         "ssi_master_data_mixin",

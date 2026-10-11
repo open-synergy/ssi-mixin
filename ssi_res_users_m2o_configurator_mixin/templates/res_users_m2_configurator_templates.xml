@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="res_users_m2o_configurator_template">
+        <group name="user_1" col="2" colspan="4" string="Partner">
+            <field name="user_selection_method" />
+            <field
+                name="user_ids"
+                attrs="{'invisible':[('user_selection_method','!=','manual')]}"
+            />
+            <field
+                name="user_domain"
+                widget="domain"
+                options="{'model': 'res.user', 'in_dialog': True}"
+                attrs="{'invisible':[('user_selection_method','!=','domain')]}"
+            />
+            <field
+                name="user_python_code"
+                widget="ace"
+                attrs="{'invisible':[('user_selection_method','!=','code')]}"
+            />
+        </group>
+    </template>
+</odoo>

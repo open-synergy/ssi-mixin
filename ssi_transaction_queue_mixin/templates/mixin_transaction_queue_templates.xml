@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="queue">
+    <page string="Queue Processing" name="queue_processing">
+        <group name="queue_processing" colspan="4" col="2">
+        </group>
+    </page>
+</template>
+</odoo>

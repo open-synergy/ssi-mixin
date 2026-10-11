@@ -1,0 +1,134 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ssi_product_line_price_mixin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__allowed_pricelist_ids
+msgid "Allowed Pricelists"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__allowed_uom_ids
+msgid "Allowed UoMs"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__name
+msgid "Description"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__id
+msgid "ID"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__note
+msgid "Note"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__price_subtotal
+msgid "Price Subtotal"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__price_unit
+msgid "Price Unit"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__pricelist_id
+msgid "Pricelist"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__product_id
+msgid "Product"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__product_category_id
+msgid "Product Category"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model,name:ssi_product_line_price_mixin.model_mixin_product_line_price
+msgid "Product Line Mixin - With Price"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.ui.menu,name:ssi_product_line_price_mixin.menu_product_line_price
+msgid "Product Line With Price"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__quantity
+msgid "Quantity"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,help:ssi_product_line_price_mixin.field_mixin_product_line_price__product_category_id
+msgid "Select category for the current product"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__standard_price_subtotal
+msgid "Standard Price Subtotal"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__standard_price_subtotal_diff
+msgid "Standard Price Subtotal Diff."
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__standard_price_unit
+msgid "Standard Price Unit"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__standard_price_unit_diff
+msgid "Standard Price Unit Diff."
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__uom_id
+msgid "UoM"
+msgstr ""
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__uom_quantity
+msgid "UoM Quantity"
+msgstr ""

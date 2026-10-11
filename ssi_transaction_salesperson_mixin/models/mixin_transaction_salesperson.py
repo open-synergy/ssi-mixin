@@ -1,0 +1,31 @@
+# Copyright 2022 OpenSynergy Indonesia
+# Copyright 2022 PT. Simetri Sinergi Indonesia
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+from odoo import fields, models
+
+
+class MixinTransactionSalesperson(models.AbstractModel):
+    """
+    Composes ``mixin.transaction`` with ``mixin.salesperson`` to add
+    ``user_id`` (salesperson) and ``sale_team_id`` with draft-state
+    editability controls to transactional documents.
+    """
+
+    _name = "mixin.transaction_salesperson"
+    _inherit = [
+        "mixin.transaction",
+        "mixin.salesperson",
+    ]
+    _description = "Transaction + Salesperson Mixin"
+
+    sale_team_id = fields.Many2one(
+        required=False,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    salesperson_id = fields.Many2one(
+        required=True,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
