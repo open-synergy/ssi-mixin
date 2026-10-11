@@ -1,0 +1,2 @@
+# Odoo 20: list view IDs should end with _view_list.
+module xml-id-view-list-memakai-akhiran-view-list-di-20-0|views/mixin_transaction_views.xml mixin_transaction_view_tree -- XML ID tidak boleh diganti (Keputusan Desain issue #444; rename menuntut migration script)
