@@ -1,0 +1,5 @@
+# Odoo 20 uses security/ir.access.csv (ir.model.access.csv is gone); the validator does not read it yet.
+module setiap-model-punya-record-ir-model-access|policy.template_detail: tidak ada record ir.model.access (model_policy_template_detail) -- ACL ada di security/ir.access.csv (format 20.0); validator hanya membaca ir.model.access.csv
+module setiap-model-punya-record-ir-model-access|policy.template: tidak ada record ir.model.access (model_policy_template) -- ACL ada di security/ir.access.csv (format 20.0); validator hanya membaca ir.model.access.csv
+module xml-id-view-list-memakai-akhiran-view-list-di-20-0|views/policy_template_detail_views.xml policy_template_detail_view_tree -- XML ID tidak boleh diganti (Keputusan Desain issue #442; rename menuntut migration script)
+module xml-id-view-list-memakai-akhiran-view-list-di-20-0|views/policy_template_views.xml policy_template_view_tree -- XML ID tidak boleh diganti (Keputusan Desain issue #442; rename menuntut migration script)

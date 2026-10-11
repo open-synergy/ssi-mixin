@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+access_policy_template_all,policy.template - All user ,policy.template,base.group_user,r,
+access_policy_template_detail_all,policy.template.detail - All user ,policy.template_detail,base.group_user,r,
+access_policy_template_admin,policy.template – Administrator Setting,policy.template,base.group_system,crud,
+access_policy_template_detail_admin,policy.template.detail – Administrator Setting,policy.template_detail,base.group_system,crud,
