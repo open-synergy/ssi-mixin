@@ -4,11 +4,11 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Master Data Mixin",
-    "version": "19.0.1.3.1",
+    "version": "20.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
-    "installable": False,
+    "installable": True,
     "depends": [
         "mail",
         "ssi_print_mixin",

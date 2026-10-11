@@ -12,7 +12,6 @@ exclude: |
   ^ssi_field_date_callable_attribute/|
   ^ssi_localdict_mixin/|
   ^ssi_m2o_configurator_mixin/|
-  ^ssi_master_data_mixin/|
   ^ssi_multiple_approval_mixin/|
   ^ssi_operating_unit_mixin/|
   ^ssi_partner_mixin/|
