@@ -8,7 +8,6 @@ exclude: |
   ^ssi_custom_information_mixin/|
   ^ssi_data_requirement_mixin/|
   ^ssi_data_requirement_mixin_operating_unit/|
-  ^ssi_decorator/|
   ^ssi_duration_mixin/|
   ^ssi_field_date_callable_attribute/|
   ^ssi_localdict_mixin/|
