@@ -17,6 +17,13 @@ ssi-mixin
 
 [//]: # (addons)
 
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[ssi_decorator](ssi_decorator/) | 20.0.1.0.0 |  | SSI - Decorator
+
+
 Unported addons
 ---------------
 addon | version | maintainers | summary
@@ -28,7 +35,6 @@ addon | version | maintainers | summary
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 19.0.1.3.0 (unported) |  | Custom Information Mixin
 [ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.3.9.0 (unported) |  | Data Requirement Mixin
 [ssi_data_requirement_mixin_operating_unit](ssi_data_requirement_mixin_operating_unit/) | 14.0.1.1.0 (unported) |  | Data Requirement Mixin + Operating Unit
-[ssi_decorator](ssi_decorator/) | 19.0.1.1.1 (unported) |  | SSI - Decorator
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.1.0 (unported) |  | Duration Mixin
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.1.0 (unported) |  | Custom Date Field With Callable Attribute
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 19.0.1.1.0 (unported) |  | Localdict Mixin
