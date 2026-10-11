@@ -26,6 +26,7 @@ addon | version | maintainers | summary
 [ssi_policy_mixin](ssi_policy_mixin/) | 20.0.1.0.0 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.0 |  | Print Policy Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.0 |  | Sequence Mixin
+[ssi_transaction_mixin](ssi_transaction_mixin/) | 20.0.1.0.0 |  | Transaction Mixin
 
 
 Unported addons
@@ -70,7 +71,6 @@ addon | version | maintainers | summary
 [ssi_transaction_date_due_mixin](ssi_transaction_date_due_mixin/) | 14.0.1.0.0 (unported) |  | Transaction Mixin - Date Due
 [ssi_transaction_date_duration_mixin](ssi_transaction_date_duration_mixin/) | 19.0.1.1.0 (unported) |  | Transaction Date Duration Mixin
 [ssi_transaction_done_mixin](ssi_transaction_done_mixin/) | 19.0.1.1.0 (unported) |  | Transaction Mixin - Done State
-[ssi_transaction_mixin](ssi_transaction_mixin/) | 19.0.1.1.0 (unported) |  | Transaction Mixin
 [ssi_transaction_open_mixin](ssi_transaction_open_mixin/) | 19.0.1.1.0 (unported) |  | Transaction Mixin - In Progress State
 [ssi_transaction_partner_mixin](ssi_transaction_partner_mixin/) | 19.0.1.1.0 (unported) |  | Transaction + Partner Mixin
 [ssi_transaction_pricelist_mixin](ssi_transaction_pricelist_mixin/) | 14.0.1.1.0 (unported) |  | Transaction + Pricelist Mixin
