@@ -4,17 +4,17 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Print Policy Mixin",
-    "version": "19.0.1.1.0",
+    "version": "20.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
-    "installable": False,
+    "installable": True,
     "depends": [
         "base",
         "mail",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "wizards/base_print_document.xml",
         "templates/mixin_print_templates.xml",
         "views/print_document_type_views.xml",

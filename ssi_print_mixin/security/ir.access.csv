@@ -1,0 +1,4 @@
+id,name,model_id,group_id/id,operation,domain
+access_print_document_all,base.print_document - all,base.print_document,base.group_user,crud,
+access_print_document_type_admin,print_document_type - admin,print_document_type,base.group_no_one,crud,
+access_print_document_type_all,print_document_type - all,print_document_type,base.group_user,r,
