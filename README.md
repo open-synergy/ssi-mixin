@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_decorator](ssi_decorator/) | 20.0.1.0.0 |  | SSI - Decorator
+[ssi_master_data_mixin](ssi_master_data_mixin/) | 20.0.1.0.0 |  | Master Data Mixin
 [ssi_policy_mixin](ssi_policy_mixin/) | 20.0.1.0.0 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.0 |  | Print Policy Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.0 |  | Sequence Mixin
@@ -42,7 +43,6 @@ addon | version | maintainers | summary
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.1.0 (unported) |  | Custom Date Field With Callable Attribute
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 19.0.1.1.0 (unported) |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 19.0.1.1.0 (unported) |  | Many2one Configurator Mixin
-[ssi_master_data_mixin](ssi_master_data_mixin/) | 19.0.1.3.1 (unported) |  | Master Data Mixin
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 19.0.1.1.0 (unported) |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.3.0 (unported) |  | Operating Unit Mixin
 [ssi_partner_mixin](ssi_partner_mixin/) | 19.0.1.1.0 (unported) |  | Partner Mixin
