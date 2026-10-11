@@ -16,7 +16,6 @@ exclude: |
   ^ssi_multiple_approval_mixin/|
   ^ssi_operating_unit_mixin/|
   ^ssi_partner_mixin/|
-  ^ssi_policy_mixin/|
   ^ssi_pricelist_mixin/|
   ^ssi_product_line_account_mixin/|
   ^ssi_product_line_mixin/|
