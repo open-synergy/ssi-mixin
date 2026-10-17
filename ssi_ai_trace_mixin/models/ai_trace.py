@@ -362,12 +362,14 @@ class AiTrace(models.Model):
                     vals[name] = entry[name]
         existing = {}
         if merged:
+            # ``turn`` is deliberately absent from the domain: the ORM drops
+            # falsy values (``0 == False``) from an ``in`` list, so turn 0
+            # would never match. The exact key is matched in Python below.
             found = self.with_context(active_test=False).search(
                 [
                     ("model", "in", list({key[0] for key in merged})),
                     ("res_id", "in", list({key[1] for key in merged})),
                     ("session_key", "in", list({key[2] for key in merged})),
-                    ("turn", "in", list({key[3] for key in merged})),
                     ("kind", "in", list({key[4] for key in merged})),
                 ]
             )
