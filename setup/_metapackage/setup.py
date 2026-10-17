@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo14-addon-ssi_accounting_entry_mixin',
+        'odoo14-addon-ssi_ai_trace_mixin',
         'odoo14-addon-ssi_backend_mixin',
         'odoo14-addon-ssi_company_currency_mixin',
         'odoo14-addon-ssi_currency_mixin',
