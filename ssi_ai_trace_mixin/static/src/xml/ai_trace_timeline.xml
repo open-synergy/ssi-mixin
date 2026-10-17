@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<templates xml:space="preserve">
+
+    <t t-name="ssi_ai_trace_mixin.Toggle">
+        <div class="o_ai_trace_toggle btn-group" role="group">
+            <button
+                type="button"
+                t-attf-class="btn btn-sm o_ai_trace_tab o_ai_trace_tab_chatter #{tab === 'chatter' ? 'btn-primary' : 'btn-secondary'}"
+                data-tab="chatter"
+            >Chatter</button>
+            <button
+                type="button"
+                t-attf-class="btn btn-sm o_ai_trace_tab o_ai_trace_tab_trace #{tab === 'ai_trace' ? 'btn-primary' : 'btn-secondary'}"
+                data-tab="ai_trace"
+            >AI Trace (<t t-esc="count" />)</button>
+        </div>
+    </t>
+
+    <t t-name="ssi_ai_trace_mixin.Timeline">
+        <div class="o_ai_trace_timeline">
+            <div class="o_ai_trace_summaries" />
+            <div class="o_ai_trace_days" />
+            <div class="o_ai_trace_empty text-muted d-none">No AI trace yet.</div>
+            <button
+                type="button"
+                class="btn btn-link o_ai_trace_load_older d-none"
+            >Load older</button>
+        </div>
+    </t>
+
+    <t t-name="ssi_ai_trace_mixin.Day">
+        <div class="o_ai_trace_day">
+            <div class="o_ai_trace_day_label text-muted"><t t-esc="day" /></div>
+            <div class="o_ai_trace_list" />
+        </div>
+    </t>
+
+    <t t-name="ssi_ai_trace_mixin.Entry">
+        <div
+            t-attf-class="o_ai_trace_entry o_ai_trace_kind_#{entry.kind}"
+            t-att-data-id="entry.id"
+        >
+            <div class="o_ai_trace_entry_header" role="button" aria-expanded="false">
+                <span class="badge badge-secondary o_ai_trace_kind"><t
+                        t-esc="kind_label"
+                    /></span>
+                <span class="o_ai_trace_meta text-muted">
+                    <t t-esc="entry._time" />
+                    <t t-if="entry.kind !== 'summary'"> · turn <t
+                            t-esc="entry.turn"
+                        /></t>
+                    · <t t-esc="entry.session_key" />
+                </span>
+                <div class="o_ai_trace_snippet"><t t-esc="entry.snippet" /></div>
+            </div>
+            <div class="o_ai_trace_body d-none" />
+        </div>
+    </t>
+
+    <t t-name="ssi_ai_trace_mixin.Section">
+        <div class="o_ai_trace_section">
+            <div class="o_ai_trace_section_title text-muted"><t t-esc="title" /></div>
+            <div class="o_ai_trace_ace" />
+        </div>
+    </t>
+
+</templates>

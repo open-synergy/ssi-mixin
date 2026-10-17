@@ -1,0 +1,2 @@
+ik modul-tak-punya-direktori-docs-belum-ada-ik-sama-sekali|docs/ -- ai_trace has no user action: its views are read-only, entries are written only through the API and the timeline toggle is navigation, so there is no work instruction or tour to write
+unit-test setiap-class-test-turunan-yamltransactioncase|tests/test_ai_trace_js.py TestAiTraceJs memakai HttpCase -- Trigger P7 (L-19): the QUnit runner needs a browser, which the YAML DSL cannot drive because its base class is locked to TransactionCase
