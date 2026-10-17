@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="assets_backend"
+        name="ssi_ai_trace_mixin assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/ssi_ai_trace_mixin/static/src/scss/ai_trace.scss"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_ai_trace_mixin/static/src/js/ai_trace_helpers.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_ai_trace_mixin/static/src/js/ai_trace_timeline.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_ai_trace_mixin/static/src/js/form_renderer.js"
+            />
+        </xpath>
+    </template>
+
+    <template
+        id="qunit_suite_tests"
+        name="ssi_ai_trace_mixin tests"
+        inherit_id="web.qunit_suite_tests"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/ssi_ai_trace_mixin/static/tests/ai_trace_tests.js"
+            />
+        </xpath>
+    </template>
+</odoo>

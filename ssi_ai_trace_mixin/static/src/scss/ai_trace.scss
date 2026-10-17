@@ -1,0 +1,57 @@
+// Copyright 2026 OpenSynergy Indonesia
+// Copyright 2026 PT. Simetri Sinergi Indonesia
+// License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+.o_ai_trace_wrapper {
+    flex: 1 1 auto;
+    margin: 0 auto;
+    max-width: $o-form-view-sheet-max-width;
+    padding: map-get($spacers, 3) map-get($spacers, 3) map-get($spacers, 5);
+    width: 100%;
+
+    // The chatter keeps its own layout, the wrapper now owns the gutters.
+    > .o_FormRenderer_chatterContainer {
+        max-width: none;
+        padding: 0;
+    }
+
+    .o_ai_trace_toggle {
+        margin-bottom: map-get($spacers, 3);
+    }
+}
+
+.o_ai_trace_timeline {
+    .o_ai_trace_day_label {
+        font-weight: bold;
+        margin: map-get($spacers, 3) 0 map-get($spacers, 1);
+    }
+
+    .o_ai_trace_entry {
+        border-left: 3px solid $gray-400;
+        margin-bottom: map-get($spacers, 2);
+        padding: map-get($spacers, 1) map-get($spacers, 2);
+
+        &.o_ai_trace_kind_summary {
+            border-left-color: $o-brand-primary;
+            background-color: $gray-100;
+        }
+    }
+
+    .o_ai_trace_entry_header {
+        cursor: pointer;
+    }
+
+    .o_ai_trace_snippet {
+        // Closed entries show one or two lines of plain text.
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        word-break: break-word;
+    }
+
+    .o_ai_trace_section_title {
+        font-size: 0.85em;
+        margin-top: map-get($spacers, 2);
+    }
+}

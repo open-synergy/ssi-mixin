@@ -1,0 +1,481 @@
+options:
+  auto_refresh: true
+
+# Every scenario is self-sufficient: the setup replays before each one.
+setup:
+  steps:
+    - step: "Create the document the traces are written against"
+      action: "create"
+      model: "res.partner"
+      save_as: "partner"
+      values:
+        name: "AI Trace Partner"
+
+    - step: "Find the ir.model record of res.partner"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "res.partner"]]
+      save_as: "model_partner"
+      limit: 1
+      expect_count: 1
+
+    - step: "Get an empty ai_trace recordset to call the model API on"
+      action: "search"
+      model: "ai_trace"
+      domain: [["id", "=", 0]]
+      save_as: "trace_model"
+
+scenarios:
+  - name: "Appending the same batch twice is idempotent and updates content"
+    steps:
+      - step: "Append a batch of two new entries"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-1"
+              turn: 1
+              kind: "turn"
+              prompt: "first prompt"
+              result: "first result"
+            - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-1"
+              turn: 2
+              kind: "turn"
+              prompt: "second prompt"
+              result: "second result"
+
+      - step: "Two entries exist"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["model", "=", "res.partner"]
+          - ["res_id", "=", "REC: partner.id"]
+        save_as: "entries"
+        expect_count: 2
+
+      - step: "Append the same keys with a new result"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-1"
+              turn: 1
+              kind: "turn"
+              prompt: "first prompt"
+              result: "updated result"
+            - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-1"
+              turn: 2
+              kind: "turn"
+              prompt: "second prompt"
+              result: "second result"
+
+      - step: "The count is unchanged"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["model", "=", "res.partner"]
+          - ["res_id", "=", "REC: partner.id"]
+        save_as: "entries"
+        expect_count: 2
+
+      - step: "The first entry holds the updated result"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["turn", "=", 1]
+        save_as: "first"
+        expect_count: 1
+
+      - step: "Assert the updated result"
+        action: "assert"
+        target: "first"
+        asserts:
+          result:
+            type: "value"
+            expected: "updated result"
+
+  - name: "A summary appended twice stays a single turn 0 record"
+    steps:
+      - step: "Append a summary"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-1"
+              turn: 0
+              kind: "summary"
+              result: "summary v1"
+
+      - step: "Append the summary again with new content"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-1"
+              turn: 0
+              kind: "summary"
+              result: "summary v2"
+
+      - step: "Only one summary exists"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["kind", "=", "summary"]
+        save_as: "summary"
+        expect_count: 1
+
+      - step: "Assert turn and content"
+        action: "assert"
+        target: "summary"
+        asserts:
+          turn:
+            type: "value"
+            expected: 0
+          result:
+            type: "value"
+            expected: "summary v2"
+
+  - name: "A text longer than the limit is cut and kept whole as attachment"
+    steps:
+      - step: "Append an entry with a 20000 character result"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-long"
+              turn: 1
+              kind: "turn"
+              result: "EVAL: 'x' * 20000"
+
+      - step: "Find the entry"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["session_key", "=", "session-long"]
+        save_as: "long_entry"
+        expect_count: 1
+
+      - step: "The stored result is cut and ends with the marker"
+        action: "assert"
+        target: "long_entry"
+        asserts:
+          result:
+            type: "value"
+            operator: "contains"
+            expected: "[truncated]"
+
+      - step: "The full text is kept as one attachment"
+        action: "search"
+        model: "ir.attachment"
+        domain:
+          - ["res_model", "=", "ai_trace"]
+          - ["res_id", "=", "REC: long_entry.id"]
+        save_as: "full_text"
+        expect_count: 1
+
+  - name: "The snippet is built from the prompt"
+    steps:
+      - step: "Append an entry with a multi line prompt"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "session-snippet"
+              turn: 1
+              kind: "turn"
+              prompt: "line one\nline two"
+              result: "ignored result"
+
+      - step: "Find the entry"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["session_key", "=", "session-snippet"]
+        save_as: "snippet_entry"
+        expect_count: 1
+
+      - step: "The snippet is one plain line"
+        action: "assert"
+        target: "snippet_entry"
+        asserts:
+          snippet:
+            type: "value"
+            expected: "line one line two"
+
+  - name: "The retention cron purges old entries but never summaries"
+    steps:
+      - step: "Create an old turn entry"
+        action: "create"
+        model: "ai_trace"
+        save_as: "old_turn"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "cron"
+          turn: 1
+          kind: "turn"
+          date: "EVAL: datetime.now() - relativedelta(days=200)"
+
+      - step: "Create an old summary entry"
+        action: "create"
+        model: "ai_trace"
+        save_as: "old_summary"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "cron"
+          turn: 0
+          kind: "summary"
+          date: "EVAL: datetime.now() - relativedelta(days=200)"
+
+      - step: "Create a recent turn entry"
+        action: "create"
+        model: "ai_trace"
+        save_as: "recent_turn"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "cron"
+          turn: 2
+          kind: "turn"
+
+      - step: "Run the purge cron with the default 180 days"
+        action: "call"
+        target: "trace_model"
+        method: "_cron_purge_ai_trace"
+
+      - step: "Only the summary and the recent turn remain"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["session_key", "=", "cron"]
+        save_as: "remaining"
+        expect_count: 2
+
+      - step: "The old turn entry is gone"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["session_key", "=", "cron"]
+          - ["kind", "=", "turn"]
+          - ["turn", "=", 1]
+        save_as: "gone"
+        expect_count: 0
+
+  - name: "A retention of 0 days keeps everything"
+    steps:
+      - step: "Create an old turn entry"
+        action: "create"
+        model: "ai_trace"
+        save_as: "old_turn"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "cron-zero"
+          turn: 1
+          kind: "turn"
+          date: "EVAL: datetime.now() - relativedelta(days=200)"
+
+      - step: "Find the retention parameter"
+        action: "search"
+        model: "ir.config_parameter"
+        domain: [["key", "=", "ssi_ai_trace_mixin.retention_days"]]
+        save_as: "retention_param"
+        expect_count: 1
+
+      - step: "Set the retention to 0 days"
+        action: "write"
+        target: "retention_param"
+        values:
+          value: "0"
+
+      - step: "Run the purge cron"
+        action: "call"
+        target: "trace_model"
+        method: "_cron_purge_ai_trace"
+
+      - step: "The old entry is still there"
+        action: "search"
+        model: "ai_trace"
+        domain:
+          - ["res_id", "=", "REC: partner.id"]
+          - ["session_key", "=", "cron-zero"]
+        save_as: "kept"
+        expect_count: 1
+
+  - name: "Invalid entries and duplicate keys are rejected"
+    steps:
+      - step: "An unknown model is rejected"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        expect_error:
+          type: "ValidationError"
+          message_contains: "Unknown model"
+        args:
+          - - model: "does.not.exist"
+              res_id: 1
+              session_key: "s"
+              turn: 1
+              kind: "turn"
+
+      - step: "A missing document is rejected"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        expect_error:
+          type: "ValidationError"
+          message_contains: "do not exist"
+        args:
+          - - model: "res.partner"
+              res_id: 999999999
+              session_key: "s"
+              turn: 1
+              kind: "turn"
+
+      - step: "Create an entry"
+        action: "create"
+        model: "ai_trace"
+        save_as: "first"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "dup"
+          turn: 1
+          kind: "turn"
+
+      - step: "A second entry with the same key is rejected"
+        action: "create"
+        model: "ai_trace"
+        expect_error:
+          type: "ValidationError"
+          message_contains: "already exists"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "dup"
+          turn: 1
+          kind: "turn"
+
+  - name: "Portal cannot read, internal reads only, writer creates"
+    steps:
+      - step: "Create a portal user"
+        action: "create"
+        model: "res.users"
+        save_as: "portal_user"
+        context:
+          no_reset_password: true
+        values:
+          name: "AI Trace Portal"
+          login: "ai_trace_portal"
+          groups_id: [[6, 0, ["REF: base.group_portal"]]]
+
+      - step: "Create an internal user without the writer group"
+        action: "create"
+        model: "res.users"
+        save_as: "internal_user"
+        context:
+          no_reset_password: true
+        values:
+          name: "AI Trace Internal"
+          login: "ai_trace_internal"
+          groups_id: [[6, 0, ["REF: base.group_user"]]]
+
+      - step: "Create an internal user with the writer group"
+        action: "create"
+        model: "res.users"
+        save_as: "writer_user"
+        context:
+          no_reset_password: true
+        values:
+          name: "AI Trace Writer"
+          login: "ai_trace_writer"
+          groups_id:
+            - - 6
+              - 0
+              - - "REF: base.group_user"
+                - "REF: ssi_ai_trace_mixin.group_ai_trace_writer"
+
+      - step: "Create an entry as the superuser"
+        action: "create"
+        model: "ai_trace"
+        save_as: "entry"
+        values:
+          model_id: "REC: model_partner.id"
+          res_id: "REC: partner.id"
+          session_key: "access"
+          turn: 1
+          kind: "turn"
+
+      - step: "The portal user cannot read the traces"
+        action: "call"
+        target: "trace_model"
+        method: "search_count"
+        as_user: "portal_user"
+        args:
+          - [["session_key", "=", "access"]]
+        expect_error:
+          type: "AccessError"
+
+      - step: "The internal user can read the trace"
+        action: "search"
+        model: "ai_trace"
+        as_user: "internal_user"
+        domain: [["session_key", "=", "access"]]
+        save_as: "internal_result"
+        expect_count: 1
+
+      - step: "The internal user cannot create a trace"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        as_user: "internal_user"
+        expect_error:
+          type: "AccessError"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "access"
+              turn: 2
+              kind: "turn"
+
+      - step: "The writer can create a trace"
+        action: "call"
+        target: "trace_model"
+        method: "ai_trace_append"
+        as_user: "writer_user"
+        args:
+          - - model: "res.partner"
+              res_id: "REC: partner.id"
+              session_key: "access"
+              turn: 2
+              kind: "turn"
+
+      - step: "Two traces now exist"
+        action: "search"
+        model: "ai_trace"
+        domain: [["session_key", "=", "access"]]
+        save_as: "all_access"
+        expect_count: 2
