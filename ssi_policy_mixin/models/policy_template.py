@@ -22,7 +22,6 @@ class PolicyTemplate(models.Model):
         return self.env.company
 
     name = fields.Char(
-        string="Name",
         required=True,
         copy=True,
     )
@@ -40,13 +39,11 @@ class PolicyTemplate(models.Model):
         store=True,
     )
     state_field_id = fields.Many2one(
-        string="State Field",
         comodel_name="ir.model.fields",
         domain="[('ttype', '=', 'selection'), ('model_id', '=', model_id)]",
         copy=True,
     )
     company_id = fields.Many2one(
-        string="Company",
         comodel_name="res.company",
         default=lambda self: self._default_company_id(),
         copy=True,
@@ -61,7 +58,6 @@ class PolicyTemplate(models.Model):
         copy=True,
     )
     note = fields.Text(
-        string="Note",
         copy=True,
     )
     detail_ids = fields.One2many(
@@ -71,11 +67,9 @@ class PolicyTemplate(models.Model):
         copy=True,
     )
     domain = fields.Char(
-        string="Domain",
         copy=True,
     )
     python_code = fields.Text(
-        string="Python Code",
         default=DEFAULT_PYTHON_CODE,
         copy=True,
     )
