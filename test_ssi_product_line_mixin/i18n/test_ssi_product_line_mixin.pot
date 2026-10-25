@@ -15,27 +15,40 @@ msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__allowed_uom_ids
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__allowed_uom_ids
 msgid "Allowed UoMs"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__create_uid
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__create_uid
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__create_date
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__create_date
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__name
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__name
 msgid "Description"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__display_name
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__display_name
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__sequence
+msgid "Display order of the factor within its line."
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
@@ -44,23 +57,66 @@ msgid "Editable Tests"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__factor
+msgid "Factor"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier__multiplier_ids
+msgid "Factors multiplied into the line quantity."
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__id
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__id
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__id
 msgid "ID"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__name
+msgid "Label of the factor, for example Persons or Days."
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line____last_update
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier____last_update
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__write_uid
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__write_uid
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__write_date
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__write_date
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__line_id
+msgid "Line"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__line_id
+msgid "Line this factor belongs to."
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__multiplier_ids
+msgid "Multipliers"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__name
+msgid "Name"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
@@ -70,31 +126,38 @@ msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__note
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__note
 msgid "Note"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__product_id
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__product_id
 msgid "Product"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__product_category_id
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__product_category_id
 msgid "Product Category"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__quantity
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__quantity
 msgid "Quantity"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line__product_category_id
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier__product_category_id
 msgid "Select category for the current product"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__sequence
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__sequence
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__sequence
 msgid "Sequence"
 msgstr ""
 
@@ -114,11 +177,36 @@ msgid "Test Product Line"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
+#: model:ir.model,name:test_ssi_product_line_mixin.model_test_product_line_multiplier
+msgid "Test Product Line Multiplier"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model,name:test_ssi_product_line_mixin.model_test_product_line_multiplier_factor
+msgid "Test Product Line Multiplier Factor"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__uom_id
+msgid ""
+"Unit label of the factor. Informational only: it is not used in the "
+"calculation and no conversion is applied."
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__uom_id
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__uom_id
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__uom_id
 msgid "UoM"
 msgstr ""
 
 #. module: test_ssi_product_line_mixin
 #: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line__uom_quantity
+#: model:ir.model.fields,field_description:test_ssi_product_line_mixin.field_test_product_line_multiplier__uom_quantity
 msgid "UoM Quantity"
+msgstr ""
+
+#. module: test_ssi_product_line_mixin
+#: model:ir.model.fields,help:test_ssi_product_line_mixin.field_test_product_line_multiplier_factor__factor
+msgid "Value multiplied into the line quantity. Must be positive."
 msgstr ""
