@@ -40,7 +40,7 @@ addon | version | maintainers | summary
 [ssi_print_mixin](ssi_print_mixin/) | 14.0.1.3.1 |  | Print Policy Mixin
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.4.1 |  | Product Line Mixin - With Accounting
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.4.0 |  | Product Line Mixin
-[ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.4.0 |  | Product Line Mixin - With Price
+[ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.5.0 |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.1.2 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.2.1.0 |  | Reference Document Mixin
 [ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.10.1 |  | Related Attachment Mixin
@@ -84,7 +84,7 @@ addon | version | maintainers | summary
 [test_ssi_policy_mixin](test_ssi_policy_mixin/) | 14.0.1.2.0 |  | Test Module: Policy Mixin
 [test_ssi_product_line_account_mixin](test_ssi_product_line_account_mixin/) | 14.0.1.1.0 |  | Test Module: Product Line With Accounting Mixin
 [test_ssi_product_line_mixin](test_ssi_product_line_mixin/) | 14.0.1.2.0 |  | Test Module: Product Line Mixin
-[test_ssi_product_line_price_mixin](test_ssi_product_line_price_mixin/) | 14.0.1.1.0 |  | Test Module: Product Line With Price Mixin
+[test_ssi_product_line_price_mixin](test_ssi_product_line_price_mixin/) | 14.0.1.2.0 |  | Test Module: Product Line With Price Mixin
 [test_ssi_qr_code_mixin](test_ssi_qr_code_mixin/) | 14.0.1.0.1 |  | Test Module - QR Code Mixin
 [test_ssi_related_attachment_mixin](test_ssi_related_attachment_mixin/) | 14.0.1.1.0 |  | Test Module: Related Attachment Mixin
 [test_ssi_sequence_mixin](test_ssi_sequence_mixin/) | 14.0.1.1.0 |  | Test Module - Sequence Policy Mixin
