@@ -4,4 +4,6 @@
 #
 from . import (
     test_product_line_price,
+    test_product_line_price_multiplier,
+    test_product_line_price_multiplier_factor,
 )

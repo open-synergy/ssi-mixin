@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_test_product_line_price_all,test.product_line_price – All Users,model_test_product_line_price,,1,1,1,1
+access_test_product_line_price_multiplier_all,test.product_line_price_multiplier – All Users,model_test_product_line_price_multiplier,,1,1,1,1
+access_test_product_line_price_multiplier_factor_all,test.product_line_price_multiplier_factor – All Users,model_test_product_line_price_multiplier_factor,,1,1,1,1
