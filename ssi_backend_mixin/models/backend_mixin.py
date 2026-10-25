@@ -2,6 +2,8 @@
 # Copyright 2025 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from typing import ClassVar
+
 from odoo import api, fields, models
 
 
@@ -25,7 +27,7 @@ class BackendMixin(models.AbstractModel):
     """
 
     _name = "backend_mixin"
-    _inherit = ["mixin.master_data"]
+    _inherit: ClassVar[list[str]] = ["mixin.master_data"]
     _description = "Mixin for Backend"
 
     _backend_company_field = ""
@@ -36,7 +38,6 @@ class BackendMixin(models.AbstractModel):
         return self.env.company.id
 
     company_id = fields.Many2one(
-        string="Company",
         comodel_name="res.company",
         required=True,
         default=lambda self: self._default_company_id(),
@@ -48,7 +49,6 @@ class BackendMixin(models.AbstractModel):
     )
 
     state = fields.Selection(
-        string="State",
         selection=[
             ("draft", "Draft"),
             ("running", "Running"),
