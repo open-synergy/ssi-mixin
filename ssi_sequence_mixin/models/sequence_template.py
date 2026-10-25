@@ -2,10 +2,9 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
-import pytz
-
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval, test_python_expr
 
@@ -24,7 +23,6 @@ class SequenceTemplate(models.Model):
         return self.env.company
 
     name = fields.Char(
-        string="Name",
         required=True,
         copy=True,
     )
@@ -42,7 +40,6 @@ class SequenceTemplate(models.Model):
         store=True,
     )
     company_id = fields.Many2one(
-        string="Company",
         comodel_name="res.company",
         default=lambda self: self._default_company_id(),
         copy=True,
@@ -53,19 +50,16 @@ class SequenceTemplate(models.Model):
         copy=True,
     )
     initial_string = fields.Char(
-        string="Initial String",
         required=True,
         default="/",
     )
     sequence_field_id = fields.Many2one(
-        string="Sequence Field",
         comodel_name="ir.model.fields",
         ondelete="cascade",
         required=True,
         domain="[('model_id', '=', model_id),('ttype','=','char')]",
     )
     date_field_id = fields.Many2one(
-        string="Date Field",
         comodel_name="ir.model.fields",
         ondelete="cascade",
         required=True,
@@ -80,7 +74,6 @@ class SequenceTemplate(models.Model):
         default="draft",
     )
     computation_method = fields.Selection(
-        string="Computation Method",
         selection=[
             ("use_domain", "Domain"),
             ("use_python", "Python Code"),
@@ -90,11 +83,9 @@ class SequenceTemplate(models.Model):
         copy=True,
     )
     domain = fields.Char(
-        string="Domain",
         copy=True,
     )
     python_code = fields.Text(
-        string="Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - result: Return result, the value is boolean."
         + "\nresult = True",
@@ -115,27 +106,22 @@ class SequenceTemplate(models.Model):
         comodel_name="ir.sequence",
     )
     sequence_python_code = fields.Text(
-        string="Sequence Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - sequence: Return sequence, the value is recordset of sequence.",
         copy=True,
     )
     add_custom_prefix = fields.Boolean(
-        string="Add Custom Prefix",
         default=False,
     )
     prefix_python_code = fields.Text(
-        string="Prefix Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - result: Return prefix, the value is string.",
         copy=True,
     )
     add_custom_suffix = fields.Boolean(
-        string="Add Custom Suffix",
         default=False,
     )
     suffix_python_code = fields.Text(
-        string="Suffix Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - result: Return suffix, the value is string.",
         copy=True,
@@ -145,7 +131,6 @@ class SequenceTemplate(models.Model):
         copy=True,
     )
     note = fields.Text(
-        string="Note",
         copy=True,
     )
 
@@ -172,7 +157,8 @@ class SequenceTemplate(models.Model):
             if self.date_field_id:
                 sequence_date = getattr(document, self.date_field_id.name)
                 ctx = {"ir_sequence_date": sequence_date}
-            result = sequence.with_context(ctx).next_by_id()
+            # The context is replaced on purpose, not extended.
+            result = sequence.with_env(sequence.env(context=ctx)).next_by_id()
 
             if self.add_custom_prefix:
                 prefix = self._get_prefix_computation(document, sequence_date)
@@ -198,7 +184,7 @@ class SequenceTemplate(models.Model):
             method_name = "_evaluate_sequence_" + self.sequence_selection_method
             result = getattr(self, method_name)(document)
         except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
+            msg_err = self.env._("Error evaluating conditions.\n %s", error)
             raise UserError(msg_err) from error
         return result
 
@@ -210,7 +196,9 @@ class SequenceTemplate(models.Model):
             safe_eval(self.sequence_python_code, localdict, mode="exec")
             res = localdict["sequence"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
+            raise UserError(
+                self.env._("Error evaluating conditions.\n %s", error)
+            ) from error
         return res
 
     def _evaluate_sequence_use_sequence(self, document):
@@ -228,7 +216,7 @@ class SequenceTemplate(models.Model):
             safe_eval(self.prefix_python_code, localdict, mode="exec")
             res = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error on get prefix.\n %s") % error) from error
+            raise UserError(self.env._("Error on get prefix.\n %s", error)) from error
         return res
 
     def _get_suffix(self, document):
@@ -239,7 +227,7 @@ class SequenceTemplate(models.Model):
             safe_eval(self.suffix_python_code, localdict, mode="exec")
             result = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error on get suffix.\n %s") % error) from error
+            raise UserError(self.env._("Error on get suffix.\n %s", error)) from error
         return result
 
     def _interpolate(self, s, d):
@@ -248,7 +236,7 @@ class SequenceTemplate(models.Model):
     def _interpolation_dict(self, date=None, date_range=None):
         self.ensure_one()
         now = range_date = effective_date = datetime.now(
-            pytz.timezone(self._context.get("tz") or "UTC")
+            ZoneInfo(self._context.get("tz") or "UTC")
         )
         if date or self._context.get("ir_sequence_date"):
             effective_date = fields.Datetime.from_string(
@@ -290,7 +278,9 @@ class SequenceTemplate(models.Model):
         try:
             interpolated_prefix = self._interpolate(prefix, d)
         except Exception as error:
-            raise UserError(_("Error on convert prefix.\n %s") % error) from error
+            raise UserError(
+                self.env._("Error on convert prefix.\n %s", error)
+            ) from error
 
         result = interpolated_prefix
         return result
@@ -305,7 +295,9 @@ class SequenceTemplate(models.Model):
         try:
             interpolated_suffix = self._interpolate(suffix, d)
         except Exception as error:
-            raise UserError(_("Error on convert suffix.\n %s") % error) from error
+            raise UserError(
+                self.env._("Error on convert suffix.\n %s", error)
+            ) from error
 
         result = interpolated_suffix
         return result

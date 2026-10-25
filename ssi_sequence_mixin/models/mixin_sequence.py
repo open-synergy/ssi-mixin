@@ -1,7 +1,7 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import _, models
+from odoo import models
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 
@@ -27,7 +27,7 @@ class MixingSequence(models.AbstractModel):
             method_name = "_evaluate_sequence_" + template.computation_method
             result = getattr(self, method_name)(template)
         except Exception as error:
-            msg_err = _("Error evaluating conditions.\n %s") % error
+            msg_err = self.env._("Error evaluating conditions.\n %s", error)
             raise UserError(msg_err) from error
         return result
 
@@ -39,7 +39,9 @@ class MixingSequence(models.AbstractModel):
             safe_eval(template.python_code, localdict, mode="exec")
             res = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
+            raise UserError(
+                self.env._("Error evaluating conditions.\n %s", error)
+            ) from error
         return res
 
     def _evaluate_sequence_use_domain(self, template):
@@ -90,4 +92,4 @@ class MixingSequence(models.AbstractModel):
             Problem: No sequence template found
             Solution: Create sequence template
             """
-            raise UserError(_(error_message))
+            raise UserError(self.env._(error_message))

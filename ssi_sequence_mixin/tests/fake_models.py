@@ -13,6 +13,8 @@ test registry has been snapshotted, and tears the model down again through
 ``addCleanup`` once the test method returns.
 """
 
+from typing import ClassVar
+
 from odoo import api, fields, models
 
 
@@ -29,7 +31,7 @@ class TestSequenceConsumer(models.Model):
 
     _name = "test_sequence_consumer"
     _description = "Fake Consumer Of Mixin Sequence"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.sequence",
     ]
 
@@ -39,12 +41,9 @@ class TestSequenceConsumer(models.Model):
         required=True,
     )
     date = fields.Date(
-        string="Date",
         default=fields.Date.context_today,
     )
-    notes = fields.Text(
-        string="Notes",
-    )
+    notes = fields.Text()
 
     @api.model_create_multi
     def create(self, vals_list):
