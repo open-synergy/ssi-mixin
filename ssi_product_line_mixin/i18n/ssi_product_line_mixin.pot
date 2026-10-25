@@ -15,41 +15,78 @@ msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__allowed_uom_ids
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__allowed_uom_ids
 msgid "Allowed UoMs"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__name
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__name
 msgid "Description"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__display_name
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__display_name
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: ssi_product_line_mixin
+#: model:ir.model.fields,help:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__sequence
+msgid "Display order of the factor within its line."
+msgstr ""
+
+#. module: ssi_product_line_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__factor
+msgid "Factor"
+msgstr ""
+
+#. module: ssi_product_line_mixin
+#: code:addons/ssi_product_line_mixin/models/mixin_product_line_multiplier_factor.py:0
+#, python-format
+msgid "Factor must be greater than zero."
+msgstr ""
+
+#. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__id
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__id
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__id
 msgid "ID"
 msgstr ""
 
 #. module: ssi_product_line_mixin
+#: model:ir.model.fields,help:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__name
+msgid "Label of the factor, for example Persons or Days."
+msgstr ""
+
+#. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line____last_update
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier____last_update
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: ssi_product_line_mixin
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__name
+msgid "Name"
+msgstr ""
+
+#. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__note
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__note
 msgid "Note"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__product_id
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__product_id
 msgid "Product"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__product_category_id
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__product_category_id
 msgid "Product Category"
 msgstr ""
 
@@ -64,26 +101,55 @@ msgid "Product Line Mixin"
 msgstr ""
 
 #. module: ssi_product_line_mixin
+#: model:ir.model,name:ssi_product_line_mixin.model_mixin_product_line_multiplier_factor
+msgid "Product Line Multiplier Factor Mixin"
+msgstr ""
+
+#. module: ssi_product_line_mixin
+#: model:ir.model,name:ssi_product_line_mixin.model_mixin_product_line_multiplier
+msgid "Product Line Multiplier Mixin"
+msgstr ""
+
+#. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__quantity
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__quantity
 msgid "Quantity"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,help:ssi_product_line_mixin.field_mixin_product_line__product_category_id
+#: model:ir.model.fields,help:ssi_product_line_mixin.field_mixin_product_line_multiplier__product_category_id
 msgid "Select category for the current product"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__sequence
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__sequence
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__sequence
 msgid "Sequence"
 msgstr ""
 
 #. module: ssi_product_line_mixin
+#: model:ir.model.fields,help:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__uom_id
+msgid ""
+"Unit label of the factor. Informational only: it is not used in the "
+"calculation and no conversion is applied."
+msgstr ""
+
+#. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__uom_id
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__uom_id
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__uom_id
 msgid "UoM"
 msgstr ""
 
 #. module: ssi_product_line_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line__uom_quantity
+#: model:ir.model.fields,field_description:ssi_product_line_mixin.field_mixin_product_line_multiplier__uom_quantity
 msgid "UoM Quantity"
+msgstr ""
+
+#. module: ssi_product_line_mixin
+#: model:ir.model.fields,help:ssi_product_line_mixin.field_mixin_product_line_multiplier_factor__factor
+msgid "Value multiplied into the line quantity. Must be positive."
 msgstr ""
