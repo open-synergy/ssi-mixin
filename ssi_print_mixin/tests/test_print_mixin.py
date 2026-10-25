@@ -36,6 +36,10 @@ class TestPrintMixin(YamlTransactionCase):
         """Run the YAML scenarios for the print policy models."""
         self.run_yaml_scenario("test_data_print_document.yaml")
 
+    def test_generate_code_scenarios(self):
+        """Run the YAML scenarios for ``action_generate_code``."""
+        self.run_yaml_scenario("test_data_print_document_type_code.yaml")
+
     def test_copy_appends_copy_suffix_to_code(self):
         """Append ``(copy)`` to the code of a duplicated type.
 

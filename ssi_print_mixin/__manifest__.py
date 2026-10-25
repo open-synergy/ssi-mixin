@@ -12,6 +12,7 @@
     "depends": [
         "base",
         "mail",
+        "ssi_sequence_mixin",
     ],
     "data": [
         "security/ir.access.csv",
