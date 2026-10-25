@@ -19,6 +19,50 @@ gains:
 * ``usage_id`` (``product.usage_type``) with onchange handlers that
   auto-fill ``account_id`` and ``tax_ids`` from the product’s configuration.
 
+Usage
+=====
+
+``mixin.product_line_account_multiplier`` combines
+``mixin.product_line_account`` with ``mixin.product_line_price_multiplier``
+(from ``ssi_product_line_price_mixin``), so an accounting line is driven by
+independent factors with a single ``_inherit`` entry. It adds no field and
+overrides no method of its own.
+
+Install it in two concrete models in the user module:
+
+.. code-block:: python
+
+    class MyLineFactor(models.Model):
+        _name = "my.line_factor"
+        _description = "My Line Factor"
+        _inherit = ["mixin.product_line_multiplier_factor"]
+
+        line_id = fields.Many2one(
+            comodel_name="my.line",
+            required=True,
+            ondelete="cascade",
+        )
+
+
+    class MyLine(models.Model):
+        _name = "my.line"
+        _description = "My Line"
+        _inherit = ["mixin.product_line_account_multiplier"]
+
+        multiplier_ids = fields.One2many(
+            comodel_name="my.line_factor",
+            inverse_name="line_id",
+        )
+
+When a line has at least one factor, ``uom_quantity`` is the product of all
+factors, and ``price_subtotal``, ``price_tax`` and ``price_total`` are
+computed from it as usual. Without factors the manual ``uom_quantity`` is
+used. There is no account-level factor model: reuse
+``mixin.product_line_multiplier_factor``.
+
+Do not install this mixin on a model that already defines its own
+``uom_quantity``; the two definitions would conflict.
+
 Installation
 ============
 

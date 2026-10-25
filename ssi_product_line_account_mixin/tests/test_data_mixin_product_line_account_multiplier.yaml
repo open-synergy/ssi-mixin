@@ -1,0 +1,255 @@
+# Cover mixin.product_line_account_multiplier through the fixtures
+# test.product_line_account_multiplier(_factor). All amounts are exactly
+# representable in binary. Account codes and tax names are unique per
+# scenario because all scenarios share one DB transaction.
+
+scenarios:
+  - name: "Factors 2, 3, 2 drive uom_quantity, subtotal, tax and total"
+    steps:
+      - step: "Find the generic Revenue account type"
+        action: "ref"
+        xml_id: "account.data_account_type_revenue"
+        save_as: "revenue_type"
+
+      - step: "Create a throwaway account for the line"
+        action: "create"
+        model: "account.account"
+        save_as: "revenue_account"
+        values:
+          name: "Multiplier Revenue Account S1"
+          code: "TSTMS1"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create a 10% sale tax, price excluded"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax"
+        values:
+          name: "Multiplier Tax 10% S1"
+          amount_type: "percent"
+          amount: 10
+          price_include: false
+          type_tax_use: "sale"
+
+      - step: "Create the line"
+        action: "create"
+        model: "test.product_line_account_multiplier"
+        save_as: "line"
+        values:
+          name: "Account Multiplier Line S1"
+          account_id: "REC: revenue_account.id"
+          price_unit: 1000.0
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax.id"
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "S1 Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "S1 Days"
+                factor: 3.0
+            - - 0
+              - 0
+              - name: "S1 Times"
+                factor: 2.0
+
+      - step: "Quantity and totals follow the factors"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 12.0
+          price_subtotal:
+            type: "value"
+            expected: 12000.0
+          price_tax:
+            type: "value"
+            expected: 1200.0
+          price_total:
+            type: "value"
+            expected: 13200.0
+
+  - name: "Changing a factor recomputes all three totals"
+    steps:
+      - step: "Find the generic Revenue account type"
+        action: "ref"
+        xml_id: "account.data_account_type_revenue"
+        save_as: "revenue_type"
+
+      - step: "Create a throwaway account for the line"
+        action: "create"
+        model: "account.account"
+        save_as: "revenue_account"
+        values:
+          name: "Multiplier Revenue Account S2"
+          code: "TSTMS2"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create a 10% sale tax, price excluded"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax"
+        values:
+          name: "Multiplier Tax 10% S2"
+          amount_type: "percent"
+          amount: 10
+          price_include: false
+          type_tax_use: "sale"
+
+      - step: "Create the line"
+        action: "create"
+        model: "test.product_line_account_multiplier"
+        save_as: "line"
+        values:
+          name: "Account Multiplier Line S2"
+          account_id: "REC: revenue_account.id"
+          price_unit: 1000.0
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax.id"
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "S2 Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "S2 Days"
+                factor: 3.0
+            - - 0
+              - 0
+              - name: "S2 Times"
+                factor: 2.0
+
+      - step: "Find the S2 Times factor"
+        action: "search"
+        model: "test.product_line_account_multiplier_factor"
+        domain:
+          - ["line_id", "=", "REC: line.id"]
+          - ["name", "=", "S2 Times"]
+        save_as: "times"
+        expect_count: 1
+        limit: 1
+
+      - step: "Change the factor from 2 to 1"
+        action: "write"
+        target: "times"
+        values:
+          factor: 1.0
+
+      - step: "Quantity and totals are recomputed"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 6.0
+          price_subtotal:
+            type: "value"
+            expected: 6000.0
+          price_tax:
+            type: "value"
+            expected: 600.0
+          price_total:
+            type: "value"
+            expected: 6600.0
+
+  - name: "A line without factors uses its manual uom_quantity"
+    steps:
+      - step: "Find the generic Revenue account type"
+        action: "ref"
+        xml_id: "account.data_account_type_revenue"
+        save_as: "revenue_type"
+
+      - step: "Create a throwaway account for the line"
+        action: "create"
+        model: "account.account"
+        save_as: "revenue_account"
+        values:
+          name: "Multiplier Revenue Account S3"
+          code: "TSTMS3"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create a 10% sale tax, price excluded"
+        action: "create"
+        model: "account.tax"
+        save_as: "tax"
+        values:
+          name: "Multiplier Tax 10% S3"
+          amount_type: "percent"
+          amount: 10
+          price_include: false
+          type_tax_use: "sale"
+
+      - step: "Create the line"
+        action: "create"
+        model: "test.product_line_account_multiplier"
+        save_as: "line"
+        values:
+          name: "Account Multiplier Line S3"
+          account_id: "REC: revenue_account.id"
+          uom_quantity: 3.0
+          price_unit: 1000.0
+          tax_ids:
+            - - 6
+              - 0
+              - - "REC: tax.id"
+
+      - step: "Manual quantity drives the totals"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 3.0
+          price_subtotal:
+            type: "value"
+            expected: 3000.0
+          price_tax:
+            type: "value"
+            expected: 300.0
+          price_total:
+            type: "value"
+            expected: 3300.0
+
+  - name: "A negative factor is rejected on the combined mixin"
+    steps:
+      - step: "Find the generic Revenue account type"
+        action: "ref"
+        xml_id: "account.data_account_type_revenue"
+        save_as: "revenue_type"
+
+      - step: "Create a throwaway account for the line"
+        action: "create"
+        model: "account.account"
+        save_as: "revenue_account"
+        values:
+          name: "Multiplier Revenue Account S4"
+          code: "TSTMS4"
+          user_type_id: "REC: revenue_type.id"
+
+      - step: "Create the line"
+        action: "create"
+        model: "test.product_line_account_multiplier"
+        save_as: "line"
+        values:
+          name: "Account Multiplier Line S4"
+          account_id: "REC: revenue_account.id"
+          uom_quantity: 1.0
+          price_unit: 1000.0
+
+      - step: "Factor -2.0 must be rejected"
+        action: "create"
+        model: "test.product_line_account_multiplier_factor"
+        expect_error:
+          type: "ValidationError"
+        values:
+          line_id: "REC: line.id"
+          name: "S4 Bad"
+          factor: -2.0
