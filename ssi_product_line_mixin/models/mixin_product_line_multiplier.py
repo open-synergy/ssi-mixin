@@ -31,6 +31,27 @@ class MixinProductLineMultiplier(models.AbstractModel):
         "mixin.product_line",
     ]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Recompute ``uom_quantity`` for lines created with factors.
+
+        The inherited default of ``uom_quantity`` is always present in
+        the create values, so Odoo protects the field from recomputation
+        while the inline factors are created. The field is therefore
+        scheduled for recomputation again after the factors exist.
+        Lines without factors are left untouched.
+
+        :param vals_list: list of value dicts of the lines to create.
+        :return: the created recordset.
+        """
+        records = super().create(vals_list)
+        with_factors = records.filtered(lambda r: r.multiplier_ids)
+        if with_factors:
+            field = self._fields["uom_quantity"]
+            self.env.add_to_compute(field, with_factors)
+            with_factors.flush(["uom_quantity"])
+        return records
+
     @api.depends(
         "multiplier_ids",
         "multiplier_ids.factor",

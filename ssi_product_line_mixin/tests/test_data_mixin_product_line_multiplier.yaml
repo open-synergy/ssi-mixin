@@ -194,11 +194,11 @@ scenarios:
           multiplier_ids:
             - - 0
               - 0
-              - name: "Persons"
+              - name: "Cascade Persons"
                 factor: 2.0
             - - 0
               - 0
-              - name: "Days"
+              - name: "Cascade Days"
                 factor: 3.0
 
       - step: "Delete the line"
@@ -209,6 +209,6 @@ scenarios:
         action: "search"
         model: "test.product_line_multiplier_factor"
         domain:
-          - ["name", "in", ["Persons", "Days"]]
+          - ["name", "in", ["Cascade Persons", "Cascade Days"]]
         save_as: "left"
         expect_count: 0
