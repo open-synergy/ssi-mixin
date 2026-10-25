@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import SUPERUSER_ID, _, api, fields, models
+from odoo import SUPERUSER_ID, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval, test_python_expr
 
@@ -21,7 +21,6 @@ class PolicyTemplateDetail(models.Model):
         store=True,
     )
     field_id = fields.Many2one(
-        string="Field",
         comodel_name="ir.model.fields",
         domain="[('model_id', '=', parent.model_id)]",
     )
@@ -92,7 +91,6 @@ class PolicyTemplateDetail(models.Model):
         column2="group_id",
     )
     python_code = fields.Text(
-        string="Python Code",
         default="""# Available locals:\n#  - rec: current record\nresult = []""",
     )
     restrict_additional = fields.Boolean(
@@ -100,7 +98,6 @@ class PolicyTemplateDetail(models.Model):
         default=False,
     )
     additional_python_code = fields.Text(
-        string="Additional Python Code",
         default="""# Available locals:\n#  - rec: current record\nresult = True""",
     )
 
@@ -117,9 +114,8 @@ class PolicyTemplateDetail(models.Model):
         result_user = True
         result_additional = True
 
-        if self.restrict_state:
-            if not self._evaluate_states(document):
-                result_state = False
+        if self.restrict_state and not self._evaluate_states(document):
+            result_state = False
 
         if self.restrict_user:
             if self.env.user.id == SUPERUSER_ID:
@@ -129,7 +125,7 @@ class PolicyTemplateDetail(models.Model):
                     method_name = "_get_policy_" + self.computation_method
                     result_user = getattr(self, method_name)(document)
                 except Exception as error:
-                    msg_err = _("Error evaluating conditions.\n %s") % error
+                    msg_err = self.env._("Error evaluating conditions.\n %s", error)
                     raise UserError(msg_err) from error
 
         if self.restrict_additional:
@@ -138,7 +134,7 @@ class PolicyTemplateDetail(models.Model):
                 safe_eval(self.additional_python_code, localdict, mode="exec")
                 result_additional = localdict["result"]
             except Exception as error:
-                msg_err = _("Error evaluating conditions.\n %s") % error
+                msg_err = self.env._("Error evaluating conditions.\n %s", error)
                 raise UserError(msg_err) from error
 
         return result_state and result_user and result_additional
@@ -183,7 +179,9 @@ class PolicyTemplateDetail(models.Model):
             safe_eval(self.python_code, localdict, mode="exec")
             result = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
+            raise UserError(
+                self.env._("Error evaluating conditions.\n %s", error)
+            ) from error
         return result
 
     def _evaluate_states(self, document):

@@ -13,6 +13,8 @@ at the right moment instead, via
 ``odoo_yaml_test.YamlTransactionCase.run_yaml_scenario``.
 """
 
+from typing import ClassVar
+
 from odoo import api, fields, models
 
 
@@ -27,7 +29,7 @@ class TestPolicy(models.Model):
 
     _name = "test_policy"
     _description = "Test Policy"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.policy",
     ]
 
@@ -37,7 +39,6 @@ class TestPolicy(models.Model):
         required=True,
     )
     state = fields.Selection(
-        string="State",
         selection=[
             ("draft", "Draft"),
             ("confirm", "Waiting for Approval"),
@@ -48,7 +49,6 @@ class TestPolicy(models.Model):
         default="draft",
     )
     type_id = fields.Many2one(
-        string="Type",
         comodel_name="test_policy_type",
     )
     confirm_ok = fields.Boolean(

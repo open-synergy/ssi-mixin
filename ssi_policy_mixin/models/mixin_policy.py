@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 
@@ -46,7 +46,6 @@ class MixinPolicy(models.AbstractModel):
         store=False,
     )
     policy_template_id = fields.Many2one(
-        string="Policy Template",
         comodel_name="policy.template",
         copy=False,
         domain=lambda self: [("model", "=", self._name)],
@@ -67,7 +66,9 @@ class MixinPolicy(models.AbstractModel):
             safe_eval(template.python_code, localdict, mode="exec")
             res = localdict["result"]
         except Exception as error:
-            raise UserError(_("Error evaluating conditions.\n %s") % error) from error
+            raise UserError(
+                self.env._("Error evaluating conditions.\n %s", error)
+            ) from error
         return res
 
     def _get_template_policy(self):
