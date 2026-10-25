@@ -20,6 +20,7 @@ class PrintDcoumentType(models.Model):
 
     _name = "print_document_type"
     _inherit: ClassVar[list[str]] = [
+        "mixin.sequence",
         "mail.activity.mixin",
         "mail.thread",
     ]

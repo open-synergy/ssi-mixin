@@ -1,0 +1,105 @@
+options:
+  auto_refresh: true
+
+# Lookups only (no side effects), replayed before every scenario.
+setup:
+  steps:
+    - step: "Find the ir.model record of print_document_type"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "print_document_type"]]
+      save_as: "type_model"
+      limit: 1
+      expect_count: 1
+    - step: "Find the code field of print_document_type"
+      action: "search"
+      model: "ir.model.fields"
+      domain: [["model", "=", "print_document_type"], ["name", "=", "code"]]
+      save_as: "code_field"
+      limit: 1
+      expect_count: 1
+    - step: "Find the create_date field of print_document_type"
+      action: "search"
+      model: "ir.model.fields"
+      domain: [["model", "=", "print_document_type"], ["name", "=", "create_date"]]
+      save_as: "date_field"
+      limit: 1
+      expect_count: 1
+    - step: "Find the ir.model record of res.partner"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "res.partner"]]
+      save_as: "partner_model"
+      limit: 1
+      expect_count: 1
+
+# The negative scenario must stay first: sequence.template records created
+# by later scenarios survive in the shared transaction.
+scenarios:
+  - name: "action_generate_code without a sequence template is rejected"
+    steps:
+      - step: "Create a type with the default code '/'"
+        action: "create"
+        model: "print_document_type"
+        save_as: "document_type"
+        values:
+          name: "No Template"
+          model_id: "REC: partner_model.id"
+      - step: "Generate the code without any template must fail"
+        action: "call"
+        target: "document_type"
+        method: "action_generate_code"
+        expect_error:
+          type: "UserError"
+          message_contains: "No sequence template found"
+
+  - name: "action_generate_code replaces the code '/' using the template"
+    steps:
+      - step: "Create the ir.sequence backing the template"
+        action: "create"
+        model: "ir.sequence"
+        save_as: "ir_sequence"
+        values:
+          name: "Test Print Document Type Code"
+          code: "test.print_document_type.code"
+          prefix: "PDTGEN/"
+          padding: 3
+          number_next: 1
+      - step: "Create the sequence template for print_document_type"
+        action: "create"
+        model: "sequence.template"
+        save_as: "template"
+        values:
+          name: "Print Document Type Template"
+          model_id: "REC: type_model.id"
+          sequence_field_id: "REC: code_field.id"
+          date_field_id: "REC: date_field.id"
+          computation_method: "use_python"
+          python_code: "result = True"
+          sequence_selection_method: "use_sequence"
+          sequence_id: "REC: ir_sequence.id"
+      - step: "Create a type with the default code '/'"
+        action: "create"
+        model: "print_document_type"
+        save_as: "document_type"
+        values:
+          name: "With Template"
+          model_id: "REC: partner_model.id"
+      - step: "Assert the code is still '/'"
+        action: "assert"
+        target: "document_type"
+        asserts:
+          code:
+            type: "value"
+            expected: "/"
+      - step: "Generate the code"
+        action: "call"
+        target: "document_type"
+        method: "action_generate_code"
+      - step: "Assert the code now follows the template"
+        action: "assert"
+        target: "document_type"
+        asserts:
+          code:
+            type: "value"
+            expected: "PDTGEN/001"
