@@ -140,7 +140,7 @@ scenarios:
           name: "Second"
           code: "DUP001"
 
-  - name: "copy() appends ' (copy)' suffix to code"
+  - name: "copy() appends ' (copy)' suffix to code and name"
     steps:
       - step: "Create original record"
         action: "create"
@@ -159,13 +159,13 @@ scenarios:
         domain: [["code", "=", "CPY001 (copy)"]]
         save_as: "duplicate"
         expect_count: 1
-      - step: "Assert duplicate name matches the original"
+      - step: "Assert duplicate name carries the copy suffix"
         action: "assert"
         target: "duplicate"
         asserts:
           name:
             type: "value"
-            expected: "Original"
+            expected: "Original (copy)"
 
   - name:
       "action_generate_code assigns a sequence value to a '/' code, action_reset_code
