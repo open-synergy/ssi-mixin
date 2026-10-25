@@ -19,6 +19,48 @@ Any model that inherits from ``mixin.product_line_price`` additionally gains:
   selected pricelist.
 
 
+Usage
+=====
+
+``mixin.product_line_price_multiplier`` combines ``mixin.product_line_price``
+with ``mixin.product_line_multiplier`` (from ``ssi_product_line_mixin``), so a
+price-level line is driven by independent factors with a single ``_inherit``
+entry. It adds no field and overrides no method of its own.
+
+Install it in two concrete models in the user module:
+
+.. code-block:: python
+
+    class MyLineFactor(models.Model):
+        _name = "my.line_factor"
+        _description = "My Line Factor"
+        _inherit = ["mixin.product_line_multiplier_factor"]
+
+        line_id = fields.Many2one(
+            comodel_name="my.line",
+            required=True,
+            ondelete="cascade",
+        )
+
+
+    class MyLine(models.Model):
+        _name = "my.line"
+        _description = "My Line"
+        _inherit = ["mixin.product_line_price_multiplier"]
+
+        multiplier_ids = fields.One2many(
+            comodel_name="my.line_factor",
+            inverse_name="line_id",
+        )
+
+When a line has at least one factor, ``uom_quantity`` is the product of all
+factors and ``price_subtotal`` is ``price_unit`` multiplied by it. Without
+factors the manual ``uom_quantity`` is used. There is no price-level factor
+model: reuse ``mixin.product_line_multiplier_factor``.
+
+Do not install this mixin on a model that already defines its own
+``uom_quantity``; the two definitions would conflict.
+
 Installation
 ============
 
