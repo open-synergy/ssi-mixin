@@ -1,0 +1,214 @@
+# Cover mixin.product_line_multiplier and its factor mixin through the
+# fixture models test.product_line_multiplier(_factor). Float values are
+# chosen so every product is exactly representable in binary.
+
+scenarios:
+  - name: "Inline factors 2, 3, 1.5 give uom_quantity 9.0"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_multiplier"
+        save_as: "line"
+        values:
+          name: "Multiplier Line"
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "Days"
+                factor: 3.0
+            - - 0
+              - 0
+              - name: "Times"
+                factor: 1.5
+
+      - step: "uom_quantity is the product of all factors"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 9.0
+
+      - step: "quantity follows uom_quantity"
+        action: "assert"
+        target: "line"
+        asserts:
+          quantity:
+            type: "value"
+            expected: 9.0
+
+  - name: "Changing a factor recomputes uom_quantity"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_multiplier"
+        save_as: "line"
+        values:
+          name: "Multiplier Line"
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "Days"
+                factor: 3.0
+            - - 0
+              - 0
+              - name: "Times"
+                factor: 1.5
+
+      - step: "Find the Days factor"
+        action: "search"
+        model: "test.product_line_multiplier_factor"
+        domain:
+          - ["line_id", "=", "REC: line.id"]
+          - ["name", "=", "Days"]
+        save_as: "days"
+        expect_count: 1
+        limit: 1
+
+      - step: "Change Days from 3 to 4"
+        action: "write"
+        target: "days"
+        values:
+          factor: 4.0
+
+      - step: "uom_quantity is recomputed as 2 x 4 x 1.5"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 12.0
+
+  - name: "A line without factors keeps its manual uom_quantity"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_multiplier"
+        save_as: "line"
+        values:
+          name: "Multiplier Line"
+          uom_quantity: 7.0
+
+      - step: "Manual value is kept at creation"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 7.0
+
+      - step: "Write a new manual uom_quantity"
+        action: "write"
+        target: "line"
+        values:
+          uom_quantity: 5.0
+
+      - step: "Manual value stays 5.0"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 5.0
+
+  - name: "Adding factors to a manual line overrides the manual value"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_multiplier"
+        save_as: "line"
+        values:
+          name: "Multiplier Line"
+          uom_quantity: 7.0
+
+      - step: "Add factor Persons"
+        action: "create"
+        model: "test.product_line_multiplier_factor"
+        values:
+          line_id: "REC: line.id"
+          name: "Persons"
+          factor: 2.0
+
+      - step: "Add factor Days"
+        action: "create"
+        model: "test.product_line_multiplier_factor"
+        values:
+          line_id: "REC: line.id"
+          name: "Days"
+          factor: 5.0
+
+      - step: "uom_quantity is 2 x 5"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 10.0
+
+  - name: "A non-positive factor is rejected"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_multiplier"
+        save_as: "line"
+        values:
+          name: "Multiplier Line"
+          uom_quantity: 1.0
+
+      - step: "Factor 0.0 must be rejected"
+        action: "create"
+        model: "test.product_line_multiplier_factor"
+        expect_error:
+          type: "ValidationError"
+        values:
+          line_id: "REC: line.id"
+          name: "Bad"
+          factor: 0.0
+
+      - step: "Factor -1.0 must be rejected"
+        action: "create"
+        model: "test.product_line_multiplier_factor"
+        expect_error:
+          type: "ValidationError"
+        values:
+          line_id: "REC: line.id"
+          name: "Bad"
+          factor: -1.0
+
+  - name: "Deleting a line cascades to its factors"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_multiplier"
+        save_as: "line"
+        values:
+          name: "Multiplier Line"
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "Days"
+                factor: 3.0
+
+      - step: "Delete the line"
+        action: "unlink"
+        target: "line"
+
+      - step: "No factor remains"
+        action: "search"
+        model: "test.product_line_multiplier_factor"
+        domain:
+          - ["name", "in", ["Persons", "Days"]]
+        save_as: "left"
+        expect_count: 0

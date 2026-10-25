@@ -4,4 +4,6 @@
 
 from . import (
     mixin_product_line,
+    mixin_product_line_multiplier,
+    mixin_product_line_multiplier_factor,
 )
