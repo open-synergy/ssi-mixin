@@ -11,6 +11,8 @@ The ``fake_models:`` key in the YAML files imports it lazily instead, and
 tears the model down again once the test method returns.
 """
 
+from typing import ClassVar
+
 from odoo import api, fields, models
 
 
@@ -31,7 +33,7 @@ class TestTransactionConsumer(models.Model):
 
     _name = "test_transaction_consumer"
     _description = "Fake Transaction Consumer"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.transaction",
     ]
 
