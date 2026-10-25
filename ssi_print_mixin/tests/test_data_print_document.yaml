@@ -1,0 +1,175 @@
+options:
+  auto_refresh: true
+
+setup:
+  steps:
+    - step: "Find the ir.model record of res.partner"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "res.partner"]]
+      save_as: "partner_model"
+      limit: 1
+      expect_count: 1
+
+scenarios:
+  - name: "Two print_document_type with code '/' may coexist"
+    steps:
+      - step: "Create first type with code '/'"
+        action: "create"
+        model: "print_document_type"
+        save_as: "first"
+        values:
+          name: "Slash One"
+          code: "/"
+          model_id: "REC: partner_model.id"
+      - step: "Create second type with code '/'"
+        action: "create"
+        model: "print_document_type"
+        save_as: "second"
+        values:
+          name: "Slash Two"
+          code: "/"
+          model_id: "REC: partner_model.id"
+      - step: "Assert both types kept the code '/'"
+        action: "assert"
+        target: "second"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          code:
+            type: "value"
+            expected: "/"
+          model:
+            type: "value"
+            expected: "res.partner"
+
+  - name: "Different unique codes are accepted"
+    steps:
+      - step: "Create first type with its own code"
+        action: "create"
+        model: "print_document_type"
+        save_as: "first"
+        values:
+          name: "Unique One"
+          code: "PDT-UNIQ-1"
+          model_id: "REC: partner_model.id"
+      - step: "Create second type with a different code"
+        action: "create"
+        model: "print_document_type"
+        save_as: "second"
+        values:
+          name: "Unique Two"
+          code: "PDT-UNIQ-2"
+          model_id: "REC: partner_model.id"
+      - step: "Assert the codes were kept"
+        action: "assert"
+        target: "second"
+        asserts:
+          code:
+            type: "value"
+            expected: "PDT-UNIQ-2"
+      - step: "Assert the first code was kept"
+        action: "assert"
+        target: "first"
+        asserts:
+          code:
+            type: "value"
+            expected: "PDT-UNIQ-1"
+
+  - name: "action_reset_code sets the code back to '/'"
+    steps:
+      - step: "Create a type with a real code"
+        action: "create"
+        model: "print_document_type"
+        save_as: "document_type"
+        values:
+          name: "Reset Me"
+          code: "PDT-RESET-1"
+          model_id: "REC: partner_model.id"
+      - step: "Reset the code"
+        action: "call"
+        target: "document_type"
+        method: "action_reset_code"
+      - step: "Assert the code is '/'"
+        action: "assert"
+        target: "document_type"
+        asserts:
+          code:
+            type: "value"
+            expected: "/"
+
+  - name: "Duplicate non-slash code is rejected"
+    steps:
+      - step: "Create the first type"
+        action: "create"
+        model: "print_document_type"
+        save_as: "first"
+        values:
+          name: "Dup First"
+          code: "PDT-DUP-1"
+          model_id: "REC: partner_model.id"
+      - step: "Create a second type with the same code must fail"
+        action: "create"
+        model: "print_document_type"
+        expect_error:
+          type: "UserError"
+          message_contains: "Solution: Change code"
+        values:
+          name: "Dup Second"
+          code: "PDT-DUP-1"
+          model_id: "REC: partner_model.id"
+
+  - name: "print_python_code with invalid syntax is rejected"
+    steps:
+      - step: "Create a report with a syntax error in the condition"
+        action: "create"
+        model: "ir.actions.report"
+        expect_error:
+          type: "ValidationError"
+        values:
+          name: "Broken Condition Report"
+          model: "res.partner"
+          report_type: "qweb-pdf"
+          report_name: "ssi_print_mixin.test_broken_report"
+          print_python_code: "result = ("
+
+  - name: "print_python_code with valid syntax is accepted"
+    steps:
+      - step: "Create a report with a valid condition"
+        action: "create"
+        model: "ir.actions.report"
+        save_as: "report"
+        values:
+          name: "Valid Condition Report"
+          model: "res.partner"
+          report_type: "qweb-pdf"
+          report_name: "ssi_print_mixin.test_valid_report"
+          print_python_code: "result = False"
+      - step: "Assert the condition was kept"
+        action: "assert"
+        target: "report"
+        asserts:
+          print_python_code:
+            type: "value"
+            expected: "result = False"
+          print_multi:
+            type: "value"
+            expected: false
+
+  - name: "action_print without a selected report is rejected"
+    steps:
+      - step: "Create the partner the wizard is opened on"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Print Wizard Partner"
+      - step: "Run action_print on the wizard without a report"
+        action: "wizard"
+        model: "base.print_document"
+        target: "partner"
+        method: "action_print"
+        expect_error:
+          type: "UserError"
+          message_contains: "No Report Selected"
