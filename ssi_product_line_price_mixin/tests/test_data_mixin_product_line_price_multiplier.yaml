@@ -1,0 +1,139 @@
+# Cover mixin.product_line_price_multiplier through the fixture models
+# test.product_line_price_multiplier(_factor). Values are chosen so every
+# product is exactly representable in binary. Factor names are unique per
+# scenario because all scenarios share one DB transaction.
+
+scenarios:
+  - name: "Inline factors 2 and 3 drive uom_quantity and price_subtotal"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_price_multiplier"
+        save_as: "line"
+        values:
+          name: "Price Multiplier Line"
+          price_unit: 1000.0
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "S1 Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "S1 Days"
+                factor: 3.0
+
+      - step: "uom_quantity is the product of the factors"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 6.0
+
+      - step: "price_subtotal follows uom_quantity"
+        action: "assert"
+        target: "line"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 6000.0
+
+  - name: "Changing a factor recomputes uom_quantity and price_subtotal"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_price_multiplier"
+        save_as: "line"
+        values:
+          name: "Price Multiplier Line"
+          price_unit: 1000.0
+          multiplier_ids:
+            - - 0
+              - 0
+              - name: "S2 Persons"
+                factor: 2.0
+            - - 0
+              - 0
+              - name: "S2 Days"
+                factor: 3.0
+
+      - step: "Find the S2 Days factor"
+        action: "search"
+        model: "test.product_line_price_multiplier_factor"
+        domain:
+          - ["line_id", "=", "REC: line.id"]
+          - ["name", "=", "S2 Days"]
+        save_as: "days"
+        expect_count: 1
+        limit: 1
+
+      - step: "Change the factor from 3 to 5"
+        action: "write"
+        target: "days"
+        values:
+          factor: 5.0
+
+      - step: "uom_quantity is recomputed as 2 x 5"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 10.0
+
+      - step: "price_subtotal is recomputed as 10 x 1000"
+        action: "assert"
+        target: "line"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 10000.0
+
+  - name: "A line without factors uses its manual uom_quantity"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_price_multiplier"
+        save_as: "line"
+        values:
+          name: "Price Multiplier Line"
+          uom_quantity: 4.0
+          price_unit: 250.0
+
+      - step: "uom_quantity keeps the manual value"
+        action: "assert"
+        target: "line"
+        asserts:
+          uom_quantity:
+            type: "value"
+            expected: 4.0
+
+      - step: "price_subtotal is 4 x 250"
+        action: "assert"
+        target: "line"
+        asserts:
+          price_subtotal:
+            type: "value"
+            expected: 1000.0
+
+  - name: "A non-positive factor is rejected on the combined mixin"
+    steps:
+      - step: "Create the line line"
+        action: "create"
+        model: "test.product_line_price_multiplier"
+        save_as: "line"
+        values:
+          name: "Price Multiplier Line"
+          uom_quantity: 1.0
+          price_unit: 1000.0
+
+      - step: "Factor 0.0 must be rejected"
+        action: "create"
+        model: "test.product_line_price_multiplier_factor"
+        expect_error:
+          type: "ValidationError"
+        values:
+          line_id: "REC: line.id"
+          name: "S4 Bad"
+          factor: 0.0
