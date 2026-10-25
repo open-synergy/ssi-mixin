@@ -26,7 +26,7 @@ addon | version | maintainers | summary
 [ssi_policy_mixin](ssi_policy_mixin/) | 20.0.1.0.0 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.0 |  | Print Policy Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.0 |  | Sequence Mixin
-[ssi_transaction_mixin](ssi_transaction_mixin/) | 20.0.1.0.0 |  | Transaction Mixin
+[ssi_transaction_mixin](ssi_transaction_mixin/) | 20.0.1.0.1 |  | Transaction Mixin
 
 
 Unported addons
