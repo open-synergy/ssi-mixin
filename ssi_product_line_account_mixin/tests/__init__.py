@@ -2,4 +2,7 @@
 # Copyright 2026 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from . import test_mixin_product_line_account
+from . import (
+    test_mixin_product_line_account,
+    test_mixin_product_line_account_multiplier,
+)
