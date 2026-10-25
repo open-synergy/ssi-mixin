@@ -12,6 +12,8 @@ database that installs ``ssi_decorator``. The ``fake_models:`` key in
 instead, via ``odoo_yaml_test.YamlTransactionCase.run_yaml_scenario``.
 """
 
+from typing import ClassVar
+
 from odoo import fields, models
 
 from odoo.addons.ssi_decorator import ssi_decorator
@@ -29,18 +31,16 @@ class TestDecorator(models.Model):
 
     _name = "test_decorator"
     _description = "Test Decorator"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.decorator",
     ]
 
     name = fields.Char(
-        string="Name",
         required=True,
         help="Free-text label used only to create a record to exercise "
         "the mixin's decorator dispatch with.",
     )
     state = fields.Selection(
-        string="State",
         selection=[
             ("draft", "Draft"),
             ("confirm", "Confirmed"),
