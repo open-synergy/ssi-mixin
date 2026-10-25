@@ -13,6 +13,8 @@ it at the right moment instead, via
 ``odoo_yaml_test.YamlTransactionCase.run_yaml_scenario``.
 """
 
+from typing import ClassVar
+
 from odoo import models
 
 
@@ -29,6 +31,6 @@ class TestMasterData(models.Model):
 
     _name = "test_master_data"
     _description = "Test Master Data"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.master_data",
     ]

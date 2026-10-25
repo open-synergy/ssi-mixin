@@ -1,7 +1,9 @@
 # Copyright 2022 OpenSynergy Indonesia
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import _, api, fields, models
+from typing import ClassVar
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -27,7 +29,7 @@ class MixinMasterData(models.AbstractModel):
     """
 
     _name = "mixin.master_data"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mail.activity.mixin",
         "mail.thread",
         "mixin.print_document",
@@ -54,12 +56,10 @@ class MixinMasterData(models.AbstractModel):
         return self._field_name_string
 
     name = fields.Char(
-        string="Name",
         required=True,
         translate=True,
     )
     code = fields.Char(
-        string="Code",
         required=True,
         help="""Master data unique identifier.
 
@@ -69,7 +69,6 @@ class MixinMasterData(models.AbstractModel):
   Only master data with '/' code will be assign automatic code""",
     )
     active = fields.Boolean(
-        string="Active",
         default=True,
         help="""Master data status
 
@@ -78,9 +77,7 @@ class MixinMasterData(models.AbstractModel):
 * Set master data as inactive if master data no longer needed,
 but master data already used on transaction""",
     )
-    note = fields.Text(
-        string="Note",
-    )
+    note = fields.Text()
 
     def copy(self, default=None):
         """Duplicate the record, appending ``(copy)`` to the ``code`` field.
@@ -97,7 +94,7 @@ but master data already used on transaction""",
         if default is None:
             default = {}
         if "code" not in default:
-            default["code"] = _("%s (copy)", self.code)
+            default["code"] = self.env._("%s (copy)", self.code)
         return super().copy(default=default)
 
     @api.constrains("code")
