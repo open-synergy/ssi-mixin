@@ -22,7 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_decorator](ssi_decorator/) | 20.0.1.0.0 |  | SSI - Decorator
-[ssi_master_data_mixin](ssi_master_data_mixin/) | 20.0.1.0.0 |  | Master Data Mixin
+[ssi_master_data_mixin](ssi_master_data_mixin/) | 20.0.1.0.1 |  | Master Data Mixin
 [ssi_policy_mixin](ssi_policy_mixin/) | 20.0.1.0.0 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.1 |  | Print Policy Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.0 |  | Sequence Mixin
