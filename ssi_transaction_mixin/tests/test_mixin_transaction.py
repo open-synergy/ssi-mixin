@@ -95,3 +95,14 @@ class TestMixinTransaction(YamlTransactionCase):
         numbered = obj_consumer.create({"name": "TX-PYUNL-001"})
         self.assertFalse(numbered._check_document_number_unlink())
         self.assertTrue(numbered._check_document_number_unlink(force_unlink=True))
+
+    def test_unlink_returns_true(self):
+        """Check that ``unlink`` returns the result of ``super().unlink()``.
+
+        Pure Python: P1, because ``action: unlink`` discards the return
+        value (L-01).
+        """
+        self._load_consumer()
+        obj_consumer = self.env["test_transaction_consumer"]
+        draft = obj_consumer.create({})
+        self.assertTrue(draft.unlink())
