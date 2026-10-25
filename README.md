@@ -21,6 +21,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[ssi_backend_mixin](ssi_backend_mixin/) | 20.0.1.0.0 |  | Backend Mixin
 [ssi_decorator](ssi_decorator/) | 20.0.1.0.0 |  | SSI - Decorator
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 20.0.1.0.1 |  | Master Data Mixin
 [ssi_policy_mixin](ssi_policy_mixin/) | 20.0.1.0.1 |  | Policy Mixin
@@ -34,7 +35,6 @@ Unported addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_accounting_entry_mixin](ssi_accounting_entry_mixin/) | 14.0.1.10.0 (unported) |  | Accounting Entry Mixin
-[ssi_backend_mixin](ssi_backend_mixin/) | 19.0.1.1.0 (unported) |  | Backend Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 19.0.1.1.0 (unported) |  | Company Currency Mixin
 [ssi_currency_mixin](ssi_currency_mixin/) | 14.0.1.2.0 (unported) |  | Currency Mixin
 [ssi_custom_information_mixin](ssi_custom_information_mixin/) | 19.0.1.3.0 (unported) |  | Custom Information Mixin
