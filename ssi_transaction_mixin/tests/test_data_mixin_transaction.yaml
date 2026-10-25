@@ -1,0 +1,282 @@
+fake_models:
+  classes:
+    - "odoo.addons.ssi_transaction_mixin.tests.fake_models:TestTransactionConsumer"
+
+options:
+  auto_refresh: true
+
+# No shared setup: every scenario builds its own consumer records and uses
+# document numbers that no other scenario reuses (the whole file shares one
+# DB transaction, so a numbered record outlives the scenario that made it).
+
+scenarios:
+  - name: "A new document is a draft numbered '/' owned by the active user"
+    steps:
+      - step: "Create a document without any value"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values: {}
+      - step: "Assert the defaults"
+        action: "assert"
+        target: "document"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          name:
+            type: "value"
+            expected: "/"
+          company_id:
+            type: "m2o"
+            expected: "REC: user.company_id"
+          user_id:
+            type: "m2o"
+            expected: "REC: user"
+
+  - name: "Two documents numbered '/' may coexist"
+    steps:
+      - step: "Create the first document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "first"
+        values: {}
+      - step: "Create the second document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "second"
+        values: {}
+      - step: "Assert both kept the placeholder number"
+        action: "assert"
+        target: "second"
+        asserts:
+          name:
+            type: "value"
+            expected: "/"
+      - step: "Assert the first kept the placeholder number"
+        action: "assert"
+        target: "first"
+        asserts:
+          name:
+            type: "value"
+            expected: "/"
+
+  - name: "A duplicate document number is rejected on create"
+    steps:
+      - step: "Create the first numbered document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "first"
+        values:
+          name: "TX-DUP-001"
+      - step: "Create a second document with the same number must fail"
+        action: "create"
+        model: "test_transaction_consumer"
+        expect_error:
+          type: "UserError"
+          message_contains: "Duplicate document number"
+        values:
+          name: "TX-DUP-001"
+
+  - name: "A duplicate document number is rejected on write"
+    steps:
+      - step: "Create the first numbered document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "first"
+        values:
+          name: "TX-DUPW-001"
+      - step: "Create a second document with its own number"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "second"
+        values:
+          name: "TX-DUPW-002"
+      - step: "Renumbering the second document to the first number must fail"
+        action: "write"
+        target: "second"
+        expect_error:
+          type: "UserError"
+          message_contains: "Duplicate document number"
+        values:
+          name: "TX-DUPW-001"
+
+  - name: "A draft document numbered '/' can be deleted"
+    steps:
+      - step: "Create a draft document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values: {}
+      - step: "Delete it"
+        action: "unlink"
+        target: "document"
+      - step: "Assert it is gone"
+        action: "search"
+        model: "test_transaction_consumer"
+        domain: [["id", "=", "REC: document.id"]]
+        save_as: "gone"
+        expect_count: 0
+
+  - name: "A document with a real number cannot be deleted"
+    steps:
+      - step: "Create a document with a real number"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values:
+          name: "TX-UNL-001"
+      - step: "Delete it must fail"
+        action: "unlink"
+        target: "document"
+        expect_error:
+          type: "UserError"
+          message_contains: "Document number is not equal to /"
+      - step: "Delete it with force_unlink succeeds"
+        action: "unlink"
+        target: "document"
+        context:
+          force_unlink: true
+      - step: "Assert it is gone"
+        action: "search"
+        model: "test_transaction_consumer"
+        domain: [["id", "=", "REC: document.id"]]
+        save_as: "gone"
+        expect_count: 0
+
+  - name: "A document that is not in draft cannot be deleted"
+    steps:
+      - step: "Create a document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values: {}
+      - step: "Move it out of draft"
+        action: "write"
+        target: "document"
+        values:
+          state: "confirm"
+      - step: "Delete it must fail"
+        action: "unlink"
+        target: "document"
+        expect_error:
+          type: "UserError"
+          message_contains: "Document state is not draft"
+      - step: "Delete it with force_unlink succeeds"
+        action: "unlink"
+        target: "document"
+        context:
+          force_unlink: true
+      - step: "Assert it is gone"
+        action: "search"
+        model: "test_transaction_consumer"
+        domain: [["id", "=", "REC: document.id"]]
+        save_as: "gone"
+        expect_count: 0
+
+  - name: "action_restart is refused when restart_ok is False"
+    steps:
+      - step: "Create a document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values: {}
+      - step: "Move it out of draft"
+        action: "write"
+        target: "document"
+        values:
+          state: "confirm"
+      - step: "Restart without the policy must fail"
+        action: "call"
+        target: "document"
+        method: "action_restart"
+        expect_error:
+          type: "UserError"
+          message_contains: "Document is not allowed to restart"
+      - step: "Assert the state did not change"
+        action: "assert"
+        target: "document"
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+  - name: "action_restart with bypass_policy_check returns to draft and posts"
+    steps:
+      - step: "Create a document"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values: {}
+      - step: "Move it out of draft"
+        action: "write"
+        target: "document"
+        values:
+          state: "confirm"
+      - step: "Restart bypassing the policy check"
+        action: "call"
+        target: "document"
+        method: "action_restart"
+        context:
+          bypass_policy_check: true
+      - step: "Assert the state is back to draft"
+        action: "assert"
+        target: "document"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+      - step: "Assert exactly one restarted message was posted"
+        action: "search"
+        model: "mail.message"
+        domain:
+          - ["model", "=", "test_transaction_consumer"]
+          - ["res_id", "=", "REC: document.id"]
+          - ["body", "ilike", "restarted"]
+        save_as: "restart_message"
+        expect_count: 1
+
+  - name: "action_reset_document_number restores '/' with manual_number_ok"
+    steps:
+      - step: "Create a document with a real number"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values:
+          name: "TX-RST-001"
+      - step: "Reset the number bypassing the policy check"
+        action: "call"
+        target: "document"
+        method: "action_reset_document_number"
+        context:
+          bypass_policy_check: true
+      - step: "Assert the number is back to '/'"
+        action: "assert"
+        target: "document"
+        asserts:
+          name:
+            type: "value"
+            expected: "/"
+
+  - name: "action_reset_document_number is refused without manual_number_ok"
+    steps:
+      - step: "Create a document with a real number"
+        action: "create"
+        model: "test_transaction_consumer"
+        save_as: "document"
+        values:
+          name: "TX-RST-002"
+      - step: "Reset the number without the policy must fail"
+        action: "call"
+        target: "document"
+        method: "action_reset_document_number"
+        expect_error:
+          type: "UserError"
+          message_contains: "Reset document is no allowed"
+      - step: "Assert the number did not change"
+        action: "assert"
+        target: "document"
+        asserts:
+          name:
+            type: "value"
+            expected: "TX-RST-002"
