@@ -78,14 +78,19 @@ class PrintDcoumentType(models.Model):
             ]
             count_duplicate = self.search_count(criteria)
             if count_duplicate > 0:
-                error_message = f"""
-                Document Type: {self._description.lower()}
+                raise UserError(
+                    _(
+                        """
+                Document Type: %s
                 Context: Create or update document
-                Database ID: {self.id}
-                Problem: Dupilicate code
+                Database ID: %s
+                Problem: Duplicate code
                 Solution: Change code
-                """
-                raise UserError(error_message)
+                """,
+                        self._description.lower(),
+                        record.id,
+                    )
+                )
 
     def action_generate_code(self):
         for record in self.sudo():
