@@ -175,38 +175,53 @@ class MixinTransaction(models.AbstractModel):
     def _constrains_duplicate_document_number(self):
         for record in self.sudo():
             if not record._check_duplicate_document_number():
-                error_message = f"""
-                Document Type: {self._description.lower()}
+                raise UserError(
+                    _(
+                        """
+                Document Type: %s
                 Context: Change document number
-                Database ID: {record.id}
+                Database ID: %s
                 Problem: Duplicate document number
                 Solution: Change document number into different number
-                """
-                raise UserError(_(error_message))
+                """,
+                        self._description.lower(),
+                        record.id,
+                    )
+                )
 
     def unlink(self):
         force_unlink = self.env.context.get("force_unlink", False)
         for record in self:
             if not record._check_state_unlink(force_unlink):
-                error_message = f"""
-                Document Type: {self._description.lower()}
+                raise UserError(
+                    _(
+                        """
+                Document Type: %s
                 Context: Delete document
-                Database ID: {record.id}
+                Database ID: %s
                 Problem: Document state is not draft
                 Solution: Cancel and restart document
-                """
-                raise UserError(_(error_message))
+                """,
+                        self._description.lower(),
+                        record.id,
+                    )
+                )
             if not record._check_document_number_unlink(force_unlink):
-                error_message = f"""
-                Document Type: {self._description.lower()}
+                raise UserError(
+                    _(
+                        """
+                Document Type: %s
                 Context: Delete document
-                Database ID: {record.id}
+                Database ID: %s
                 Problem: Document number is not equal to /
                 Solution: Change document number into /
-                """
-                raise UserError(_(error_message))
+                """,
+                        self._description.lower(),
+                        record.id,
+                    )
+                )
         _super = super()
-        _super.unlink()
+        return _super.unlink()
 
     @api.model
     def _get_view(self, view_id=None, view_type="form", **options):
@@ -252,14 +267,19 @@ class MixinTransaction(models.AbstractModel):
             return True
 
         if not self.manual_number_ok:
-            error_message = f"""
-            Document Type: {self._description}
+            raise UserError(
+                _(
+                    """
+            Document Type: %s
             Context: Reset document number
-            Database ID: {self.id}
-            Problem: Reset document is no allowed
+            Database ID: %s
+            Problem: Reset document is not allowed
             Solution: Check restart policy prerequisite
-            """
-            raise UserError(_(error_message))
+            """,
+                    self._description,
+                    self.id,
+                )
+            )
 
     def _notify_restart_action(self):
         self.ensure_one()
@@ -283,14 +303,19 @@ class MixinTransaction(models.AbstractModel):
             return True
 
         if not self.restart_ok:
-            error_message = f"""
-            Document Type: {self._description.lower()}
+            raise UserError(
+                _(
+                    """
+            Document Type: %s
             Context: Restart document
-            Database ID: {self.id}
+            Database ID: %s
             Problem: Document is not allowed to restart
             Solution: Check restart policy prerequisite
-            """
-            raise UserError(_(error_message))
+            """,
+                    self._description.lower(),
+                    self.id,
+                )
+            )
 
     def _run_pre_restart_check(self):
         self.ensure_one()

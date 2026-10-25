@@ -272,7 +272,7 @@ scenarios:
         method: "action_reset_document_number"
         expect_error:
           type: "UserError"
-          message_contains: "Reset document is no allowed"
+          message_contains: "Reset document is not allowed"
       - step: "Assert the number did not change"
         action: "assert"
         target: "document"
