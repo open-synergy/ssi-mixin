@@ -3,8 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from inspect import getmembers
+from typing import ClassVar
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -14,7 +15,7 @@ class MixinTransaction(models.AbstractModel):
     """
 
     _name = "mixin.transaction"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mail.activity.mixin",
         "mail.thread",
         "mixin.decorator",
@@ -61,7 +62,6 @@ class MixinTransaction(models.AbstractModel):
     )
 
     company_id = fields.Many2one(
-        string="Company",
         comodel_name="res.company",
         required=True,
         default=lambda self: self._default_company_id(),
@@ -96,7 +96,6 @@ class MixinTransaction(models.AbstractModel):
   Default responsible can be changed.""",
     )
     reviewer_id = fields.Many2one(
-        string="Reviewer",
         comodel_name="res.users",
         required=False,
         copy=False,
@@ -107,13 +106,11 @@ class MixinTransaction(models.AbstractModel):
     )
 
     note = fields.Text(
-        string="Note",
         copy=True,
         help="Free-form note attached to the document, used for any additional "
         "remarks or information related to the transaction.",
     )
     state = fields.Selection(
-        string="State",
         selection=[
             ("draft", "Draft"),
         ],
@@ -144,9 +141,7 @@ class MixinTransaction(models.AbstractModel):
 
 * If active user can edit document number""",
     )
-    display_name = fields.Char(
-        string="Display Name", compute="_compute_display_name", store=True, index=True
-    )
+    display_name = fields.Char(compute="_compute_display_name", store=True, index=True)
 
     @api.depends(lambda self: [self._document_number_field])
     def _compute_display_name(self):
@@ -165,8 +160,12 @@ class MixinTransaction(models.AbstractModel):
         return self.env.user.id
 
     def _compute_policy(self):
+        """Delegate policy computation to the next implementation.
+
+        :return: result of the parent ``_compute_policy``
+        """
         _super = super()
-        _super._compute_policy()
+        return _super._compute_policy()
 
     # TODO: Dynamic field name
     @api.constrains(
@@ -176,52 +175,59 @@ class MixinTransaction(models.AbstractModel):
         for record in self.sudo():
             if not record._check_duplicate_document_number():
                 raise UserError(
-                    _(
+                    self.env._(
                         """
-                Document Type: %s
+                Document Type: %(doc_type)s
                 Context: Change document number
-                Database ID: %s
+                Database ID: %(db_id)s
                 Problem: Duplicate document number
                 Solution: Change document number into different number
                 """,
-                        self._description.lower(),
-                        record.id,
+                        doc_type=self._description.lower(),
+                        db_id=record.id,
                     )
                 )
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_protected_document(self):
+        """Block deletion of documents that are not in a deletable shape.
+
+        A document can be deleted only when it is in draft state and its
+        number is still ``/``, unless the ``force_unlink`` context key is
+        set.
+
+        :raises UserError: If the state is not draft or the number is set.
+        """
         force_unlink = self.env.context.get("force_unlink", False)
         for record in self:
             if not record._check_state_unlink(force_unlink):
                 raise UserError(
-                    _(
+                    self.env._(
                         """
-                Document Type: %s
+                Document Type: %(doc_type)s
                 Context: Delete document
-                Database ID: %s
+                Database ID: %(db_id)s
                 Problem: Document state is not draft
                 Solution: Cancel and restart document
                 """,
-                        self._description.lower(),
-                        record.id,
+                        doc_type=self._description.lower(),
+                        db_id=record.id,
                     )
                 )
             if not record._check_document_number_unlink(force_unlink):
                 raise UserError(
-                    _(
+                    self.env._(
                         """
-                Document Type: %s
+                Document Type: %(doc_type)s
                 Context: Delete document
-                Database ID: %s
+                Database ID: %(db_id)s
                 Problem: Document number is not equal to /
                 Solution: Change document number into /
                 """,
-                        self._description.lower(),
-                        record.id,
+                        doc_type=self._description.lower(),
+                        db_id=record.id,
                     )
                 )
-        _super = super()
-        return _super.unlink()
 
     @api.model
     def _get_view(self, view_id=None, view_type="form", **options):
@@ -268,16 +274,16 @@ class MixinTransaction(models.AbstractModel):
 
         if not self.manual_number_ok:
             raise UserError(
-                _(
+                self.env._(
                     """
-            Document Type: %s
+            Document Type: %(doc_type)s
             Context: Reset document number
-            Database ID: %s
+            Database ID: %(db_id)s
             Problem: Reset document is not allowed
             Solution: Check restart policy prerequisite
             """,
-                    self._description,
-                    self.id,
+                    doc_type=self._description,
+                    db_id=self.id,
                 )
             )
 
@@ -285,7 +291,9 @@ class MixinTransaction(models.AbstractModel):
         self.ensure_one()
         msg = self._prepare_restart_action_notification()
         self.message_post(
-            body=_(msg), message_type="notification", subtype_xmlid="mail.mt_note"
+            body=self.env._(msg),
+            message_type="notification",
+            subtype_xmlid="mail.mt_note",
         )
 
     def _prepare_restart_action_notification(self):
@@ -304,16 +312,16 @@ class MixinTransaction(models.AbstractModel):
 
         if not self.restart_ok:
             raise UserError(
-                _(
+                self.env._(
                     """
-            Document Type: %s
+            Document Type: %(doc_type)s
             Context: Restart document
-            Database ID: %s
+            Database ID: %(db_id)s
             Problem: Document is not allowed to restart
             Solution: Check restart policy prerequisite
             """,
-                    self._description.lower(),
-                    self.id,
+                    doc_type=self._description.lower(),
+                    db_id=self.id,
                 )
             )
 

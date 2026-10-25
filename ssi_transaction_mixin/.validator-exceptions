@@ -4,5 +4,4 @@ module xml-id-view-list-memakai-akhiran-view-list-di-20-0|views/mixin_transactio
 # tests/fake_models.py is a throwaway fixture model loaded only by the YAML 'fake_models:' key; it is not a production model.
 module nama-berkas-py-name-model|tests/fake_models.py: _name='test_transaction_consumer' menuntut berkas test_transaction_consumer.py -- fixture test sementara, tidak boleh dipisah per model produksi
 module setiap-model-punya-record-ir-model-access|test_transaction_consumer: tidak ada record ir.model.access (model_test_transaction_consumer) -- model fixture test; ACL dibuat otomatis oleh fake_models dan model dibuang setelah test
-module model-transaksional-punya-insert-form-element-get-policy-fie|test_transaction_consumer: _insert_form_element() tidak ada -- model fixture test tanpa view
 unit-test setiap-berkas-test-terdaftar-di-tests-init-py|tests/fake_models.py tidak di-import -- fake_models.py sengaja tidak di-import agar tidak menjadi model produksi; dimuat malas lewat kunci fake_models di YAML
