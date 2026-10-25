@@ -1,0 +1,14 @@
+fake_models:
+  classes:
+    - "odoo.addons.ssi_transaction_mixin.tests.fake_models:TestTransactionConsumer"
+
+scenarios:
+  - name: "The fake consumer model is registered for the Python tests"
+    steps:
+      - step: "Find the ir.model row of test_transaction_consumer"
+        action: "search"
+        model: "ir.model"
+        domain: [["model", "=", "test_transaction_consumer"]]
+        save_as: "consumer_model"
+        limit: 1
+        expect_count: 1
