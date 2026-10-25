@@ -2,7 +2,9 @@
 # Copyright 2025 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from typing import ClassVar
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -17,7 +19,7 @@ class PrintDcoumentType(models.Model):
     """
 
     _name = "print_document_type"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mail.activity.mixin",
         "mail.thread",
     ]
@@ -28,7 +30,6 @@ class PrintDcoumentType(models.Model):
         required=True,
     )
     code = fields.Char(
-        string="Code",
         default="/",
         required=True,
     )
@@ -53,19 +54,16 @@ class PrintDcoumentType(models.Model):
         domain="[('model', '=', model)]",
     )
     active = fields.Boolean(
-        string="Active",
         default=True,
     )
-    note = fields.Text(
-        string="Note",
-    )
+    note = fields.Text()
 
     def copy(self, default=None):
         self.ensure_one()
         if default is None:
             default = {}
         if "code" not in default:
-            default["code"] = _("%s (copy)", self.code)
+            default["code"] = self.env._("%s (copy)", self.code)
         return super().copy(default=default)
 
     @api.constrains("code")
@@ -79,16 +77,16 @@ class PrintDcoumentType(models.Model):
             count_duplicate = self.search_count(criteria)
             if count_duplicate > 0:
                 raise UserError(
-                    _(
+                    self.env._(
                         """
-                Document Type: %s
+                Document Type: %(document_type)s
                 Context: Create or update document
-                Database ID: %s
+                Database ID: %(record_id)s
                 Problem: Duplicate code
                 Solution: Change code
                 """,
-                        self._description.lower(),
-                        record.id,
+                        document_type=self._description.lower(),
+                        record_id=record.id,
                     )
                 )
 

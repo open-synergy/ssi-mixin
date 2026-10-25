@@ -2,7 +2,7 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -42,7 +42,6 @@ class BasePrintDocument(models.TransientModel):
         return result and result[0] or False
 
     type_id = fields.Many2one(
-        string="Type",
         comodel_name="print_document_type",
         default=lambda self: self._default_type_id(),
     )
@@ -79,7 +78,6 @@ class BasePrintDocument(models.TransientModel):
             record.allowed_print_action_ids = result
 
     allowed_print_action_ids = fields.Many2many(
-        string="Allowed Print Action",
         comodel_name="ir.actions.report",
         compute="_compute_allowed_print_action_ids",
         relation="rel_print_document_2_action_report",
@@ -122,4 +120,4 @@ class BasePrintDocument(models.TransientModel):
             report_action.update({"close_on_report_download": True})
             return report_action
         else:
-            raise UserError(_("No Report Selected"))
+            raise UserError(self.env._("No Report Selected"))

@@ -2,9 +2,13 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import logging
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval, test_python_expr
+
+_logger = logging.getLogger(__name__)
 
 
 class IrActionsReport(models.Model):
@@ -58,6 +62,11 @@ class IrActionsReport(models.Model):
             safe_eval(self.print_python_code, localdict, mode="exec")
             result = localdict["result"]
         except Exception:
+            _logger.debug(
+                "Failed to evaluate print python code of report %s",
+                self.id,
+                exc_info=True,
+            )
             result = False
         return result
 
