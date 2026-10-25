@@ -119,6 +119,16 @@ scenarios:
           name: "Dup Second"
           code: "PDT-DUP-1"
           model_id: "REC: partner_model.id"
+      - step: "Create a third type with the same code reports duplicate code"
+        action: "create"
+        model: "print_document_type"
+        expect_error:
+          type: "UserError"
+          message_contains: "Duplicate code"
+        values:
+          name: "Dup Third"
+          code: "PDT-DUP-1"
+          model_id: "REC: partner_model.id"
 
   - name: "print_python_code with invalid syntax is rejected"
     steps:
