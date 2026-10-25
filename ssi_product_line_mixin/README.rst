@@ -18,6 +18,53 @@ Any model that inherits from ``mixin.product_line`` automatically gains:
 * ``note`` — free-text line remark.
 * Onchange handlers to auto-fill description and UoM from the product.
 
+Usage
+=====
+
+``mixin.product_line_multiplier`` is an opt-in mixin for lines whose
+quantity is the product of several independent factors (for example
+persons x days x times). ``mixin.product_line`` itself is unchanged.
+
+The mixin is installed in two concrete models in the user module:
+
+.. code-block:: python
+
+    class MyLineFactor(models.Model):
+        _name = "my.line_factor"
+        _description = "My Line Factor"
+        _inherit = ["mixin.product_line_multiplier_factor"]
+
+        line_id = fields.Many2one(
+            comodel_name="my.line",
+            required=True,
+            ondelete="cascade",
+        )
+
+
+    class MyLine(models.Model):
+        _name = "my.line"
+        _description = "My Line"
+        _inherit = [
+            "mixin.product_line",
+            "mixin.product_line_multiplier",
+        ]
+
+        multiplier_ids = fields.One2many(
+            comodel_name="my.line_factor",
+            inverse_name="line_id",
+        )
+
+When a line has at least one factor, ``uom_quantity`` is the product of all
+factors. Without factors the current value is kept, so it can still be
+filled manually. Each ``factor`` must be greater than zero, and the factor
+``uom_id`` is only a label that is not used in the calculation.
+
+``line_id`` and ``multiplier_ids`` are not defined by the mixins because
+their comodel differs for every user model.
+
+Do not install ``mixin.product_line_multiplier`` on a model that already
+defines its own ``uom_quantity``; the two definitions would conflict.
+
 Installation
 ============
 
