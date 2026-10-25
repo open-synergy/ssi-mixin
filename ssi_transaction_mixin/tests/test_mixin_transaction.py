@@ -25,6 +25,10 @@ class TestMixinTransaction(YamlTransactionCase):
         scenario file. The model is unloaded again when the test returns.
         """
         self.run_yaml_scenario("test_data_mixin_transaction_loader.yaml")
+        # Cleanups run LIFO, so this flush runs before the library unloads
+        # the fake model. Otherwise a pending ORM write on the fake model
+        # makes the registry re-setup fail with KeyError at teardown.
+        self.addCleanup(self.env.flush_all)
 
     def test_mixin_transaction(self):
         """Run the ``mixin.transaction`` YAML scenarios."""
