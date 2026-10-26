@@ -32,6 +32,7 @@ addon | version | maintainers | summary
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.3 |  | Print Policy Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.1 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 20.0.1.0.0 |  | Source Document Mixin
+[ssi_tag_mixin](ssi_tag_mixin/) | 20.0.1.0.0 |  | Tag Mixin
 [ssi_transaction_mixin](ssi_transaction_mixin/) | 20.0.1.0.2 |  | Transaction Mixin
 
 
@@ -64,7 +65,6 @@ addon | version | maintainers | summary
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 19.0.1.1.2 (unported) |  | State Change Constrain Mixin
 [ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 19.0.1.1.0 (unported) |  | State Change History Mixin
 [ssi_status_check_mixin](ssi_status_check_mixin/) | 19.0.1.3.1 (unported) |  | Status Check Mixin
-[ssi_tag_mixin](ssi_tag_mixin/) | 19.0.1.1.0 (unported) |  | Tag Mixin
 [ssi_term_condition_mixin](ssi_term_condition_mixin/) | 19.0.1.1.0 (unported) |  | Terms and Conditions Mixin
 [ssi_transaction_cancel_mixin](ssi_transaction_cancel_mixin/) | 19.0.1.3.0 (unported) |  | Transaction Mixin - Cancel State
 [ssi_transaction_confirm_mixin](ssi_transaction_confirm_mixin/) | 19.0.1.1.0 (unported) |  | Transaction Mixin - Waiting for Approval State
