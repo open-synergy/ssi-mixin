@@ -19,7 +19,6 @@ class MixinPricelist(models.AbstractModel):
     _description = "Pricelist Mixin"
 
     currency_id = fields.Many2one(
-        string="Currency",
         comodel_name="res.currency",
     )
 
@@ -44,7 +43,6 @@ class MixinPricelist(models.AbstractModel):
         store=False,
     )
     pricelist_id = fields.Many2one(
-        string="Pricelist",
         comodel_name="product.pricelist",
     )
 
