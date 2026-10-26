@@ -4,11 +4,11 @@
 
 {
     "name": "Product Line Mixin - With Price",
-    "version": "14.0.1.4.0",
+    "version": "20.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
-    "installable": False,
+    "installable": True,
     "depends": [
         "ssi_product_line_mixin",
     ],

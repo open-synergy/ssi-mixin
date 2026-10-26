@@ -18,12 +18,9 @@ class MixinProductLinePrice(models.AbstractModel):
 
     _name = "mixin.product_line_price"
     _description = "Product Line Mixin - With Price"
-    _inherit = [
-        "mixin.product_line",
-    ]
+    _inherit = "mixin.product_line"
 
     currency_id = fields.Many2one(
-        string="Currency",
         comodel_name="res.currency",
         required=True,
         default=lambda self: self._default_currency_id(),
@@ -35,30 +32,25 @@ class MixinProductLinePrice(models.AbstractModel):
         compute_sudo=True,
     )
     pricelist_id = fields.Many2one(
-        string="Pricelist",
         comodel_name="product.pricelist",
     )
     price_unit = fields.Monetary(
-        string="Price Unit",
         currency_field="currency_id",
         required=True,
         default=0.0,
     )
     price_subtotal = fields.Monetary(
-        string="Price Subtotal",
         currency_field="currency_id",
         compute="_compute_price",
         store=True,
     )
     standard_price_unit = fields.Monetary(
-        string="Standard Price Unit",
         currency_field="currency_id",
         compute="_compute_standard_price",
         store=True,
         compute_sudo=True,
     )
     standard_price_subtotal = fields.Monetary(
-        string="Standard Price Subtotal",
         currency_field="currency_id",
         compute="_compute_standard_price",
         store=True,
@@ -81,6 +73,11 @@ class MixinProductLinePrice(models.AbstractModel):
 
     @api.model
     def _default_currency_id(self):
+        """Return the default currency.
+
+        :return: id of the current company currency.
+        :rtype: int
+        """
         return self.env.company.currency_id.id
 
     @api.depends(
@@ -91,18 +88,20 @@ class MixinProductLinePrice(models.AbstractModel):
         "uom_id",
     )
     def _compute_standard_price(self):
+        """Compute the standard price fields from the pricelist.
+
+        Fills ``standard_price_unit``, ``standard_price_subtotal`` and their
+        diff counterparts. All values are zero without pricelist or product.
+        """
         for record in self:
-            standard_price_unit = (
-                standard_price_subtotal
-            ) = standard_price_unit_diff = standard_price_subtotal_diff = 0.0
+            standard_price_unit = standard_price_subtotal = standard_price_unit_diff = (
+                standard_price_subtotal_diff
+            ) = 0.0
             if record.pricelist_id and record.product_id:
-                product_context = dict(
-                    self.env.context, uom=record.uom_id and record.uom_id.id or False
-                )
-                final_price, rule_id = record.pricelist_id.with_context(
-                    product_context
-                ).get_product_price_rule(
-                    record.product_id, record.uom_quantity or 1.0, False
+                final_price, _rule_id = record.pricelist_id._get_product_price_rule(
+                    record.product_id,
+                    record.uom_quantity or 1.0,
+                    uom=record.uom_id or None,
                 )
                 standard_price_unit = final_price
                 standard_price_subtotal = standard_price_unit * record.uom_quantity
@@ -119,6 +118,7 @@ class MixinProductLinePrice(models.AbstractModel):
         "currency_id",
     )
     def _compute_allowed_pricelist_ids(self):
+        """Compute the pricelists matching the selected currency."""
         Pricelist = self.env["product.pricelist"]
         for record in self:
             result = []
@@ -132,6 +132,7 @@ class MixinProductLinePrice(models.AbstractModel):
         "uom_quantity",
     )
     def _compute_price(self):
+        """Compute ``price_subtotal`` as unit price times UoM quantity."""
         for record in self:
             record.price_subtotal = record.price_unit * record.uom_quantity
 
@@ -140,11 +141,17 @@ class MixinProductLinePrice(models.AbstractModel):
         "currency_id",
     )
     def onchange_pricelist_id(self):
+        """Select the first allowed pricelist, or clear the pricelist."""
         self.pricelist_id = False
         if self.allowed_pricelist_ids:
             self.pricelist_id = self.allowed_pricelist_ids[0]._origin.id
 
     def _get_pricelist_domain(self):
+        """Return the domain used to find the allowed pricelists.
+
+        :return: search domain on ``product.pricelist``.
+        :rtype: list
+        """
         self.ensure_one()
         return [
             ("currency_id", "=", self.currency_id.id),
@@ -157,11 +164,11 @@ class MixinProductLinePrice(models.AbstractModel):
         "pricelist_id",
     )
     def onchange_price_unit(self):
+        """Fill ``price_unit`` from the selected pricelist."""
         if self.product_id and self.pricelist_id:
-            product_context = dict(
-                self.env.context, uom=self.uom_id and self.uom_id.id or False
+            final_price, _rule_id = self.pricelist_id._get_product_price_rule(
+                self.product_id,
+                self.uom_quantity or 1.0,
+                uom=self.uom_id or None,
             )
-            final_price, rule_id = self.pricelist_id.with_context(
-                product_context
-            ).get_product_price_rule(self.product_id, self.uom_quantity or 1.0, False)
             self.price_unit = final_price
