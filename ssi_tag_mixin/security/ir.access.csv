@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+access_global_tag_category_administrator,global_tag_category - administrator,global_tag_category,base.group_system,crud,
+access_global_tag_category_all,global_tag_category - all,global_tag_category,base.group_user,r,
+access_global_tag_administrator,global_tag - administrator,global_tag,base.group_system,crud,
+access_global_tag_all,global_tag - all,global_tag,base.group_user,r,

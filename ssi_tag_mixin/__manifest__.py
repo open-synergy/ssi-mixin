@@ -3,16 +3,16 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Tag Mixin",
-    "version": "19.0.1.1.0",
+    "version": "20.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
-    "installable": False,
+    "installable": True,
     "depends": [
         "ssi_master_data_mixin",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "menu.xml",
         "views/global_tag_category_views.xml",
         "views/global_tag_views.xml",
