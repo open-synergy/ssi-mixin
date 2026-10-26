@@ -33,6 +33,7 @@ addon | version | maintainers | summary
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 20.0.1.0.0 |  | Pricelist Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.3 |  | Print Policy Mixin
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 20.0.1.0.0 |  | Product Line Mixin
+[ssi_salesperson_mixin](ssi_salesperson_mixin/) | 20.0.1.0.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.1 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 20.0.1.0.0 |  | Source Document Mixin
 [ssi_tag_mixin](ssi_tag_mixin/) | 20.0.1.0.0 |  | Tag Mixin
@@ -61,7 +62,6 @@ addon | version | maintainers | summary
 [ssi_res_partner_bank_m2o_configurator_mixin](ssi_res_partner_bank_m2o_configurator_mixin/) | 14.0.1.0.0 (unported) |  | res.partner.bank Many2one Configurator Mixin
 [ssi_res_partner_m2o_configurator_mixin](ssi_res_partner_m2o_configurator_mixin/) | 14.0.1.0.0 (unported) |  | res.partner Many2one Configurator Mixin
 [ssi_res_users_m2o_configurator_mixin](ssi_res_users_m2o_configurator_mixin/) | 14.0.1.0.0 (unported) |  | res.users Many2one Configurator Mixin
-[ssi_salesperson_mixin](ssi_salesperson_mixin/) | 14.0.1.1.0 (unported) |  | Salesperson Mixin
 [ssi_schema_parser_mixin](ssi_schema_parser_mixin/) | 14.0.2.0.0 (unported) |  | Generic schema parser mixin with validation support
 [ssi_state_change_constrain_mixin](ssi_state_change_constrain_mixin/) | 19.0.1.1.2 (unported) |  | State Change Constrain Mixin
 [ssi_state_change_history_mixin](ssi_state_change_history_mixin/) | 19.0.1.1.0 (unported) |  | State Change History Mixin
