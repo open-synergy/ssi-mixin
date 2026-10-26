@@ -2,6 +2,8 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from typing import ClassVar
+
 from lxml import etree
 
 from odoo import api, fields, models
@@ -48,14 +50,13 @@ class MixinPartner(models.AbstractModel):
     _mixin_partner_partner_id_required_include_state = False
     _mixin_partner_partner_id_required_exclude_state = False
     _mixin_partner_partner_id_readonly_include_state = False
-    _mixin_partner_partner_id_readonly_exclude_state = ["draft"]
+    _mixin_partner_partner_id_readonly_exclude_state: ClassVar[list[str]] = ["draft"]
     _mixin_partner_contact_id_required_include_state = False
     _mixin_partner_contact_id_required_exclude_state = False
     _mixin_partner_contact_id_readonly_include_state = False
-    _mixin_partner_contact_id_readonly_exclude_state = ["draft"]
+    _mixin_partner_contact_id_readonly_exclude_state: ClassVar[list[str]] = ["draft"]
 
     partner_id = fields.Many2one(
-        string="Partner",
         comodel_name="res.partner",
         domain=[
             ("parent_id", "=", False),
@@ -66,6 +67,7 @@ class MixinPartner(models.AbstractModel):
         "partner_id",
     )
     def _compute_allowed_contact_ids(self):
+        """Compute the contacts allowed for the selected partner."""
         Partner = self.env["res.partner"]
         for record in self:
             result = []
@@ -79,7 +81,6 @@ class MixinPartner(models.AbstractModel):
             record.allowed_contact_ids = result
 
     allowed_contact_ids = fields.Many2many(
-        string="Allowed Contact",
         comodel_name="res.partner",
         compute="_compute_allowed_contact_ids",
         store=False,
@@ -117,76 +118,77 @@ class MixinPartner(models.AbstractModel):
         "name",
     )
     def _compute_mixin_partner_attribute(self):
+        """Compute the required/readonly flags of the partner fields."""
         for record in self:
             mixin_partner_partner_id_required = mixin_partner_partner_id_readonly = (
                 mixin_partner_contact_id_required
             ) = mixin_partner_contact_id_readonly = False
 
-            if self._mixin_partner_partner_id_required:
-                mixin_partner_partner_id_required = True
-            elif (
-                self._mixin_partner_partner_id_required_include_state
-                and hasattr(self, "state")
-                and record.state
-                in self._mixin_partner_partner_id_required_include_state
-            ):
-                mixin_partner_partner_id_required = True
-            elif (
-                self._mixin_partner_partner_id_required_exclude_state
-                and hasattr(self, "state")
-                and record.state
-                not in self._mixin_partner_partner_id_required_exclude_state
+            if (
+                self._mixin_partner_partner_id_required
+                or (
+                    self._mixin_partner_partner_id_required_include_state
+                    and hasattr(self, "state")
+                    and record.state
+                    in self._mixin_partner_partner_id_required_include_state
+                )
+                or (
+                    self._mixin_partner_partner_id_required_exclude_state
+                    and hasattr(self, "state")
+                    and record.state
+                    not in self._mixin_partner_partner_id_required_exclude_state
+                )
             ):
                 mixin_partner_partner_id_required = True
 
-            if self._mixin_partner_partner_id_readonly:
-                mixin_partner_partner_id_readonly = True
-            elif (
-                self._mixin_partner_partner_id_readonly_include_state
-                and hasattr(self, "state")
-                and record.state
-                in self._mixin_partner_partner_id_readonly_include_state
-            ):
-                mixin_partner_partner_id_readonly = True
-            elif (
-                self._mixin_partner_partner_id_readonly_exclude_state
-                and hasattr(self, "state")
-                and record.state
-                not in self._mixin_partner_partner_id_readonly_exclude_state
+            if (
+                self._mixin_partner_partner_id_readonly
+                or (
+                    self._mixin_partner_partner_id_readonly_include_state
+                    and hasattr(self, "state")
+                    and record.state
+                    in self._mixin_partner_partner_id_readonly_include_state
+                )
+                or (
+                    self._mixin_partner_partner_id_readonly_exclude_state
+                    and hasattr(self, "state")
+                    and record.state
+                    not in self._mixin_partner_partner_id_readonly_exclude_state
+                )
             ):
                 mixin_partner_partner_id_readonly = True
 
-            if self._mixin_partner_contact_id_required:
-                mixin_partner_contact_id_required = True
-            elif (
-                self._mixin_partner_contact_id_required_include_state
-                and hasattr(self, "state")
-                and record.state
-                in self._mixin_partner_contact_id_required_include_state
-            ):
-                mixin_partner_contact_id_required = True
-            elif (
-                self._mixin_partner_contact_id_required_exclude_state
-                and hasattr(self, "state")
-                and record.state
-                not in self._mixin_partner_contact_id_required_exclude_state
+            if (
+                self._mixin_partner_contact_id_required
+                or (
+                    self._mixin_partner_contact_id_required_include_state
+                    and hasattr(self, "state")
+                    and record.state
+                    in self._mixin_partner_contact_id_required_include_state
+                )
+                or (
+                    self._mixin_partner_contact_id_required_exclude_state
+                    and hasattr(self, "state")
+                    and record.state
+                    not in self._mixin_partner_contact_id_required_exclude_state
+                )
             ):
                 mixin_partner_contact_id_required = True
 
-            if self._mixin_partner_contact_id_readonly:
-                mixin_partner_contact_id_readonly = True
-            elif (
-                self._mixin_partner_contact_id_readonly_include_state
-                and hasattr(self, "state")
-                and record.state
-                in self._mixin_partner_contact_id_readonly_include_state
-            ):
-                mixin_partner_contact_id_readonly = True
-            elif (
-                self._mixin_partner_contact_id_readonly_exclude_state
-                and hasattr(self, "state")
-                and record.state
-                not in self._mixin_partner_contact_id_readonly_exclude_state
+            if (
+                self._mixin_partner_contact_id_readonly
+                or (
+                    self._mixin_partner_contact_id_readonly_include_state
+                    and hasattr(self, "state")
+                    and record.state
+                    in self._mixin_partner_contact_id_readonly_include_state
+                )
+                or (
+                    self._mixin_partner_contact_id_readonly_exclude_state
+                    and hasattr(self, "state")
+                    and record.state
+                    not in self._mixin_partner_contact_id_readonly_exclude_state
+                )
             ):
                 mixin_partner_contact_id_readonly = True
 
@@ -199,6 +201,7 @@ class MixinPartner(models.AbstractModel):
         "partner_id",
     )
     def onchange_contact_partner_id(self):
+        """Clear the contact when the partner changes."""
         self.contact_partner_id = False
 
     def _mixin_partner_insert_view_node(self, doc, xpath, template_xml_ids):

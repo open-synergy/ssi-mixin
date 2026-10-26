@@ -4,11 +4,11 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Partner Mixin",
-    "version": "19.0.1.1.0",
+    "version": "20.0.1.0.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
-    "installable": False,
+    "installable": True,
     "depends": [
         "base",
     ],
