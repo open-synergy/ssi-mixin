@@ -11,32 +11,21 @@ scenarios:
       "_compute_allowed_uom_ids: with a product set, must return every UoM in the
       product's default UoM category"
     steps:
-      - step: "Create a fresh UoM category, unrelated to any demo data"
-        action: "create"
-        model: "uom.category"
-        save_as: "test_category"
-        values:
-          name: "Test Category - 434"
-
-      - step: "Create the category's reference UoM (Test A)"
+      - step: "Create a reference UoM (Test A), root of a fresh UoM family"
         action: "create"
         model: "uom.uom"
         save_as: "uom_a"
         values:
           name: "Test A - 434"
-          category_id: "REC: test_category.id"
-          uom_type: "reference"
-          factor: 1.0
 
-      - step: "Create a second UoM in the SAME category (Test B)"
+      - step: "Create a second UoM in the SAME family (Test B)"
         action: "create"
         model: "uom.uom"
         save_as: "uom_b"
         values:
           name: "Test B - 434"
-          category_id: "REC: test_category.id"
-          uom_type: "bigger"
-          factor: 2.0
+          relative_uom_id: "REC: uom_a.id"
+          relative_factor: 2.0
 
       - step: "Create a product whose default UoM is Test A"
         action: "create"

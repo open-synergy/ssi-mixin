@@ -22,12 +22,10 @@ class MixinProductLine(models.AbstractModel):
     _field_for_name = "display_name"
 
     sequence = fields.Integer(
-        string="Sequence",
         required=True,
         default=5,
     )
     product_id = fields.Many2one(
-        string="Product",
         comodel_name="product.product",
     )
     product_category_id = fields.Many2one(
@@ -47,16 +45,18 @@ class MixinProductLine(models.AbstractModel):
     def _compute_allowed_uom_ids(self):
         """Compute the UoMs selectable on this line's ``uom_id``.
 
-        Includes every ``uom.uom`` sharing the same category as the
-        line's product default UoM. Empty when no product is set.
+        Odoo 20 removed ``uom.category``. UoMs are now linked through
+        ``relative_uom_id``, so the selectable UoMs are every ``uom.uom``
+        sharing the same root reference unit as the line's product
+        default UoM. Empty when no product is set.
         """
         UoM = self.env["uom.uom"]
         for record in self:
             result = []
             if record.product_id:
-                category_id = record.product_id.uom_id.category_id.id
+                root_id = int(record.product_id.uom_id.parent_path.split("/")[0])
                 criteria = [
-                    ("category_id", "=", category_id),
+                    ("id", "child_of", root_id),
                 ]
                 result = UoM.search(criteria).ids
             record.allowed_uom_ids = result
@@ -88,14 +88,11 @@ class MixinProductLine(models.AbstractModel):
             record.quantity = result
 
     quantity = fields.Float(
-        string="Quantity",
         required=False,
         compute="_compute_qty",
         store=True,
     )
-    note = fields.Text(
-        string="Note",
-    )
+    note = fields.Text()
 
     @api.onchange(
         "product_id",
