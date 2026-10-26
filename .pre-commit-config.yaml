@@ -7,7 +7,6 @@ exclude: |
   ^ssi_data_requirement_mixin/|
   ^ssi_data_requirement_mixin_operating_unit/|
   ^ssi_duration_mixin/|
-  ^ssi_field_date_callable_attribute/|
   ^ssi_multiple_approval_mixin/|
   ^ssi_operating_unit_mixin/|
   ^ssi_pricelist_mixin/|
