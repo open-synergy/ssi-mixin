@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,6 +12,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: ssi_tag_mixin
+#: model:ir.module.module,description:base.module_ssi_tag_mixin
+msgid ""
+".. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg\n"
+"   :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"=========\n"
+"Tag Mixin\n"
+"=========\n"
+"\n"
+"``ssi_tag_mixin`` provides a global tagging framework for any Odoo model.\n"
+"\n"
+"The module ships the following components:\n"
+"\n"
+"* **global_tag_category** — master-data categories with optional\n"
+"  ``exclusive`` (at-most-one-tag) and ``global_use`` (auto-available for all\n"
+"  models) flags.\n"
+"* **global_tag** — individual tags linked to a category with a colour\n"
+"  index.\n"
+"* **ir.model** extension — adds ``global_tag_category_ids`` for model-\n"
+"  specific category assignments and ``all_global_tag_category_ids`` that\n"
+"  merges global + model-specific categories.\n"
+"* **mixin.tag** — abstract mixin that adds ``global_tag_ids`` and\n"
+"  ``allowed_global_tag_category_ids`` to any inheriting model.\n"
+"\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"1.  Clone the branch 14.0 of the repository https://github.com/open-synergy/ssi-mixin\n"
+"2.  Add the path to this repository in your configuration (addons-path)\n"
+"3.  Update the module list (Must be on developer mode)\n"
+"4.  Go to menu *Apps -> Apps -> Main Apps*\n"
+"5.  Search For *Tag Mixin*\n"
+"6.  Install the module\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/open-synergy/ssi-mixin/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smash it by providing detailed and welcomed feedback.\n"
+"\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"* Andhitia Rama <andhitia.r@gmail.com>\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+".. image:: https://simetri-sinergi.id/logo.png\n"
+"   :alt: PT. Simetri Sinergi Indonesia\n"
+"   :target: https://simetri-sinergi.id\n"
+"\n"
+"This module is maintained by the PT. Simetri Sinergi Indonesia.\n"
+msgstr ""
 
 #. module: ssi_tag_mixin
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__message_needaction
@@ -35,6 +101,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__activity_exception_decoration
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag_category__activity_exception_decoration
 msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: ssi_tag_mixin
+#: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__activity_plans_ids
+#: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag_category__activity_plans_ids
+msgid "Activity Plans"
 msgstr ""
 
 #. module: ssi_tag_mixin
@@ -122,12 +194,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__message_partner_ids
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag_category__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
-
-#. module: ssi_tag_mixin
-#: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag__activity_type_icon
-#: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag_category__activity_type_icon
-msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: ssi_tag_mixin
@@ -240,6 +306,12 @@ msgid ""
 msgstr ""
 
 #. module: ssi_tag_mixin
+#: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag__activity_type_icon
+#: model:ir.model.fields,help:ssi_tag_mixin.field_global_tag_category__activity_type_icon
+msgid "Material Symbols icon e.g. checklist"
+msgstr ""
+
+#. module: ssi_tag_mixin
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag__message_has_error
 #: model:ir.model.fields,field_description:ssi_tag_mixin.field_global_tag_category__message_has_error
 msgid "Message Delivery error"
@@ -253,7 +325,7 @@ msgstr ""
 
 #. module: ssi_tag_mixin
 #: model:ir.model,name:ssi_tag_mixin.model_ir_model
-msgid "Models"
+msgid "Model"
 msgstr ""
 
 #. module: ssi_tag_mixin
@@ -336,6 +408,11 @@ msgid ""
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
+msgstr ""
+
+#. module: ssi_tag_mixin
+#: model:ir.module.module,shortdesc:base.module_ssi_tag_mixin
+msgid "Tag Mixin"
 msgstr ""
 
 #. module: ssi_tag_mixin
