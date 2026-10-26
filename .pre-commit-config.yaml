@@ -10,7 +10,6 @@ exclude: |
   ^ssi_multiple_approval_mixin/|
   ^ssi_operating_unit_mixin/|
   ^ssi_product_line_account_mixin/|
-  ^ssi_product_line_price_mixin/|
   ^ssi_qr_code_mixin/|
   ^ssi_reference_document_mixin/|
   ^ssi_related_attachment_mixin/|
