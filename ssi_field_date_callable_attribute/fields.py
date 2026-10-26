@@ -2,45 +2,48 @@
 # Copyright 2022 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import logging
-
 from odoo import fields
-
-_logger = logging.getLogger(__name__)
 
 
 class DateCallable(fields.Date):
     """
     A subclass of ``fields.Date`` that evaluates callable values for the
-    ``readonly``, ``required``, ``string``, and ``states`` attributes at
-    field-setup time (``_setup_attrs``).
+    ``readonly``, ``required``, ``string``, and ``states`` attributes when
+    the field attributes are computed (``_get_attrs``).
 
     This allows these attributes to be specified as ``@api.model`` methods
     (decorated with ``_get_date_*`` naming conventions) so that subclasses
     can customise them through class-level attribute overrides without
     redeclaring the field.
 
+    .. note::
+       Since Odoo 17 the ORM no longer supports the ``states`` field
+       attribute. It is still accepted and resolved here so that callers
+       keep working, but it has no effect on the field behaviour.
+
     After registration the class is also exposed as ``fields.DateCallable``
     for convenient import by other modules.
     """
 
-    def _setup_attrs(self, model, name):
-        super()._setup_attrs(model, name)
-        readonly_attr = self.readonly
-        if self.readonly and callable(readonly_attr):
-            self.readonly = readonly_attr(model)
+    states = None
+    _callable_attrs = ("readonly", "required", "string", "states")
 
-        required_attr = self.required
-        if self.required and callable(readonly_attr):
-            self.required = required_attr(model)
+    def _get_attrs(self, model_class, name):
+        """Resolve callable attributes against the model class.
 
-        string_attr = self.string
-        if self.string and callable(string_attr):
-            self.string = string_attr(model)
-
-        states_attr = self.states
-        if self.states and callable(states_attr):
-            self.states = states_attr(model)
+        :param model_class: model class the field is being set up on
+        :param name: name of the field
+        :return: the field parameter attributes, with every callable
+            among ``readonly``, ``required``, ``string`` and ``states``
+            replaced by the value it returns
+        :rtype: dict
+        """
+        attrs = super()._get_attrs(model_class, name)
+        for key in self._callable_attrs:
+            value = attrs.get(key)
+            if callable(value):
+                attrs[key] = value(model_class)
+        return attrs
 
 
 fields.DateCallable = DateCallable
