@@ -27,6 +27,7 @@ addon | version | maintainers | summary
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 20.0.1.0.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 20.0.1.0.0 |  | Many2one Configurator Mixin
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 20.0.1.0.1 |  | Master Data Mixin
+[ssi_partner_mixin](ssi_partner_mixin/) | 20.0.1.0.0 |  | Partner Mixin
 [ssi_policy_mixin](ssi_policy_mixin/) | 20.0.1.0.1 |  | Policy Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.3 |  | Print Policy Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.1 |  | Sequence Mixin
@@ -46,7 +47,6 @@ addon | version | maintainers | summary
 [ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.1.0 (unported) |  | Custom Date Field With Callable Attribute
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 19.0.1.1.0 (unported) |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.3.0 (unported) |  | Operating Unit Mixin
-[ssi_partner_mixin](ssi_partner_mixin/) | 19.0.1.1.0 (unported) |  | Partner Mixin
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.1.0 (unported) |  | Pricelist Mixin
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.4.1 (unported) |  | Product Line Mixin - With Accounting
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.3.1 (unported) |  | Product Line Mixin
