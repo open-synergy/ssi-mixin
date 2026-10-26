@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,6 +12,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: ssi_product_line_price_mixin
+#: model:ir.module.module,description:base.module_ssi_product_line_price_mixin
+msgid ""
+".. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg\n"
+"   :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html\n"
+"   :alt: License: AGPL-3\n"
+"\n"
+"==================\n"
+"Product Line Mixin\n"
+"==================\n"
+"\n"
+"``ssi_product_line_price_mixin`` extends ``mixin.product_line`` with pricing\n"
+"fields.\n"
+"\n"
+"Any model that inherits from ``mixin.product_line_price`` additionally gains:\n"
+"\n"
+"* ``currency_id``, ``pricelist_id`` (with ``allowed_pricelist_ids`` filtered\n"
+"  by the selected currency).\n"
+"* ``price_unit`` and computed ``price_subtotal`` (= price_unit × quantity).\n"
+"* Standard-price comparison fields (``standard_price_unit``,\n"
+"  ``standard_price_subtotal``, and their diff variants) derived from the\n"
+"  selected pricelist.\n"
+"\n"
+"\n"
+"Installation\n"
+"============\n"
+"\n"
+"To install this module, you need to:\n"
+"\n"
+"1.  Clone the branch 14.0 of the repository https://github.com/open-synergy/ssi-mixin\n"
+"2.  Add the path to this repository in your configuration (addons-path)\n"
+"3.  Update the module list (Must be on developer mode)\n"
+"4.  Go to menu *Apps -> Apps -> Main Apps*\n"
+"5.  Search For *Product Line Mixin*\n"
+"6.  Install the module\n"
+"\n"
+"Bug Tracker\n"
+"===========\n"
+"\n"
+"Bugs are tracked on `GitHub Issues\n"
+"<https://github.com/open-synergy/ssi-mixin/issues>`_. In case of trouble, please\n"
+"check there if your issue has already been reported. If you spotted it first,\n"
+"help us smash it by providing detailed and welcomed feedback.\n"
+"\n"
+"\n"
+"Credits\n"
+"=======\n"
+"\n"
+"Contributors\n"
+"------------\n"
+"\n"
+"* Andhitia Rama <andhitia.r@gmail.com>\n"
+"\n"
+"Maintainer\n"
+"----------\n"
+"\n"
+".. image:: https://simetri-sinergi.id/logo.png\n"
+"   :alt: PT. Simetri Sinergi Indonesia\n"
+"   :target: https://simetri-sinergi.id\n"
+"\n"
+"This module is maintained by the PT. Simetri Sinergi Indonesia.\n"
+msgstr ""
 
 #. module: ssi_product_line_price_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__allowed_pricelist_ids
@@ -41,11 +104,6 @@ msgstr ""
 #. module: ssi_product_line_price_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__id
 msgid "ID"
-msgstr ""
-
-#. module: ssi_product_line_price_mixin
-#: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price____last_update
-msgid "Last Modified on"
 msgstr ""
 
 #. module: ssi_product_line_price_mixin
@@ -80,6 +138,7 @@ msgstr ""
 
 #. module: ssi_product_line_price_mixin
 #: model:ir.model,name:ssi_product_line_price_mixin.model_mixin_product_line_price
+#: model:ir.module.module,shortdesc:base.module_ssi_product_line_price_mixin
 msgid "Product Line Mixin - With Price"
 msgstr ""
 
@@ -91,11 +150,6 @@ msgstr ""
 #. module: ssi_product_line_price_mixin
 #: model:ir.model.fields,field_description:ssi_product_line_price_mixin.field_mixin_product_line_price__quantity
 msgid "Quantity"
-msgstr ""
-
-#. module: ssi_product_line_price_mixin
-#: model:ir.model.fields,help:ssi_product_line_price_mixin.field_mixin_product_line_price__product_category_id
-msgid "Select category for the current product"
 msgstr ""
 
 #. module: ssi_product_line_price_mixin
