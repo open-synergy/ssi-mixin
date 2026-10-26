@@ -23,7 +23,6 @@ exclude: |
   ^ssi_res_users_m2o_configurator_mixin/|
   ^ssi_salesperson_mixin/|
   ^ssi_schema_parser_mixin/|
-  ^ssi_source_document_mixin/|
   ^ssi_state_change_constrain_mixin/|
   ^ssi_state_change_history_mixin/|
   ^ssi_status_check_mixin/|

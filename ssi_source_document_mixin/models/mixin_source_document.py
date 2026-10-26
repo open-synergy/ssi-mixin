@@ -27,6 +27,11 @@ class MixingSourceDocument(models.AbstractModel):
         "source_document_model_id",
     )
     def _compute_source_document_id(self):
+        """Assemble the ``'model,id'`` reference string.
+
+        Sets ``source_document_id`` to ``False`` when the source model
+        or a positive resource ID is missing.
+        """
         for record in self:
             result = False
             if record.source_document_res_id > 0 and record.source_document_model_id:
@@ -37,17 +42,20 @@ class MixingSourceDocument(models.AbstractModel):
 
     @api.model
     def _source_document_reference_models(self):
+        """Return the selection values of ``source_document_id``.
+
+        :return: ``(model, name)`` tuples for every ``ir.model`` record.
+        :rtype: list
+        """
         result = []
-        for model in self.env["ir.model"].sudo().search([]):
+        for model in self.env["ir.model"].sudo().search([("model", "!=", False)]):
             result.append((model.model, model.name))
         return result
 
     source_document_res_id = fields.Integer(
-        string="Source Document Res ID",
         index=True,
     )
     source_document_model_id = fields.Many2one(
-        string="Source Document Model",
         comodel_name="ir.model",
     )
     source_document_model = fields.Char(
@@ -56,7 +64,6 @@ class MixingSourceDocument(models.AbstractModel):
         store=True,
     )
     source_document_id = fields.Reference(
-        string="Source Document",
         selection="_source_document_reference_models",
         compute="_compute_source_document_id",
     )
