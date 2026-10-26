@@ -21,7 +21,6 @@ class TncTemplate(models.Model):
         return self.env.company
 
     name = fields.Char(
-        string="Name",
         required=True,
     )
     model_id = fields.Many2one(
@@ -37,7 +36,6 @@ class TncTemplate(models.Model):
         store=True,
     )
     company_id = fields.Many2one(
-        string="Company",
         comodel_name="res.company",
         default=lambda self: self._default_company_id(),
     )
@@ -48,11 +46,8 @@ class TncTemplate(models.Model):
     active = fields.Boolean(
         default=True,
     )
-    note = fields.Text(
-        string="Note",
-    )
+    note = fields.Text()
     computation_method = fields.Selection(
-        string="Computation Method",
         selection=[
             ("use_domain", "Domain"),
             ("use_python", "Python Code"),
@@ -60,11 +55,8 @@ class TncTemplate(models.Model):
         default="use_python",
         required=True,
     )
-    domain = fields.Char(
-        string="Domain",
-    )
+    domain = fields.Char()
     python_code = fields.Text(
-        string="Python Code",
         default=DEFAULT_PYTHON_CODE
         + "\n#  - result: Return result, the value is boolean.",
         copy=True,

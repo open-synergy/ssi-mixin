@@ -2,6 +2,8 @@
 # Copyright 2024 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from typing import ClassVar
+
 from odoo import api, fields, models
 
 
@@ -15,7 +17,7 @@ class TncClause(models.Model):
     """
 
     _name = "tnc_clause"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.tnc_clause",
     ]
     _description = "Terms and Condition Clause"
@@ -26,7 +28,6 @@ class TncClause(models.Model):
     )
 
     content = fields.Text(
-        string="Content",
         compute="_compute_content",
         store=False,
         compute_sudo=True,
