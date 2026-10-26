@@ -1,0 +1,11 @@
+id,name,model_id,group_id/id,operation,domain
+access_tnc_section_user,tnc_section - user,tnc_section,base.group_user,crud,
+access_tnc_section_all,tnc_section - all,tnc_section,base.group_user,r,
+access_tnc_clause_user,tnc_clause - user,tnc_clause,base.group_user,crud,
+access_tnc_clause_all,tnc_clause - all,tnc_clause,base.group_user,r,
+access_tnc_template_administrator,tnc_template - administrator,tnc_template,base.group_system,crud,
+access_tnc_template_all,tnc_template - all,tnc_template,base.group_user,r,
+access_tnc_template_section_administrator,tnc_template.section - administrator,tnc_template.section,base.group_system,crud,
+access_tnc_template_section_all,tnc_template.section - all,tnc_template.section,base.group_user,r,
+access_tnc_template_clause_administrator,tnc_template.clause - administrator,tnc_template.clause,base.group_system,crud,
+access_tnc_template_clause_all,tnc_template.clause - all,tnc_template.clause,base.group_user,r,

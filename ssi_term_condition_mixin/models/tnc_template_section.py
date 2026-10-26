@@ -2,6 +2,8 @@
 # Copyright 2024 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from typing import ClassVar
+
 from odoo import fields, models
 
 
@@ -15,14 +17,13 @@ class TncTemplateSection(models.Model):
     """
 
     _name = "tnc_template.section"
-    _inherit = [
+    _inherit: ClassVar[list[str]] = [
         "mixin.tnc_section",
     ]
     _description = "T&C Template Section"
     _order = "sequence, id"
 
     template_id = fields.Many2one(
-        string="Template",
         comodel_name="tnc_template",
         required=True,
         ondelete="cascade",

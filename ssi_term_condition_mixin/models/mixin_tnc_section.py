@@ -19,7 +19,6 @@ class TncSectionMixin(models.AbstractModel):
     _order = "sequence, id"
 
     sequence = fields.Integer(
-        string="Sequence",
         required=True,
         default=10,
     )
@@ -28,12 +27,9 @@ class TncSectionMixin(models.AbstractModel):
         required=True,
     )
     title = fields.Char(
-        string="Title",
         required=True,
     )
-    raw_content = fields.Text(
-        string="Raw Content",
-    )
+    raw_content = fields.Text()
     clause_ids = fields.One2many(
         string="Clauses",
         comodel_name="mixin.tnc_clause",
