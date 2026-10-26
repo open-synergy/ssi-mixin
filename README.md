@@ -33,6 +33,7 @@ addon | version | maintainers | summary
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 20.0.1.0.0 |  | Pricelist Mixin
 [ssi_print_mixin](ssi_print_mixin/) | 20.0.1.0.3 |  | Print Policy Mixin
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 20.0.1.0.0 |  | Product Line Mixin
+[ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 20.0.1.0.0 |  | Product Line Mixin - With Price
 [ssi_salesperson_mixin](ssi_salesperson_mixin/) | 20.0.1.0.0 |  | Salesperson Mixin
 [ssi_sequence_mixin](ssi_sequence_mixin/) | 20.0.1.0.1 |  | Sequence Mixin
 [ssi_source_document_mixin](ssi_source_document_mixin/) | 20.0.1.0.0 |  | Source Document Mixin
@@ -54,7 +55,6 @@ addon | version | maintainers | summary
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 19.0.1.1.0 (unported) |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.3.0 (unported) |  | Operating Unit Mixin
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.4.1 (unported) |  | Product Line Mixin - With Accounting
-[ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.4.0 (unported) |  | Product Line Mixin - With Price
 [ssi_qr_code_mixin](ssi_qr_code_mixin/) | 19.0.1.1.0 (unported) |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 19.0.1.1.0 (unported) |  | Reference Document Mixin
 [ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 19.0.1.3.0 (unported) |  | Related Attachment Mixin
