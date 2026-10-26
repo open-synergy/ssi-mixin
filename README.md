@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [ssi_backend_mixin](ssi_backend_mixin/) | 20.0.1.0.0 |  | Backend Mixin
 [ssi_company_currency_mixin](ssi_company_currency_mixin/) | 20.0.1.0.0 |  | Company Currency Mixin
 [ssi_decorator](ssi_decorator/) | 20.0.1.0.0 |  | SSI - Decorator
+[ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 20.0.1.0.0 |  | Custom Date Field With Callable Attribute
 [ssi_localdict_mixin](ssi_localdict_mixin/) | 20.0.1.0.0 |  | Localdict Mixin
 [ssi_m2o_configurator_mixin](ssi_m2o_configurator_mixin/) | 20.0.1.0.0 |  | Many2one Configurator Mixin
 [ssi_master_data_mixin](ssi_master_data_mixin/) | 20.0.1.0.1 |  | Master Data Mixin
@@ -47,7 +48,6 @@ addon | version | maintainers | summary
 [ssi_data_requirement_mixin](ssi_data_requirement_mixin/) | 14.0.3.9.0 (unported) |  | Data Requirement Mixin
 [ssi_data_requirement_mixin_operating_unit](ssi_data_requirement_mixin_operating_unit/) | 14.0.1.1.0 (unported) |  | Data Requirement Mixin + Operating Unit
 [ssi_duration_mixin](ssi_duration_mixin/) | 14.0.2.1.0 (unported) |  | Duration Mixin
-[ssi_field_date_callable_attribute](ssi_field_date_callable_attribute/) | 14.0.1.1.0 (unported) |  | Custom Date Field With Callable Attribute
 [ssi_multiple_approval_mixin](ssi_multiple_approval_mixin/) | 19.0.1.1.0 (unported) |  | Multiple Approval
 [ssi_operating_unit_mixin](ssi_operating_unit_mixin/) | 14.0.1.3.0 (unported) |  | Operating Unit Mixin
 [ssi_pricelist_mixin](ssi_pricelist_mixin/) | 14.0.1.1.0 (unported) |  | Pricelist Mixin
