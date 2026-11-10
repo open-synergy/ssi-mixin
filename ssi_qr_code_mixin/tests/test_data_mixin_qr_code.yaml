@@ -85,3 +85,34 @@ scenarios:
           qr_image:
             type: "value"
             operator: "is_falsy"
+
+  - name: "Non-admin user reads qr_image with the standard content"
+    steps:
+      - step: "Create a plain internal user without Settings rights"
+        action: "create"
+        model: "res.users"
+        save_as: "plain_user"
+        values:
+          name: "QR Plain User"
+          login: "qr_plain_user"
+          groups_id: [[6, 0, ["REF: base.group_user"]]]
+      - step: "Ensure the ir.model row uses the standard content"
+        action: "write"
+        target: "qr_ir_model"
+        values:
+          qr_use_standard_content: true
+      - step: "Create a test.qr_code record as the superuser"
+        action: "create"
+        model: "test.qr_code"
+        save_as: "record"
+        values:
+          name: "Non Admin Document"
+      - step: "Assert qr_image is readable by the plain user"
+        action: "assert"
+        target: "record"
+        as_user: "plain_user"
+        refresh: true
+        asserts:
+          qr_image:
+            type: "value"
+            operator: "is_truthy"
