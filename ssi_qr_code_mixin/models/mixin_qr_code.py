@@ -134,10 +134,15 @@ class MixinQRCode(models.AbstractModel):
     def _get_qr_standard_content(self):
         """Build the standard QR content: the backend URL of this document.
 
+        The base URL comes from ``get_base_url()``, which reads the
+        ``web.base.url`` system parameter with elevated rights, so
+        users without access to ``ir.config_parameter`` can still
+        compute ``qr_image``.
+
         :return: the full backend URL of this record, as a string
         """
         self.ensure_one()
-        odoo_url = self.env["ir.config_parameter"].get_param("web.base.url")
+        odoo_url = self.get_base_url()
         document_url = "/web?#id=%d&view_type=form&model=%s" % (
             self.id,
             self._name,
