@@ -41,7 +41,7 @@ addon | version | maintainers | summary
 [ssi_product_line_account_mixin](ssi_product_line_account_mixin/) | 14.0.2.5.0 |  | Product Line Mixin - With Accounting
 [ssi_product_line_mixin](ssi_product_line_mixin/) | 14.0.1.4.0 |  | Product Line Mixin
 [ssi_product_line_price_mixin](ssi_product_line_price_mixin/) | 14.0.1.5.0 |  | Product Line Mixin - With Price
-[ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.1.2 |  | QR Code Mixin
+[ssi_qr_code_mixin](ssi_qr_code_mixin/) | 14.0.2.1.3 |  | QR Code Mixin
 [ssi_reference_document_mixin](ssi_reference_document_mixin/) | 14.0.2.1.0 |  | Reference Document Mixin
 [ssi_related_attachment_mixin](ssi_related_attachment_mixin/) | 14.0.2.10.1 |  | Related Attachment Mixin
 [ssi_res_currency_m2o_configurator_mixin](ssi_res_currency_m2o_configurator_mixin/) | 14.0.1.0.0 |  | res.currency Many2one Configurator Mixin
