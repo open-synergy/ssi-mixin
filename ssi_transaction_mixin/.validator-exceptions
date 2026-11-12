@@ -1,0 +1,1 @@
+unit-test setiap-class-test-turunan-yamltransactioncase|tests/test_field_wrapper_null_guard_js.py TestFieldWrapperNullGuardJs memakai HttpCase -- Trigger P7 (L-19): the QUnit runner needs a browser, which the YAML DSL cannot drive because its base class is locked to TransactionCase

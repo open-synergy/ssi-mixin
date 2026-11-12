@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="assets_backend"
+        name="ssi_transaction_mixin assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/ssi_transaction_mixin/static/src/js/field_wrapper_null_guard.js"
+            />
+        </xpath>
+    </template>
+
+    <template
+        id="qunit_suite_tests"
+        name="ssi_transaction_mixin tests"
+        inherit_id="web.qunit_suite_tests"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/ssi_transaction_mixin/static/tests/field_wrapper_null_guard_tests.js"
+            />
+        </xpath>
+    </template>
+</odoo>
