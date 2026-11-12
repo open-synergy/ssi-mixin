@@ -17,6 +17,7 @@
     ],
     "data": [
         "menu.xml",
+        "views/assets.xml",
         "views/mixin_transaction_views.xml",
     ],
 }
