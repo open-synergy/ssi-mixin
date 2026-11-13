@@ -28,6 +28,18 @@ odoo.define("ssi_transaction_mixin.field_wrapper_null_guard_tests", function (re
         };
     }
 
+    /**
+     * Call a patched prototype method on a fake wrapper.
+     *
+     * @param {String} name the method name
+     * @param {Object} wrapper the fake wrapper
+     * @param {Array} args the call arguments
+     * @returns {*}
+     */
+    function callMethod(name, wrapper, args) {
+        return FieldWrapper.prototype[name].apply(wrapper, args || []);
+    }
+
     function callUpdate(wrapper, modifiers) {
         return FieldWrapper.prototype.updateModifiersValue.call(wrapper, modifiers);
     }
@@ -72,6 +84,112 @@ odoo.define("ssi_transaction_mixin.field_wrapper_null_guard_tests", function (re
             var wrapper = makeWrapper(null, {attrs: attrs});
             callUpdate(wrapper, undefined);
             assert.deepEqual(attrs.modifiersValue, {});
+        });
+
+        QUnit.test("null component returns safe values", function (assert) {
+            assert.expect(6);
+            var wrapper = makeWrapper(null, {});
+            wrapper.isSet = function () {
+                return false;
+            };
+            assert.strictEqual(callMethod("isEmpty", wrapper), true, "isEmpty");
+            assert.strictEqual(callMethod("isValid", wrapper), true, "isValid");
+            assert.strictEqual(
+                callMethod("isFocusable", wrapper),
+                false,
+                "isFocusable"
+            );
+            assert.strictEqual(callMethod("activate", wrapper), false, "activate");
+            assert.strictEqual(
+                callMethod("getFocusableElement", wrapper).length,
+                0,
+                "getFocusableElement"
+            );
+            assert.strictEqual(
+                callMethod("mounted", wrapper),
+                undefined,
+                "mounted does not throw"
+            );
+        });
+
+        QUnit.test("null component isEmpty follows isSet", function (assert) {
+            assert.expect(1);
+            var wrapper = makeWrapper(null, {});
+            wrapper.isSet = function () {
+                return true;
+            };
+            assert.strictEqual(callMethod("isEmpty", wrapper), false);
+        });
+
+        QUnit.test("null component class helpers are no-ops", function (assert) {
+            assert.expect(3);
+            var wrapper = makeWrapper(null, {});
+            assert.strictEqual(callMethod("removeInvalidClass", wrapper), undefined);
+            assert.strictEqual(callMethod("setInvalidClass", wrapper), undefined);
+            assert.strictEqual(callMethod("setIDForLabel", wrapper, ["x"]), undefined);
+        });
+
+        QUnit.test("null component commitChanges resolves", function (assert) {
+            assert.expect(1);
+            var done = assert.async();
+            var wrapper = makeWrapper(null, {});
+            callMethod("commitChanges", wrapper).then(function (res) {
+                assert.strictEqual(res, undefined);
+                done();
+            });
+        });
+
+        QUnit.test("mounted component delegates to core", function (assert) {
+            assert.expect(6);
+            var calls = [];
+            var comp = {
+                isEmpty: "E",
+                isValid: "V",
+                isFocusable: "F",
+                focusableElement: null,
+                activate: function () {
+                    calls.push("activate");
+                    return "A";
+                },
+                commitChanges: function () {
+                    calls.push("commit");
+                    return "C";
+                },
+                removeInvalidClass: function () {
+                    calls.push("rm");
+                },
+                setInvalidClass: function () {
+                    calls.push("set");
+                },
+                setIdForLabel: function () {
+                    calls.push("id");
+                },
+            };
+            var wrapper = makeWrapper(comp, {});
+            assert.strictEqual(callMethod("isEmpty", wrapper), "E");
+            assert.strictEqual(callMethod("isValid", wrapper), "V");
+            assert.strictEqual(callMethod("isFocusable", wrapper), "F");
+            assert.strictEqual(callMethod("activate", wrapper), "A");
+            assert.strictEqual(callMethod("commitChanges", wrapper), "C");
+            callMethod("removeInvalidClass", wrapper);
+            callMethod("setInvalidClass", wrapper);
+            callMethod("setIDForLabel", wrapper);
+            assert.deepEqual(calls, ["activate", "commit", "rm", "set", "id"]);
+        });
+
+        QUnit.test("errors of a mounted component still propagate", function (assert) {
+            assert.expect(1);
+            var wrapper = makeWrapper(
+                {
+                    commitChanges: function () {
+                        throw new Error("boom");
+                    },
+                },
+                {}
+            );
+            assert.throws(function () {
+                callMethod("commitChanges", wrapper);
+            }, /boom/);
         });
     });
 });
