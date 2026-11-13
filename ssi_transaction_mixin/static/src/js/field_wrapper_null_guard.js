@@ -9,14 +9,121 @@ odoo.define("ssi_transaction_mixin.FieldWrapperNullGuard", function (require) {
     var utils = require("web.utils");
 
     // Odoo 14.0 wraps the ``boolean`` and ``badge`` field widgets in
-    // ``FieldWrapper``. Its ``updateModifiersValue`` re-assigns the props
-    // of the wrapped OWL component without checking that the component is
-    // mounted yet, which throws a TypeError when a modifiers pass races
-    // the mount. The guard below mirrors the one core already has in
-    // ``isSet()``: the modifiers are still written to the shared props
-    // object, so a component mounted later receives them anyway.
+    // ``FieldWrapper``. Most of its public methods dereference
+    // ``this.componentRef.comp`` without checking that the wrapped OWL
+    // component is mounted, which throws a TypeError when a renderer pass
+    // races the mount (or the unmount). Only ``isSet()`` has such a guard
+    // in core. Each guard below calls ``_super`` untouched when the
+    // component exists and returns a safe value when it is null. The
+    // per-instance property getters defined in the constructor are out of
+    // scope: they are non-configurable own properties, which
+    // ``utils.patch`` cannot reach.
     utils.patch(FieldWrapper, "ssi_transaction_mixin.FieldWrapperNullGuard", {
         /**
+         * @override
+         */
+        mounted: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            // Skip only the ``__node`` write; keep the parent behavior.
+            var parent = Object.getPrototypeOf(FieldWrapper.prototype);
+            if (parent && typeof parent.mounted === "function") {
+                return parent.mounted.apply(this, arguments);
+            }
+        },
+
+        /**
+         * @override
+         */
+        activate: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            return false;
+        },
+
+        /**
+         * @override
+         */
+        commitChanges: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            return Promise.resolve();
+        },
+
+        /**
+         * @override
+         */
+        getFocusableElement: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            return $();
+        },
+
+        /**
+         * @override
+         */
+        isEmpty: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            return !this.isSet();
+        },
+
+        /**
+         * @override
+         */
+        isFocusable: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            return false;
+        },
+
+        /**
+         * @override
+         */
+        isValid: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+            return true;
+        },
+
+        /**
+         * @override
+         */
+        removeInvalidClass: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+        },
+
+        /**
+         * @override
+         */
+        setIDForLabel: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+        },
+
+        /**
+         * @override
+         */
+        setInvalidClass: function () {
+            if (this.componentRef.comp) {
+                return this._super.apply(this, arguments);
+            }
+        },
+
+        /**
+         * The modifiers are still written to the shared props object, so
+         * a component mounted later receives them anyway.
+         *
          * @override
          */
         updateModifiersValue: function (modifiers) {
