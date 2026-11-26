@@ -1,0 +1,37 @@
+scenarios:
+  - name: "Cancel batch state is stored on the document"
+    steps:
+      - step: "Find the cancel batch state field of the mixin"
+        action: "search"
+        model: "ir.model.fields"
+        domain:
+          - ["model", "=", "mixin.transaction_queue_cancel"]
+          - ["name", "=", "cancel_queue_job_batch_state"]
+        save_as: "batch_state_field"
+      - step: "Assert the field is a stored related field"
+        action: "assert"
+        target: "batch_state_field"
+        asserts:
+          store:
+            type: "value"
+            expected: true
+          related:
+            type: "value"
+            expected: "cancel_queue_job_batch_id.state"
+
+  - name: "Cancel jobs stay unstored on the document"
+    steps:
+      - step: "Find the cancel jobs field of the mixin"
+        action: "search"
+        model: "ir.model.fields"
+        domain:
+          - ["model", "=", "mixin.transaction_queue_cancel"]
+          - ["name", "=", "cancel_queue_job_ids"]
+        save_as: "jobs_field"
+      - step: "Assert the field is not stored"
+        action: "assert"
+        target: "jobs_field"
+        asserts:
+          store:
+            type: "value"
+            expected: false
