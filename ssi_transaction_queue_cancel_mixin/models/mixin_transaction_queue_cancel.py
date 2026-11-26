@@ -13,6 +13,12 @@ from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class MixinTransactionQueueCancel(models.AbstractModel):
+    """Cancel a transaction document through a queue job batch.
+
+    The document waits in the ``queue_cancel`` state while its cancel batch
+    is processed, then moves to the cancel state.
+    """
+
     _name = "mixin.transaction_queue_cancel"
     _inherit = [
         "mixin.transaction_cancel",
@@ -66,6 +72,7 @@ class MixinTransactionQueueCancel(models.AbstractModel):
     cancel_queue_job_batch_state = fields.Selection(
         string="To Cancel Queue Job Batch State",
         related="cancel_queue_job_batch_id.state",
+        store=True,
     )
 
     def _compute_policy(self):
@@ -265,9 +272,26 @@ class MixinTransactionQueueCancel(models.AbstractModel):
             self.run_decorator_method(methods)
 
     def _recompute_queue_cancel_result(self):
+        """Cancel the document once its cancel batch is finished.
+
+        Nothing happens, not even enqueueing the batch, when the document is
+        not in the ``_queue_to_cancel_state`` state. The stored batch state
+        can still read ``finished`` after the document has left that state.
+        Enqueueing can finish the batch. The document is then cancelled as
+        soon as the stored batch state is recomputed, which happens when it
+        is read. The state is therefore checked again after that read.
+
+        :return: None
+        """
         self.ensure_one()
+        if self.state != self._queue_to_cancel_state:
+            return
         self.cancel_queue_job_batch_id.enqueue()
-        if self.cancel_queue_job_batch_state == "finished":
+        # Read first: it recomputes the field, which can cancel the document.
+        batch_state = self.cancel_queue_job_batch_state
+        if self.state != self._queue_to_cancel_state:
+            return
+        if batch_state == "finished":
             self.with_context(bypass_policy_check=True).action_cancel(
                 self.cancel_reason_id
             )
